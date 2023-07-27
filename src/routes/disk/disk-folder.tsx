@@ -5,6 +5,8 @@ import {
 
 export default function DiskFolder() {
   const params: any = useParams();
+  console.log(params.id)
+  
   return (
     <div>folder {params.id}</div>
   )
