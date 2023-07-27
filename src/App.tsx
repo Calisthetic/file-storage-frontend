@@ -5,9 +5,9 @@ import {
   Route,
 } from "react-router-dom";
 import Root from './routes/root';
-import ErrorPage from './error-page';
+import ErrorPage from './page-not-found';
 import Layout from './layout';
-import Disk from './routes/disk';
+import Disk from './routes/disk/disk';
 
 function App() {
   return (
