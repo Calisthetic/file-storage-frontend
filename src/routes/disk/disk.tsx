@@ -14,8 +14,10 @@ import DiskTrash from "./disk-trash";
 import DiskFiles from "./disk-files";
 
 export default function Disk() {
-  const adRef : any = useRef()
-  const sideBarRef : any = useRef()
+  const adRef:any = useRef()
+  const userDropMenuRef:any = useRef()
+  const [isUserDropMenuOpen, setIsUserDropMenuOpen] = useState(true)
+  const sideBarRef:any = useRef()
   const [isSideBarOpen, setIsSideBarOpen] = useState(false)
 
   // Logos
@@ -41,6 +43,13 @@ export default function Disk() {
       sideBarRef.current.style.transform = isSideBarOpen ? "translate(-100%, 0%)" : "none"
     }
   }
+  function CloseOpenUserDropMenu() {
+    setIsUserDropMenuOpen(!isUserDropMenuOpen)
+    if (userDropMenuRef.current) {
+      userDropMenuRef.current.style.transform = isUserDropMenuOpen ? "scale(1, 1) translate(-148px, 130px)" : "scale(0, 0) translate(-148px, 130px)"
+      userDropMenuRef.current.style.margin = isUserDropMenuOpen ? "0px 0px 0px 0px" : "0px 0px 0px -75px"
+    }
+  }
 
   function ChangeSideBar() {
     if (window.innerWidth > 640 && isSideBarOpen === false) {
@@ -59,7 +68,8 @@ export default function Disk() {
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start">
               <button onClick={CloseOpenSideBar} data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" 
-                className="inline-flex items-center p-1 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                className="inline-flex items-center p-1 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 
+                focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                 <span className="sr-only">Open sidebar</span>
                 <svg className="w-6 h-6 fill-textWhite dark:fill-textDark" aria-hidden="true" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 
@@ -78,15 +88,17 @@ export default function Disk() {
                 className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-textDark text-textWhite">Storage</motion.span>
               </Link>
             </div>
-            {/* <div className="flex items-center">
+            {/* User profile */}
+            <div className="flex items-center">
               <div className="flex items-center ml-3">
                 <div>
-                  <button type="button" className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                  <button onClick={CloseOpenUserDropMenu} type="button" className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                     <span className="sr-only">Open user menu</span>
                     <img className="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
                   </button>
                 </div>
-                <div className=" z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
+                <div ref={userDropMenuRef} className="overflow-hidden transition-all absolute scale-0 z-50 my-4 text-base list-none bg-white divide-y 
+                divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
                   <div className="px-4 py-3" role="none">
                     <p className="text-sm text-gray-900 dark:text-white" role="none">
                       Neil Sims
@@ -97,21 +109,25 @@ export default function Disk() {
                   </div>
                   <ul className="py-1" role="none">
                     <li>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Dashboard</a>
+                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 
+                      dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Dashboard</a>
                     </li>
                     <li>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
+                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 
+                      dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
                     </li>
                     <li>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Earnings</a>
+                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 
+                      dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Earnings</a>
                     </li>
                     <li>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
+                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 
+                      dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
                     </li>
                   </ul>
                 </div>
               </div>
-            </div> */}
+            </div>
           </div>
         </div>
       </nav>
@@ -243,11 +259,11 @@ export default function Disk() {
           <ul className="pt-3 space-y-1 font-medium">
             <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.32, stiffness: 300, damping: 24}}>
               <Link to="upgrade" className="flex items-center p-2 dark:text-textDark text-textWhite rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                <svg className="w-5 h-5 fill-iconWhite dark:fill-iconDark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 20">
+                <motion.svg className="w-5 h-5 fill-iconWhite dark:fill-iconDark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 20">
                   <path d="M7.958 19.393a7.7 7.7 0 0 1-6.715-3.439c-2.868-4.832 0-9.376.944-10.654l.091-.122a3.286 3.286 0 0 0 .765-3.288A1 
                   1 0 0 1 4.6.8c.133.1.313.212.525.347A10.451 10.451 0 0 1 10.6 9.3c.5-1.06.772-2.213.8-3.385a1 1 0 0 1 1.592-.758c1.636 
                   1.205 4.638 6.081 2.019 10.441a8.177 8.177 0 0 1-7.053 3.795Z"/>
-                </svg>
+                </motion.svg>
                 <span className="flex-1 ml-3 whitespace-nowrap">Upgrade</span>
               </Link>
             </motion.li>
