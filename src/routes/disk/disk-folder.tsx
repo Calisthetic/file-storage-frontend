@@ -5,7 +5,9 @@ import {
 
 export default function DiskFolder() {
   const params: any = useParams();
-  console.log(params.id)
+  if (params.id === undefined) {
+    window.location.replace("./folder/main")
+  }
   
   return (
     <div>folder {params.id}</div>

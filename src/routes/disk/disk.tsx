@@ -34,16 +34,31 @@ export default function Disk() {
 
   // Funcs
   function CloseAd() {
-    adRef.current.style.display = "none"
+    adRef.current.style.opacity = 0
+    setTimeout(() => {
+      adRef.current.style.display = "none"
+      adRef.current.style.opacity = 1
+    }, 750);
   }
   function CloseOpenSideBar() {
     setIsSideBarOpen(!isSideBarOpen)
-    if (isSideBarOpen) {
-      
-    } else {
-
+    if (sideBarRef.current) {
+      if (isSideBarOpen) {
+        sideBarRef.current.style.transform = "translate(-100%, 0%)"
+      } else {
+        sideBarRef.current.style.transform = "none"
+      }
     }
   }
+
+  function changeTextualName() {
+    if (window.innerWidth > 640 && isSideBarOpen === false) {
+      CloseOpenSideBar();
+    } else if (window.innerWidth <= 640 && isSideBarOpen === true) {
+      CloseOpenSideBar()
+    }
+  }
+  window.addEventListener('resize',changeTextualName);
 
   return (
     <div>
@@ -51,7 +66,8 @@ export default function Disk() {
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start">
-              <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+              <button onClick={CloseOpenSideBar} data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" 
+                className="inline-flex items-center p-1 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                 <span className="sr-only">Open sidebar</span>
                 <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
@@ -62,7 +78,7 @@ export default function Disk() {
                 <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Flowbite</span>
               </a>
             </div>
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <div className="flex items-center ml-3">
                 <div>
                   <button type="button" className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
@@ -95,20 +111,15 @@ export default function Disk() {
                   </ul>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </nav>
 
       <aside ref={sideBarRef} id="logo-sidebar" 
-      // style={{transform: "translate(-100%, 0)"}} 
       className="fixed top-0 left-0 z-30 w-64 h-screen pt-20 transition-transform bg-white border-r border-gray-200 sm:translate-x-0 -translate-x-full dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
         <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
-          <motion.ul animate={{}} transition={{type: "spring",
-              bounce: 0,
-              duration: 0.7,
-              delayChildren: 8,
-              staggerChildren: 5}} className="space-y-2 font-medium">
+          <motion.ul className="space-y-2 font-medium">
             <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.2, stiffness: 300, damping: 24}}>
               <Link to="folder/main" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                 <svg className="w-6" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
@@ -193,7 +204,7 @@ export default function Disk() {
                 <span className="ml-3">Files</span>
               </Link>
             </motion.li>
-            <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.45, stiffness: 300, damping: 24}}>
+            {/* <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.45, stiffness: 300, damping: 24}}>
               <Link to="photos" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                 <svg className="w-6 dark:fill-white fill-black" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path>
                   <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 
@@ -201,8 +212,8 @@ export default function Disk() {
                 </svg>
                 <span className="ml-3">Photos</span>
               </Link>
-            </motion.li>
-            <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.5, stiffness: 300, damping: 24}}>
+            </motion.li> */}
+            <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.45, stiffness: 300, damping: 24}}>
               <Link to="trash" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0,0,256,256">
                   <g className="dark:fill-white fill-black" fillRule="nonzero" stroke="none" strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDasharray="" strokeDashoffset="0" 
@@ -218,7 +229,7 @@ export default function Disk() {
           </motion.ul>
           {/*  */}
           <ul className="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
-            <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.55, stiffness: 300, damping: 24}}>
+            <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.5, stiffness: 300, damping: 24}}>
               <Link to="../" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                 <svg className="w-6" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path clipRule="evenodd" d="M6 4a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h8a1 1 0 1 1 0 2H6a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h8a1 1 0 1 1 0 
@@ -227,7 +238,7 @@ export default function Disk() {
                 <span className="flex-1 ml-3 whitespace-nowrap">Sign Out</span>
               </Link>
             </motion.li>
-            <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.6, stiffness: 300, damping: 24}}>
+            <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.55, stiffness: 300, damping: 24}}>
               <a href="https://github.com/Calisthetic/file-storage-frontend" className="flex items-center p-2 text-gray-900 transition 
               duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
                 <svg className="w-6" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><g className="dark:fill-white fill-black">
@@ -246,7 +257,7 @@ export default function Disk() {
               <span className="ml-3">Documentation</span>
               </a>
             </motion.li>
-            <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.65, stiffness: 300, damping: 24}}>
+            <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.6, stiffness: 300, damping: 24}}>
                 <a href="#" className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
                 <svg className="w-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24"><g><path d="M12 3c-5 0-9 4-9 9 0 1.8.6 3.6 1.6 5.1l-1.4 2.4c-.2.3-.2.7 0 1s.4.5.8.5h8c5 0 9-4 9-9s-4-9-9-9zm0 
                   16H5.8l.9-1.5c.2-.4.2-.8-.1-1.1C5.6 15.2 5 13.6 5 12c0-3.9 3.1-7 7-7s7 3.1 7 7-3.1 7-7 7z" className="dark:fill-white fill-black"></path>
