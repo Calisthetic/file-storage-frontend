@@ -12,6 +12,10 @@ import { motion } from "framer-motion"
 import DiskFavorites from "./disk-favorites";
 import DiskTrash from "./disk-trash";
 import DiskFiles from "./disk-files";
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
 export default function Disk() {
   const adRef:any = useRef()
@@ -19,6 +23,11 @@ export default function Disk() {
   const [isUserDropMenuOpen, setIsUserDropMenuOpen] = useState(true)
   const sideBarRef:any = useRef()
   const [isSideBarOpen, setIsSideBarOpen] = useState(false)
+
+  
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   // Logos
   let mainLogo: string | undefined = undefined;
@@ -46,7 +55,7 @@ export default function Disk() {
   function CloseOpenUserDropMenu() {
     setIsUserDropMenuOpen(!isUserDropMenuOpen)
     if (userDropMenuRef.current) {
-      userDropMenuRef.current.style.transform = isUserDropMenuOpen ? "scale(1, 1) translate(-148px, 130px)" : "scale(0, 0) translate(-148px, 130px)"
+      userDropMenuRef.current.style.transform = isUserDropMenuOpen ? "scale(1, 1) translate(-148px, 150px)" : "scale(0, 0) translate(-148px, 150px)"
       userDropMenuRef.current.style.margin = isUserDropMenuOpen ? "0px 0px 0px 0px" : "0px 0px 0px -75px"
     }
   }
@@ -59,6 +68,18 @@ export default function Disk() {
     }
   }
   window.addEventListener('resize', ChangeSideBar);
+
+  const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
 
   return (
     <div className="bg-backgroundWhite h-full dark:bg-backgroundDark">
@@ -124,6 +145,10 @@ export default function Disk() {
                       <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 
                       dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
                     </li>
+                    <li>
+                      <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 
+                      dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" onClick={handleOpen}>Open modal</a>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -131,7 +156,21 @@ export default function Disk() {
           </div>
         </div>
       </nav>
-
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Text in a modal
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          </Typography>
+        </Box>
+      </Modal>
       <aside ref={sideBarRef} id="logo-sidebar" 
       className="fixed top-0 left-0 z-30 w-64 h-screen pt-20 transition-transform border-gray-200 sm:translate-x-0 
       -translate-x-full bg-backgroundWhite dark:bg-backgroundDark dark:border-gray-700" aria-label="Sidebar">
@@ -243,7 +282,7 @@ export default function Disk() {
               </Link>
             </motion.li> */}
           </ul>
-          {/*  */}
+          {/* Storage usage */}
           <div className="mt-3 border-y pt-2 pb-4 border-gray-300 dark:border-gray-700">
             <motion.span className=" font-meduim flex-1 ml-1 text-textWhite dark:text-textDark"
               initial={{y: 20, opacity: 0}} 
@@ -306,7 +345,7 @@ export default function Disk() {
               </Link>
             </motion.li>
           </ul>
-          {/* Dropdown banner */}
+          {/* Banner */}
           <motion.div initial={{x: -300, opacity: 0}} animate={{x: 0, opacity: 1}} transition={{delay: 0.5, stiffness: 300, damping: 24}}
             ref={adRef} id="dropdown-cta" className="p-4 mt-6 transition rounded-lg bg-blue-50 dark:bg-blue-900" role="alert">
             <div className="flex items-center mb-3">
