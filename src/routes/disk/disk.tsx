@@ -9,6 +9,9 @@ import DiskUpgrade from "./disk-upgrade";
 import DiskFolder from "./disk-folder";
 import { useRef, useState } from "react";
 import { motion } from "framer-motion"
+import DiskFavorites from "./disk-favorites";
+import DiskTrash from "./disk-trash";
+import DiskFiles from "./disk-files";
 
 export default function Disk() {
   const adRef : any = useRef()
@@ -16,18 +19,10 @@ export default function Disk() {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false)
 
   // Logos
-  let recentLogo: string | undefined = undefined;
-  let groupLogo: string | undefined = undefined;
-  let storageLogo: string | undefined = undefined;
-  let fileLogo: string | undefined = undefined;
-  let photoLibraryLogo: string | undefined = undefined;
+  let mainLogo: string | undefined = undefined;
 
   try {
-    recentLogo = require("./../../icons/recent-24-icon.svg").default;
-    groupLogo = require("./../../icons/group-24-icon.svg").default;
-    storageLogo = require("./../../icons/storage-24-icon.svg").default;
-    fileLogo = require("./../../icons/file-24-icon.svg").default;
-    photoLibraryLogo = require("./../../icons/photo-library-24-icon.svg").default;
+    mainLogo = require("./../../icons/logo.png") as string;
   } catch (error) {
     console.log(error)
   }
@@ -73,10 +68,17 @@ export default function Disk() {
                   <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                 </svg>
               </button>
-              <a href="https://flowbite.com" className="flex ml-2 md:mr-24">
-                <img src="https://flowbite.com/docs/images/logo.svg" className="h-8 mr-3" alt="FlowBite Logo" />
-                <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Flowbite</span>
-              </a>
+              <Link to="../disk" className="flex ml-2 md:mr-24">
+                <motion.img src={mainLogo} className="h-8 w-8 mr-3" alt="Logo"
+                initial={{opacity: 0}} 
+                animate={{opacity:1 }} 
+                transition={{delay: 0.5}}/>
+                <motion.span 
+                initial={{opacity: 0, marginLeft: 20}} 
+                animate={{opacity:1, marginLeft: 0}} 
+                transition={{delay: 0.7}} 
+                className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Storage</motion.span>
+              </Link>
             </div>
             {/* <div className="flex items-center">
               <div className="flex items-center ml-3">
@@ -129,7 +131,7 @@ export default function Disk() {
               </Link>
             </motion.li>
             <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.25, stiffness: 300, damping: 24}}>
-              <Link to="folder/main" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+              <Link to="favorites" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
               <svg className="w-6" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M31.881 12.557a2.303 2.303 0 0 0-1.844-1.511l-8.326-1.238-3.619-7.514A2.318 
                 2.318 0 0 0 16 1c-.896 0-1.711.505-2.092 1.294l-3.619 7.514-8.327 1.238A2.3 2.3 0 0 0 .12 12.557a2.207 2.207 0 0 0 .537 2.285l6.102 6.092-1.415 8.451a2.224 2.224 
                 0 0 0 .948 2.203 2.351 2.351 0 0 0 2.449.131L16 27.811l7.26 3.908a2.367 2.367 0 0 0 2.449-.131 2.225 2.225 0 0 0 
@@ -282,9 +284,9 @@ export default function Disk() {
               </button>
             </div>
             <p className="mb-3 text-sm text-blue-800 dark:text-blue-400">
-                Preview the new Flowbite dashboard navigation! You can turn the new navigation off for a limited time in your profile.
+              Prewiew new feature with <u>favorites</u> files! Now you can get fast access to your files without special links and folders search.
             </p>
-            {/* <a className="text-sm text-blue-800 underline font-medium hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300" href="#">Turn new navigation off</a> */}
+            <Link to="favorites" onClick={CloseAd} className="text-sm text-blue-800 underline font-medium hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">Try new feature now</Link>
           </motion.div>
         </div>
       </aside>
@@ -296,6 +298,9 @@ export default function Disk() {
           <Route path='recent' element={<DiskRecent></DiskRecent>}></Route>
           <Route path='shared' element={<DiskShared></DiskShared>}></Route>
           <Route path='upgrade' element={<DiskUpgrade></DiskUpgrade>}></Route>
+          <Route path='favorites' element={<DiskFavorites></DiskFavorites>}></Route>
+          <Route path='files' element={<DiskFiles></DiskFiles>}></Route>
+          <Route path='trash' element={<DiskTrash></DiskTrash>}></Route>
           <Route path='folder/:id' element={<DiskFolder></DiskFolder>}></Route>
           <Route path='folder' element={<DiskFolder></DiskFolder>}></Route>
         </Routes>
