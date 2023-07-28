@@ -11,16 +11,12 @@ import Disk from './routes/disk/disk';
 
 function App() {
   return (
-    <div>
-      <Routes>
-        <Route path='/' element={<Layout></Layout>}>
-        </Route>
-          <Route path='s' element={<Root></Root>}></Route>
-          <Route path='*' element={<ErrorPage></ErrorPage>}></Route>
-          <Route path='disk/*' element={<Disk></Disk>}>
-          </Route>
-      </Routes>
-    </div>
+    <Routes>
+      <Route path='/' element={<Layout></Layout>}></Route>
+      <Route path='s' element={<Root></Root>}></Route>
+      <Route path='*' element={<ErrorPage></ErrorPage>}></Route>
+      <Route path='disk/*' element={<Disk></Disk>}></Route>
+    </Routes>
   );
 }
 
