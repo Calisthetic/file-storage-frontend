@@ -13,7 +13,6 @@ import DiskFavorites from "./disk-favorites";
 import DiskTrash from "./disk-trash";
 import DiskFiles from "./disk-files";
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
@@ -55,8 +54,8 @@ export default function Disk() {
   function CloseOpenUserDropMenu() {
     setIsUserDropMenuOpen(!isUserDropMenuOpen)
     if (userDropMenuRef.current) {
-      userDropMenuRef.current.style.transform = isUserDropMenuOpen ? "scale(1, 1) translate(-148px, 150px)" : "scale(0, 0) translate(-148px, 150px)"
-      userDropMenuRef.current.style.margin = isUserDropMenuOpen ? "0px 0px 0px 0px" : "0px 0px 0px -75px"
+      userDropMenuRef.current.style.transform = isUserDropMenuOpen ? "scale(1, 1) translate(-168px, 160px)" : "scale(0, 0) translate(-168px, 160px)"
+      userDropMenuRef.current.style.margin = isUserDropMenuOpen ? "0px 0px 0px 0px" : "0px 0px 0px -95px"
     }
   }
 
@@ -118,36 +117,36 @@ export default function Disk() {
                     <img className="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
                   </button>
                 </div>
-                <div ref={userDropMenuRef} className="overflow-hidden transition-all absolute scale-0 z-50 my-4 text-base list-none bg-white divide-y 
-                divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
+                <div ref={userDropMenuRef} className="overflow-hidden transition-all absolute scale-0 z-50 my-4 text-base list-none bg-backgroundThirdWhite divide-y 
+                divide-gray-100 rounded shadow dark:bg-backgroundThirdDark dark:divide-gray-600 text-textWhite dark:text-textDark" id="dropdown-user">
                   <div className="px-4 py-3" role="none">
-                    <p className="text-sm text-gray-900 dark:text-white" role="none">
+                    <p className="" role="none">
                       Neil Sims
                     </p>
-                    <p className="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+                    <p className="font-medium" role="none">
                       neil.sims@flowbite.com
                     </p>
                   </div>
                   <ul className="py-1" role="none">
                     <li>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 
-                      dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Dashboard</a>
+                      <a href="#" className="block px-4 py-2 hover:bg-gray-100
+                      dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Statistic</a>
                     </li>
                     <li>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 
-                      dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
+                      <a className="block px-4 py-2 hover:bg-gray-100 
+                       dark:hover:bg-gray-600 dark:hover:text-white" onClick={handleOpen}>Customize</a>
                     </li>
                     <li>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 
-                      dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Earnings</a>
+                      <a href="#" className="block px-4 py-2 hover:bg-gray-100 
+                       dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
                     </li>
                     <li>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 
-                      dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
+                      <a href="documentation" className="block px-4 py-2 hover:bg-gray-100 
+                      dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Documentation</a>
                     </li>
                     <li>
-                      <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 
-                      dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" onClick={handleOpen}>Open modal</a>
+                      <a href="#" className="block px-4 py-2 hover:bg-gray-100 
+                     dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
                     </li>
                   </ul>
                 </div>
@@ -169,6 +168,7 @@ export default function Disk() {
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
           </Typography>
+          <div>ddkkdk</div>
         </Box>
       </Modal>
       <aside ref={sideBarRef} id="logo-sidebar" 
@@ -292,7 +292,7 @@ export default function Disk() {
             </motion.span>
             <div className="w-full bg-gray-200 mt-1 rounded-full h-2.5 dark:bg-gray-700">
               <motion.div initial={{width: 0}} animate={{width: "53%"}} transition={{delay: 0.5}}
-              className="bg-blue-600 h-2.5 rounded-full"></motion.div>
+              className=" bg-iconWhite dark:bg-iconDark h-2.5 rounded-full"></motion.div>
             </div>
           </div>
           <ul className="pt-3 space-y-1 font-medium">
@@ -306,24 +306,6 @@ export default function Disk() {
                 <span className="flex-1 ml-3 whitespace-nowrap">Upgrade</span>
               </Link>
             </motion.li>
-            <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.34, stiffness: 300, damping: 24}}>
-              <Link to="https://github.com/Calisthetic/file-storage-frontend" className="flex items-center p-2 dark:text-textDark text-textWhite rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                <svg className="w-6" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><g className="fill-iconWhite dark:fill-iconDark">
-                  <path d="M24 .125C10.814.125.125 10.814.125 24S10.814 47.875 24 47.875 47.875 37.186 47.875 24 37.186.125 24 .125zm0 
-                  43.771C13.012 43.896 4.104 34.988 4.104 24S13.012 4.104 24 4.104 43.896 13.012 43.896 24 34.988 43.896 24 43.896z"></path>
-                  <path d="M25.22 16.234c.572 0 1.097-.202 1.57-.606.469-.404.757-.894.86-1.466.098-.576-.024-1.062-.38-1.466-.354-.408-.818-.61-1.392-.61-.576 
-                  0-1.1.202-1.569.61-.474.403-.762.89-.86 1.466-.071.573.066 1.062.403 1.466.338.404.796.606 1.368.606zM29.622 
-                  30.4c-.053.075-.104.14-.156.216-.312.396-1.475 1.795-2.984 2.632a.06.06 0 0 0-.024.014c-.132.07-.267.123-.401.185a3.537 3.537 0 0 
-                  1-.891.188c-.339-.044-.523-.281-.523-.73 0-.371.109-1.104.329-2.205l.253-1.111 1.035-4.968c.168-.846.258-1.316.278-1.409l.226-1.162c.133-.719.201-1.194.201-1.426 
-                  0-.444-.11-.781-.287-1.055a.613.613 0 0 0-.066-.122c-.026-.032-.054-.06-.082-.089-.031-.034-.046-.063-.088-.098-.441-.36-.853-.464-1.137-.487l.005-.008s-1.867-.141-4.633 
-                  1.682c-.04.026-.064.045-.101.07-.749.474-1.348.949-1.763 1.332a5.178 5.178 0 0 0-.745.762l-.008.011.001-.001c-.236.311-.36.593-.36.843 0 .197.16.394.476.591 
-                  0 0 1.188-1.534 3.185-2.532.15-.065.534-.224.872-.312.157-.036.455-.064.645.093.136.142.226.339.226.646 0 .279-.042.618-.127 1.023l-.202.957-.251 1.196-.986 
-                  4.728c-.504 2.442-.757 3.903-.757 4.379 0 1.123.615 1.685 1.843 1.685.557 0 1.129-.101 1.716-.281.004 0 .006.002.01.004l.116-.043c.097-.031.195-.068.292-.105 
-                  2.771-1.031 4.595-3.108 5.146-3.804a3.546 3.546 0 0 0 .181-.239h-.002c.14-.206.217-.377.217-.505-.002-.179-.233-.358-.679-.545z"></path></g>
-                </svg>
-                <span className="flex-1 ml-3 whitespace-nowrap">Documentation</span>
-              </Link>
-            </motion.li>
             <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.36, stiffness: 300, damping: 24}}>
               <Link to="help" className="flex items-center p-2 dark:text-textDark text-textWhite rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
                 <svg className="w-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24"><g><path d="M12 3c-5 0-9 4-9 9 0 1.8.6 3.6 1.6 5.1l-1.4 2.4c-.2.3-.2.7 0 1s.4.5.8.5h8c5 0 9-4 9-9s-4-9-9-9zm0 
@@ -333,15 +315,6 @@ export default function Disk() {
                   className="fill-iconWhite dark:fill-iconDark"></circle></g>
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap">Help</span>
-              </Link>
-            </motion.li>
-            <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.38, stiffness: 300, damping: 24}}>
-              <Link to="../" className="flex items-center p-2 dark:text-textDark text-textWhite rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                <svg className="w-6" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path clipRule="evenodd" d="M6 4a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h8a1 1 0 1 1 0 2H6a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h8a1 1 0 1 1 0 
-                  2H6Zm9.293 3.293a1 1 0 0 1 1.414 0l4 4a1 1 0 0 1 0 1.414l-4 4a1 1 0 0 1-1.414-1.414L17.586 13H9a1 1 0 1 1 0-2h8.586l-2.293-2.293a1 1 0 0 1 0-1.414Z" 
-                  className="fill-iconWhite dark:fill-iconDark" fillRule="evenodd"></path></svg>
-                <span className="flex-1 ml-3 whitespace-nowrap">Sign Out</span>
               </Link>
             </motion.li>
           </ul>

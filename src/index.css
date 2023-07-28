@@ -5,13 +5,17 @@
 :root {
   --backgroundDark: #131619;
   --backgroundWhite: #f7f9fc;
+  --backgroundDarkHover: #333639;
+  --backgroundWhiteHover: #e3e6ee;
   --backgroundSecondaryDark: #0f0f0f;
   --backgroundSecondaryWhite: #ffffff;
+  --backgroundThirdDark: #232629;
+  --backgroundThirdWhite: #dddddd;
   --backgroundAccentDark: #232629;
   --backgroundAccentWhite: #ffffff;
   --textDark: #dddddd;
   --textWhite: #111827;
-  --iconDark: #ffffff;
+  --iconDark: #ff0000;
   --iconWhite: #111827;
 }
 
