@@ -7,16 +7,18 @@
   --backgroundLight: #f7f9fc;
   --backgroundDarkHover: #333639;
   --backgroundLightHover: #e3e6ee;
-  --backgroundSecondaryDark: #0f0f0f;
+  --backgroundSecondaryDark: #0f1316;
   --backgroundSecondaryLight: #ffffff;
   --backgroundThirdDark: #232629;
-  --backgroundThirdLight: #dddddd;
+  --backgroundThirdLight: #e9eaef;
   --backgroundAccentDark: #232629;
   --backgroundAccentLight: #ffffff;
+  --borderDark: #43464a;
+  --borderLight: #c3c6c9;
   --textDark: #dddddd;
   --textLight: #111827;
   --iconDark: #ff0000;
-  --iconLight: #111827;
+  --iconLight: #ff0000;
 }
 
 body,html {

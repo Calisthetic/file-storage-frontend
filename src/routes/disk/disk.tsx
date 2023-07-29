@@ -15,6 +15,7 @@ import DiskFiles from "./disk-files";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import EditUIModal from "./edit-ui-modal";
 
 export default function Disk() {
   const adRef:any = useRef()
@@ -73,11 +74,11 @@ export default function Disk() {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
+    width: "auto",
+    bgcolor: 'none',
     boxShadow: 24,
-    p: 4,
+    overflow: "hidden",
+    borderRadius: "16px"
   };
 
   return (
@@ -161,14 +162,12 @@ export default function Disk() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <p className=" font">Customize the interface</p>
-          <p>with your favourite colors!</p>
-          <div>ddkkdk</div>
+          <EditUIModal></EditUIModal>
         </Box>
       </Modal>
       <aside ref={sideBarRef} id="logo-sidebar" 
-      className="fixed top-0 left-0 z-30 w-64 h-screen pt-20 transition-transform border-gray-200 sm:translate-x-0 
-      -translate-x-full bg-backgroundLight dark:bg-backgroundDark dark:border-gray-700" aria-label="Sidebar">
+      className="fixed top-0 left-0 z-30 w-64 h-screen pt-20 transition-transform border-borderLight dark:border-borderDark sm:translate-x-0 
+      -translate-x-full bg-backgroundLight dark:bg-backgroundDark" aria-label="Sidebar">
         <div className="h-full px-3 pb-4 overflow-y-auto bg-backgroundLight dark:bg-backgroundDark">
           <ul className="space-y-1 font-medium">
             <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.2, stiffness: 300, damping: 24}}>
@@ -186,7 +185,7 @@ export default function Disk() {
                 0 0 0 .948 2.203 2.351 2.351 0 0 0 2.449.131L16 27.811l7.26 3.908a2.367 2.367 0 0 0 2.449-.131 2.225 2.225 0 0 0 
                 .947-2.203l-1.416-8.451 6.104-6.092c.603-.603.81-1.485.537-2.285zm-8.293 6.806a2.216 2.216 0 0 0-.627 1.934l1.416 8.451-7.26-3.906a2.361 2.361 0 0 0-2.235 
                 0l-7.26 3.906 1.416-8.451a2.212 2.212 0 0 0-.626-1.934L2.31 13.271l8.326-1.24a2.306 2.306 0 0 0 1.743-1.268L16 3.251l3.62 7.513a2.31 2.31 0 0 0 1.742 1.268l8.328 
-                1.24-6.102 6.091z" className="fill-icontWhite dark:fill-iconDark"></path>
+                1.24-6.102 6.091z" className="fill-iconLight dark:fill-iconDark"></path>
               </svg>
               <span className="ml-3">Favorites</span>
               </Link>
@@ -278,7 +277,7 @@ export default function Disk() {
             </motion.li> */}
           </ul>
           {/* Storage usage */}
-          <div className="mt-3 border-y pt-2 pb-4 border-gray-300 dark:border-gray-700">
+          <div className="mt-3 font-medium border-y pt-2 pb-4 border-borderLight dark:border-borderDark">
             <motion.span className=" font-meduim flex-1 ml-1 text-textLight dark:text-textDark"
               initial={{y: 20, opacity: 0}} 
               animate={{y: 0, opacity: 1}} 
