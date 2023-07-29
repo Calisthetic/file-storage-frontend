@@ -1,4 +1,4 @@
-import { useRef} from 'react';
+import { Component} from 'react';
 
 export default function EditUIModal() {
   let isDarkMode:boolean = false;

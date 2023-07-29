@@ -13,7 +13,6 @@ import DiskFavorites from "./disk-favorites";
 import DiskTrash from "./disk-trash";
 import DiskFiles from "./disk-files";
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import EditUIModal from "./edit-ui-modal";
 
@@ -26,8 +25,8 @@ export default function Disk() {
 
   
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const modalCustomizeOpen = () => setOpen(true);
+  const modalCustomizeClose = () => setOpen(false);
 
   // Logos
   let mainLogo: string | undefined = undefined;
@@ -69,7 +68,7 @@ export default function Disk() {
   }
   window.addEventListener('resize', ChangeSideBar);
 
-  const style = {
+  const modalWindowStyle = {
     position: 'absolute' as 'absolute',
     top: '50%',
     left: '50%',
@@ -88,8 +87,8 @@ export default function Disk() {
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start">
               <button onClick={CloseOpenSideBar} data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" 
-                className="inline-flex items-center p-1 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 
-                focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                className="inline-flex items-center p-1 text-sm text-textLight rounded-lg sm:hidden hover:bg-backgroundHoverLight focus:outline-none focus:ring-2 
+                focus:ring-gray-200 dark:text-textDark dark:hover:bg-backgroundHoverDark dark:focus:ring-gray-600">
                 <span className="sr-only">Open sidebar</span>
                 <svg className="w-6 h-6 fill-textLight dark:fill-textDark" aria-hidden="true" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 
@@ -117,7 +116,7 @@ export default function Disk() {
                     <img className="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
                   </button>
                 </div>
-                <div ref={userDropMenuRef} className="overflow-hidden transition-all absolute scale-0 z-50 my-4 text-base list-none bg-backgroundThirdLight divide-y 
+                <div ref={userDropMenuRef} className="overflow-hidden transition-userDropDownMenu absolute scale-0 z-50 my-4 text-base list-none bg-backgroundThirdLight divide-y 
                 divide-borderLight rounded shadow dark:bg-backgroundThirdDark dark:divide-borderDark text-textLight dark:text-textDark" id="dropdown-user">
                   <div className="px-4 py-3" role="none">
                     <p className="" role="none">
@@ -129,24 +128,24 @@ export default function Disk() {
                   </div>
                   <ul className="py-1" role="none">
                     <li>
-                      <a href="#" className="block px-4 py-2 hover:bg-gray-100
-                      dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Statistic</a>
+                      <a href="#" className="block px-4 py-2 hover:bg-backgroundHoverLight 
+                      dark:hover:bg-backgroundHoverDark" role="menuitem">Statistic</a>
                     </li>
                     <li>
-                      <a className="block px-4 py-2 hover:bg-gray-100 
-                       dark:hover:bg-gray-600 dark:hover:text-white" onClick={handleOpen}>Customize</a>
+                      <a className="block px-4 py-2 hover:bg-backgroundHoverLight 
+                      dark:hover:bg-backgroundHoverDark cursor-pointer" role="menuitem" onClick={modalCustomizeOpen}>Customize</a>
                     </li>
                     <li>
-                      <a href="#" className="block px-4 py-2 hover:bg-gray-100 
-                       dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
+                      <a href="#" className="block px-4 py-2 hover:bg-backgroundHoverLight 
+                      dark:hover:bg-backgroundHoverDark" role="menuitem">Settings</a>
                     </li>
                     <li>
-                      <a href="documentation" className="block px-4 py-2 hover:bg-gray-100 
-                      dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Documentation</a>
+                      <a href="documentation" className="block px-4 py-2 hover:bg-backgroundHoverLight 
+                      dark:hover:bg-backgroundHoverDark" role="menuitem">Documentation</a>
                     </li>
                     <li>
-                      <a href="#" className="block px-4 py-2 hover:bg-gray-100 
-                     dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
+                      <a href="#" className="block px-4 py-2 hover:bg-backgroundHoverLight 
+                      dark:hover:bg-backgroundHoverDark" role="menuitem">Sign out</a>
                     </li>
                   </ul>
                 </div>
@@ -157,11 +156,11 @@ export default function Disk() {
       </nav>
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={modalCustomizeClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={modalWindowStyle}>
           <EditUIModal></EditUIModal>
         </Box>
       </Modal>
@@ -171,7 +170,7 @@ export default function Disk() {
         <div className="h-full px-3 pb-4 overflow-y-auto bg-backgroundLight dark:bg-backgroundDark">
           <ul className="space-y-1 font-medium">
             <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.2, stiffness: 300, damping: 24}}>
-              <Link to="folder/main" className="flex items-center p-2 dark:text-textDark text-textLight rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
+              <Link to="folder/main" className="flex items-center p-2 dark:text-textDark text-textLight rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
                 <svg className="w-6" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
                   <path d="M0 128h128V96H0Zm23-22a6 6 0 1 1-6 6 6 6 0 0 1 6-6ZM0 80h128V48H0Zm23-22a6 6 0 1 1-6 6 6 6 0 0 1 6-6ZM0 32h128V0H0Zm23-22a6 6 0 1 1-6 6 6 6 0 0 1 6-6Z" 
                   className="fill-iconLight dark:fill-iconDark"></path></svg>
@@ -179,7 +178,7 @@ export default function Disk() {
               </Link>
             </motion.li>
             <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.22, stiffness: 300, damping: 24}}>
-              <Link to="favorites" className="flex items-center p-2 dark:text-textDark text-textLight rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
+              <Link to="favorites" className="flex items-center p-2 dark:text-textDark text-textLight rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
               <svg className="w-6" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M31.881 12.557a2.303 2.303 0 0 0-1.844-1.511l-8.326-1.238-3.619-7.514A2.318 
                 2.318 0 0 0 16 1c-.896 0-1.711.505-2.092 1.294l-3.619 7.514-8.327 1.238A2.3 2.3 0 0 0 .12 12.557a2.207 2.207 0 0 0 .537 2.285l6.102 6.092-1.415 8.451a2.224 2.224 
                 0 0 0 .948 2.203 2.351 2.351 0 0 0 2.449.131L16 27.811l7.26 3.908a2.367 2.367 0 0 0 2.449-.131 2.225 2.225 0 0 0 
@@ -203,7 +202,7 @@ export default function Disk() {
                 </a>
             </li> */}
             <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.24, stiffness: 300, damping: 24}}>
-              <Link to="recent" className="flex items-center p-2 dark:text-textDark text-textLight rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
+              <Link to="recent" className="flex items-center p-2 dark:text-textDark text-textLight rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
                 <svg className="w-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.25 2a9.81 9.81 0 0 0-7.48 3.46L3.41 4.25a1 1 0 0 0-1.07-.16 1 1 0 0 0-.59.91v4a1 1 0 0 0 1 1h4.5a1 
                   1 0 0 0 .93-.64 1 1 0 0 0-.27-1.11L6.26 6.78a7.86 7.86 0 0 1 6-2.78 8 8 0 1 1-7.54 10.67 1 1 0 0 0-1.89.66A10 10 0 1 0 12.25 2Z" className="fill-iconLight dark:fill-iconDark"></path>
                   <path d="M16 16a1 1 0 0 1-.6-.2l-4-3a1 1 0 0 1-.4-.8V8a1 1 0 0 1 2 0v3.5l3.6 2.7a1 1 0 0 1 .2 1.4 1 1 0 0 1-.8.4Z" className="fill-iconLight dark:fill-iconDark"></path>
@@ -212,7 +211,7 @@ export default function Disk() {
               </Link>
             </motion.li>
             <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.26, stiffness: 300, damping: 24}}>
-              <Link to="trash" className="flex items-center p-2 dark:text-textDark text-textLight rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
+              <Link to="trash" className="flex items-center p-2 dark:text-textDark text-textLight rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0,0,256,256">
                   <g className="fill-iconLight dark:fill-iconDark" fillRule="nonzero" stroke="none" strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDasharray="" strokeDashoffset="0" 
                     fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
@@ -225,7 +224,7 @@ export default function Disk() {
               </Link>
             </motion.li>
             <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.28, stiffness: 300, damping: 24}}>
-              <Link to="shared" className="flex items-center p-2 dark:text-textDark text-textLight rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
+              <Link to="shared" className="flex items-center p-2 dark:text-textDark text-textLight rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
                 <svg className="w-6" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 512 512">
                   <path d="M162.04 246.91c48.27 0 84.34-51.05 84.34-96.69 0-22.73-9.02-43.66-25.39-58.96-15.67-14.64-36.6-22.7-58.95-22.7-22.34 
                   0-43.28 8.06-58.95 22.7-16.37 15.29-25.39 36.23-25.39 58.96 0 45.64 36.07 96.69 84.34 96.69zm-37.1-132.27c9.72-9.08 22.9-14.08 
@@ -257,7 +256,7 @@ export default function Disk() {
               </Link>
             </motion.li>
             <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.30, stiffness: 300, damping: 24}}>
-              <Link to="files" className="flex items-center p-2 dark:text-textDark text-textLight rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
+              <Link to="files" className="flex items-center p-2 dark:text-textDark text-textLight rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
                 <svg className="w-6" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h256v256H0z"></path>
                   <path d="M168 224H56a8 8 0 0 1-8-8V72a8 8 0 0 1 8-8h80l40 40v112a8 8 0 0 1-8 8Z" fill="none" className="stroke-iconLight dark:stroke-iconDark" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"></path>
                   <path d="M80 64V40a8 8 0 0 1 8-8h80l40 40v112a8 8 0 0 1-8 8h-24M88 152h48M88 184h48" 
@@ -291,7 +290,7 @@ export default function Disk() {
           </div>
           <ul className="pt-3 space-y-1 font-medium">
             <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.32, stiffness: 300, damping: 24}}>
-              <Link to="upgrade" className="flex items-center p-2 dark:text-textDark text-textLight rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
+              <Link to="upgrade" className="flex items-center p-2 dark:text-textDark text-textLight rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
                 <motion.svg className="w-5 h-5 fill-iconLight dark:fill-iconDark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 20">
                   <path d="M7.958 19.393a7.7 7.7 0 0 1-6.715-3.439c-2.868-4.832 0-9.376.944-10.654l.091-.122a3.286 3.286 0 0 0 .765-3.288A1 
                   1 0 0 1 4.6.8c.133.1.313.212.525.347A10.451 10.451 0 0 1 10.6 9.3c.5-1.06.772-2.213.8-3.385a1 1 0 0 1 1.592-.758c1.636 
@@ -301,7 +300,7 @@ export default function Disk() {
               </Link>
             </motion.li>
             <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.36, stiffness: 300, damping: 24}}>
-              <Link to="help" className="flex items-center p-2 dark:text-textDark text-textLight rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
+              <Link to="help" className="flex items-center p-2 dark:text-textDark text-textLight rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
                 <svg className="w-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24"><g><path d="M12 3c-5 0-9 4-9 9 0 1.8.6 3.6 1.6 5.1l-1.4 2.4c-.2.3-.2.7 0 1s.4.5.8.5h8c5 0 9-4 9-9s-4-9-9-9zm0 
                   16H5.8l.9-1.5c.2-.4.2-.8-.1-1.1C5.6 15.2 5 13.6 5 12c0-3.9 3.1-7 7-7s7 3.1 7 7-3.1 7-7 7z" className="fill-iconLight dark:fill-iconDark"></path>
                   <path d="M12.1 7.3H12c-1 0-1.9.5-2.4 1.3-.4.5-.3 1.1.2 1.4.5.3 1.1.2 1.4-.3.2-.3.5-.4.8-.4h.1c.5 0 .9.4.9.9 0 .4-.3.8-.6.9l-.7.2c-.4.1-.7.5-.7.9v.8c0 
@@ -318,7 +317,7 @@ export default function Disk() {
             <div className="flex items-center mb-3">
               <span className=" bg-backgroundAccentLight text-textLight text-sm font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-backgroundAccentDark dark:text-textDark">Beta</span>
               <button onClick={CloseAd} type="button" className="ml-auto -mx-1.5 -my-1.5 bg-backgroundThirdLight inline-flex justify-center items-center w-6 h-6 text-textLight rounded-lg focus:ring-2 
-                focus:ring-blue-400 p-1 hover:bg-blue-200 dark:bg-backgroundThirdDark dark:text-textDark dark:hover:bg-blue-800" data-dismiss-target="#dropdown-cta" aria-label="Close">
+                focus:ring-blue-400 p-1 hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark dark:bg-backgroundThirdDark dark:text-textDark" data-dismiss-target="#dropdown-cta" aria-label="Close">
                 <span className="sr-only">Close</span>
                 <svg className="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>

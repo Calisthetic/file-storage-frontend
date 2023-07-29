@@ -24,6 +24,9 @@ module.exports = {
         textHoverLight: "var(--textHoverLight)",
         iconDark: "var(--iconDark)",
         iconLight: "var(--iconLight)",
+      },
+      transitionProperty: {
+        userDropDownMenu: "margin, transform"
       }
     },
   },
