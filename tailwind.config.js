@@ -20,6 +20,8 @@ module.exports = {
         borderLight: "var(--borderLight)",
         textDark: "var(--textDark)",
         textLight: "var(--textLight)",
+        textClickableDark: "var(--textClickableDark)",
+        textClickableLight: "var(--textClickableLight)",
         textHoverDark: "var(--textHoverDark)",
         textHoverLight: "var(--textHoverLight)",
         iconDark: "var(--iconDark)",
