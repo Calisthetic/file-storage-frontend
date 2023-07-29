@@ -118,7 +118,7 @@ export default function Disk() {
                   </button>
                 </div>
                 <div ref={userDropMenuRef} className="overflow-hidden transition-all absolute scale-0 z-50 my-4 text-base list-none bg-backgroundThirdLight divide-y 
-                divide-gray-100 rounded shadow dark:bg-backgroundThirdDark dark:divide-gray-600 text-textLight dark:text-textDark" id="dropdown-user">
+                divide-borderLight rounded shadow dark:bg-backgroundThirdDark dark:divide-borderDark text-textLight dark:text-textDark" id="dropdown-user">
                   <div className="px-4 py-3" role="none">
                     <p className="" role="none">
                       Neil Sims
@@ -314,21 +314,22 @@ export default function Disk() {
           </ul>
           {/* Banner */}
           <motion.div initial={{x: -300, opacity: 0}} animate={{x: 0, opacity: 1}} transition={{delay: 0.5, stiffness: 300, damping: 24}}
-            ref={adRef} id="dropdown-cta" className="p-4 mt-6 transition rounded-lg bg-blue-50 dark:bg-blue-900" role="alert">
+            ref={adRef} id="dropdown-cta" className="p-4 mt-6 transition rounded-lg bg-backgroundThirdLight dark:bg-backgroundThirdDark" role="alert">
             <div className="flex items-center mb-3">
-              <span className="bg-orange-100 text-orange-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-orange-200 dark:text-orange-900">Beta</span>
-              <button onClick={CloseAd} type="button" className="ml-auto -mx-1.5 -my-1.5 bg-blue-50 inline-flex justify-center items-center w-6 h-6 text-blue-900 rounded-lg focus:ring-2 
-                focus:ring-blue-400 p-1 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-400 dark:hover:bg-blue-800" data-dismiss-target="#dropdown-cta" aria-label="Close">
+              <span className=" bg-backgroundAccentLight text-textLight text-sm font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-backgroundAccentDark dark:text-textDark">Beta</span>
+              <button onClick={CloseAd} type="button" className="ml-auto -mx-1.5 -my-1.5 bg-backgroundThirdLight inline-flex justify-center items-center w-6 h-6 text-textLight rounded-lg focus:ring-2 
+                focus:ring-blue-400 p-1 hover:bg-blue-200 dark:bg-backgroundThirdDark dark:text-textDark dark:hover:bg-blue-800" data-dismiss-target="#dropdown-cta" aria-label="Close">
                 <span className="sr-only">Close</span>
                 <svg className="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                 </svg>
               </button>
             </div>
-            <p className="mb-3 text-sm text-blue-800 dark:text-blue-400">
+            <p className="mb-3 text-sm text-textLight dark:text-textDark">
               Prewiew new feature with <u>favorites</u> files! Now you can get fast access to your files without special links and folders search.
             </p>
-            <Link to="favorites" onClick={CloseAd} className="text-sm text-blue-800 underline font-medium hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">Try new feature now</Link>
+            <Link to="favorites" onClick={CloseAd} className="text-sm text-textLight underline font-medium 
+            hover:text-textHoverLight dark:text-textDark dark:hover:text-textHoverDark">Try new feature now</Link>
           </motion.div>
         </div>
       </aside>

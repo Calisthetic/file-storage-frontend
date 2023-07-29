@@ -1,24 +1,16 @@
 import { useRef} from 'react';
 
 export default function EditUIModal() {
-  const primaryBackgroundRef:any = useRef()
-  const secondaryBackgroundRef:any = useRef()
-  const thirdBackgroundRef:any = useRef()
-  const backgroundHoverRef:any = useRef()
-  const borderRef:any = useRef()
-  const textRef:any = useRef()
-  const iconRef:any = useRef()
-
   let isDarkMode:boolean = false;
   if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     isDarkMode = true
   }
 
   function ChangeTheme(e:any) {
-    // if (inputColor.current) {
-    //   document.documentElement.style
-    //   .setProperty('--textDark', inputColor.current.value);
-    // }
+    document.documentElement.style
+      .setProperty('--' + e.target.dataset.target + "Dark", e.target.value);
+    document.documentElement.style
+      .setProperty('--' + e.target.dataset.target + "Light", e.target.value);
   }
 
   return (
@@ -29,31 +21,48 @@ export default function EditUIModal() {
       <div className="whitespace-nowrap pt-2 pb-4 px-3 font-medium w-full">
         <div className=" my-2 flex justify-between">
           <span className="mr-2">text</span>
-          <input ref={textRef} type="color" onInput={ChangeTheme} defaultValue={isDarkMode ? "dddddd" : "111827"}></input>
+          <input type="color" onInput={ChangeTheme} 
+          defaultValue={isDarkMode ? "#dddddd" : "#111827"} data-target="text"></input>
+        </div>
+        <div className=" my-2 flex justify-between">
+          <span className="mr-2">text hover</span>
+          <input type="color" onInput={ChangeTheme} 
+          defaultValue={isDarkMode ? "#ff9999" : "#660000"} data-target="textHover"></input>
         </div>
         <div className=" my-2 flex justify-between">
           <span className="mr-2">icons</span>
-          <input ref={iconRef} type="color" onInput={ChangeTheme} defaultValue={isDarkMode ? "#ff0000" : "#ff0000"}></input>
+          <input type="color" onInput={ChangeTheme} 
+          defaultValue={isDarkMode ? "#ff0000" : "#ff0000"} data-target="icon"></input>
         </div>
         <div className=" my-2 flex justify-between">
           <span className="mr-2">borders</span>
-          <input ref={borderRef} type="color" onInput={ChangeTheme} defaultValue={isDarkMode ? "#43464a" : "#c3c6c9"}></input>
+          <input type="color" onInput={ChangeTheme} 
+          defaultValue={isDarkMode ? "#43464a" : "#c3c6c9"} data-target="border"></input>
         </div>
         <div className=" my-2 flex justify-between">
           <span className="mr-2">primary backgroung</span>
-          <input ref={primaryBackgroundRef} type="color" onInput={ChangeTheme} defaultValue={isDarkMode ? "#131619" : "#f7f9fc"}></input>
+          <input type="color" onInput={ChangeTheme} 
+          defaultValue={isDarkMode ? "#131619" : "#f7f9fc"} data-target="background"></input>
         </div>
         <div className=" my-2 flex justify-between">
           <span className="mr-2">secondary backgroung</span>
-          <input ref={secondaryBackgroundRef} type="color" onInput={ChangeTheme} defaultValue={isDarkMode ? "#0f1316" : "#ffffff"}></input>
+          <input type="color" onInput={ChangeTheme} 
+          defaultValue={isDarkMode ? "#0f1316" : "#ffffff"} data-target="backgroundSecondary"></input>
         </div>
         <div className=" my-2 flex justify-between">
           <span className="mr-2">third backgroung</span>
-          <input ref={thirdBackgroundRef} type="color" onInput={ChangeTheme} defaultValue={isDarkMode ? "#232629" : "#e9eaef"}></input>
+          <input type="color" onInput={ChangeTheme} 
+          defaultValue={isDarkMode ? "#232629" : "#e9eaef"} data-target="backgroundThird"></input>
+        </div>
+        <div className=" my-2 flex justify-between">
+          <span className="mr-2">backgroung accent</span>
+          <input type="color" onInput={ChangeTheme} 
+          defaultValue={isDarkMode ? "#ff712b" : "#ff5500"} data-target="backgroundAccent"></input>
         </div>
         <div className=" my-2 flex justify-between">
           <span className="mr-2">hover backgroung</span>
-          <input ref={backgroundHoverRef} type="color" onInput={ChangeTheme} defaultValue={isDarkMode ? "#333639" : "#e3e6ee"}></input>
+          <input type="color" onInput={ChangeTheme} 
+          defaultValue={isDarkMode ? "#333639" : "#e3e6ee"} data-target="backgroundHover"></input>
         </div>
       </div>
     </div>

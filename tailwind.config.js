@@ -8,18 +8,20 @@ module.exports = {
       colors: {
         backgroundDark: "var(--backgroundDark)",
         backgroundLight: "var(--backgroundLight)",
-        backgroundDarkHover: "var(--backgroundDarkHover)", // Change White => Light
-        backgroundLightHover: "var(--backgroundLightHover)",
+        backgroundHoverDark: "var(--backgroundHoverDark)", // Change White => Light
+        backgroundHoverLight: "var(--backgroundHoverLight)",
         backgroundSecondaryDark: "var(--backgroundSecondaryDark)",
         backgroundSecondaryLight: "var(--backgroundSecondaryLight)",
         backgroundThirdDark: "var(--backgroundThirdDark)",
         backgroundThirdLight: "var(--backgroundThirdLight)",
-        //backgroundAccentDark: "var(--backgroundAccentDark)",
-        //backgroundAccentLight: "var(--backgroundAccentLight)",
+        backgroundAccentDark: "var(--backgroundAccentDark)",
+        backgroundAccentLight: "var(--backgroundAccentLight)",
         borderDark: "var(--borderDark)",
         borderLight: "var(--borderLight)",
         textDark: "var(--textDark)",
         textLight: "var(--textLight)",
+        textHoverDark: "var(--textHoverDark)",
+        textHoverLight: "var(--textHoverLight)",
         iconDark: "var(--iconDark)",
         iconLight: "var(--iconLight)",
       }

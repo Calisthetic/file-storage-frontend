@@ -5,18 +5,20 @@
 :root {
   --backgroundDark: #131619;
   --backgroundLight: #f7f9fc;
-  --backgroundDarkHover: #333639;
-  --backgroundLightHover: #e3e6ee;
+  --backgroundHoverDark: #333639;
+  --backgroundHoverLight: #e3e6ee;
   --backgroundSecondaryDark: #0f1316;
   --backgroundSecondaryLight: #ffffff;
   --backgroundThirdDark: #232629;
   --backgroundThirdLight: #e9eaef;
-  --backgroundAccentDark: #232629;
-  --backgroundAccentLight: #ffffff;
+  --backgroundAccentDark: #ff712b;
+  --backgroundAccentLight: #ff5500;
   --borderDark: #43464a;
   --borderLight: #c3c6c9;
   --textDark: #dddddd;
   --textLight: #111827;
+  --textHoverDark: #ff9999;
+  --textHoverLight: #660000;
   --iconDark: #ff0000;
   --iconLight: #ff0000;
 }
