@@ -15,19 +15,22 @@
   --backgroundAccentLight: #ff5500;
   --borderDark: #43464a;
   --borderLight: #c3c6c9;
-  --textDark: #dddddd;
+  --textDark: #eeeeee;
   --textLight: #111827;
   --buttonDark: #ff1515;
   --buttonLight: #ff2c2c;
-  --buttonHoverDark: #ff6060;
-  --buttonHoverLight: #660000;
+  --buttonHoverDark: #ff4444;
+  --buttonHoverLight: #da0000;
   --iconDark: #ff0000;
   --iconLight: #ff0000;
+  --shadowDark: #eeeeee;
+  --shadowLight: #111827;
 }
 
 body,html {
   margin: 0;
   padding: 0;
+  min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, 'Roboto','Segoe UI', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -35,11 +38,8 @@ body,html {
   -moz-osx-font-smoothing: grayscale;
 }
 
-html, body {
-  height: 100vh;
-}
 #root {
-  height: 100%;
+  min-height: 100%;
 }
 
 code {

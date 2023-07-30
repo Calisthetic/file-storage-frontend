@@ -26,6 +26,8 @@ module.exports = {
         buttonHoverLight: "var(--buttonHoverLight)",
         iconDark: "var(--iconDark)",
         iconLight: "var(--iconLight)",
+        shadowDark: "var(--shadowDark)",
+        shadowLight: "var(--shadowLight)",
       },
       transitionProperty: {
         userDropDownMenu: "margin, transform"
@@ -33,8 +35,11 @@ module.exports = {
       spacing: {
         withHeader: "72px 16px 16px 16px"
       },
-      height: {
+      minHeight: {
         fullWithHeader: "calc(100vh - 56px)"
+      },
+      boxShadow: {
+        pricingCardShadow: "0px 0px 5px 0px"
       }
     },
   },

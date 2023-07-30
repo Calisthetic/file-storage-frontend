@@ -324,19 +324,21 @@ export default function Disk() {
         </div>
       </aside>
 
-      <div className=" overflow-hidden bg-backgroundSecondLight dark:bg-backgroundSecondDark h-fullWithHeader translate-y-14 rounded-tl-2xl sm:ml-64">
-        <Routes>
-          <Route path='/' element={<div>usual disk</div>}></Route>
-          <Route path='*' element={<DiskRecent></DiskRecent>}></Route>
-          <Route path='recent' element={<DiskRecent></DiskRecent>}></Route>
-          <Route path='shared' element={<DiskShared></DiskShared>}></Route>
-          <Route path='upgrade' element={<DiskUpgrade></DiskUpgrade>}></Route>
-          <Route path='favorites' element={<DiskFavorites></DiskFavorites>}></Route>
-          <Route path='files' element={<DiskFiles></DiskFiles>}></Route>
-          <Route path='trash' element={<DiskTrash></DiskTrash>}></Route>
-          <Route path='folder/:id' element={<DiskFolder></DiskFolder>}></Route>
-          <Route path='folder' element={<DiskFolder></DiskFolder>}></Route>
-        </Routes>
+      <div className="pt-14  sm:ml-64">
+        <div className="bg-backgroundSecondLight overflow-hidden dark:bg-backgroundSecondDark min-h-fullWithHeader rounded-tl-2xl ">
+          <Routes>
+            <Route path='/' element={<div>usual disk</div>}></Route>
+            <Route path='*' element={<DiskRecent></DiskRecent>}></Route>
+            <Route path='recent' element={<DiskRecent></DiskRecent>}></Route>
+            <Route path='shared' element={<DiskShared></DiskShared>}></Route>
+            <Route path='upgrade' element={<DiskUpgrade></DiskUpgrade>}></Route>
+            <Route path='favorites' element={<DiskFavorites></DiskFavorites>}></Route>
+            <Route path='files' element={<DiskFiles></DiskFiles>}></Route>
+            <Route path='trash' element={<DiskTrash></DiskTrash>}></Route>
+            <Route path='folder/:id' element={<DiskFolder></DiskFolder>}></Route>
+            <Route path='folder' element={<DiskFolder></DiskFolder>}></Route>
+          </Routes>
+        </div>
       </div>
     </div>
   )
