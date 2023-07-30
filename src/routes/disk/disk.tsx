@@ -14,7 +14,7 @@ import DiskTrash from "./disk-trash";
 import DiskFiles from "./disk-files";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import EditUIModal from "./edit-ui-modal";
+import EditUIModal from "../../components/edit-ui-modal";
 
 export default function Disk() {
   const adRef:any = useRef()
@@ -318,13 +318,13 @@ export default function Disk() {
             <p className="mb-3 text-sm text-textLight dark:text-textDark">
               Prewiew new feature with <u>favorites</u> files! Now you can get fast access to your files without special links and folders search.
             </p>
-            <Link to="favorites" onClick={CloseAd} className="text-sm text-textLight underline font-medium 
-            hover:text-textHoverLight dark:text-textDark dark:hover:text-textHoverDark">Try new feature now</Link>
+            <Link to="favorites" onClick={CloseAd} className="text-sm text-buttonLight underline font-medium 
+            hover:text-buttonHoverLight dark:text-buttonDark dark:hover:text-buttonHoverDark">Try new feature now</Link>
           </motion.div>
         </div>
       </aside>
 
-      <div className=" bg-backgroundSecondaryLight dark:bg-backgroundSecondaryDark p-4 h-full rounded-tl-2xl mt-14 sm:ml-64">
+      <div className=" bg-backgroundSecondaryLight dark:bg-backgroundSecondaryDark h-full rounded-tl-2xl p-withHeader sm:ml-64">
         <Routes>
           <Route path='/' element={<div>usual disk</div>}></Route>
           <Route path='*' element={<DiskRecent></DiskRecent>}></Route>

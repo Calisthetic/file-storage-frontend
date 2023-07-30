@@ -18,11 +18,16 @@ export default function EditUIModal() {
     rounded-2xl w-full h-full justify-center text-center">
       <p className="py-2 px-3 border-b-2 whitespace-nowrap text-xl font-bold
       border-borderLight dark:border-borderDark">Customize the interface</p>
-      <div className="whitespace-nowrap pt-2 pb-4 px-3 font-medium w-full">
+      <div className="whitespace-nowrap py-2 px-4 font-medium w-full">
         <div className=" my-2 flex justify-between">
           <span className="mr-2">text</span>
           <input type="color" onInput={ChangeTheme} 
           defaultValue={isDarkMode ? "#dddddd" : "#111827"} data-target="text"></input>
+        </div>
+        <div className=" my-2 flex justify-between">
+          <span className="mr-2">clickable text</span>
+          <input type="color" onInput={ChangeTheme} 
+          defaultValue={isDarkMode ? "#ff2c2c" : "#ff2c2c"} data-target="textClickable"></input>
         </div>
         <div className=" my-2 flex justify-between">
           <span className="mr-2">text hover</span>

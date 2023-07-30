@@ -20,7 +20,7 @@ export default function AuthPage() {
 
   return (
     <div className="bg-backgroundLight h-full dark:bg-backgroundDark">
-      <nav className="fixed top-0 z-40 w-full bg-backgroundLight dark:bg-backgroundDark">
+      {/* <nav className="fixed top-0 z-40 w-full bg-backgroundLight dark:bg-backgroundDark">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start">
@@ -38,8 +38,8 @@ export default function AuthPage() {
             </div>
           </div>
         </div>
-      </nav>
-      <div className=" bg-backgroundSecondaryLight dark:bg-backgroundSecondaryDark p-4 h-full rounded-tl-2xl mt-14">
+      </nav> */}
+      <div className=" bg-backgroundSecondaryLight dark:bg-backgroundSecondaryDark p-4 h-full rounded-tl-2xl">
         <Routes>
           <Route path="/" element={<Redirect location="./signin"></Redirect>}></Route>
           <Route path="signin" element={<SignIn></SignIn>}></Route>

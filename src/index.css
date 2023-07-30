@@ -17,10 +17,10 @@
   --borderLight: #c3c6c9;
   --textDark: #dddddd;
   --textLight: #111827;
-  --textClickableDark: #dddddd;
-  --textClickableLight: #111827;
-  --textHoverDark: #ff9999;
-  --textHoverLight: #660000;
+  --buttonDark: #ff1515;
+  --buttonLight: #ff2c2c;
+  --buttonHoverDark: #ff6060;
+  --buttonHoverLight: #660000;
   --iconDark: #ff0000;
   --iconLight: #ff0000;
 }
@@ -35,12 +35,8 @@ body,html {
   -moz-osx-font-smoothing: grayscale;
 }
 
-html {
+html, body {
   height: 100vh;
-  width: 100vw;
-}
-body {
-  height: calc(100% - 56px);
 }
 #root {
   height: 100%;

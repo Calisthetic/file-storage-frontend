@@ -20,15 +20,18 @@ module.exports = {
         borderLight: "var(--borderLight)",
         textDark: "var(--textDark)",
         textLight: "var(--textLight)",
-        textClickableDark: "var(--textClickableDark)",
-        textClickableLight: "var(--textClickableLight)",
-        textHoverDark: "var(--textHoverDark)",
-        textHoverLight: "var(--textHoverLight)",
+        buttonDark: "var(--buttonDark)",
+        buttonLight: "var(--buttonLight)",
+        buttonHoverDark: "var(--buttonHoverDark)",
+        buttonHoverLight: "var(--buttonHoverLight)",
         iconDark: "var(--iconDark)",
         iconLight: "var(--iconLight)",
       },
       transitionProperty: {
         userDropDownMenu: "margin, transform"
+      },
+      spacing: {
+        withHeader: "72px 16px 16px 16px"
       }
     },
   },
