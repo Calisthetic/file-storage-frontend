@@ -324,7 +324,7 @@ export default function Disk() {
         </div>
       </aside>
 
-      <div className=" bg-backgroundSecondaryLight dark:bg-backgroundSecondaryDark h-full rounded-tl-2xl p-withHeader sm:ml-64">
+      <div className=" overflow-hidden bg-backgroundSecondLight dark:bg-backgroundSecondDark h-fullWithHeader translate-y-14 rounded-tl-2xl sm:ml-64">
         <Routes>
           <Route path='/' element={<div>usual disk</div>}></Route>
           <Route path='*' element={<DiskRecent></DiskRecent>}></Route>

@@ -10,8 +10,8 @@ module.exports = {
         backgroundLight: "var(--backgroundLight)",
         backgroundHoverDark: "var(--backgroundHoverDark)", // Change White => Light
         backgroundHoverLight: "var(--backgroundHoverLight)",
-        backgroundSecondaryDark: "var(--backgroundSecondaryDark)",
-        backgroundSecondaryLight: "var(--backgroundSecondaryLight)",
+        backgroundSecondDark: "var(--backgroundSecondDark)",
+        backgroundSecondLight: "var(--backgroundSecondLight)",
         backgroundThirdDark: "var(--backgroundThirdDark)",
         backgroundThirdLight: "var(--backgroundThirdLight)",
         backgroundAccentDark: "var(--backgroundAccentDark)",
@@ -32,6 +32,9 @@ module.exports = {
       },
       spacing: {
         withHeader: "72px 16px 16px 16px"
+      },
+      height: {
+        fullWithHeader: "calc(100vh - 56px)"
       }
     },
   },

@@ -13,8 +13,13 @@ export default function EditUIModal() {
       .setProperty('--' + e.target.dataset.target + "Light", e.target.value);
   }
 
+  var styleVariables = getComputedStyle(document.body)
+  function GetCSSValue(name: string) {
+    return styleVariables.getPropertyValue('--' + name)
+  }
+
   return (
-    <div className="text-textLight dark:text-textDark bg-backgroundSecondaryLight dark:bg-backgroundSecondaryDark 
+    <div className="text-textLight dark:text-textDark bg-backgroundSecondLight dark:bg-backgroundSecondDark 
     rounded-2xl w-full h-full justify-center text-center">
       <p className="py-2 px-3 border-b-2 whitespace-nowrap text-xl font-bold
       border-borderLight dark:border-borderDark">Customize the interface</p>
@@ -22,52 +27,52 @@ export default function EditUIModal() {
         <div className=" my-2 flex justify-between">
           <span className="mr-2">text</span>
           <input type="color" onInput={ChangeTheme} 
-          defaultValue={isDarkMode ? "#dddddd" : "#111827"} data-target="text"></input>
+          defaultValue={isDarkMode ? GetCSSValue("textDark") : GetCSSValue("textLight")} data-target="text"></input>
         </div>
         <div className=" my-2 flex justify-between">
-          <span className="mr-2">clickable text</span>
+          <span className="mr-2">button</span>
           <input type="color" onInput={ChangeTheme} 
-          defaultValue={isDarkMode ? "#ff2c2c" : "#ff2c2c"} data-target="textClickable"></input>
+          defaultValue={isDarkMode ? GetCSSValue("buttonDark") : GetCSSValue("buttonLight")} data-target="button"></input>
         </div>
         <div className=" my-2 flex justify-between">
-          <span className="mr-2">text hover</span>
+          <span className="mr-2">button hover</span>
           <input type="color" onInput={ChangeTheme} 
-          defaultValue={isDarkMode ? "#ff9999" : "#660000"} data-target="textHover"></input>
+          defaultValue={isDarkMode ? GetCSSValue("buttonHoverDark") : GetCSSValue("buttonHoverLight")} data-target="buttonHover"></input>
         </div>
         <div className=" my-2 flex justify-between">
           <span className="mr-2">icons</span>
           <input type="color" onInput={ChangeTheme} 
-          defaultValue={isDarkMode ? "#ff0000" : "#ff0000"} data-target="icon"></input>
+          defaultValue={isDarkMode ? GetCSSValue("iconDark") : GetCSSValue("iconLight")} data-target="icon"></input>
         </div>
         <div className=" my-2 flex justify-between">
           <span className="mr-2">borders</span>
           <input type="color" onInput={ChangeTheme} 
-          defaultValue={isDarkMode ? "#43464a" : "#c3c6c9"} data-target="border"></input>
+          defaultValue={isDarkMode ? GetCSSValue("borderDark") : GetCSSValue("borderLight")} data-target="border"></input>
         </div>
         <div className=" my-2 flex justify-between">
           <span className="mr-2">primary backgroung</span>
           <input type="color" onInput={ChangeTheme} 
-          defaultValue={isDarkMode ? "#131619" : "#f7f9fc"} data-target="background"></input>
+          defaultValue={isDarkMode ? GetCSSValue("backgroundDark") : GetCSSValue("backgroundLight")} data-target="background"></input>
         </div>
         <div className=" my-2 flex justify-between">
           <span className="mr-2">secondary backgroung</span>
           <input type="color" onInput={ChangeTheme} 
-          defaultValue={isDarkMode ? "#0f1316" : "#ffffff"} data-target="backgroundSecondary"></input>
+          defaultValue={isDarkMode ? GetCSSValue("backgroundSecondDark") : GetCSSValue("backgroundSecondLight")} data-target="backgroundSecond"></input>
         </div>
         <div className=" my-2 flex justify-between">
           <span className="mr-2">third backgroung</span>
           <input type="color" onInput={ChangeTheme} 
-          defaultValue={isDarkMode ? "#232629" : "#e9eaef"} data-target="backgroundThird"></input>
+          defaultValue={isDarkMode ? GetCSSValue("backgroundThirdDark") : GetCSSValue("backgroundThirdLight")} data-target="backgroundThird"></input>
         </div>
         <div className=" my-2 flex justify-between">
           <span className="mr-2">backgroung accent</span>
           <input type="color" onInput={ChangeTheme} 
-          defaultValue={isDarkMode ? "#ff712b" : "#ff5500"} data-target="backgroundAccent"></input>
+          defaultValue={isDarkMode ? GetCSSValue("backgroundAccentDark") : GetCSSValue("backgroundAccentLight")} data-target="backgroundAccent"></input>
         </div>
         <div className=" my-2 flex justify-between">
           <span className="mr-2">hover backgroung</span>
           <input type="color" onInput={ChangeTheme} 
-          defaultValue={isDarkMode ? "#333639" : "#e3e6ee"} data-target="backgroundHover"></input>
+          defaultValue={isDarkMode ? GetCSSValue("backgroundHoverDark") : GetCSSValue("backgroundHoverLight")} data-target="backgroundHover"></input>
         </div>
       </div>
     </div>
