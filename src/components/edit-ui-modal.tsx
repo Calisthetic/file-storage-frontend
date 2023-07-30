@@ -45,6 +45,11 @@ export default function EditUIModal() {
           defaultValue={isDarkMode ? GetCSSValue("iconDark") : GetCSSValue("iconLight")} data-target="icon"></input>
         </div>
         <div className=" my-2 flex justify-between">
+          <span className="mr-2">shadows</span>
+          <input type="color" onInput={ChangeTheme} 
+          defaultValue={isDarkMode ? GetCSSValue("shadowDark") : GetCSSValue("shadowLight")} data-target="shadow"></input>
+        </div>
+        <div className=" my-2 flex justify-between">
           <span className="mr-2">borders</span>
           <input type="color" onInput={ChangeTheme} 
           defaultValue={isDarkMode ? GetCSSValue("borderDark") : GetCSSValue("borderLight")} data-target="border"></input>

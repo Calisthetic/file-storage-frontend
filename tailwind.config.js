@@ -39,7 +39,7 @@ module.exports = {
         fullWithHeader: "calc(100vh - 56px)"
       },
       boxShadow: {
-        pricingCardShadow: "0px 0px 5px 0px"
+        pricingCardShadow: "0px 0px 7px 0px"
       }
     },
   },
