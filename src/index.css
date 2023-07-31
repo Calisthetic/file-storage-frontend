@@ -24,7 +24,7 @@
   --iconDark: #ff0000;
   --iconLight: #ff0000;
   --shadowDark: #eeeeee;
-  --shadowLight: #111827;
+  --shadowLight: #60636c;
 }
 
 body,html {
@@ -39,7 +39,7 @@ body,html {
 }
 
 #root {
-  min-height: 100%;
+  min-height: 100dvh;
 }
 
 code {

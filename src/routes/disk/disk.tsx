@@ -1,8 +1,4 @@
-import {
-  Routes,
-  Route,
-  Link,
-} from "react-router-dom";
+import { Routes, Route, Link, } from "react-router-dom";
 import DiskRecent from './recent/disk-recent';
 import DiskShared from "./shared/disk-shared";
 import DiskUpgrade from "./upgrade/disk-upgrade";
@@ -48,7 +44,7 @@ export default function Disk() {
     setIsUserDropMenuOpen(!isUserDropMenuOpen)
     if (userDropMenuRef.current) {
       userDropMenuRef.current.style.transform = isUserDropMenuOpen 
-        ? "scale(1, 1) translate(-168px, 160px)" 
+        ? "scale(1, 1) translate(-168px, 180px)" 
         : "scale(0, 0) translate(-168px, 160px)"
       userDropMenuRef.current.style.margin = isUserDropMenuOpen ? "0px 0px 0px 0px" : "0px 0px 0px -95px"
     }
@@ -107,8 +103,7 @@ export default function Disk() {
             <div className="flex items-center">
               <div className="flex items-center ml-3">
                 <div>
-                  <button onClick={CloseOpenUserDropMenu} className="flex text-sm bg-gray-800 rounded-full focus:ring-4 
-                  focus:ring-gray-300 dark:focus:ring-gray-600" 
+                  <button onClick={CloseOpenUserDropMenu} className="flex text-sm bg-gray-800 rounded-full" 
                   type="button" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                     <span className="sr-only">Open user menu</span>
                     <img className="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
@@ -127,6 +122,10 @@ export default function Disk() {
                     </p>
                   </div>
                   <ul className="py-1" role="none">
+                    <li>
+                      <a href="#" className="block px-4 py-2 hover:bg-backgroundHoverLight 
+                      dark:hover:bg-backgroundHoverDark" role="menuitem">Statistic</a>
+                    </li>
                     <li>
                       <a href="#" className="block px-4 py-2 hover:bg-backgroundHoverLight 
                       dark:hover:bg-backgroundHoverDark" role="menuitem">Statistic</a>

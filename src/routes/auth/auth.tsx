@@ -19,8 +19,8 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="bg-backgroundLight h-full dark:bg-backgroundDark">
-      <div className=" bg-backgroundSecondaryLight dark:bg-backgroundSecondaryDark p-4 h-full rounded-tl-2xl">
+    <div className="bg-backgroundLight min-h-fulldvh flex justify-center items-center dark:bg-backgroundDark">
+      <div className=" bg-backgroundSecondaryLight dark:bg-backgroundSecondaryDark h-full rounded-tl-2xl">
         <Routes>
           <Route path="/" element={<Redirect location="./auth/signin"></Redirect>}></Route>
           <Route path="signin" element={<SignIn></SignIn>}></Route>
