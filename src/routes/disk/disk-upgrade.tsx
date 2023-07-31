@@ -27,7 +27,7 @@ export default function DiskUpgrade() {
               <span className="text-5xl font-bold tracking-tight mr-2">{10}</span>
               <span className="text-5xl font-semibold">GB</span>
             </div>
-            <ul role="list" className="space-y-5 my-7">
+            <ul className="space-y-5 my-7">
               <PricingDescription active={true} text="Uploading large files - up to 500 MB"></PricingDescription>
               <PricingDescription active={true} text="Documentation access"></PricingDescription>
               <PricingDescription active={true} text="Email support"></PricingDescription>
@@ -55,7 +55,6 @@ export default function DiskUpgrade() {
           </button>
         </motion.div>
         <motion.div initial={{y: -100, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.1, stiffness: 300, damping: 24}}
-        // from-[#3575db] via-[#9333EA] to-[#e22a3c]
         className="rounded-xl h-full w-full max-w-sm p-1 bg-gradient-to-tr from-[#3575db] via-[#9333EA] to-[#e22a3c]"
         style={{boxShadow: currentTariff === 1 ? "0px 0px 8px 0px " + getComputedStyle(document.body).getPropertyValue("--shadow" + (
           isDarkMode === true ? "Dark" : "Light"
@@ -68,7 +67,7 @@ export default function DiskUpgrade() {
                 <span className="text-5xl font-bold tracking-tight mr-2">{256}</span>
                 <span className="text-5xl font-semibold">GB</span>
               </div>
-              <ul role="list" className="space-y-5 my-7">
+              <ul className="space-y-5 my-7">
               <PricingDescription active={true} text="Uploading large files - up to 1 GB"></PricingDescription>
               <PricingDescription active={true} text="Documentation access"></PricingDescription>
               <PricingDescription active={true} text="Email support 24/7"></PricingDescription>
@@ -109,7 +108,7 @@ export default function DiskUpgrade() {
               <span className="text-5xl font-bold tracking-tight mr-2">{1}</span>
               <span className="text-5xl font-semibold">TB</span>
             </div>
-            <ul role="list" className="space-y-5 my-7">
+            <ul className="space-y-5 my-7">
               <PricingDescription active={true} text="Uploading large files - from 1 GB"></PricingDescription>
               <PricingDescription active={true} text="Documentation access"></PricingDescription>
               <PricingDescription active={true} text="Email support 24/7"></PricingDescription>

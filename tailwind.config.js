@@ -36,7 +36,7 @@ module.exports = {
         withHeader: "72px 16px 16px 16px"
       },
       minHeight: {
-        fullWithHeader: "calc(100vh - 56px)"
+        fullWithHeader: "calc(100dvh - 56px)"
       },
       boxShadow: {
         pricingCardShadow: "0px 0px 7px 0px"
