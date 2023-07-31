@@ -1,5 +1,5 @@
 import { motion } from "framer-motion"
-import PricingDescription from '../../components/pricing-description';
+import PricingDescription from './pricing-description';
 
 export default function DiskUpgrade() {
   let currentTariff: number = 0

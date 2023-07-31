@@ -1,8 +1,4 @@
-import React from 'react';
-import {
-  Routes,
-  Route,
-} from "react-router-dom";
+import { Routes, Route, } from "react-router-dom";
 import ErrorPage from './page-not-found';
 import Layout from './layout';
 import Disk from './routes/disk/disk';

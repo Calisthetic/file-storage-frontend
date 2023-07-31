@@ -4,8 +4,8 @@ import {
   Route,
   Link,
 } from "react-router-dom";
-import SignIn from "./sign-in";
-import SignUp from "./sign-up";
+import SignIn from "./signin/signin";
+import SignUp from "./signup/signup";
 import Redirect from "../../components/redirect";
 
 export default function AuthPage() {

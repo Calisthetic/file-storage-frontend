@@ -3,19 +3,19 @@ import {
   Route,
   Link,
 } from "react-router-dom";
-import DiskRecent from './disk-recent';
-import DiskShared from "./disk-shared";
-import DiskUpgrade from "./disk-upgrade";
-import DiskFolder from "./disk-folder";
+import DiskRecent from './recent/disk-recent';
+import DiskShared from "./shared/disk-shared";
+import DiskUpgrade from "./upgrade/disk-upgrade";
+import DiskFolder from "./folder/disk-folder";
 import { useRef, useState } from "react";
 import { motion } from "framer-motion"
-import DiskFavorites from "./disk-favorites";
-import DiskTrash from "./disk-trash";
-import DiskFiles from "./disk-files";
+import DiskFavorites from "./favorites/disk-favorites";
+import DiskTrash from "./trash/disk-trash";
+import DiskFiles from "./files/disk-files";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import EditUIModal from "../../components/edit-ui-modal";
-import DiskSideBar from "../../components/disk-sidebar";
+import DiskSideBar from "./disk-sidebar";
 
 export default function Disk() {
   const userDropMenuRef:any = useRef()
