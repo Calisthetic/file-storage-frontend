@@ -12,6 +12,7 @@ export default function SignIn() {
   }
 
   return (
+    <div className=" min-h-fulldvh flex justify-center items-center">
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <motion.img initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.0}}
@@ -29,8 +30,8 @@ export default function SignIn() {
               <motion.input initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.06, damping: 24, stiffness: 300}}
                id="email" name="email" type="email" autoComplete="email" required 
               className="block w-full pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm 
-              ring-1 ring-inset ring-iconLight dark:ring-borderDark placeholder:text-gray-400 
-              focus:border-none focus:outline-offset-0 text-sm sm:text-base sm:leading-6" />
+              ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
+              focus:outline-offset-0 text-sm sm:text-base sm:leading-6" />
             </div>
           </div>
 
@@ -47,8 +48,8 @@ export default function SignIn() {
               <motion.input initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.12, damping: 24, stiffness: 300}}
                id="password" name="password" type="password" autoComplete="current-password" required 
               className="block w-full pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm 
-              ring-1 ring-inset ring-iconLight dark:ring-borderDark placeholder:text-gray-400 
-              focus:border-none focus:outline-offset-0 text-sm sm:text-base sm:leading-6  " />
+              ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
+              focus:outline-offset-0 text-sm sm:text-base sm:leading-6" />
             </div>
           </div>
 
@@ -67,6 +68,7 @@ export default function SignIn() {
             hover:text-buttonHoverLight dark:hover:text-buttonHoverDark"> Start a 14 day free trial</Link>
         </motion.div>
       </div>
+    </div>
     </div>
   )
 }

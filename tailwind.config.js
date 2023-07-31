@@ -30,7 +30,8 @@ module.exports = {
         shadowLight: "var(--shadowLight)",
       },
       transitionProperty: {
-        userDropDownMenu: "margin, transform"
+        userDropDownMenu: "margin, transform",
+        inputs: "border, outline, background-color",
       },
       spacing: {
         withHeader: "72px 16px 16px 16px"
@@ -38,6 +39,12 @@ module.exports = {
       minHeight: {
         fullWithHeader: "calc(100dvh - 56px)",
         fulldvh: "100dvh",
+      },
+      height: {
+        fulldvh: "100dvh",
+      },
+      width: {
+        fullcvw: "100cvw",
       },
       boxShadow: {
         pricingCardShadow: "0px 0px 7px 0px"

@@ -4,7 +4,7 @@
 
 :root {
   --backgroundDark: #131619;
-  --backgroundLight: #f7f9fc;
+  --backgroundLight: #f1f3f9;
   --backgroundHoverDark: #333639;
   --backgroundHoverLight: #e3e6ee;
   --backgroundSecondDark: #181b1e;
@@ -15,7 +15,7 @@
   --backgroundAccentLight: #ff5500;
   --borderDark: #43464a;
   --borderLight: #c3c6c9;
-  --textDark: #eeeeee;
+  --textDark: #ffffff;
   --textLight: #111827;
   --buttonDark: #ff1515;
   --buttonLight: #ff2c2c;
