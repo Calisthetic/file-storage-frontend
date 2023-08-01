@@ -24,3 +24,9 @@ npm install framer-motion
 ```bash
 npm install @mui/material @emotion/react @emotion/styled
 ```
+
+[DaisyUI](https://daisyui.com/docs/install/)
+
+```bash
+npm i -D daisyui@latest
+```

@@ -27,8 +27,8 @@
   --shadowLight: #60636c;
   --successDark: #00ff00;
   --successLight: #00ff00;
-  --warningDark: #000;
-  --warningLight: #000;
+  --warningDark: #ff8800;
+  --warningLight: #ff8800;
   --errorDark: #ff4561;
   --errorLight: #ff4561;
 }

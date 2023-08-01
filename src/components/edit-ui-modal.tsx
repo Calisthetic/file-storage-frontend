@@ -1,8 +1,8 @@
 import { useRef, useState} from 'react';
 
 export default function EditUIModal() {
-  const alertRef:any = useRef();
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const alertSuccessRef:any = useRef();
+  const [isAlertSuccessOpen, setIsAlertSuccessOpen] = useState(false);
   interface StyleObject {
     name: string;
     value: string;
@@ -20,15 +20,15 @@ export default function EditUIModal() {
       .setProperty('--' + e.target.dataset.target + "Light", e.target.value);
   }
 
-  function CloseOpenAlert() {
-    if (isAlertOpen === false) {
-      alertRef.current.style.marginTop = "8px"
-      alertRef.current.style.opacity = "1"
+  function CloseOpenSuccessAlert() {
+    if (isAlertSuccessOpen === false) {
+      alertSuccessRef.current.style.marginTop = "8px"
+      alertSuccessRef.current.style.opacity = "1"
     } else {
-      alertRef.current.style.marginTop = "0px"
-      alertRef.current.style.opacity = "0"
+      alertSuccessRef.current.style.marginTop = "0px"
+      alertSuccessRef.current.style.opacity = "0"
     }
-    setIsAlertOpen(!isAlertOpen)
+    setIsAlertSuccessOpen(!isAlertSuccessOpen)
   }
 
   var styleVariables = getComputedStyle(document.body)
@@ -57,10 +57,15 @@ export default function EditUIModal() {
     return cssVars;
   };
 
+  function ToDefault() {
+    localStorage.removeItem("colors")
+    window.location.reload()
+  }
+
   function SaveChanges() {
     // Animation
-    if (isAlertOpen === false) {
-      CloseOpenAlert()
+    if (isAlertSuccessOpen === false) {
+      CloseOpenSuccessAlert()
     }
 
     // Act
@@ -138,12 +143,16 @@ export default function EditUIModal() {
             defaultValue={isDarkMode ? GetCSSValue("backgroundHoverDark") : GetCSSValue("backgroundHoverLight")} data-target="backgroundHover"></input>
           </div>
         </div>
-        <button onClick={SaveChanges} className="bg-buttonLight dark:bg-buttonDark w-full py-1.5 mt-2 rounded-lg
-        hover:bg-buttonHoverLight dark:hover:to-buttonHoverDark">Save changes</button>
+        <div className="flex flex-col">
+          <button onClick={SaveChanges} className="bg-buttonLight dark:bg-buttonDark w-full py-1.5 mt-2 rounded-lg
+          hover:bg-buttonHoverLight dark:hover:to-buttonHoverDark">Save changes</button>
+          <button onClick={ToDefault} className="bg-buttonLight dark:bg-buttonDark w-full py-1.5 mt-2 rounded-lg
+          hover:bg-buttonHoverLight dark:hover:to-buttonHoverDark" title='Require page reload'>Default settings</button>
+        </div>
       </div>
 
-      {/* Alert */}
-      <div ref={alertRef} id="alert-1" className="absolute w-full items-center p-4 text-successLight dark:text-successDark opacity-0
+      {/* Alert success */}
+      <div ref={alertSuccessRef} id="alert-1" className="absolute w-full items-center p-4 text-successLight dark:text-successDark opacity-0
       bg-backgroundSecondLight dark:bg-backgroundSecondDark dark:text-blue-400h flex rounded-xl transition-alerts" role="alert">
         <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check-circle" role="img" xmlns="http://www.w3.org/2000/svg" 
         viewBox="0 0 512 512" className="w-4">
@@ -156,7 +165,7 @@ export default function EditUIModal() {
         <div className="ml-3 text-sm font-medium">
           Changes saved
         </div>
-          <button type="button" onClick={CloseOpenAlert} className="bg-backgroundSecondLight dark:bg-backgroundSecondDark 
+          <button type="button" onClick={CloseOpenSuccessAlert} className="bg-backgroundSecondLight dark:bg-backgroundSecondDark 
           rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 ml-auto -mx-1.5 -my-1.5
           hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark" data-dismiss-target="#alert-1" aria-label="Close">
             <span className="sr-only">Close</span>

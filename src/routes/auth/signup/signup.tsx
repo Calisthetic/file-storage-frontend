@@ -33,9 +33,11 @@ export default function SignUp() {
               <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.06, damping: 24, stiffness: 300}}
               className="pt-2">
                 <input type="text" name="first-name" id="first-name" autoComplete="given-name" required
-                className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 
-                ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-none 
-                sm:text-sm sm:leading-6 transition-inputs"/>
+                className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
+                ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
+                focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
+                focus:ring-black focus:dark:ring-backgroundDark text-gray-900 shadow-sm
+                focus:dark:outline-white focus:outline-0 focus:dark:outline-1 rounded-md transition-inputs"/>
               </motion.div>
             </div>
 
@@ -47,9 +49,11 @@ export default function SignUp() {
               <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.1, damping: 24, stiffness: 300}}
               className="pt-2">
                 <input type="text" name="last-name" id="last-name" autoComplete="family-name" required
-                className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 
-                ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-none 
-                sm:text-sm sm:leading-6 transition-inputs"/>
+                className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
+                ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
+                focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
+                focus:ring-black focus:dark:ring-backgroundDark text-gray-900 shadow-sm
+                focus:dark:outline-white focus:outline-0 focus:dark:outline-1 rounded-md transition-inputs"/>
               </motion.div>
             </div>
 
@@ -61,9 +65,11 @@ export default function SignUp() {
               <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.14, damping: 24, stiffness: 300}}
               className="pt-2">
                 <input id="email" name="email" type="email" autoComplete="email" required
-                className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 
-                ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-none 
-                sm:text-sm sm:leading-6 transition-inputs"/>
+                className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
+                ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
+                focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
+                focus:ring-black focus:dark:ring-backgroundDark text-gray-900 shadow-sm
+                focus:dark:outline-white focus:outline-0 focus:dark:outline-1 rounded-md transition-inputs"/>
               </motion.div>
               <motion.p initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.16, damping: 24, stiffness: 300}}
               className="pt-1 text-sm leading-6 text-textLight dark:text-textDark">Use a permanent address where you can receive mail.</motion.p>
@@ -77,18 +83,22 @@ export default function SignUp() {
               <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.2, damping: 24, stiffness: 300}} 
               className="pt-2">
                 <input id="password" name="password" type="password" autoComplete="password" required
-                className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 
-                ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-none 
-                sm:text-sm sm:leading-6 transition-inputs"/>
+                className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
+                ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
+                focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
+                focus:ring-black focus:dark:ring-backgroundDark text-gray-900 shadow-sm
+                focus:dark:outline-white focus:outline-0 focus:dark:outline-1 rounded-md transition-inputs"/>
               </motion.div>
               <motion.p initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.22, damping: 24, stiffness: 300}} 
               className="pt-1 text-sm leading-6 text-textLight dark:text-textDark">Repeat password</motion.p>
               <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.24, damping: 24, stiffness: 300}} 
               className="pt-2">
                 <input id="password2" name="password" type="password" autoComplete="password" required
-                className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 
-                ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-none 
-                sm:text-sm sm:leading-6 transition-inputs"/>
+                className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
+                ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
+                focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
+                focus:ring-black focus:dark:ring-backgroundDark text-gray-900 shadow-sm
+                focus:dark:outline-white focus:outline-0 focus:dark:outline-1 rounded-md transition-inputs"/>
               </motion.div>
             </div>
 
@@ -97,9 +107,12 @@ export default function SignUp() {
               className="block text-base font-medium leading-4 text-textLight dark:text-textDark">About</motion.label>
               <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.28, damping: 24, stiffness: 300}}
               className="pt-2">
-                <textarea id="about" name="about" rows={3} className="block w-full rounded-md border-0 p-1.5 
-                text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 
-                focus:ring-none sm:text-sm sm:leading-6 transition-inputs"></textarea>
+                <textarea id="about" name="about" rows={3} 
+                className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
+                ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
+                focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
+                focus:ring-black focus:dark:ring-backgroundDark text-gray-900 shadow-sm
+                focus:dark:outline-white focus:outline-0 focus:dark:outline-1 rounded-md transition-inputs"></textarea>
               </motion.div>
               <motion.p initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.3, damping: 24, stiffness: 300}}
               className="pt-3 text-sm leading-6 text-textLight dark:text-textDark">Write a few sentences about yourself.</motion.p>

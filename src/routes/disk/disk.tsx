@@ -77,33 +77,21 @@ export default function Disk() {
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start">
-              {/* <button onClick={CloseOpenSideBar} data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" 
-                aria-controls="logo-sidebar" type="button" 
-                className="inline-flex items-center p-1 text-sm text-textLight rounded-lg sm:hidden hover:bg-backgroundHoverLight focus:outline-none 
-                focus:ring-2 focus:ring-gray-200 dark:text-textDark dark:hover:bg-backgroundHoverDark dark:focus:ring-gray-600">
-                <span className="sr-only">Open sidebar</span>
-                <svg className="w-6 h-6 fill-textLight dark:fill-textDark" aria-hidden="true" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                  <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 
-                  10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+              <label className="btn btn-circle swap swap-rotate min-h-8 h-8 w-8 m-0 p-0 border-none sm:hidden
+              bg-backgroundLight dark:bg-backgroundDark hover:bg-backgroundLight hover:dark:bg-backgroundDark">
+                <input type="checkbox" onInput={CloseOpenSideBar}/>
+                {/* open */}
+                <svg className="swap-off h-8 w-8 fill-iconLight dark:fill-iconDark pointer-events-none" 
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
+                  <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"/>
                 </svg>
-              </button> */}
-              <button onClick={CloseOpenSideBar} data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" 
-                aria-controls="logo-sidebar" type="button" 
-                className="inline-flex items-center p-1 text-sm text-textLight rounded-lg sm:hidden hover:bg-backgroundHoverLight focus:outline-none 
-                focus:ring-2 focus:ring-gray-200 dark:text-textDark dark:hover:bg-backgroundHoverDark dark:focus:ring-gray-600">
-                <label className="btn btn-circle swap swap-rotate">
-                  
-                  {/* this hidden checkbox controls the state */}
-                  <input type="checkbox" />
-                  
-                  {/* hamburger icon */}
-                  <svg className="swap-off fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512"><path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"/></svg>
-                  
-                  {/* close icon */}
-                  <svg className="swap-on fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512"><polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49"/></svg>
-                  
-                </label>
-              </button>
+                {/* close */}
+                <svg className="swap-on h-8 w-8 fill-iconLight dark:fill-iconDark pointer-events-none" 
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
+                  <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 
+                  112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49"/>
+                </svg>
+              </label>
               <Link to="../disk" className="flex ml-2 md:mr-24">
                 <motion.img src={mainLogo} className="h-8 w-8 mr-3" alt="Logo"
                 initial={{opacity: 0}} 
