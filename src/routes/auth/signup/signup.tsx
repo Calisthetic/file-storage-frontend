@@ -14,7 +14,7 @@ export default function SignUp() {
   return (
     <div className=" min-h-fulldvh sm:flex justify-center items-center">
       <form className='py-6 flex flex-col justify-center min-h-fulldvh sm:h-auto bg-backgroundLight dark:bg-backgroundDark 
-      sm:rounded-xl w-fullcvw sm:w-auto px-10' action="javascript:void(0);">
+      sm:rounded-xl w-fullcvw sm:w-auto px-10' action={void(0)}>
         <div className="w-full flex justify-center">
           <motion.img initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.00, damping: 24, stiffness: 300}} src={mainLogo}
           className="w-12 pb-2 text-center font-semibold leading-6 text-textLight dark:text-textDark"></motion.img>
@@ -85,7 +85,7 @@ export default function SignUp() {
               className="pt-1 text-sm leading-6 text-textLight dark:text-textDark">Repeat password</motion.p>
               <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.24, damping: 24, stiffness: 300}} 
               className="pt-2">
-                <input id="password" name="password" type="password" autoComplete="password" required
+                <input id="password2" name="password" type="password" autoComplete="password" required
                 className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 
                 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-none 
                 sm:text-sm sm:leading-6 transition-inputs"/>

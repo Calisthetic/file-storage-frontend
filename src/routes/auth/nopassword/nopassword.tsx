@@ -1,9 +1,13 @@
 import { motion } from "framer-motion"
 import { Link } from 'react-router-dom';
+import { useState } from 'react'
 
 export default function NoPassword() {
   // Logos
   let mainLogo: string | undefined = undefined;
+  const [checkEmailText, setCheckEmailText]:any = useState("")
+  let cooldown:number = 60000 // 1min
+  const [lastUsage, setLastUsage]:any = useState(0)
 
   try {
     mainLogo = require("./../../../icons/logo.png") as string;
@@ -11,22 +15,28 @@ export default function NoPassword() {
     console.log(error)
   }
 
-  function SendEmail() {
-    console.log("send")
+  async function SendEmail() {
+    if (lastUsage + cooldown > Date.now()) {
+      setCheckEmailText("Email has already been sent. Try again in a minute")
+    } else {
+      // Send request
+      setCheckEmailText("Tha email was send. Please check your mailbox")
+      setLastUsage(Date.now())
+    }
   }
 
   return (
     <div className=" min-h-fulldvh flex justify-center items-center">
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <motion.img initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.0}}
+          <motion.img initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.0, damping: 24, stiffness: 300}}
           className="mx-auto h-12 w-auto" src={mainLogo} alt="Logo" />
           <motion.h2 initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.02, damping: 24, stiffness: 300}}
-          className="mt-2 text-center text-xl sm:text-2xl font-bold leading-9 tracking-tight text-textLight dark:text-textDark">Sign in to your account</motion.h2>
+          className="mt-2 text-center text-xl sm:text-2xl font-bold leading-9 tracking-tight text-textLight dark:text-textDark">Account recovery</motion.h2>
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-4" action="javascript:void(0);" onSubmit={SendEmail}>
+          <form className="space-y-4" action={void(0)} onSubmit={SendEmail}>
             <div>
               <motion.label initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.04, damping: 24, stiffness: 300}}
               className="block text-sm font-medium leading-6 text-textLight dark:text-textDark">Email address</motion.label>
@@ -43,12 +53,13 @@ export default function NoPassword() {
               <motion.button initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.08, damping: 24, stiffness: 300}}
               type="submit" className="flex w-full justify-center rounded-md bg-buttonLight dark:bg-buttonDark 
               hover:bg-buttonHoverLight dark:hover:bg-buttonHoverDark px-3 py-1.5 text-sm font-semibold leading-6 
-              text-textLight shadow-sm dark:text-textDark">Send verification email</motion.button>
+              text-textLight shadow-sm dark:text-textDark transition-colors">Send verification email</motion.button>
             </div>
+            <p className="text-textLight text-base font-medium dark:text-textDark">{checkEmailText}</p>
           </form>
 
           <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.1, damping: 24, stiffness: 300}}
-            className="mt-10 text-center text-sm text-textLight dark:text-textDark flex gap-x-1 flex-col sm:flex-row">
+            className="mt-10 text-center text-sm text-textLight dark:text-textDark justify-center flex gap-x-1 flex-col sm:flex-row">
             <span className='opacity-70'>Remembered the password?</span>
             <Link to="../signin" className="font-semibold text-buttonLight dark:text-buttonDark 
               hover:text-buttonHoverLight dark:hover:text-buttonHoverDark"> Back to sign in page</Link>
