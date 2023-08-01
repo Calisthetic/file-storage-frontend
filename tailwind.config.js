@@ -8,7 +8,7 @@ module.exports = {
       colors: {
         backgroundDark: "var(--backgroundDark)",
         backgroundLight: "var(--backgroundLight)",
-        backgroundHoverDark: "var(--backgroundHoverDark)", // Change White => Light
+        backgroundHoverDark: "var(--backgroundHoverDark)",
         backgroundHoverLight: "var(--backgroundHoverLight)",
         backgroundSecondDark: "var(--backgroundSecondDark)",
         backgroundSecondLight: "var(--backgroundSecondLight)",
@@ -28,10 +28,17 @@ module.exports = {
         iconLight: "var(--iconLight)",
         shadowDark: "var(--shadowDark)",
         shadowLight: "var(--shadowLight)",
+        successDark: "var(--successDark)",
+        successLight: "var(--successLight)",
+        warningDark: "var(--warningDark)",
+        warningLight: "var(--warningLight)",
+        errorDark: "var(--errorDark)",
+        errorLight: "var(--errorLight)",
       },
       transitionProperty: {
         userDropDownMenu: "margin, transform",
         inputs: "border, outline, background-color",
+        alerts: "margin, opacity, transform. background, background-color"
       },
       spacing: {
         withHeader: "72px 16px 16px 16px"

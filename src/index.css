@@ -25,6 +25,12 @@
   --iconLight: #ff0000;
   --shadowDark: #eeeeee;
   --shadowLight: #60636c;
+  --successDark: #00ff00;
+  --successLight: #00ff00;
+  --warningDark: #000;
+  --warningLight: #000;
+  --errorDark: #ff4561;
+  --errorLight: #ff4561;
 }
 
 body,html {
