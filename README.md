@@ -30,3 +30,15 @@ npm install @mui/material @emotion/react @emotion/styled
 ```bash
 npm i -D daisyui@latest
 ```
+
+[Tailwind Elements](https://tailwind-elements.com/docs/standard/getting-started/quick-start/)
+
+```bash
+npm install tw-elements
+```
+
+[React Drag and Drop Files](https://github.com/KarimMokhtar/react-drag-drop-files)
+
+```bash
+npm i --save react-drag-drop-files
+```

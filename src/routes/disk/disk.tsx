@@ -12,6 +12,14 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import EditUIModal from "../../components/edit-ui-modal";
 import DiskSideBar from "./disk-sidebar";
+import {
+  Dropdown,
+  Ripple,
+  initTE,
+} from "tw-elements";
+import Redirect from "../../components/redirect";
+
+initTE({ Dropdown, Ripple });
 
 export default function Disk() {
   const userDropMenuRef:any = useRef()
@@ -117,7 +125,7 @@ export default function Disk() {
                 <div ref={userDropMenuRef} className="overflow-hidden transition-userDropDownMenu absolute scale-0 
                 z-50 my-4 text-base list-none bg-backgroundThirdLight divide-y divide-borderLight rounded 
                 dark:bg-backgroundThirdDark dark:divide-borderDark text-textLight dark:text-textDark
-                shadow shadow-shadowDark dark:shadow-shadowLight" id="dropdown-user">
+                shadow-sm shadow-shadowDark dark:shadow-shadowLight" id="dropdown-user">
                   <div className="px-4 py-3" role="none">
                     <p className="" role="none">
                       Neil Sims
@@ -179,8 +187,7 @@ export default function Disk() {
       <div className="pt-14  sm:ml-64">
         <div className="bg-backgroundSecondLight overflow-hidden dark:bg-backgroundSecondDark min-h-fullWithHeader sm:rounded-tl-2xl ">
           <Routes>
-            <Route path='/' element={<div>usual disk</div>}></Route>
-            <Route path='*' element={<DiskRecent></DiskRecent>}></Route>
+            <Route path='*' element={<Redirect location="/disk/folder/main"></Redirect>}></Route>
             <Route path='recent' element={<DiskRecent></DiskRecent>}></Route>
             <Route path='shared' element={<DiskShared></DiskShared>}></Route>
             <Route path='upgrade' element={<DiskUpgrade></DiskUpgrade>}></Route>

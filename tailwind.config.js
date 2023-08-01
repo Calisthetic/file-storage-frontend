@@ -2,6 +2,7 @@
 module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
+    "./node_modules/tw-elements/dist/js/**/*.js"
   ],
   theme: {
     extend: {
@@ -47,17 +48,43 @@ module.exports = {
         fullWithHeader: "calc(100dvh - 56px)",
         fulldvh: "100dvh",
       },
+      minWidth: {
+        fulldvw: "100dvw !important",
+      },
+      maxHeight: {
+        fulldvh: "100dvh !important",
+      },
+      maxWidth: {
+        fulldvw: "100dvw !important"
+      },
       height: {
-        fulldvh: "100dvh",
+        fulldvh: "100dvh !important",
+        full100: "100% !important",
       },
       width: {
         fullcvw: "100cvw",
+        fulldvw: "100dvw !important",
+        full100: "100% !important",
       },
       boxShadow: {
         pricingCardShadow: "0px 0px 7px 0px"
-      }
+      },
+      padding: {
+        dfUploadFiles: "0% 20% !important",
+        smUploadFiles: "0% 33% !important",
+        mdUploadFiles: "0% 36% !important",
+        lgUploadFiles: "0% 39% !important",
+        xlUploadFiles: "0% 41% !important",
+        xl2UploadFiles: "0% 43% !important"
+      },
+      borderWidth: {
+        imp0: "0px !important",
+      },
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [
+    require("daisyui"),
+    require("tw-elements/dist/plugin.cjs")
+  ],
 }
 

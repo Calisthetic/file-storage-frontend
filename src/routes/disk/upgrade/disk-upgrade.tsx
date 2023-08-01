@@ -14,7 +14,7 @@ export default function DiskUpgrade() {
 
   return (
     <div className="min-h-fullWithHeader bg-backgroundSecondLight w-full flex justify-center items-center dark:bg-backgroundSecondDark">
-      <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark w-full max-w-7xl grid gap-6 mx-6 lg:grid-cols-3 justify-center items-center">
+      <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark py-6 lg:py-0 w-full max-w-7xl grid gap-6 mx-6 lg:grid-cols-3 justify-center items-center">
         <motion.div initial={{y: -100, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0, stiffness: 300, damping: 24}} 
         className="w-full h-full max-w-sm p-4 xl:p-8 bg-backgroundLight dark:bg-backgroundThirdDark rounded-xl
         dark:border-backgroundThirdDark border-backgroundThirdLight border-2 flex flex-col justify-between" 
@@ -54,7 +54,7 @@ export default function DiskUpgrade() {
             )}
           </button>
         </motion.div>
-        <motion.div initial={{y: -100, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.1, stiffness: 300, damping: 24}}
+        <motion.div initial={{y: -100, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.04, stiffness: 300, damping: 24}}
         className="rounded-xl h-full w-full max-w-sm p-1 bg-gradient-to-tr from-[#3575db] via-[#9333EA] to-[#e22a3c]"
         style={{boxShadow: currentTariff === 1 ? "0px 0px 8px 0px " + getComputedStyle(document.body).getPropertyValue("--shadow" + (
           isDarkMode === true ? "Dark" : "Light"
@@ -96,7 +96,7 @@ export default function DiskUpgrade() {
             </button>
           </div>
         </motion.div>
-        <motion.div initial={{y: -100, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.05, stiffness: 300, damping: 24}}
+        <motion.div initial={{y: -100, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.08, stiffness: 300, damping: 24}}
         className="w-full h-full max-w-sm p-4 xl:p-8 bg-backgroundLight dark:bg-backgroundThirdDark rounded-xl
         dark:border-backgroundThirdDark border-backgroundThirdLight border-2 flex flex-col justify-between"
         style={{boxShadow: currentTariff === 2 ? "0px 0px 8px 0px " + getComputedStyle(document.body).getPropertyValue("--shadow" + (
