@@ -11,8 +11,8 @@ function App() {
   }
 
   // Colors from localstorage
-  let isCustonizable:boolean = true
-  if (isCustonizable) {
+  let isCustomizable:boolean = true
+  if (isCustomizable) {
     let colors_value:string | null = localStorage.getItem("colors")
     if (colors_value !== null) {
       let colors:StyleObject[] = JSON.parse(colors_value)
