@@ -41,6 +41,7 @@ module.exports = {
         inputs: "border, outline, background-color",
         alerts: "margin, opacity, transform, background, background-color",
         dropFiles: "opacity 1s ease-in-out !important",
+        dropDown: "opacity, transform, background-color, background"
       },
       spacing: {
         withHeader: "72px 16px 16px 16px"
@@ -68,7 +69,9 @@ module.exports = {
         full100: "100% !important",
       },
       boxShadow: {
-        pricingCardShadow: "0px 0px 7px 0px"
+        pricingCardShadow: "0px 0px 7px 0px",
+        defaultDark: "0px 0px 4px 0px var(--shadowDark)",
+        defaultLight: "0px 0px 4px 0px var(--shadowLight)"
       },
       padding: {
         dfUploadFiles: "0% 20% !important",
