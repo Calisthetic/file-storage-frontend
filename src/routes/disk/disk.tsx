@@ -12,11 +12,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import EditUIModal from "../../components/edit-ui-modal";
 import DiskSideBar from "./disk-sidebar";
-import {
-  Dropdown,
-  Ripple,
-  initTE,
-} from "tw-elements";
+import { Dropdown, Ripple, initTE, } from "tw-elements";
 import Redirect from "../../components/redirect";
 
 initTE({ Dropdown, Ripple });

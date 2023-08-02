@@ -45,13 +45,15 @@ export default function EditUIModal() {
   }
 
   function CloseOpenWarningAlert() {
-    if (isAlertWarningOpen === false) {
-      alertWarningRef.current.style.marginTop = "8px"
-      alertWarningRef.current.style.opacity = "1"
-      setIsAlertWarningOpen(!isAlertWarningOpen)
-    } else {
-      alertWarningRef.current.style.marginTop = "0px"
-      alertWarningRef.current.style.opacity = "0"
+    if (alertWarningRef.current) {
+      if (isAlertWarningOpen === false) {
+        alertWarningRef.current.style.marginTop = "8px"
+        alertWarningRef.current.style.opacity = "1"
+        setIsAlertWarningOpen(!isAlertWarningOpen)
+      } else {
+        alertWarningRef.current.style.marginTop = "0px"
+        alertWarningRef.current.style.opacity = "0"
+      }
     }
   }
 

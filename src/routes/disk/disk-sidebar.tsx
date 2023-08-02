@@ -153,9 +153,12 @@ export default function DiskSideBar() {
           <motion.div initial={{x: -300, opacity: 0}} animate={{x: 0, opacity: 1}} transition={{delay: 0.24, stiffness: 300, damping: 24}}
             ref={adRef} id="dropdown-cta" className="p-4 mt-6 transition rounded-lg bg-backgroundThirdLight dark:bg-backgroundThirdDark" role="alert">
             <div className="flex items-center mb-3">
-              <span className=" bg-backgroundAccentLight text-textLight text-sm font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-backgroundAccentDark dark:text-textDark">Beta</span>
-              <button onClick={CloseAd} type="button" className="ml-auto -mx-1.5 -my-1.5 bg-backgroundThirdLight inline-flex justify-center items-center w-6 h-6 text-textLight rounded-lg focus:ring-2 
-                focus:ring-blue-400 p-1 hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark dark:bg-backgroundThirdDark dark:text-textDark" data-dismiss-target="#dropdown-cta" aria-label="Close">
+              <span className=" bg-backgroundAccentLight text-textLight text-sm font-semibold mr-2 px-2.5 py-0.5 rounded 
+              dark:bg-backgroundAccentDark dark:text-textDark">Beta</span>
+              <button onClick={CloseAd} type="button" className="ml-auto -mx-1.5 -my-1.5 bg-backgroundThirdLight inline-flex 
+              justify-center items-center w-6 h-6 text-textLight rounded-lg focus:ring-2 
+                p-1 hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark dark:bg-backgroundThirdDark dark:text-textDark" 
+                data-dismiss-target="#dropdown-cta" aria-label="Close">
                 <span className="sr-only">Close</span>
                 <svg className="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
