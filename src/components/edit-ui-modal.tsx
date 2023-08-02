@@ -68,7 +68,7 @@ export default function EditUIModal() {
           return;
         }
         Array.from(rule['style']).forEach((style: any) => {
-          if (style.startsWith('--') && cssVars.indexOf(style) == -1 && !style.startsWith('--tw')) {
+          if (style.startsWith('--') && cssVars.indexOf(style) === -1 && !style.startsWith('--tw')) {
             cssVars.push(style.substring(2));
           }
         });
