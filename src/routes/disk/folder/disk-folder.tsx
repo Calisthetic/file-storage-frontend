@@ -2,6 +2,7 @@ import { Dropdown, Ripple, initTE, } from "tw-elements";
 import { useParams } from "react-router-dom";
 import { FileUploader } from "react-drag-drop-files";
 import { useState, useRef } from "react";
+import { motion } from "framer-motion"
 
 initTE({ Dropdown, Ripple });
 
@@ -11,24 +12,23 @@ export default function DiskFolder() {
     window.location.replace("./folder/main")
   }
 
+  const fileUploaderRef:any = useRef()
   const [isDragVisible, setIsDragVisible] = useState(false);
-  //const fileTypes = ["JPG", "PNG", "GIF"];
-  const [file, setFile] = useState(null);
-  const handleChange = (file: any) => {
-    setFile(file);
+  const [file, setFile] = useState([]);
+  const handleChange = (files: any) => {
+    setFile(files);
     setIsDragVisible(false)
   };
 
-  function VisualizeUploader(e:any | null) {
-    console.log(e)
-    if (e === null) {
-      console.log(2)
-    } else if (e.type === "dragenter") {
+  function VisualizeUploader(e:any | null) {  
+    if (e.type === "dragenter") {
       setIsDragVisible(true)
-      // setTimeout(() => {
-      //   setIsDragVisible(false)
-      // }, 1000);
-    }
+    } else if (isDragVisible === true && e.type === "mousemove") {
+      fileUploaderRef.current.style.opacity = 0
+      setTimeout(() => {
+        setIsDragVisible(false)
+      }, 100);
+    } 
   }
 
 
@@ -79,14 +79,15 @@ export default function DiskFolder() {
         </ul>
       </div>
       {isDragVisible === true && (
-        <div className="absolute top-0 left-0 z-50 h-fulldvh w-fulldvw bg-black/70">
-          <FileUploader onDragEner
+        <motion.div initial={{opacity: 0}} animate={{opacity: 1}} ref={fileUploaderRef}
+        onMouseMove={VisualizeUploader} className="absolute transition-dropFiles top-0 left-0 z-50 h-fulldvh w-fulldvw bg-black/70">
+          <FileUploader
            onDragEnter={VisualizeUploader} multiple={true} onTypeError={(err:any) => console.log(err)} 
           classes=" max-h-fulldvh h-full100 max-w-fulldvw w-full100 justify-center text-center fill-white
           p-dfUploadFiles sm:p-smUploadFiles md:p-mdUploadFiles lg:p-lgUploadFiles xl:p-xlUploadFiles 2xl:p-xl2UploadFiles
-          outline-3 -outline-offset-8 outline-blue-700 outline-dashed border-imp0"
+          outline-3 -outline-offset-8 outline-blue-700 outline-dashed border-imp0 hover:bg-red"
           handleChange={handleChange} name="file" />
-        </div>
+        </motion.div>
       )}
       
       <button className="w-12 h-6 bg-white" onClick={() => {console.log(file)}}></button>

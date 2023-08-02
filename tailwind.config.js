@@ -39,7 +39,8 @@ module.exports = {
       transitionProperty: {
         userDropDownMenu: "margin, transform",
         inputs: "border, outline, background-color",
-        alerts: "margin, opacity, transform. background, background-color"
+        alerts: "margin, opacity, transform, background, background-color",
+        dropFiles: "opacity 1s ease-in-out !important",
       },
       spacing: {
         withHeader: "72px 16px 16px 16px"
