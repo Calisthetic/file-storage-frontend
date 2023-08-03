@@ -4,6 +4,8 @@ import { useState, useRef } from "react";
 import { motion } from "framer-motion"
 import { Dropdown, Ripple, initTE, } from "tw-elements";
 
+import "../../../styles/styles.css"
+
 initTE({ Dropdown, Ripple });
 
 export default function DiskFolder() {
@@ -59,6 +61,7 @@ export default function DiskFolder() {
   const handleChange = (files: any) => {
     setFile(files);
     setIsDragVisible(false)
+    console.log(file)
   };
 
   function VisualizeUploader(e:any | null) {  
@@ -135,7 +138,8 @@ export default function DiskFolder() {
           focus:bg-backgroundThirdLight focus:dark:bg-backgroundThirdDark" 
           type="button">
             {currentType === "list" ? (
-              <motion.p initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}} transition={{damping: 24, stiffness: 300}}>
+              <motion.p initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
+              transition={{damping: 24, duration: 0.25, stiffness: 300}} title="list" className="custom_title">
                 <motion.svg
                 className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
                 viewBox="0 0 18 10" xmlns="http://www.w3.org/2000/svg">
@@ -145,7 +149,8 @@ export default function DiskFolder() {
               </motion.p>
               
             ) : (currentType === "table" ? (
-              <motion.section initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}} transition={{damping: 24, stiffness: 300}}>
+              <motion.section initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
+              transition={{damping: 24, duration: 0.25, stiffness: 300}} title="table">
                 <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path d="M9 14h12v-3H9v3Zm-2 0v-3H3v3h4Zm2-8v3h12V6H9ZM7 6H3v3h4V6Zm2 13h12v-3H9v3Zm-2 
@@ -154,7 +159,8 @@ export default function DiskFolder() {
                 </svg>
               </motion.section>
             ) : (currentType === "tile" ? (
-              <motion.div initial={{opacity: 0, y: 60}} animate={{opacity: 1, y: 0}} transition={{damping: 24, stiffness: 300}}>
+              <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
+              transition={{damping: 24, duration: 0.25, stiffness: 300}} title="tiles">
                 <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
                 viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16">
                   <path d="M0 0h4v4H0zM6 0h4v4H6zM12 0h4v4h-4zM0 6h4v4H0zM6 6h4v4H6zM12 6h4v4h-4zM0 12h4v4H0zM6 
@@ -162,7 +168,8 @@ export default function DiskFolder() {
                 </svg>
               </motion.div>
             ) : ( // bigTile
-              <motion.span initial={{opacity: 0, y: 80}} animate={{opacity: 1, y: 0}} transition={{damping: 24, stiffness: 300}}>
+              <motion.span initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
+              transition={{damping: 24, duration: 0.25, stiffness: 300}} title="big tiles">
                 <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path d="M0 0h9v9H0V0zm2 2v5h5V2H2zm-2 9h9v9H0v-9zm2 2v5h5v-5H2zm9-13h9v9h-9V0zm2 
@@ -237,7 +244,7 @@ export default function DiskFolder() {
         </div>
       </div>
 
-      <div className=" bg-white ml-96 h-10 w-10"></div>
+      <div data-title="da" className="text-white custom_title bg-white ml-96 h-10 w-10"></div>
 
       {/* Drag and drop files */}
       {isDragVisible === true && (
