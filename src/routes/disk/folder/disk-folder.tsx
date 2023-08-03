@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { motion } from "framer-motion"
 import { Dropdown, Ripple, initTE, } from "tw-elements";
 
-import "../../../styles/styles.css"
+import "../../../styles/data-title-styles.css"
 
 initTE({ Dropdown, Ripple });
 
@@ -79,20 +79,20 @@ export default function DiskFolder() {
 
   return (
     <div onDragEnter={VisualizeUploader} onClick={CloseAllDrops} className="w-full min-h-fullWithHeader">
-      <div className="w-full px-1 sm:px-0 sm:pr-1 flex flex-row justify-between">
+      <div className="w-full px-1 pt-1 flex flex-row justify-between">
         {/* All actions drop */}
         <div>
           <button onClick={VisualizeAddDrop} id="dropdownDefaultButton" data-dropdown-toggle="dropdown" 
-          className="text-white hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark first-letter:uppercase
-          font-medium rounded-full text-lg px-4 py-2 text-center inline-flex items-center transition-dropDown
+          className=" text-textLight dark:text-textDark hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark first-letter:uppercase
+          font-medium rounded-full text-base sm:text-lg px-4 py-2 text-center inline-flex items-center transition-dropDown
           focus:bg-backgroundThirdLight focus:dark:bg-backgroundThirdDark" 
           type="button">My storage
             <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
               <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
             </svg>
           </button>
-          <div id="dropdown" className="z-10 opacity-0 divide-y divide-gray-100 rounded w-44 mt-1
-          shadow-defaultLight dark:shadow-none absolute transition-dropDown
+          <div id="dropdown" className="z-10 opacity-0 divide-y divide-gray-100 rounded w-44 mt-0.5
+          absolute transition-dropDown
           bg-backgroundThirdLight dark:bg-backgroundThirdDark overflow-hidden"
           ref={addDropRef}>
             <ul className="py-2 text-sm font-medium text-textLight dark:text-textDark" aria-labelledby="dropdownDefaultButton">
@@ -134,12 +134,13 @@ export default function DiskFolder() {
         <div>
           <button onClick={VisualizeCellTypeDrop} id="dropdownDefaultButton" data-dropdown-toggle="dropdown" 
           className="text-white hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark first-letter:uppercase
-          font-medium rounded-full p-2 text-center inline-flex items-center transition-dropDown
+          font-medium rounded-full text-center h-10 w-10 inline-flex items-center transition-dropDown
           focus:bg-backgroundThirdLight focus:dark:bg-backgroundThirdDark" 
           type="button">
             {currentType === "list" ? (
               <motion.p initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
-              transition={{damping: 24, duration: 0.25, stiffness: 300}} title="list" className="custom_title">
+              transition={{damping: 24, duration: 0.25, stiffness: 300}} data-title="list"
+              className="w-10 h-10 flex justify-center items-center">
                 <motion.svg
                 className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
                 viewBox="0 0 18 10" xmlns="http://www.w3.org/2000/svg">
@@ -150,7 +151,8 @@ export default function DiskFolder() {
               
             ) : (currentType === "table" ? (
               <motion.section initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
-              transition={{damping: 24, duration: 0.25, stiffness: 300}} title="table">
+              transition={{damping: 24, duration: 0.25, stiffness: 300}} data-title="table"
+              className="w-10 h-10 flex justify-center items-center">
                 <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path d="M9 14h12v-3H9v3Zm-2 0v-3H3v3h4Zm2-8v3h12V6H9ZM7 6H3v3h4V6Zm2 13h12v-3H9v3Zm-2 
@@ -160,7 +162,8 @@ export default function DiskFolder() {
               </motion.section>
             ) : (currentType === "tile" ? (
               <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
-              transition={{damping: 24, duration: 0.25, stiffness: 300}} title="tiles">
+              transition={{damping: 24, duration: 0.25, stiffness: 300}} data-title="tiles"
+              className="w-10 h-10 flex justify-center items-center">
                 <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
                 viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16">
                   <path d="M0 0h4v4H0zM6 0h4v4H6zM12 0h4v4h-4zM0 6h4v4H0zM6 6h4v4H6zM12 6h4v4h-4zM0 12h4v4H0zM6 
@@ -169,7 +172,8 @@ export default function DiskFolder() {
               </motion.div>
             ) : ( // bigTile
               <motion.span initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
-              transition={{damping: 24, duration: 0.25, stiffness: 300}} title="big tiles">
+              transition={{damping: 24, duration: 0.25, stiffness: 300}} data-title="big tiles"
+              className="w-10 h-10 flex justify-center items-center">
                 <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path d="M0 0h9v9H0V0zm2 2v5h5V2H2zm-2 9h9v9H0v-9zm2 2v5h5v-5H2zm9-13h9v9h-9V0zm2 
@@ -179,8 +183,8 @@ export default function DiskFolder() {
               </motion.span>
             )))}
           </button>
-          <div id="dropdown" className="z-10 opacity-0 divide-y divide-gray-100 rounded w-10 mt-1
-          shadow-defaultLight dark:shadow-none absolute transition-dropDown
+          <div id="dropdown" className="z-10 opacity-0 divide-y divide-gray-100 rounded w-10 mt-0.5
+          absolute transition-dropDown
           bg-backgroundThirdLight dark:bg-backgroundThirdDark overflow-hidden"
           ref={cellTypeDropRef}>
             <ul className=" text-sm font-medium text-textLight dark:text-textDark" aria-labelledby="dropdownDefaultButton">
@@ -244,7 +248,7 @@ export default function DiskFolder() {
         </div>
       </div>
 
-      <div data-title="da" className="text-white custom_title bg-white ml-96 h-10 w-10"></div>
+      <div data-title="test" className="text-white custom_title bg-red-500 ml-96 h-10 w-10"></div>
 
       {/* Drag and drop files */}
       {isDragVisible === true && (
