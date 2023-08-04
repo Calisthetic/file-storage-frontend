@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion"
 import { Dropdown, Ripple, initTE, } from "tw-elements";
 
-import "../../../styles/data-title-styles.css"
+import "../../../styles/data-title.css"
 
 initTE({ Dropdown, Ripple });
 
@@ -100,7 +100,7 @@ export default function DiskFolder() {
     icon_link: string,
     name: string,
     size: number, // in bytes
-    created_at: string | null,
+    created_at: string,
     is_public: boolean,
     watches: number | null,
     downloads: number | null,
@@ -123,7 +123,7 @@ export default function DiskFolder() {
       icon_link: "url",
       name: "folder1",
       size: 18256,
-      created_at: null,
+      created_at: "13032001",
       is_public: false,
       watches: null,
       downloads: null,
@@ -134,7 +134,7 @@ export default function DiskFolder() {
       icon_link: "url",
       name: "folder2",
       size: 90000,
-      created_at: null,
+      created_at: "14042004",
       is_public: true,
       watches: 12,
       downloads: 6,
@@ -144,7 +144,7 @@ export default function DiskFolder() {
     {
       id: 1,
       icon_link: "url",
-      name: "dfile1.apng.",
+      name: "dfile1.apng",
       size: 18256,
       created_at: "20122002",
       is_public: false,
@@ -164,7 +164,7 @@ export default function DiskFolder() {
     {
       id: 3,
       icon_link: "url",
-      name: "lfile3.ajpg.",
+      name: "lfile3.ajpg",
       size: 97000,
       created_at: "11822002",
       is_public: true,
@@ -518,10 +518,10 @@ export default function DiskFolder() {
         </div>
       </header>
 
-      <main className="py-4 px-2">
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full border-collapse text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <main className="py-4">
+        <div className="relative sm:mx-2 overflow-x-auto shadow-md sm:rounded-t-lg">
+          <table className="w-full text-base text-left text-textLight dark:text-textDark">
+            <thead className="uppercase font-normal bg-backgroundLight dark:bg-backgroundDark text-textLight dark:text-textDark">
               <tr>
                 <th scope="col" className="px-4 w-10">
                   <svg viewBox="0 0 256 256" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
@@ -538,25 +538,38 @@ export default function DiskFolder() {
                     d="m222.9 74.6-94 53.4-95.8-53.4M128.9 128l-.9 106.8"></path>
                   </svg>
                 </th>
-                <th scope="col" className="px-6 py-3">name</th>
-                <th scope="col" className="px-6 py-3">size</th>
-                <th scope="col" className="px-6 py-3">created at</th>
-                <th scope="col" className="px-6 py-3">edit icon</th>
+                <th scope="col" className="py-3 w-max">name</th>
+                <th scope="col" className="py-3 w-20 text-center">file size</th>
+                <th scope="col" className="py-3 px-8 w-40 text-center">created at</th>
+                <th scope="col" className="py-3 w-32">info icon</th>
+                <th scope="col" className="py-3 w-32">edit icon</th>
               </tr>
             </thead>
             <tbody>
-              {folders.map((item, index) => (
-                <tr key={index} data-key={item.id} draggable="true" onDragOver={(e:any) => {e.preventDefault()}}
-                onDrop={OnDropFolder} onDragStart={(e:any) => {setCurrentDragElement(e.target)}}
-                className="bg-white border-b dark:bg-gray-800 text-base font-medium
-                dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" 
+              {folders.sort((a, b) => {
+                if (currentSortType === "size" ? a.size < b.size
+                  : currentSortType === "date" ? a.created_at < b.created_at
+                  : a.name < b.name) 
+                { return currentSortBy === "descending" ? 1 : -1; }
+                if (currentSortType === "size" ? a.size > b.size
+                : currentSortType === "date" ? a.created_at > b.created_at
+                : a.name > b.name) 
+                { return currentSortBy === "descending" ? -1 : 1; }
+                return 0;
+              }).map((item, index) => (
+                <tr key={index} data-key={item.id} draggable="true" 
+                onDragOver={(e:any) => {if (currentDragElement.dataset.key !== e.target.dataset.key) e.preventDefault()}}
+                onDrop={OnDropFolder} onDragStart={(e:any) => {setCurrentDragElement(e.target); e.target.style.width = "10px"}}
+                data-type="folder"
+                className="border-b border-borderLight transition-colors h-8
+                dark:border-borderDark hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark" 
                 onDoubleClick={() => {window.location.replace("/disk/folder/" + item.token)}}>
-                  <td data-key={item.id} draggable="false">
+                  <td data-key={item.id} draggable="false" className="flex items-center justify-center">
                     <img src={item.icon_link} alt=""></img>
                   </td>
-                  <td data-key={item.id} draggable="false">{item.name}</td>
-                  <td data-key={item.id} draggable="false">{CutSize(item.size * 10)}</td>
-                  <td data-key={item.id} draggable="false">12 jul</td>
+                  <td data-key={item.id} draggable="false" className="font-medium text">{item.name}</td>
+                  <td data-key={item.id} draggable="false" className="text-center">{CutSize(item.size * 10)}</td>
+                  <td data-key={item.id} draggable="false" className="text-center">change later</td>
                   <td data-key={item.id} draggable="false"></td>
                 </tr>
               ))}
@@ -579,16 +592,17 @@ export default function DiskFolder() {
                 { return currentSortBy === "descending" ? -1 : 1; }
                 return 0;
               }).map((item, index) => (
-                <tr key={index} data-key={item.id} draggable="true" onDragOver={(e:any) => {e.preventDefault()}}
+                <tr key={index} data-key={item.id} draggable="true"
                 onDrop={OnDropFolder} onDragStart={(e:any) => {setCurrentDragElement(e.target)}}
-                className="bg-white border-b dark:bg-gray-800 text-base font-medium
-                dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                data-type="file"
+                className="border-b border-borderLight transition-colors h-8
+                dark:border-borderDark hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark">
                   <td data-key={item.id} draggable="false">
                     <img src={item.icon_link} alt=""></img>
                   </td>
-                  <td data-key={item.id} draggable="false">{item.name}</td>
-                  <td data-key={item.id} draggable="false">{CutSize(item.size * 10)}</td>
-                  <td data-key={item.id} draggable="false">12 jul</td>
+                  <td data-key={item.id} draggable="false" className="font-medium">{item.name}</td>
+                  <td data-key={item.id} draggable="false" className="text-center">{CutSize(item.size * 10)}</td>
+                  <td data-key={item.id} draggable="false" className="text-center">change later</td>
                   <td data-key={item.id} draggable="false"></td>
                 </tr>
               ))}
