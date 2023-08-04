@@ -183,7 +183,7 @@ export default function DiskSideBar() {
       <AnimatePresence>
         {isAdOpen === true && (
           <motion.div initial={{x: -300, opacity: 0}} animate={{x: 0, opacity: 1}} 
-          transition={{stiffness: 300, damping: 24}} exit={{x: -300, opacity: 0}}
+          transition={{stiffness: 300, damping: 24}} exit={{x: -1000, opacity: 0}}
             ref={adRef} id="dropdown-cta" className="p-4 mt-6 transition rounded-lg bg-backgroundThirdLight dark:bg-backgroundThirdDark" role="alert">
             <div className="flex items-center mb-3">
               <span className=" bg-backgroundAccentLight text-textLight text-sm font-semibold mr-2 px-2.5 py-0.5 rounded 

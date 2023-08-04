@@ -105,7 +105,7 @@ export default function DiskFolder() {
           <button onClick={VisualizeAddDrop} id="dropdownDefaultButton" data-dropdown-toggle="dropdown" 
           className=" text-textLight dark:text-textDark hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark first-letter:uppercase
           font-medium rounded-full text-base sm:text-lg px-4 py-2 text-center inline-flex items-center transition-dropDown
-          focus:bg-backgroundThirdLight focus:dark:bg-backgroundThirdDark" 
+          focus:dark:bg-backgroundThirdDark" 
           type="button">My storage
             <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
               <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" 
@@ -113,14 +113,14 @@ export default function DiskFolder() {
             </svg>
           </button>
           <div id="dropdown" className="z-10 opacity-0 divide-y divide-gray-100 rounded w-44 mt-0.5
-          absolute transition-dropDown
-          bg-backgroundThirdLight dark:bg-backgroundThirdDark overflow-hidden"
+          absolute transition-dropDown shadow-defaultLight dark:shadow-none
+          bg-backgroundSecondLight dark:bg-backgroundThirdDark overflow-hidden"
           ref={addDropRef}>
             <ul className="py-2 text-sm font-medium text-textLight dark:text-textDark" aria-labelledby="dropdownDefaultButton">
               <li>
-                <p className="cursor-pointer transition-colors px-2 py-2 
-                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark flex flex-row justify-start items-center
-                bg-backgroundThirdLight dark:bg-backgroundThirdDark">
+                <p className="cursor-pointer transition-colors px-2 py-2 flex flex-row 
+                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDarkjustify-start items-center
+                bg-backgroundSecondLight dark:bg-backgroundThirdDark">
                   <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M11 12V9h2v3h3v2h-3v3h-2v-3H8v-2h3Zm10-7a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V5a2 
                     2 0 0 1 2-2h6c1.12 0 1.833.475 2.549 1.379.048.06.261.337.313.402.158.195.19.219.14.219H21Zm0 
@@ -134,9 +134,10 @@ export default function DiskFolder() {
                   <input className="absolute w-full text-sm text-gray-900 border border-gray-300 cursor-pointer -z-10
                   bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 py-1
                   dark:placeholder-gray-400" id="file_input" multiple={true} type="file" ref={inputFileButtonRef}/>
-                  <p onClick={() => {inputFileButtonRef.current.click()}} className="cursor-pointer transition-colors px-2 py-2 
-                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark flex flex-row justify-start items-center
-                  bg-backgroundThirdLight dark:bg-backgroundThirdDark">
+                  <p onClick={() => {inputFileButtonRef.current.click()}} 
+                  className="cursor-pointer transition-colors px-2 py-2 flex flex-row
+                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center
+                  bg-backgroundSecondLight dark:bg-backgroundThirdDark">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24"
                     className="w-6 h-6 mr-2"><g id="_icons">
                       <path d="M11.3 15.7c.1.1.2.2.3.2.1.1.3.1.4.1s.3 0 .4-.1c.1-.1.2-.1.3-.2l4-4c.4-.4.4-1 0-1.4s-1-.4-1.4 0L13 
@@ -156,8 +157,9 @@ export default function DiskFolder() {
           <div>
             <button onClick={VisualizeSortDrop} id="dropdownDefaultButton" data-dropdown-toggle="dropdown" 
             className=" text-textLight dark:text-textDark hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark
-            font-medium rounded-full text-base sm:text-lg w-10 h-10 sm:w-11 sm:h-11 text-center justify-center inline-flex items-center transition-dropDown
-            focus:bg-backgroundThirdLight focus:dark:bg-backgroundThirdDark first-letter:uppercase" 
+            font-medium rounded-full text-base sm:text-lg w-10 h-10 sm:w-11 sm:h-11 
+            text-center justify-center inline-flex items-center transition-dropDown
+            focus:bg-none focus:dark:bg-backgroundThirdDark first-letter:uppercase" 
             type="button">
               <motion.svg initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
               transition={{damping: 24, duration: 0.25, stiffness: 300}}
@@ -167,14 +169,14 @@ export default function DiskFolder() {
               </motion.svg>
             </button>
             <div id="dropdown" className="z-10 opacity-0 divide-y divide-gray-100 rounded w-44 mt-0.5
-            absolute transition-dropDown -translate-x-3/4 
-            bg-backgroundThirdLight dark:bg-backgroundThirdDark overflow-hidden"
+            absolute transition-dropDown -translate-x-3/4 shadow-defaultLight dark:shadow-none
+            bg-backgroundSecondLight dark:bg-backgroundThirdDark overflow-hidden"
             ref={sortDropRef}>
               <ul className="py-1.5 text-sm font-medium text-textLight dark:text-textDark" aria-labelledby="dropdownDefaultButton">
                 <li>
                   <div className="cursor-pointer transition-colors px-2 py-1.5 
-                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark flex flex-row justify-start items-center
-                  bg-backgroundThirdLight dark:bg-backgroundThirdDark" data-popup="true"
+                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
+                  flex flex-row justify-start items-center" data-popup="true"
                   data-name="name" onClick={(e:any) => {setCurrentSortType(e.target.dataset.name)}}>
                     <AnimatePresence>
                       {currentSortType === "name" && (
@@ -194,8 +196,8 @@ export default function DiskFolder() {
                 </li>
                 <li>
                   <div className="cursor-pointer transition-colors px-2 py-1.5 
-                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark flex flex-row justify-start items-center
-                  bg-backgroundThirdLight dark:bg-backgroundThirdDark" data-popup="true"
+                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
+                  flex flex-row justify-start items-center" data-popup="true"
                   data-name="type" onClick={(e:any) => {setCurrentSortType(e.target.dataset.name)}}>
                     <AnimatePresence>
                       {currentSortType === "type" && (
@@ -215,8 +217,8 @@ export default function DiskFolder() {
                 </li>
                 <li>
                   <div className="cursor-pointer transition-colors px-2 py-1.5 
-                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark flex flex-row justify-start items-center
-                  bg-backgroundThirdLight dark:bg-backgroundThirdDark" data-popup="true"
+                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
+                  flex flex-row justify-start items-center" data-popup="true"
                   data-name="size" onClick={(e:any) => {setCurrentSortType(e.target.dataset.name)}}>
                     <AnimatePresence>
                       {currentSortType === "size" && (
@@ -236,8 +238,8 @@ export default function DiskFolder() {
                 </li>
                 <li>
                   <div className="cursor-pointer transition-colors px-2 py-1.5 
-                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark flex flex-row justify-start items-center
-                  bg-backgroundThirdLight dark:bg-backgroundThirdDark" data-popup="true"
+                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
+                  flex flex-row justify-start items-center" data-popup="true"
                   data-name="date" onClick={(e:any) => {setCurrentSortType(e.target.dataset.name)}}>
                     <AnimatePresence>
                       {currentSortType === "date" && (
@@ -261,8 +263,8 @@ export default function DiskFolder() {
                 {/* is order by descending */}
                 <li>
                   <div className="cursor-pointer transition-colors px-2 py-1.5 
-                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark flex flex-row justify-start items-center
-                  bg-backgroundThirdLight dark:bg-backgroundThirdDark" data-popup="true"
+                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
+                  flex flex-row justify-start items-center" data-popup="true"
                   data-name="ascending" onClick={(e:any) => {setCurrentSortBy(e.target.dataset.name)}}>
                     <AnimatePresence>
                       {currentSortBy === "ascending" && (
@@ -282,8 +284,8 @@ export default function DiskFolder() {
                 </li>
                 <li>
                   <div className="cursor-pointer transition-colors px-2 py-1.5 
-                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark flex flex-row justify-start items-center
-                  bg-backgroundThirdLight dark:bg-backgroundThirdDark" data-popup="true"
+                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
+                  flex flex-row justify-start items-center" data-popup="true"
                   data-name="descending" onClick={(e:any) => {setCurrentSortBy(e.target.dataset.name)}}>
                     <AnimatePresence>
                       {currentSortBy === "descending" && (
@@ -311,7 +313,7 @@ export default function DiskFolder() {
             <button onClick={VisualizeCellTypeDrop} id="dropdownDefaultButton" data-dropdown-toggle="dropdown" 
             className="text-white hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark first-letter:uppercase
             font-medium rounded-full text-center h-10 w-10 inline-flex items-center transition-dropDown
-            focus:bg-backgroundThirdLight focus:dark:bg-backgroundThirdDark" 
+            focus:dark:bg-backgroundThirdDark" 
             type="button">
               {currentRenderType === "list" ? (
                 <motion.p initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
@@ -360,16 +362,14 @@ export default function DiskFolder() {
               )))}
             </button>
             <div id="dropdown" className="z-10 opacity-0 divide-y divide-gray-100 rounded w-10 mt-0.5
-            absolute transition-dropDown
-            bg-backgroundThirdLight dark:bg-backgroundThirdDark overflow-hidden"
-            ref={cellTypeDropRef}>
+            absolute transition-dropDown shadow-defaultLight dark:shadow-none overflow-hidden
+            bg-backgroundSecondLight dark:bg-backgroundThirdDark" ref={cellTypeDropRef}>
               <ul className=" text-sm font-medium text-textLight dark:text-textDark" aria-labelledby="dropdownDefaultButton">
-                  {/* list */}
                 {currentRenderType !== "list" && (
                   <li>
-                    <div className="cursor-pointer transition-colors px-2 py-2 
-                    hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark flex flex-row justify-start items-center
-                    bg-backgroundThirdLight dark:bg-backgroundThirdDark" data-name="list" onClick={SelectCurrentRenderType}>
+                    <div className="cursor-pointer transition-colors px-2 py-2 flex flex-row
+                    hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center" 
+                    data-name="list" onClick={SelectCurrentRenderType}>
                       <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
                       viewBox="0 0 18 10" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 6h2V4H0v2Zm0 4h2V8H0v2Zm0-8h2V0H0v2Zm4 4h14V4H4v2Zm0 4h14V8H4v2ZM4 
@@ -380,9 +380,9 @@ export default function DiskFolder() {
                 )}
                 {currentRenderType !== "table" && (
                   <li>
-                    <div className="cursor-pointer transition-colors px-2 py-2 
-                    hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark flex flex-row justify-start items-center
-                    bg-backgroundThirdLight dark:bg-backgroundThirdDark" data-name="table" onClick={SelectCurrentRenderType}>
+                    <div className="cursor-pointer transition-colors px-2 py-2 flex flex-row
+                    hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center" 
+                    data-name="table" onClick={SelectCurrentRenderType}>
                       <svg className="h-6 w-6 pointer-events-none"
                       viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9 14h12v-3H9v3Zm-2 0v-3H3v3h4Zm2-8v3h12V6H9ZM7 6H3v3h4V6Zm2 13h12v-3H9v3Zm-2 
@@ -394,9 +394,9 @@ export default function DiskFolder() {
                 )}
                 {currentRenderType !== "tile" && (
                   <li>
-                    <div className="cursor-pointer transition-colors px-2 py-2 
-                    hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark flex flex-row justify-start items-center
-                    bg-backgroundThirdLight dark:bg-backgroundThirdDark" data-name="tile" onClick={SelectCurrentRenderType}>
+                    <div className="cursor-pointer transition-colors px-2 py-2 flex flex-row
+                    hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center" 
+                    data-name="tile" onClick={SelectCurrentRenderType}>
                       <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
                       viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16">
                         <path d="M0 0h4v4H0zM6 0h4v4H6zM12 0h4v4h-4zM0 6h4v4H0zM6 6h4v4H6zM12 6h4v4h-4zM0 12h4v4H0zM6 
@@ -407,9 +407,9 @@ export default function DiskFolder() {
                 )}
                 {currentRenderType !== "bigTile" && (
                   <li>
-                    <div className="cursor-pointer transition-colors px-2 py-2 
-                    hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark flex flex-row justify-start items-center
-                    bg-backgroundThirdLight dark:bg-backgroundThirdDark" data-name="bigTile" onClick={SelectCurrentRenderType}>
+                    <div className="cursor-pointer transition-colors px-2 py-2 flex flex-row
+                    hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center" 
+                    data-name="bigTile" onClick={SelectCurrentRenderType}>
                       <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
                       viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 0h9v9H0V0zm2 2v5h5V2H2zm-2 9h9v9H0v-9zm2 2v5h5v-5H2zm9-13h9v9h-9V0zm2 
