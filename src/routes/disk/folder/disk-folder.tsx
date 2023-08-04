@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FileUploader } from "react-drag-drop-files";
 import { useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion"
@@ -53,9 +53,6 @@ export default function DiskFolder() {
   function SelectCurrentRenderType(e: any) {
     setCurrentRenderType(e.target.dataset.name)
   }
-  function SelectCurrentSortType(e: any) {
-    setCurrentSortType(e.target.dataset.name)
-  }
 
   function CloseAllDrops(e:any) {
     if (!isAddDrop) {
@@ -84,9 +81,8 @@ export default function DiskFolder() {
     console.log(file)
   };
 
-  function VisualizeUploader(e:any | null) {  
-    if (e.type === "dragenter") {
-      console.log(e)
+  function VisualizeUploader(e:any | null) {
+    if (e.type === "dragenter" && currentDragElement.tagName !== "TR") {
       setIsDragVisible(true)
     } else if (isDragVisible === true && e.type === "mousemove") {
       fileUploaderRef.current.style.opacity = 0
@@ -97,9 +93,74 @@ export default function DiskFolder() {
   }
 
 
+  // Main part
+  interface FoldersResponse {
+    id: number,
+    icon_link: string,
+    name: string,
+    size: number, // in bytes
+    created_at: string | null,
+    is_public: boolean,
+    watches: number | null,
+    downloads: number | null,
+  }
+  interface FilesResponse {
+    id: number,
+    icon_link: string,
+    name: string,
+    filetype: string | null,
+    size: number, // in bytes
+    created_at: string | null,
+    is_public: boolean,
+    watches: number | null,
+    downloads: number | null,
+  }
+
+  let files:FilesResponse[] = [
+    {
+      id: 1,
+      icon_link: "url",
+      name: "file1",
+      filetype: "png",
+      size: 18256,
+      created_at: null,
+      is_public: false,
+      watches: null,
+      downloads: null,
+    },
+    {
+      id: 2,
+      icon_link: "url",
+      name: "file2",
+      filetype: "jpeg",
+      size: 90000,
+      created_at: null,
+      is_public: true,
+      watches: 12,
+      downloads: 6,
+    }
+  ]
+
+  function CutSize(num: number, stage: number = 0):string {
+    return num < 10240 ? num / 10 + (
+      stage === 0 ? " B"
+      : stage === 1 ? " KB"
+      : stage === 2 ? " MB"
+      : stage === 3 ? " GB" : " TB"
+    ) : CutSize(Math.round(num / 1024), stage+1)
+  }
+
+  const [currentDragElement, setCurrentDragElement]:any = useState(null)
+  function OnDropFolder(e:any) {
+    console.log("Target: " + e.nativeEvent.target.dataset.key)
+    console.log("Drag: " + currentDragElement.dataset.key)
+  }
+
+
+
   return (
     <div onDragEnter={VisualizeUploader} onClick={CloseAllDrops} className="w-full min-h-fullWithHeader">
-      <div className="w-full px-1 pt-1 flex flex-row justify-between">
+      <header className="w-full px-1 pt-1 flex flex-row justify-between">
         {/* All actions drop */}
         <div>
           <button onClick={VisualizeAddDrop} id="dropdownDefaultButton" data-dropdown-toggle="dropdown" 
@@ -113,7 +174,7 @@ export default function DiskFolder() {
             </svg>
           </button>
           <div id="dropdown" className="z-10 opacity-0 divide-y divide-gray-100 rounded w-44 mt-0.5
-          absolute transition-dropDown shadow-defaultLight dark:shadow-none
+          absolute transition-dropDown shadow-defaultLight dark:shadow-none scale-y-0
           bg-backgroundSecondLight dark:bg-backgroundThirdDark overflow-hidden"
           ref={addDropRef}>
             <ul className="py-2 text-sm font-medium text-textLight dark:text-textDark" aria-labelledby="dropdownDefaultButton">
@@ -423,9 +484,40 @@ export default function DiskFolder() {
             </div>
           </div>
         </div>
-      </div>
+      </header>
 
-      <div data-title="test" className="text-white custom_title bg-red-500 ml-96 h-10 w-10"></div>
+      <main className="mt-4">
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3 w-10">icon</th>
+                <th scope="col" className="px-6 py-3">name</th>
+                <th scope="col" className="px-6 py-3">size</th>
+                <th scope="col" className="px-6 py-3">created at</th>
+                <th scope="col" className="px-6 py-3">edit icon</th>
+              </tr>
+            </thead>
+            <tbody>
+              {files.map((item, index) => (
+                <tr key={index} data-key={item.id} draggable="true" onDragOver={(e:any) => {e.preventDefault()}}
+                onDrop={OnDropFolder} onDragStart={(e:any) => {setCurrentDragElement(e.target)}}
+                className="bg-white border-b dark:bg-gray-800 text-base font-medium
+                dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <td data-key={item.id} draggable="false">
+                    <img src={item.icon_link} alt="icon"></img>
+                  </td>
+                  <td data-key={item.id} draggable="false">{item.name}</td>
+                  <td data-key={item.id} draggable="false">{CutSize(item.size * 10)}</td>
+                  <td data-key={item.id} draggable="false">12 jul</td>
+                  <td data-key={item.id} draggable="false"></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+      </main>
 
       {/* Drag and drop files */}
       {isDragVisible === true && (
