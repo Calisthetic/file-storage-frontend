@@ -80,7 +80,7 @@ export default function DiskSideBar() {
                 1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1z"></path>
               </g></g>
             </svg>
-            <span className="ml-3">Trash</span>
+            <span className="ml-3">Recycle bin</span>
           </Link>
         </motion.li>
         <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} 

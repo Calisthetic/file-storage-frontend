@@ -6,7 +6,7 @@ import DiskFolder from "./folder/disk-folder";
 import { useRef, useState } from "react";
 import { motion } from "framer-motion"
 import DiskFavorites from "./favorites/disk-favorites";
-import DiskTrash from "./trash/disk-trash";
+import DiskRecycleBin from "./recycle-bin/disk-recycle-bin";
 import DiskFiles from "./files/disk-files";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -189,7 +189,7 @@ export default function Disk() {
             <Route path='upgrade' element={<DiskUpgrade></DiskUpgrade>}></Route>
             <Route path='favorites' element={<DiskFavorites></DiskFavorites>}></Route>
             <Route path='files' element={<DiskFiles></DiskFiles>}></Route>
-            <Route path='trash' element={<DiskTrash></DiskTrash>}></Route>
+            <Route path='trash' element={<DiskRecycleBin></DiskRecycleBin>}></Route>
             <Route path='folder/:id' element={<DiskFolder></DiskFolder>}></Route>
             <Route path='folder' element={<DiskFolder></DiskFolder>}></Route>
           </Routes>

@@ -1,6 +1,6 @@
 import { Component} from 'react';
 
-export default function DiskTrash() {
+export default function DiskRecycleBin() {
   return (
     <div>trash</div>
   )
