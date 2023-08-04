@@ -96,6 +96,7 @@ export default function DiskFolder() {
   // Main part
   interface FoldersResponse {
     id: number,
+    token: string,
     icon_link: string,
     name: string,
     size: number, // in bytes
@@ -108,20 +109,19 @@ export default function DiskFolder() {
     id: number,
     icon_link: string,
     name: string,
-    filetype: string | null,
     size: number, // in bytes
-    created_at: string | null,
+    created_at: string,
     is_public: boolean,
     watches: number | null,
     downloads: number | null,
   }
-
-  let files:FilesResponse[] = [
+  
+  let folders:FoldersResponse[] = [
     {
       id: 1,
+      token: "123",
       icon_link: "url",
-      name: "file1",
-      filetype: "png",
+      name: "folder1",
       size: 18256,
       created_at: null,
       is_public: false,
@@ -130,11 +130,43 @@ export default function DiskFolder() {
     },
     {
       id: 2,
+      token: "234",
       icon_link: "url",
-      name: "file2",
-      filetype: "jpeg",
+      name: "folder2",
       size: 90000,
       created_at: null,
+      is_public: true,
+      watches: 12,
+      downloads: 6,
+    }
+  ]
+  let files:FilesResponse[] = [
+    {
+      id: 1,
+      icon_link: "url",
+      name: "dfile1.apng.",
+      size: 18256,
+      created_at: "20122002",
+      is_public: false,
+      watches: null,
+      downloads: null,
+    },
+    {
+      id: 2,
+      icon_link: "url",
+      name: "file2.jpg",
+      size: 90000,
+      created_at: "19122002",
+      is_public: true,
+      watches: 12,
+      downloads: 6,
+    },
+    {
+      id: 3,
+      icon_link: "url",
+      name: "lfile3.ajpg.",
+      size: 97000,
+      created_at: "11822002",
       is_public: true,
       watches: 12,
       downloads: 6,
@@ -486,12 +518,26 @@ export default function DiskFolder() {
         </div>
       </header>
 
-      <main className="mt-4">
+      <main className="py-4 px-2">
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <table className="w-full border-collapse text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead className="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th scope="col" className="px-6 py-3 w-10">icon</th>
+                <th scope="col" className="px-4 w-10">
+                  <svg viewBox="0 0 256 256" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h256v256H0z"></path>
+                    <path d="M224 177.3V78.7a8.1 8.1 0 0 0-4.1-7l-88-49.5a7.8 7.8 0 
+                    0 0-7.8 0l-88 49.5a8.1 8.1 0 0 0-4.1 7v98.6a8.1 8.1 0 0 0 4.1 7l88 
+                    49.5a7.8 7.8 0 0 0 7.8 0l88-49.5a8.1 8.1 0 0 0 4.1-7Z" 
+                    fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16" 
+                    className=" stroke-textLight dark:stroke-textDark"></path>
+                    <path fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16" 
+                    d="M177 152.5v-52L80 47" className="stroke-textLight dark:stroke-textDark"></path>
+                    <path fill="none" className="stroke-textLight dark:stroke-textDark" 
+                    strokeLinecap="round" strokeLinejoin="round" strokeWidth="16" 
+                    d="m222.9 74.6-94 53.4-95.8-53.4M128.9 128l-.9 106.8"></path>
+                  </svg>
+                </th>
                 <th scope="col" className="px-6 py-3">name</th>
                 <th scope="col" className="px-6 py-3">size</th>
                 <th scope="col" className="px-6 py-3">created at</th>
@@ -499,13 +545,46 @@ export default function DiskFolder() {
               </tr>
             </thead>
             <tbody>
-              {files.map((item, index) => (
+              {folders.map((item, index) => (
+                <tr key={index} data-key={item.id} draggable="true" onDragOver={(e:any) => {e.preventDefault()}}
+                onDrop={OnDropFolder} onDragStart={(e:any) => {setCurrentDragElement(e.target)}}
+                className="bg-white border-b dark:bg-gray-800 text-base font-medium
+                dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" 
+                onDoubleClick={() => {window.location.replace("/disk/folder/" + item.token)}}>
+                  <td data-key={item.id} draggable="false">
+                    <img src={item.icon_link} alt=""></img>
+                  </td>
+                  <td data-key={item.id} draggable="false">{item.name}</td>
+                  <td data-key={item.id} draggable="false">{CutSize(item.size * 10)}</td>
+                  <td data-key={item.id} draggable="false">12 jul</td>
+                  <td data-key={item.id} draggable="false"></td>
+                </tr>
+              ))}
+              {files.sort((a, b) => {
+                if (currentSortType === "name" ? a.name < b.name
+                  : currentSortType === "type" 
+                    ? a.name.lastIndexOf('.') + 1 === a.name.length ? false
+                    : b.name.lastIndexOf('.') + 1 === b.name.length ? true 
+                      : a.name.slice(a.name.lastIndexOf('.') + 1) < b.name.slice(b.name.lastIndexOf('.') + 1)
+                  : currentSortType === "size" ? a.size < b.size
+                  : a.created_at < b.created_at) 
+                { return currentSortBy === "descending" ? 1 : -1; }
+                if (currentSortType === "name" ? a.name > b.name
+                : currentSortType === "type" 
+                  ? a.name.lastIndexOf('.') + 1 === a.name.length ? true
+                  : b.name.lastIndexOf('.') + 1 === b.name.length ? false 
+                    : a.name.slice(a.name.lastIndexOf('.') + 1) > b.name.slice(b.name.lastIndexOf('.') + 1)
+                : currentSortType === "size" ? a.size > b.size
+                : a.created_at > b.created_at) 
+                { return currentSortBy === "descending" ? -1 : 1; }
+                return 0;
+              }).map((item, index) => (
                 <tr key={index} data-key={item.id} draggable="true" onDragOver={(e:any) => {e.preventDefault()}}
                 onDrop={OnDropFolder} onDragStart={(e:any) => {setCurrentDragElement(e.target)}}
                 className="bg-white border-b dark:bg-gray-800 text-base font-medium
                 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                   <td data-key={item.id} draggable="false">
-                    <img src={item.icon_link} alt="icon"></img>
+                    <img src={item.icon_link} alt=""></img>
                   </td>
                   <td data-key={item.id} draggable="false">{item.name}</td>
                   <td data-key={item.id} draggable="false">{CutSize(item.size * 10)}</td>
