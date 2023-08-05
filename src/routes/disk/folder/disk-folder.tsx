@@ -93,6 +93,7 @@ export default function DiskFolder() {
       }, 100);
     } 
   }
+  
 
 
   
@@ -428,7 +429,8 @@ export default function DiskFolder() {
         </div>
       </header>
 
-      <RenderData currentSortBy={currentSortBy} currentSortType={currentSortType}></RenderData>
+      <RenderData currentSortBy={currentSortBy}
+      currentSortType={currentSortType} currentRenderType={currentRenderType}></RenderData>
 
       {/* Drag and drop files */}
       {isDragVisible === true && (
