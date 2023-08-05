@@ -25,12 +25,12 @@
 @media (prefers-color-scheme: dark) {
   [data-title]:after {
     background: var(--textDark);
-    color: var(--backgroundThirdDark);
+    color: var(--backgroundDark);
   }
 }
 @media (prefers-color-scheme: light) {
   [data-title]:after {
     background: var(--textLight);
-    color: var(--backgroundThirdLight);
+    color: var(--backgroundLight);
   }
 }

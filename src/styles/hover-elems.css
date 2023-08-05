@@ -1,13 +1,29 @@
 /* All elems in one div */
 .hover-first:hover + .hover-second {
   opacity: 1;
-  transform: scale(1, 1) translate(calc(-50% + 12px), 0%);
+  transform: scale(1, 1) translate(calc(-50%), 0%);
+}
+
+.hover-second:hover {
+  opacity: 1;
+  transform: scale(1, 1) translate(calc(-50%), 0%);
 }
 
 .hover-second {
   transition: 0.25s ease;
   transition-property: opacity;
   opacity: 0;
-  transform: scale(0, 1) translate(-50%, 0%);
+  transform: scale(0, 0) translate(-50%, 0%);
   position: absolute;
+}
+
+/* First the parent of second */
+.hover-parent:hover .hover-child {
+  opacity: 1;
+}
+
+.hover-child {
+  transition: 0.25s ease;
+  transition-property: opacity;
+  opacity: 0;
 }
