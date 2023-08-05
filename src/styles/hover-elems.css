@@ -1,3 +1,4 @@
+/* All elems in one div */
 .hover-first:hover + .hover-second {
   opacity: 1;
   transform: scale(1, 1) translate(calc(-50% + 12px), 0%);
