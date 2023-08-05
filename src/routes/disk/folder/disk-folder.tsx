@@ -1,10 +1,12 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { FileUploader } from "react-drag-drop-files";
 import { useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion"
 import { Dropdown, Ripple, initTE, } from "tw-elements";
 
 import "../../../styles/data-title.css"
+import "../../../styles/hover-elems.css"
+import RenderData from "./render-data";
 
 initTE({ Dropdown, Ripple });
 
@@ -82,7 +84,7 @@ export default function DiskFolder() {
   };
 
   function VisualizeUploader(e:any | null) {
-    if (e.type === "dragenter" && currentDragElement.tagName !== "TR") {
+    if (e.type === "dragenter" && e.nativeEvent?.dataTransfer?.types.length !== 0) {
       setIsDragVisible(true)
     } else if (isDragVisible === true && e.type === "mousemove") {
       fileUploaderRef.current.style.opacity = 0
@@ -93,106 +95,14 @@ export default function DiskFolder() {
   }
 
 
-  // Main part
-  interface FoldersResponse {
-    id: number,
-    token: string,
-    icon_link: string,
-    name: string,
-    size: number, // in bytes
-    created_at: string,
-    is_public: boolean,
-    watches: number | null,
-    downloads: number | null,
-  }
-  interface FilesResponse {
-    id: number,
-    icon_link: string,
-    name: string,
-    size: number, // in bytes
-    created_at: string,
-    is_public: boolean,
-    watches: number | null,
-    downloads: number | null,
-  }
   
-  let folders:FoldersResponse[] = [
-    {
-      id: 1,
-      token: "123",
-      icon_link: "url",
-      name: "folder1",
-      size: 18256,
-      created_at: "13032001",
-      is_public: false,
-      watches: null,
-      downloads: null,
-    },
-    {
-      id: 2,
-      token: "234",
-      icon_link: "url",
-      name: "folder2",
-      size: 90000,
-      created_at: "14042004",
-      is_public: true,
-      watches: 12,
-      downloads: 6,
-    }
-  ]
-  let files:FilesResponse[] = [
-    {
-      id: 1,
-      icon_link: "url",
-      name: "dfile1.apng",
-      size: 18256,
-      created_at: "20122002",
-      is_public: false,
-      watches: null,
-      downloads: null,
-    },
-    {
-      id: 2,
-      icon_link: "url",
-      name: "file2.jpg",
-      size: 90000,
-      created_at: "19122002",
-      is_public: true,
-      watches: 12,
-      downloads: 6,
-    },
-    {
-      id: 3,
-      icon_link: "url",
-      name: "lfile3.ajpg",
-      size: 97000,
-      created_at: "11822002",
-      is_public: true,
-      watches: 12,
-      downloads: 6,
-    }
-  ]
-
-  function CutSize(num: number, stage: number = 0):string {
-    return num < 10240 ? num / 10 + (
-      stage === 0 ? " B"
-      : stage === 1 ? " KB"
-      : stage === 2 ? " MB"
-      : stage === 3 ? " GB" : " TB"
-    ) : CutSize(Math.round(num / 1024), stage+1)
-  }
-
-  const [currentDragElement, setCurrentDragElement]:any = useState(null)
-  function OnDropFolder(e:any) {
-    console.log("Target: " + e.nativeEvent.target.dataset.key)
-    console.log("Drag: " + currentDragElement.dataset.key)
-  }
 
 
 
   return (
-    <div onDragEnter={VisualizeUploader} onClick={CloseAllDrops} className="w-full min-h-fullWithHeader">
-      <header className="w-full px-1 pt-1 flex flex-row justify-between">
+    <div onDragEnter={VisualizeUploader} onClick={CloseAllDrops} 
+    className="w-full min-h-fullWithHeader sm:px-6">
+      <header className="w-full px-1 sm:px-0 pt-1 flex flex-row justify-between">
         {/* All actions drop */}
         <div>
           <button onClick={VisualizeAddDrop} id="dropdownDefaultButton" data-dropdown-toggle="dropdown" 
@@ -212,7 +122,7 @@ export default function DiskFolder() {
             <ul className="py-2 text-sm font-medium text-textLight dark:text-textDark" aria-labelledby="dropdownDefaultButton">
               <li>
                 <p className="cursor-pointer transition-colors px-2 py-2 flex flex-row 
-                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDarkjustify-start items-center
+                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center
                 bg-backgroundSecondLight dark:bg-backgroundThirdDark">
                   <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M11 12V9h2v3h3v2h-3v3h-2v-3H8v-2h3Zm10-7a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V5a2 
@@ -263,7 +173,7 @@ export default function DiskFolder() {
             </button>
             <div id="dropdown" className="z-10 opacity-0 divide-y divide-gray-100 rounded w-44 mt-0.5
             absolute transition-dropDown -translate-x-3/4 shadow-defaultLight dark:shadow-none
-            bg-backgroundSecondLight dark:bg-backgroundThirdDark overflow-hidden"
+            bg-backgroundSecondLight dark:bg-backgroundThirdDark overflow-hidden scale-y-0"
             ref={sortDropRef}>
               <ul className="py-1.5 text-sm font-medium text-textLight dark:text-textDark" aria-labelledby="dropdownDefaultButton">
                 <li>
@@ -455,7 +365,7 @@ export default function DiskFolder() {
               )))}
             </button>
             <div id="dropdown" className="z-10 opacity-0 divide-y divide-gray-100 rounded w-10 mt-0.5
-            absolute transition-dropDown shadow-defaultLight dark:shadow-none overflow-hidden
+            absolute transition-dropDown shadow-defaultLight dark:shadow-none overflow-hidden scale-y-0
             bg-backgroundSecondLight dark:bg-backgroundThirdDark" ref={cellTypeDropRef}>
               <ul className=" text-sm font-medium text-textLight dark:text-textDark" aria-labelledby="dropdownDefaultButton">
                 {currentRenderType !== "list" && (
@@ -518,106 +428,13 @@ export default function DiskFolder() {
         </div>
       </header>
 
-      <main className="py-4">
-        <div className="relative sm:mx-2 overflow-x-auto shadow-md sm:rounded-t-lg">
-          <table className="w-full text-base text-left text-textLight dark:text-textDark">
-            <thead className="uppercase font-normal bg-backgroundLight dark:bg-backgroundDark text-textLight dark:text-textDark">
-              <tr>
-                <th scope="col" className="px-4 w-10">
-                  <svg viewBox="0 0 256 256" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="none" d="M0 0h256v256H0z"></path>
-                    <path d="M224 177.3V78.7a8.1 8.1 0 0 0-4.1-7l-88-49.5a7.8 7.8 0 
-                    0 0-7.8 0l-88 49.5a8.1 8.1 0 0 0-4.1 7v98.6a8.1 8.1 0 0 0 4.1 7l88 
-                    49.5a7.8 7.8 0 0 0 7.8 0l88-49.5a8.1 8.1 0 0 0 4.1-7Z" 
-                    fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16" 
-                    className=" stroke-textLight dark:stroke-textDark"></path>
-                    <path fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16" 
-                    d="M177 152.5v-52L80 47" className="stroke-textLight dark:stroke-textDark"></path>
-                    <path fill="none" className="stroke-textLight dark:stroke-textDark" 
-                    strokeLinecap="round" strokeLinejoin="round" strokeWidth="16" 
-                    d="m222.9 74.6-94 53.4-95.8-53.4M128.9 128l-.9 106.8"></path>
-                  </svg>
-                </th>
-                <th scope="col" className="py-3 w-max">name</th>
-                <th scope="col" className="py-3 w-20 text-center">file size</th>
-                <th scope="col" className="py-3 px-8 w-40 text-center">created at</th>
-                <th scope="col" className="py-3 w-32">info icon</th>
-                <th scope="col" className="py-3 w-32">edit icon</th>
-              </tr>
-            </thead>
-            <tbody>
-              {folders.sort((a, b) => {
-                if (currentSortType === "size" ? a.size < b.size
-                  : currentSortType === "date" ? a.created_at < b.created_at
-                  : a.name < b.name) 
-                { return currentSortBy === "descending" ? 1 : -1; }
-                if (currentSortType === "size" ? a.size > b.size
-                : currentSortType === "date" ? a.created_at > b.created_at
-                : a.name > b.name) 
-                { return currentSortBy === "descending" ? -1 : 1; }
-                return 0;
-              }).map((item, index) => (
-                <tr key={index} data-key={item.id} draggable="true" 
-                onDragOver={(e:any) => {if (currentDragElement.dataset.key !== e.target.dataset.key) e.preventDefault()}}
-                onDrop={OnDropFolder} onDragStart={(e:any) => {setCurrentDragElement(e.target); e.target.style.width = "10px"}}
-                data-type="folder"
-                className="border-b border-borderLight transition-colors h-8
-                dark:border-borderDark hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark" 
-                onDoubleClick={() => {window.location.replace("/disk/folder/" + item.token)}}>
-                  <td data-key={item.id} draggable="false" className="flex items-center justify-center">
-                    <img src={item.icon_link} alt=""></img>
-                  </td>
-                  <td data-key={item.id} draggable="false" className="font-medium text">{item.name}</td>
-                  <td data-key={item.id} draggable="false" className="text-center">{CutSize(item.size * 10)}</td>
-                  <td data-key={item.id} draggable="false" className="text-center">change later</td>
-                  <td data-key={item.id} draggable="false"></td>
-                </tr>
-              ))}
-              {files.sort((a, b) => {
-                if (currentSortType === "name" ? a.name < b.name
-                  : currentSortType === "type" 
-                    ? a.name.lastIndexOf('.') + 1 === a.name.length ? false
-                    : b.name.lastIndexOf('.') + 1 === b.name.length ? true 
-                      : a.name.slice(a.name.lastIndexOf('.') + 1) < b.name.slice(b.name.lastIndexOf('.') + 1)
-                  : currentSortType === "size" ? a.size < b.size
-                  : a.created_at < b.created_at) 
-                { return currentSortBy === "descending" ? 1 : -1; }
-                if (currentSortType === "name" ? a.name > b.name
-                : currentSortType === "type" 
-                  ? a.name.lastIndexOf('.') + 1 === a.name.length ? true
-                  : b.name.lastIndexOf('.') + 1 === b.name.length ? false 
-                    : a.name.slice(a.name.lastIndexOf('.') + 1) > b.name.slice(b.name.lastIndexOf('.') + 1)
-                : currentSortType === "size" ? a.size > b.size
-                : a.created_at > b.created_at) 
-                { return currentSortBy === "descending" ? -1 : 1; }
-                return 0;
-              }).map((item, index) => (
-                <tr key={index} data-key={item.id} draggable="true"
-                onDrop={OnDropFolder} onDragStart={(e:any) => {setCurrentDragElement(e.target)}}
-                data-type="file"
-                className="border-b border-borderLight transition-colors h-8
-                dark:border-borderDark hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark">
-                  <td data-key={item.id} draggable="false">
-                    <img src={item.icon_link} alt=""></img>
-                  </td>
-                  <td data-key={item.id} draggable="false" className="font-medium">{item.name}</td>
-                  <td data-key={item.id} draggable="false" className="text-center">{CutSize(item.size * 10)}</td>
-                  <td data-key={item.id} draggable="false" className="text-center">change later</td>
-                  <td data-key={item.id} draggable="false"></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-      </main>
+      <RenderData currentSortBy={currentSortBy} currentSortType={currentSortType}></RenderData>
 
       {/* Drag and drop files */}
       {isDragVisible === true && (
         <motion.div initial={{opacity: 0}} animate={{opacity: 1}} ref={fileUploaderRef}
         onMouseMove={VisualizeUploader} className="absolute transition-dropFiles top-0 left-0 z-50 h-fulldvh w-fulldvw bg-black/70">
-          <FileUploader
-           onDragEnter={VisualizeUploader} multiple={true} onTypeError={(err:any) => console.log(err)} 
+          <FileUploader onDragEnter={VisualizeUploader} multiple={true} onTypeError={(err:any) => console.log(err)} 
           classes=" max-h-fulldvh h-full100 max-w-fulldvw w-full100 justify-center text-center fill-white
           p-dfUploadFiles sm:p-smUploadFiles md:p-mdUploadFiles lg:p-lgUploadFiles xl:p-xlUploadFiles 2xl:p-xl2UploadFiles
           outline-3 -outline-offset-8 outline-blue-700 outline-dashed border-imp0 hover:bg-red"
