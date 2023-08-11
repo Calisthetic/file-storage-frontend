@@ -1,5 +1,7 @@
 import { useState } from "react"
 
+import "../../../styles/data-title.css"
+
 type Props = {
   currentSortType: string
   currentSortBy:string
@@ -103,16 +105,64 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
   }
 
   const [currentDragElement, setCurrentDragElement]:any = useState(null)
-  function OnDropFolder(e:any) {
+  function OnDropFolderTable(e:any) {
     console.log("Target: " + e.nativeEvent.target.dataset.type + " " + e.nativeEvent.target.dataset.key)
     console.log("Drag: " + e.nativeEvent.target.dataset.type + " " + currentDragElement.dataset.key)
   }
 
+  function OnDropFolderList(e:any) {
+    console.log("Target: " + e.nativeEvent.target.dataset.type + " " + e.nativeEvent.target.dataset.key)
+    console.log("Drag: " + e.nativeEvent.target.dataset.type + " " + currentDragElement.dataset.key)
+  }
 
   return (
     <main className="py-4">
       {currentRenderType === "list" ? (
-        <div>list</div>
+        <div className="">
+          {folders.sort((a, b) => {
+            if (currentSortType === "size" ? a.size < b.size
+              : currentSortType === "date" ? a.created_at < b.created_at
+              : a.name < b.name) 
+            { return currentSortBy === "descending" ? 1 : -1; }
+            if (currentSortType === "size" ? a.size > b.size
+            : currentSortType === "date" ? a.created_at > b.created_at
+            : a.name > b.name) 
+            { return currentSortBy === "descending" ? -1 : 1; }
+            return 0;
+          }).map((item, index) => (
+            <div key={index} data-key={item.id} draggable="true" onDrop={OnDropFolderList}
+            onDragStart={(e:any) => {setCurrentDragElement(e.target);}}
+            onDragOver={(e:any) => {if (currentDragElement.dataset.key !== e.target.dataset.key) e.preventDefault()}}
+            className="flex h-full w-full
+            hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
+            flex-row justify-between text-lg">
+              <div className="flex flex-row">
+                <div className="w-6 sm:w-7 mg:w-8">ic</div>
+                <div>{item.name}</div>
+              </div>
+              <div className="flex flex-row items-center">
+                {/* Info */}
+                <div className="w-6 sm:w-7 mg:w-8"
+                data-title={"Size: " + CutSize(item.size * 10) 
+                  + "\nCreated at: " + item.created_at
+                  + "\nWatches: " + (item.watches ? item.watches : 0)
+                  + "\nDownloads: " + (item.downloads ? item.downloads : 0)
+                }>
+                  <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" 
+                  enableBackground="new 0 0 16 16" className="w-6 h-6">
+                    <path d="M8 2C4.69 2 2 4.69 2 8s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 11c-2.76 
+                    0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" className="fill-textLight dark:fill-textDark"></path>
+                    <path d="M8 6.85c-.28 0-.5.22-.5.5v3.4c0 .28.22.5.5.5s.5-.22.5-.5v-3.4c0-.27-.22-.5-.5-.5zM8.01 
+                    4.8c-.26-.02-.5.25-.51.52v.08c0 .27.21.47.49.48H8c.27 0 .49-.24.5-.5v-.11c0-.29-.21-.47-.49-.47z" 
+                    className="fill-textLight dark:fill-textDark"></path>
+                  </svg>
+                </div>
+                {/* Actions */}
+                <div className="w-6 sm:w-7 mg:w-8">actions</div>
+              </div>
+            </div>
+          ))}
+        </div>
       ) : currentRenderType === "table" ? (
         <div className="overflow-x-auto sm:overflow-x-hidden sm:rounded-t-lg">
           <table className="w-full whitespace-nowrap text-base text-left text-textLight dark:text-textDark">
@@ -135,14 +185,14 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                 </th>
                 <th scope="col" className="py-3 w-max">name</th>
                 <th scope="col" className="py-3 w-20">file size</th>
-                <th scope="col" className="py-3 px-8 w-36 text-center">created at</th>
-                <th scope="col" className="py-3 w-8"></th>
-                <th scope="col" className="py-3 w-8"></th>
+                <th scope="col" className="py-3 w-36">created at</th>
                 {/* For actions */}
-                <th scope="col" className="py-3 w-8"></th>
-                <th scope="col" className="py-3 w-8"></th>
-                <th scope="col" className="py-3 w-8"></th>
-                <th scope="col" className="py-3 w-8"></th>
+                <th scope="col" className="py-3 w-6 sm:w-7 mg:w-8"></th>
+                <th scope="col" className="py-3 w-6 sm:w-7 mg:w-8"></th>
+                <th scope="col" className="py-3 w-6 sm:w-7 mg:w-8"></th>
+                <th scope="col" className="py-3 w-6 sm:w-7 mg:w-8"></th>
+                <th scope="col" className="py-3 w-6 sm:w-7 mg:w-8"></th>
+                <th scope="col" className="py-3 w-6 sm:w-7 mg:w-8"></th>
               </tr>
             </thead>
             <tbody>
@@ -159,7 +209,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               }).map((item, index) => (
                 <tr key={index} data-key={item.id} draggable="true" 
                 onDragOver={(e:any) => {if (currentDragElement.dataset.key !== e.target.dataset.key) e.preventDefault()}}
-                onDrop={OnDropFolder} onDragStart={(e:any) => {setCurrentDragElement(e.target);}}
+                onDrop={OnDropFolderTable} onDragStart={(e:any) => {setCurrentDragElement(e.target)}}
                 className="border-b border-borderLight transition-colors h-8 hover-parent
                 dark:border-borderDark hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark" 
                 onDoubleClick={() => {window.location.replace("/disk/folder/" + item.token)}}>
@@ -171,7 +221,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td data-key={item.id} data-type="folder" draggable="false" 
                   className="">{CutSize(item.size * 10)}</td>
                   <td data-key={item.id} data-type="folder" draggable="false" 
-                  className="text-center">change later</td>
+                  className="">change later</td>
                   {/* Links */}
                   <td data-key={item.id} data-type="folder" draggable="false">
                     <div className="flex hover-child justify-center items-center h-full">
@@ -217,19 +267,6 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       </div>
                     </div>
                   </td>
-                  {/* Download */}
-                  <td data-key={item.id} data-type="folder" draggable="false" 
-                  className="text-center">
-                    <div className="flex hover-child justify-center items-center h-full">
-                      <div data-key={item.id} className="cursor-pointer">
-                        <svg className=" stroke-textLight dark:stroke-textDark w-5 h-5" fill="none" 
-                        strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
-                        </svg>
-                      </div>
-                    </div>
-                  </td>
                   {/* Delete */}
                   <td data-key={item.id} data-type="folder" draggable="false" 
                   className="text-center">
@@ -252,7 +289,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   {/* Info watches and downloads */}
                   <td data-key={item.id} data-type="folder" draggable="false">
                     <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16"
-                    className="w-6 hover-first h-6 ml-1">
+                    className="w-6 hover-first h-6 ml-0 sm:ml-0.5 md:ml-1">
                       <path d="M8 2C4.69 2 2 4.69 2 8s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 11c-2.76 
                       0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" className="fill-textLight dark:fill-textDark"></path>
                       <path d="M8 6.85c-.28 0-.5.22-.5.5v3.4c0 .28.22.5.5.5s.5-.22.5-.5v-3.4c0-.27-.22-.5-.5-.5zM8.01 
@@ -360,6 +397,19 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       </div>
                     </div>
                   </td> */}
+                  {/* Download */}
+                  <td data-key={item.id} data-type="folder" draggable="false" 
+                  className="text-center">
+                    <div className="flex justify-center items-center h-full">
+                      <div data-key={item.id} className="cursor-pointer">
+                        <svg className=" stroke-textLight dark:stroke-textDark w-5 h-5" fill="none" 
+                        strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
+                        </svg>
+                      </div>
+                    </div>
+                  </td>
                   {/* Star */}
                   <td data-key={item.id} data-type="folder" draggable="false" 
                   className="text-center">
@@ -411,7 +461,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                 return 0;
               }).map((item, index) => (
                 <tr key={index} data-key={item.id} draggable="true"
-                onDrop={OnDropFolder} onDragStart={(e:any) => {setCurrentDragElement(e.target)}}
+                onDrop={OnDropFolderTable} onDragStart={(e:any) => {setCurrentDragElement(e.target)}}
                 data-type="file"
                 className="border-b border-borderLight transition-colors h-8
                 dark:border-borderDark hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark">
@@ -420,9 +470,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   </td>
                   <td data-key={item.id} draggable="false" className="font-medium">{item.name}</td>
                   <td data-key={item.id} draggable="false" className="">{CutSize(item.size * 10)}</td>
-                  <td data-key={item.id} draggable="false" className="text-center">change later</td>
-                  <td data-key={item.id} draggable="false"></td>
-                  <td data-key={item.id} draggable="false" colSpan={2}></td>
+                  <td data-key={item.id} draggable="false">change later</td>
                 </tr>
               ))}
             </tbody>
