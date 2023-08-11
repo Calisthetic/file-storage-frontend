@@ -1,0 +1,17 @@
+.focus-first-right:focus + .focus-second-right {
+  transform: scale(1, 1) translate(24px, 50%) !important;
+  opacity: 1 !important;
+}
+
+.focus-second-right:hover {
+  transform: scale(1, 1) translate(24px, 50%) !important;
+  opacity: 1 !important;
+}
+
+.focus-second-right {
+  transform: scale(0, 0) translate(24px, 50%);
+  position: absolute;
+  transition: 0.25s ease;
+  transition-property: opacity;
+  opacity: 0;
+}
