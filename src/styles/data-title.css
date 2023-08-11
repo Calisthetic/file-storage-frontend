@@ -12,11 +12,14 @@
   left: 50%;
   top: calc(100% + 2px);
   transform: translate(-50%, 0%);
-  white-space: nowrap;
+  white-space:pre;
+  word-wrap: nowrap;
+  word-break: keep-all;
   opacity: 0;
   visibility: hidden;
   font-weight: 500;
   border-radius: 4px;
+  line-height: 24px;
 }
 [data-title] {
   position: relative;
