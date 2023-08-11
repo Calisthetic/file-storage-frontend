@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import "../../../styles/data-title.css"
+import "../../../styles/focus-elems.css"
 
 type Props = {
   currentSortType: string
@@ -8,6 +8,13 @@ type Props = {
   currentRenderType:string
 }
 export default function RenderData({currentSortType, currentSortBy, currentRenderType}:Props) {
+  const primaryColors:string[] = [
+    "fd7997", "fc5177", "fc2d6f", "e00c32",
+    "fd80ab", "fc4081", "f51057", "c51162",
+    "ea80fc", "e040fb", "d527fa", "aa26fb",
+    "b388fc", "7c4cfb", "6524fb", "6221ea",
+    "8c9dfc", "536dfb", "3d5afb", "304ffb",
+  ]
   // Main part
   interface FoldersResponse {
     id: number,
@@ -20,7 +27,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     watches: number | null,
     downloads: number | null,
     is_elected: boolean,
-    color: string,
+    color: string | null,
   }
   interface FilesResponse {
     id: number,
@@ -46,7 +53,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       watches: null,
       downloads: null,
       is_elected: true,
-      color: "#ff0000",
+      color: "3d5afb",
     },
     {
       id: 2,
@@ -59,7 +66,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       watches: 12,
       downloads: 6,
       is_elected: false,
-      color: "#00ff00",
+      color: "00ff00",
     }
   ]
   let files:FilesResponse[] = [
@@ -118,6 +125,28 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     console.log("Drag: " + e.nativeEvent.target.dataset.type + " " + currentDragElement.dataset.key)
   }
 
+  // Funcs
+  function invertColor(hex:string) {
+    if (hex.indexOf('#') === 0) {
+      hex = hex.slice(1);
+    }
+    if (hex.length === 3) {
+      hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+    if (hex.length !== 6) {
+      throw new Error('Invalid HEX color.');
+    }
+    var r = (255 - parseInt(hex.slice(0, 2), 16)).toString(16),
+      g = (255 - parseInt(hex.slice(2, 4), 16)).toString(16),
+      b = (255 - parseInt(hex.slice(4, 6), 16)).toString(16);
+    return '#' + padZero(r) + padZero(g) + padZero(b);
+  }
+  function padZero(str:string) {
+    let len:number = 2;
+    var zeros = new Array(len).join('0');
+    return (zeros + str).slice(-len);
+  }
+
   return (
     <main className="py-4">
       {currentRenderType === "list" ? (
@@ -140,11 +169,41 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
             hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
             flex-row justify-between text-lg px-1">
               <div className="flex flex-row items-center space-x-2">
-                <div className="w-6 cursor-pointer">
-                  <svg viewBox="0 0 20 16" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
+                <button className="w-6 cursor-pointer focus-first-right flex flex-row">
+                  <svg viewBox="0 0 20 16" className="w-6 h-6 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M8 0H2C.9 0 0 .9 0 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2h-8L8 0Z" 
-                    fillRule="evenodd" fill={item.color ? item.color : "#888"}></path>
+                    fillRule="evenodd" fill={item.color ? ("#" + item.color) : "#888"}></path>
                   </svg>
+                </button>
+                <div className="focus-second-right dark:bg-backgroundThirdDark rounded-lg text-base -mt-6 p-2">
+                  <div className="flex flex-row justify-between mb-1">
+                    <div></div>
+                    <div>Folder's color</div>
+                  </div>
+                  <div className="flex flex-row space-x-2">
+                    {primaryColors.slice(primaryColors.length - (Math.floor(primaryColors.length / 4)))
+                    .map((temp_primary_color, temp_primary_color_index) => (
+                      <div key={temp_primary_color_index} className="flex flex-col space-y-2">
+                        {primaryColors.slice(temp_primary_color_index * 4, temp_primary_color_index * 4 + 4)
+                        .map((primary_color, primary_color_index) => (
+                          <div key={primary_color_index} className="h-6 w-6">
+                            <button className="rounded-full h-6 w-6 transition-shadow
+                            hover:shadow-defaultLight hover:dark:shadow-defaultDark"
+                            style={{backgroundColor: "#" + primary_color}}>
+                              {item.color === primary_color && (
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
+                                enableBackground="new 0 0 24 24" className="w-6 h-6">
+                                  <path d="M10 18c-.5 0-1-.2-1.4-.6l-4-4c-.8-.8-.8-2 0-2.8.8-.8 2.1-.8 
+                                  2.8 0l2.6 2.6 6.6-6.6c.8-.8 2-.8 2.8 0 .8.8.8 2 0 2.8l-8 8c-.4.4-.9.6-1.4.6z" 
+                                  fill={invertColor("#" + primary_color)}></path>
+                                </svg>
+                              )}
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
                 </div>
                 <div>{item.name}</div>
               </div>
