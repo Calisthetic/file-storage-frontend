@@ -1,20 +1,15 @@
 import { useState } from "react"
 
 import "../../../styles/focus-elems.css"
+import { primaryColors } from "../../../data/folder-colors"
 
 type Props = {
   currentSortType: string
   currentSortBy:string
   currentRenderType:string
 }
+
 export default function RenderData({currentSortType, currentSortBy, currentRenderType}:Props) {
-  const primaryColors:string[] = [
-    "fd7997", "fc5177", "fc2d6f", "e00c32",
-    "fd80ab", "fc4081", "f51057", "c51162",
-    "ea80fc", "e040fb", "d527fa", "aa26fb",
-    "b388fc", "7c4cfb", "6524fb", "6221ea",
-    "8c9dfc", "536dfb", "3d5afb", "304ffb",
-  ]
   // Main part
   interface FoldersResponse {
     id: number,
@@ -189,13 +184,13 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                           <div key={primary_color_index} className="h-6 w-6">
                             <button className="rounded-full h-6 w-6 transition-shadow
                             hover:shadow-defaultLight hover:dark:shadow-defaultDark"
-                            style={{backgroundColor: "#" + primary_color}}>
-                              {item.color === primary_color && (
+                            style={{backgroundColor: "#" + primary_color.color}}>
+                              {item.color === primary_color.color && (
                                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
                                 enableBackground="new 0 0 24 24" className="w-6 h-6">
                                   <path d="M10 18c-.5 0-1-.2-1.4-.6l-4-4c-.8-.8-.8-2 0-2.8.8-.8 2.1-.8 
                                   2.8 0l2.6 2.6 6.6-6.6c.8-.8 2-.8 2.8 0 .8.8.8 2 0 2.8l-8 8c-.4.4-.9.6-1.4.6z" 
-                                  fill={invertColor("#" + primary_color)}></path>
+                                  fill={invertColor("#" + primary_color.color)}></path>
                                 </svg>
                               )}
                             </button>
