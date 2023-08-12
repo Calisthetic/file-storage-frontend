@@ -48,7 +48,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       watches: null,
       downloads: null,
       is_elected: true,
-      color: "3d5afb",
+      color: "d16a1D",
     },
     {
       id: 2,
@@ -175,17 +175,18 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     <div></div>
                     <div>Folder's color</div>
                   </div>
-                  <div className="flex flex-row space-x-2">
+                  <div className="flex flex-row space-x-1 md:space-x-2">
                     {primaryColors.slice(primaryColors.length - (Math.floor(primaryColors.length / 4)))
                     .map((temp_primary_color, temp_primary_color_index) => (
-                      <div key={temp_primary_color_index} className="flex flex-col space-y-2">
+                      <div key={temp_primary_color_index} className="flex flex-col space-y-1 md:space-y-2">
                         {primaryColors.slice(temp_primary_color_index * 4, temp_primary_color_index * 4 + 4)
                         .map((primary_color, primary_color_index) => (
                           <div key={primary_color_index} className="h-6 w-6">
                             <button className="rounded-full h-6 w-6 transition-shadow
                             hover:shadow-defaultLight hover:dark:shadow-defaultDark"
-                            style={{backgroundColor: "#" + primary_color.color}}>
-                              {item.color === primary_color.color && (
+                            style={{backgroundColor: "#" + primary_color.color}}
+                            title={primary_color.name}>
+                              {item.color?.toLowerCase() === primary_color.color.toLowerCase() && (
                                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
                                 enableBackground="new 0 0 24 24" className="w-6 h-6">
                                   <path d="M10 18c-.5 0-1-.2-1.4-.6l-4-4c-.8-.8-.8-2 0-2.8.8-.8 2.1-.8 
