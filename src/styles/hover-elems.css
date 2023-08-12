@@ -4,7 +4,7 @@
   transform: scale(1, 1) translate(-50%, 0%);
 }
 
-.hover-second:hover {
+.hover-second:has(button):hover {
   opacity: 1;
   transform: scale(1, 1) translate(-50%, 0%);
 }

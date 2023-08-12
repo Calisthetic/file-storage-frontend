@@ -252,9 +252,9 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       </svg>
                     </div>
                   </div>
-                  <div className="hover-second ml-3.5
+                  <div className="hover-second ml-3.5 w-8
                   bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
-                    <div className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
+                    <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
                       <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
                       className="w-5 h-5"><g>
                         <path d="M2 29a1 1 0 0 1-1-1.11l.77-7a1 1 0 0 1 .29-.59L18.42 3.94a3.2 
@@ -268,8 +268,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                         <path d="M30 29H14a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2Z" 
                         className="fill-textLight dark:fill-textDark"></path></g>
                       </svg>
-                    </div>
-                    <div className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
+                    </button>
+                    <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
                       {item.is_elected === true ? (
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                         className="w-5 h-5">
@@ -291,15 +291,15 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                           className="fill-textLight dark:fill-textDark"></path>
                         </svg>
                       )}
-                    </div>
-                    <div className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
+                    </button>
+                    <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
                       <svg className=" stroke-textLight dark:stroke-textDark h-5 w-5" fill="none" 
                       strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                       viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
                       </svg>
-                    </div>
-                    <div className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
+                    </button>
+                    <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
                       <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" className="h-5 w-5" viewBox="0,0,256,256">
                         <g className="fill-textLight dark:fill-textDark" fillRule="nonzero" stroke="none" 
                         strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDashoffset="0" 
@@ -311,7 +311,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                           1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1z"></path>
                         </g></g>
                       </svg>
-                    </div>
+                    </button>
                   </div>
                 </div>
               </div>
