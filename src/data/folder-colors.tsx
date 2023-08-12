@@ -3,35 +3,23 @@ interface ColorsList {
   color:string
   name:string
 }
-export const primaryColors:ColorsList[] = [ 
-  {
-    color: "f17f7f",
-    name: "LightCoral",
-  },
-  {
-    color: "cf5b5b",
-    name: "IndianRed",
-  },
-  {
-    color: "a32f22",
-    name: "Brown",
-  },
-  {
-    color: "790200",
-    name: "Maroon",
-  },
+export const primaryColors:ColorsList[] = [
   // ============ //
   {
     color: "fa8072",
     name: "Salmon",
   },
   {
-    color: "dc143c",
-    name: "Crimson",
+    color: "e74c3c",
+    name: "Alizarin",
   },
   {
     color: "ff0000",
     name: "Red",
+  },
+  {
+    color: "dc143c",
+    name: "Crimson",
   },
   {
     color: "880000",
@@ -39,29 +27,12 @@ export const primaryColors:ColorsList[] = [
   },
   // ============ //
   {
-    color: "e0b887",
-    name: "BurlyWood",
+    color: "ffff00",
+    name: "Yellow",
   },
   {
-    color: "f4a65c",
-    name: "SandyBrown",
-  },
-  {
-    color: "d16a1d",
-    name: "Chocolate",
-  },
-  {
-    color: "884818",
-    name: "SaddleBrown",
-  },
-  // ============ //
-  {
-    color: "ff7f3d",
-    name: "Coral",
-  },
-  {
-    color: "fb4903",
-    name: "OrangeRed",
+    color: "f8d902",
+    name: "Gold",
   },
   {
     color: "fea803",
@@ -71,22 +42,9 @@ export const primaryColors:ColorsList[] = [
     color: "ff8a02",
     name: "DarkOrange",
   },
-  // ============ //
   {
-    color: "fae5ae",
-    name: "Moccasin",
-  },
-  {
-    color: "f1e68a",
-    name: "Khakl",
-  },
-  {
-    color: "ffff00",
-    name: "Yellow",
-  },
-  {
-    color: "f8d902",
-    name: "Gold",
+    color: "884818",
+    name: "SaddleBrown",
   },
   // ============ //
   {
@@ -94,8 +52,8 @@ export const primaryColors:ColorsList[] = [
     name: "GreenYellow",
   },
   {
-    color: "7efa04",
-    name: "LawnGreen",
+    color: "05ff7f",
+    name: "SpringGreen",
   },
   {
     color: "04fe00",
@@ -105,30 +63,17 @@ export const primaryColors:ColorsList[] = [
     color: "2fce33",
     name: "LimeGreen",
   },
-  // ============ //
-  {
-    color: "05ff7f",
-    name: "SpringGreen",
-  },
-  {
-    color: "328c56",
-    name: "SeaGreen",
-  },
-  {
-    color: "288a27",
-    name: "ForestGreen",
-  },
   {
     color: "007f04",
     name: "Green",
   },
   // ============ //
   {
-    color: "79fecf",
+    color: "7fffd4",
     name: "Aquamarine",
   },
   {
-    color: "3ce1d0",
+    color: "1abc9c",
     name: "Turquoise",
   },
   {
@@ -136,112 +81,39 @@ export const primaryColors:ColorsList[] = [
     name: "Cyan",
   },
   {
-    color: "008a8d",
-    name: "Teal",
-  },
-  // ============ //
-  {
-    color: "afe0e5",
-    name: "PowderBlue",
-  },
-  {
-    color: "84d0e7",
-    name: "SkyBlue",
-  },
-  {
-    color: "02beff",
-    name: "DeepSkyBlue",
-  },
-  {
     color: "1d90ff",
     name: "DodgerBlue",
-  },
-  // ============ //
-  {
-    color: "4783b7",
-    name: "SteelBlue",
-  },
-  {
-    color: "4168dd",
-    name: "RoyalBlue",
   },
   {
     color: "0000cf",
     name: "MediumBlue",
   },
-  {
-    color: "00018a",
-    name: "MidnightBlue",
-  },
   // ============ //
   {
-    color: "483c8e",
-    name: "DarkSlateBlue",
-  },
-  {
-    color: "6b58ce",
-    name: "SlateBlue",
-  },
-  {
-    color: "7d66f4",
+    color: "dda0dd",
     name: "MediumSlateBlue",
   },
   {
-    color: "4a0081",
-    name: "Indigo",
-  },
-  // ============ //
-  {
     color: "eb84ed",
     name: "Violet",
-  },
-  {
-    color: "9601d6",
-    name: "DarkViolet",
   },
   {
     color: "f903fc",
     name: "Magenta",
   },
   {
-    color: "7d017d",
-    name: "DarkMagenta",
-  },
-  // ============ //
-  {
-    color: "ffc0cb",
-    name: "Pink",
+    color: "9601d6",
+    name: "DarkViolet",
   },
   {
-    color: "ff69b4",
-    name: "HotPink",
-  },
-  {
-    color: "ff1493",
-    name: "DeepPink",
-  },
-  {
-    color: "c71585",
-    name: "MediumVioletPink",
+    color: "7e017f",
+    name: "Purple",
   },
   // ============ //
   {
     color: "ffffff",
-    name: "",
+    name: "White",
   },
-  {
-    color: "f1fff0",
-    name: "",
-  },
-  {
-    color: "edffff",
-    name: "",
-  },
-  {
-    color: "ffe4e0",
-    name: "",
-  },
-  // ============ //
   {
     color: "c0c0c0",
     name: "Silver",

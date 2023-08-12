@@ -48,7 +48,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       watches: null,
       downloads: null,
       is_elected: true,
-      color: "d16a1D",
+      color: "ff0000",
     },
     {
       id: 2,
@@ -120,7 +120,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     console.log("Drag: " + e.nativeEvent.target.dataset.type + " " + currentDragElement.dataset.key)
   }
 
-  // Funcs
+  // Render colors
+  const colorsInRow:number = 5
   function invertColor(hex:string) {
     if (hex.indexOf('#') === 0) {
       hex = hex.slice(1);
@@ -170,16 +171,15 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     fillRule="evenodd" fill={item.color ? ("#" + item.color) : "#888"}></path>
                   </svg>
                 </button>
-                <div className="focus-second-right dark:bg-backgroundThirdDark rounded-lg text-base -mt-6 p-2">
-                  <div className="flex flex-row justify-between mb-1">
-                    <div></div>
+                <div className="focus-second-right bg-backgroundLight dark:bg-backgroundThirdDark rounded-lg text-base -mt-6 px-2 pb-2 pt-1">
+                  <div className="flex flex-row justify-between font-semibold mb-1">
                     <div>Folder's color</div>
                   </div>
-                  <div className="flex flex-row space-x-1 md:space-x-2">
-                    {primaryColors.slice(primaryColors.length - (Math.floor(primaryColors.length / 4)))
+                  <div className="flex flex-row gap-1 md:gap-1.5">
+                    {primaryColors.slice(primaryColors.length - (Math.floor(primaryColors.length / colorsInRow)))
                     .map((temp_primary_color, temp_primary_color_index) => (
-                      <div key={temp_primary_color_index} className="flex flex-col space-y-1 md:space-y-2">
-                        {primaryColors.slice(temp_primary_color_index * 4, temp_primary_color_index * 4 + 4)
+                      <div key={temp_primary_color_index} className="flex flex-col gap-1 md:gap-1.5">
+                        {primaryColors.slice(temp_primary_color_index * colorsInRow, temp_primary_color_index * colorsInRow + colorsInRow)
                         .map((primary_color, primary_color_index) => (
                           <div key={primary_color_index} className="h-6 w-6">
                             <button className="rounded-full h-6 w-6 transition-shadow
