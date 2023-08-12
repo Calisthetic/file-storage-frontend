@@ -1,4 +1,6 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 
 import "../../../styles/focus-elems.css"
 import { primaryColors } from "../../../data/folder-colors"
@@ -10,6 +12,15 @@ type Props = {
 }
 
 export default function RenderData({currentSortType, currentSortBy, currentRenderType}:Props) {
+  const newFolderRef:any = useRef();
+  const [open, setOpen] = useState(false);
+  const [selectedFolder, setSelectedFolder] = useState<any>();
+  const modalCustomizeOpen = (e:any) => {
+    setOpen(true)
+    setSelectedFolder(e.target)
+  };
+  const modalCustomizeClose = () => setOpen(false);
+
   // Main part
   interface FoldersResponse {
     id: number,
@@ -143,6 +154,19 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     return (zeros + str).slice(-len);
   }
 
+  // Modal
+  const modalWindowStyle = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: "auto",
+    bgcolor: 'none',
+    boxShadow: 24,
+    //overflow: "hidden",
+    borderRadius: "16px"
+  };
+
   return (
     <main className="py-4">
       {currentRenderType === "list" ? (
@@ -254,9 +278,10 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   </div>
                   <div className="hover-second ml-3.5 w-8
                   bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
-                    <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
+                    <button data-id={item.id} data-name={item.name} onClick={modalCustomizeOpen}
+                    className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
                       <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
-                      className="w-5 h-5"><g>
+                      className="w-5 h-5 pointer-events-none"><g>
                         <path d="M2 29a1 1 0 0 1-1-1.11l.77-7a1 1 0 0 1 .29-.59L18.42 3.94a3.2 
                         3.2 0 0 1 4.53 0l3.11 3.11a3.2 3.2 0 0 1 0 4.53L9.71 27.93a1 1 0 0 1-.59.29l-7 
                         .77Zm7-1.78Zm-5.27-5.77-.6 5.42 5.42-.6 16.1-16.1a1.2 1.2 0 0 0 0-1.7l-3.12-3.12a1.2 
@@ -405,9 +430,10 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td data-key={item.id} data-type="folder" draggable="false" 
                   className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
-                      <div data-key={item.id} className="cursor-pointer">
+                      <button data-id={item.id} data-name={item.name} onClick={modalCustomizeOpen} 
+                      className="cursor-pointer">
                         <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
-                        className="w-5 h-5"><g>
+                        className="w-5 h-5 pointer-events-none"><g>
                           <path d="M2 29a1 1 0 0 1-1-1.11l.77-7a1 1 0 0 1 .29-.59L18.42 3.94a3.2 
                           3.2 0 0 1 4.53 0l3.11 3.11a3.2 3.2 0 0 1 0 4.53L9.71 27.93a1 1 0 0 1-.59.29l-7 
                           .77Zm7-1.78Zm-5.27-5.77-.6 5.42 5.42-.6 16.1-16.1a1.2 1.2 0 0 0 0-1.7l-3.12-3.12a1.2 
@@ -419,7 +445,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                           <path d="M30 29H14a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2Z" 
                           className="fill-textLight dark:fill-textDark"></path></g>
                         </svg>
-                      </div>
+                      </button>
                     </div>
                   </td>
                   {/* Delete */}
@@ -559,6 +585,39 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
         <div>big tile</div>
       )}
 
+
+      <Modal
+        open={open}
+        onClose={modalCustomizeClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modalWindowStyle}>
+          <div className="text-textLight dark:text-textDark px-4 py-4 rounded-lg
+          bg-backgroundSecondLight dark:bg-backgroundSecondDark">
+            <p className=" text-2xl font-semibold">Rename</p>
+            <input className=" my-4 w-64 border border-borderLight dark:border-borderDark 
+            text-textLight text-sm rounded-lg block p-2 dark:focus:border-textDark
+            focus:border-textLight bg-backgroundThirdLight dark:bg-backgroundThirdDark
+            dark:placeholder-gray-400 dark:text-textDark "
+            type="text" placeholder={selectedFolder !== undefined && selectedFolder.dataset.id}
+            defaultValue={selectedFolder !== undefined && selectedFolder.dataset.name}
+            ref={newFolderRef}></input>
+            <div className="flex justify-end text-base gap-2">
+              <button className=" hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark
+              px-4 rounded-full transition-colors"
+              onClick={() => {modalCustomizeClose();}}>
+                Calcel
+              </button>
+              <button className=" bg-buttonLight dark:bg-buttonDark rounded-full px-5 py-1
+              hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark transition-colors"
+              onClick={() => {modalCustomizeClose();}}>
+                OK
+              </button>
+            </div>
+          </div>
+        </Box>
+      </Modal>
     </main>
   )
 }
