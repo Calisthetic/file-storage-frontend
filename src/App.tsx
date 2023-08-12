@@ -1,8 +1,8 @@
 import { Routes, Route, } from "react-router-dom";
-import ErrorPage from './page-not-found';
 import Layout from './layout';
 import Disk from './routes/disk/disk';
 import AuthPage from './routes/auth/auth';
+import Redirect from "./components/redirect";
 
 function App() {
   interface StyleObject {
@@ -27,7 +27,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Layout></Layout>}></Route>
       <Route path='auth/*' element={<AuthPage></AuthPage>}></Route>
-      <Route path='*' element={<ErrorPage></ErrorPage>}></Route>
+      <Route path='*' element={<Redirect location="/"></Redirect>}></Route>
       <Route path='disk/*' element={<Disk></Disk>}></Route>
     </Routes>
   );
