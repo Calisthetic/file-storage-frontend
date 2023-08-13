@@ -3,6 +3,10 @@
 
 ## Dev
 
+### Tasks
+
+- Font auto save and init (premium)
+
 ### Dependencies
 
 [React Router DOM](https://www.npmjs.com/package/react-router-dom)

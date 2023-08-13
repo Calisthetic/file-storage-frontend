@@ -142,9 +142,10 @@ export default function EditUIModal() {
 
   let fontLink = document.getElementById("GoogleFontsLink") as HTMLLinkElement
   let rootElement:HTMLElement = document.getElementById("custom-root") as HTMLElement
-  let currentFont = rootElement?.style?.fontFamily
+  const [currentFont, setCurrentFont] = useState<string>(rootElement?.style?.fontFamily)
   function SetSelectedFont(e:any) {
     if (fontLink && rootElement) {
+      setCurrentFont(e.target.dataset.name + "")
       rootElement.style.fontFamily = e.target.dataset.name + ""
       fontLink.href = "https://fonts.googleapis.com/css?family=" + e.target.dataset.name
     }
@@ -246,7 +247,8 @@ export default function EditUIModal() {
                 hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark">{item.family}</button>
               ) : (
                 <button key={index} data-name={item.family} onClick={SetSelectedFont}
-                className="text-left px-2 rounded-sm transition-colors
+                className="text-left px-1.5 border-x-2 rounded-sm transition-colors
+                border-backgroundSecondLight dark:border-backgroundSecondDark
                 hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark">{item.family}</button>
               )
             ))}
