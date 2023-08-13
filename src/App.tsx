@@ -24,12 +24,14 @@ function App() {
   }
 
   return (
-    <Routes>
-      <Route path='/' element={<Layout></Layout>}></Route>
-      <Route path='auth/*' element={<AuthPage></AuthPage>}></Route>
-      <Route path='*' element={<Redirect location="/"></Redirect>}></Route>
-      <Route path='disk/*' element={<Disk></Disk>}></Route>
-    </Routes>
+    <div id="custom-root">
+      <Routes>
+        <Route path='/' element={<Layout></Layout>}></Route>
+        <Route path='auth/*' element={<AuthPage></AuthPage>}></Route>
+        <Route path='*' element={<Redirect location="/"></Redirect>}></Route>
+        <Route path='disk/*' element={<Disk></Disk>}></Route>
+      </Routes>
+    </div>
   );
 }
 

@@ -151,7 +151,7 @@ export default function DiskSideBar() {
         <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.12, stiffness: 300, damping: 24}}>
           <Link to="upgrade" className="flex items-center p-2 dark:text-textDark text-textLight transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
-            <motion.svg className="w-5 h-5 fill-iconLight dark:fill-iconDark" 
+            <motion.svg className="w-6 h-6 fill-iconLight dark:fill-iconDark" 
             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 20">
               <path d="M7.958 19.393a7.7 7.7 0 0 1-6.715-3.439c-2.868-4.832 
               0-9.376.944-10.654l.091-.122a3.286 3.286 0 0 0 .765-3.288A1 

@@ -1,25 +1,21 @@
-import { useRef, useState} from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { AnimatePresence, motion } from "framer-motion"
 
 export default function EditUIModal() {
-  const alertSuccessRef:any = useRef();
-  const [isAlertSuccessOpen, setIsAlertSuccessOpen] = useState(false);
-  
-  const alertWarningRef:any = useRef();
-  const [isAlertWarningOpen, setIsAlertWarningOpen] = useState(false);
+  // Pages (colors/fonts) logic
+  const [currentPage, setCurrentPage] = useState("colors")
 
-  interface StyleObject {
-    name: string;
-    value: string;
-  }
-  
+  // Dark mode
   let isDarkMode:boolean = false;
   if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     isDarkMode = true
   }
 
+  // User's data
   let isCustomizable:boolean = false 
-  const [LastSaveTry, setLastSaveTry] = useState(Date.now())
 
+  // Live theme changing
+  const [LastSaveTry, setLastSaveTry] = useState(Date.now())
   function ChangeTheme(e:any) {
     document.documentElement.style
       .setProperty('--' + e.target.dataset.target + "Dark", e.target.value);
@@ -33,6 +29,9 @@ export default function EditUIModal() {
     }, 1000);
   }
 
+  // Alerts animations
+  const alertSuccessRef:any = useRef();
+  const [isAlertSuccessOpen, setIsAlertSuccessOpen] = useState(false);
   function CloseOpenSuccessAlert() {
     if (isAlertSuccessOpen === false) {
       alertSuccessRef.current.style.marginTop = "8px"
@@ -43,7 +42,9 @@ export default function EditUIModal() {
     }
     setIsAlertSuccessOpen(!isAlertSuccessOpen)
   }
-
+  
+  const alertWarningRef:any = useRef();
+  const [isAlertWarningOpen, setIsAlertWarningOpen] = useState(false);
   function CloseOpenWarningAlert() {
     if (alertWarningRef.current) {
       if (isAlertWarningOpen === false) {
@@ -57,6 +58,7 @@ export default function EditUIModal() {
     }
   }
 
+  // Css variables
   var styleVariables = getComputedStyle(document.body)
   function GetCSSValue(name: string) {
     return styleVariables.getPropertyValue('--' + name)
@@ -79,6 +81,11 @@ export default function EditUIModal() {
     return cssVars;
   };
 
+  // Saving changes
+  interface StyleObject {
+    name: string;
+    value: string;
+  }
   function SaveChanges() {
     // Animation
     if (isCustomizable === true) {
@@ -91,7 +98,7 @@ export default function EditUIModal() {
       }
     }
 
-    // Act
+    // Saving changes
     let colorNames:string[] = getAllCSSVariableNames()
     let colors:StyleObject[] = []
     colorNames.forEach(x => {
@@ -103,77 +110,156 @@ export default function EditUIModal() {
     localStorage.setItem("colors", JSON.stringify(colors))
   }
 
+  // Default color settings
   function ToDefault() {
     localStorage.removeItem("colors")
     window.location.reload()
   }
 
+
+
+  // Fonts
+  const [fontsList, setFontsList] = useState<any>()
+  const [fontsRenderList, setFontsRenderList] = useState<any>()
+  const apiKey:string = "AIzaSyDHKa98Bj7yDYmOW9Dq0AUsmYuyhrUrcc0"
+  useEffect(() => {
+    fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=" + apiKey + "&sort=popularity", {method: 'GET'}).then(
+      response => response.json()
+    ).then(
+      data => {
+        setFontsList(data.items)
+        setFontsRenderList(data.items)
+      }
+    )
+  }, [])
+
+  // Fonts filters
+  function SearchFonts(e:any) {
+    setFontsRenderList(fontsList.filter(
+      (x:any) => e.target.value.length > 0 ? (x.family.toLowerCase().includes(e.target.value)) : true
+    ))
+  }
+
+  let fontLink = document.getElementById("GoogleFontsLink") as HTMLLinkElement
+  let rootElement:HTMLElement = document.getElementById("custom-root") as HTMLElement
+  let currentFont = rootElement?.style?.fontFamily
+  function SetSelectedFont(e:any) {
+    if (fontLink && rootElement) {
+      rootElement.style.fontFamily = e.target.dataset.name + ""
+      fontLink.href = "https://fonts.googleapis.com/css?family=" + e.target.dataset.name
+    }
+  }
+
   return (
     <div className="text-textLight dark:text-textDark bg-backgroundSecondLight dark:bg-backgroundSecondDark 
-    rounded-2xl w-full h-full justify-center text-center">
-      <p className="py-2 px-3 border-b-2 whitespace-nowrap text-xl font-bold
-      border-borderLight dark:border-borderDark">Customize the interface</p>
-      <div className="whitespace-nowrap py-2 px-4 font-medium w-full">
-        <div className=" space-y-1">
-          <div className=" flex justify-between">
-            <span className="mr-2">text</span>
-            <input type="color" onInput={ChangeTheme} data-target="text"
-            defaultValue={GetCSSValue("text" + (isDarkMode ? "Dark" : "Light"))}></input>
+    rounded-2xl sm:min-w-xs h-full justify-center text-center max-w-xs transition-all overflow-hidden">
+        <AnimatePresence>
+          {currentPage === "colors" ? (
+            <div className="whitespace-nowrap text-lg font-semibold grid grid-cols-2">
+              <button onClick={() => {setCurrentPage("colors")}}
+              className="py-2 pl-3 border-b-2
+              border-buttonLight dark:border-buttonDark">Colors</button>
+              <button onClick={() => {setCurrentPage("fonts")}}
+              className="transition-colors py-2 pr-3 border-b-2
+              border-borderLight dark:border-borderDark">Fonts</button>
+            </div>
+          ) : (
+            <div className="whitespace-nowrap text-lg font-semibold grid grid-cols-2">
+              <button onClick={() => {setCurrentPage("colors")}}
+              className="transition-colors py-2 pl-3 border-b-2
+              border-borderLight dark:border-borderDark">Colors</button>
+              <button onClick={() => {setCurrentPage("fonts")}}
+              className="py-2 pr-3 border-b-2 
+              border-buttonLight dark:border-buttonDark">Fonts</button>
+            </div>
+          )}
+        </AnimatePresence>
+      {currentPage === "colors" ? (
+        <div className="whitespace-nowrap py-2 px-4 font-medium w-full">
+          <div className=" space-y-1">
+            <div className=" flex justify-between">
+              <span className="mr-2">text</span>
+              <input type="color" onInput={ChangeTheme} data-target="text"
+              defaultValue={GetCSSValue("text" + (isDarkMode ? "Dark" : "Light"))}></input>
+            </div>
+            <div className=" flex justify-between">
+              <span className="mr-2">button</span>
+              <input type="color" onInput={ChangeTheme} data-target="button"
+              defaultValue={GetCSSValue("button" + (isDarkMode ? "Dark" : "Light"))}></input>
+            </div>
+            <div className=" flex justify-between">
+              <span className="mr-2">button hover</span>
+              <input type="color" onInput={ChangeTheme} data-target="buttonHover"
+              defaultValue={GetCSSValue("buttonHover" + (isDarkMode ? "Dark" : "Light"))}></input>
+            </div>
+            <div className=" flex justify-between">
+              <span className="mr-2">icons</span>
+              <input type="color" onInput={ChangeTheme} data-target="icon"
+              defaultValue={GetCSSValue("icon" + (isDarkMode ? "Dark" : "Light"))}></input>
+            </div>
+            <div className=" flex justify-between">
+              <span className="mr-2">shadows</span>
+              <input type="color" onInput={ChangeTheme} data-target="shadow"
+              defaultValue={GetCSSValue("shadow" + (isDarkMode ? "Dark" : "Light"))}></input>
+            </div>
+            <div className=" flex justify-between">
+              <span className="mr-2">borders</span>
+              <input type="color" onInput={ChangeTheme} data-target="border"
+              defaultValue={GetCSSValue("border" + (isDarkMode ? "Dark" : "Light"))}></input>
+            </div>
+            <div className=" flex justify-between">
+              <span className="mr-2">primary backgroung</span>
+              <input type="color" onInput={ChangeTheme} data-target="background"
+              defaultValue={GetCSSValue("background" + (isDarkMode ? "Dark" : "Light"))}></input>
+            </div>
+            <div className=" flex justify-between">
+              <span className="mr-2">secondary backgroung</span>
+              <input type="color" onInput={ChangeTheme} data-target="backgroundSecond"
+              defaultValue={GetCSSValue("backgroundSecond" + (isDarkMode ? "Dark" : "Light"))}></input>
+            </div>
+            <div className=" flex justify-between">
+              <span className="mr-2">third backgroung</span>
+              <input type="color" onInput={ChangeTheme} data-target="backgroundThird"
+              defaultValue={GetCSSValue("backgroundThird" + (isDarkMode ? "Dark" : "Light"))}></input>
+            </div>
+            <div className=" flex justify-between">
+              <span className="mr-2">backgroung accent</span>
+              <input type="color" onInput={ChangeTheme} data-target="backgroundAccent"
+              defaultValue={GetCSSValue("backgroundAccent" + (isDarkMode ? "Dark" : "Light"))}></input>
+            </div>
+            <div className=" flex justify-between">
+              <span className="mr-2">backgroung hover</span>
+              <input type="color" onInput={ChangeTheme} data-target="backgroundHover"
+              defaultValue={GetCSSValue("backgroundHover" + (isDarkMode ? "Dark" : "Light"))}></input>
+            </div>
           </div>
-          <div className=" flex justify-between">
-            <span className="mr-2">button</span>
-            <input type="color" onInput={ChangeTheme} data-target="button"
-            defaultValue={GetCSSValue("button" + (isDarkMode ? "Dark" : "Light"))}></input>
+          <button onClick={ToDefault} className="bg-buttonLight dark:bg-buttonDark w-full py-1.5 mt-2 rounded-lg
+          hover:bg-buttonHoverLight dark:hover:to-buttonHoverDark" title='Require page reload'>Default settings</button>
+        </div>
+      ) : ( // fonst
+        <div className="whitespace-nowrap w-full">
+          <div className=" py-2 px-4 w-full overflow-y-auto overflow-x-hidden min-h-xs max-h-xs flex flex-col">
+            {fontsRenderList && fontsRenderList.map((item:any, index:any) => (
+              item.family === currentFont ? (
+                <button key={index} data-name={item.family} onClick={SetSelectedFont}
+                className="text-left px-1.5 border-x-2 border-iconLight dark:border-iconDark rounded-sm transition-colors
+                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark">{item.family}</button>
+              ) : (
+                <button key={index} data-name={item.family} onClick={SetSelectedFont}
+                className="text-left px-2 rounded-sm transition-colors
+                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark">{item.family}</button>
+              )
+            ))}
           </div>
-          <div className=" flex justify-between">
-            <span className="mr-2">button hover</span>
-            <input type="color" onInput={ChangeTheme} data-target="buttonHover"
-            defaultValue={GetCSSValue("buttonHover" + (isDarkMode ? "Dark" : "Light"))}></input>
-          </div>
-          <div className=" flex justify-between">
-            <span className="mr-2">icons</span>
-            <input type="color" onInput={ChangeTheme} data-target="icon"
-            defaultValue={GetCSSValue("icon" + (isDarkMode ? "Dark" : "Light"))}></input>
-          </div>
-          <div className=" flex justify-between">
-            <span className="mr-2">shadows</span>
-            <input type="color" onInput={ChangeTheme} data-target="shadow"
-            defaultValue={GetCSSValue("shadow" + (isDarkMode ? "Dark" : "Light"))}></input>
-          </div>
-          <div className=" flex justify-between">
-            <span className="mr-2">borders</span>
-            <input type="color" onInput={ChangeTheme} data-target="border"
-            defaultValue={GetCSSValue("border" + (isDarkMode ? "Dark" : "Light"))}></input>
-          </div>
-          <div className=" flex justify-between">
-            <span className="mr-2">primary backgroung</span>
-            <input type="color" onInput={ChangeTheme} data-target="background"
-            defaultValue={GetCSSValue("background" + (isDarkMode ? "Dark" : "Light"))}></input>
-          </div>
-          <div className=" flex justify-between">
-            <span className="mr-2">secondary backgroung</span>
-            <input type="color" onInput={ChangeTheme} data-target="backgroundSecond"
-            defaultValue={GetCSSValue("backgroundSecond" + (isDarkMode ? "Dark" : "Light"))}></input>
-          </div>
-          <div className=" flex justify-between">
-            <span className="mr-2">third backgroung</span>
-            <input type="color" onInput={ChangeTheme} data-target="backgroundThird"
-            defaultValue={GetCSSValue("backgroundThird" + (isDarkMode ? "Dark" : "Light"))}></input>
-          </div>
-          <div className=" flex justify-between">
-            <span className="mr-2">backgroung accent</span>
-            <input type="color" onInput={ChangeTheme} data-target="backgroundAccent"
-            defaultValue={GetCSSValue("backgroundAccent" + (isDarkMode ? "Dark" : "Light"))}></input>
-          </div>
-          <div className=" flex justify-between">
-            <span className="mr-2">backgroung hover</span>
-            <input type="color" onInput={ChangeTheme} data-target="backgroundHover"
-            defaultValue={GetCSSValue("backgroundHover" + (isDarkMode ? "Dark" : "Light"))}></input>
+          <div className="border-t-2 border-borderLight dark:border-borderDark
+          grid grid-cols-2">
+            <div className="text-lg py-2 font-semibold">Sort By</div>
+            <input type="text" placeholder='search...' onInput={SearchFonts}
+            className="px-2 bg-backgroundSecondLight dark:bg-backgroundSecondDark
+            focus:border-none focus:outline-none"></input>
           </div>
         </div>
-        <button onClick={ToDefault} className="bg-buttonLight dark:bg-buttonDark w-full py-1.5 mt-2 rounded-lg
-        hover:bg-buttonHoverLight dark:hover:to-buttonHoverDark" title='Require page reload'>Default settings</button>
-      </div>
+      )}
 
       {/* Alert success */}
       <div ref={alertSuccessRef} id="alert-1" className="absolute w-full items-center p-4 text-successLight dark:text-successDark opacity-0

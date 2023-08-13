@@ -1,6 +1,10 @@
 # File storage
 <!-- Ctrl + Shift + V -->
 
+## Dev
+
+### Dependencies
+
 [React Router DOM](https://www.npmjs.com/package/react-router-dom)
 
 ```bash
@@ -42,3 +46,7 @@ npm install tw-elements
 ```bash
 npm i --save react-drag-drop-files
 ```
+
+### Also used in project
+
+- [Google Fonts API](https://developers.google.com/fonts/docs/developer_api?hl=ru#APIKey)
