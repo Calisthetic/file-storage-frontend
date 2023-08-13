@@ -51,6 +51,7 @@ module.exports = {
         fulldvh: "100dvh",
       },
       minWidth: {
+        xs: "320px",
         fulldvw: "100dvw !important",
       },
       maxHeight: {
