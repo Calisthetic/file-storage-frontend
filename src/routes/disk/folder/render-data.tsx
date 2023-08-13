@@ -37,7 +37,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     name: string,
     size: number, // in bytes
     created_at: string,
-    is_public: boolean,
+    access_type: string | null,
     watches: number | null,
     downloads: number | null,
     is_elected: boolean,
@@ -63,7 +63,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       name: "folder1",
       size: 77828556,
       created_at: "13032001",
-      is_public: false,
+      access_type: "editor",
       watches: null,
       downloads: null,
       is_elected: true,
@@ -76,7 +76,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       name: "folder2",
       size: 90000,
       created_at: "14042004",
-      is_public: true,
+      access_type: null,
       watches: 12,
       downloads: 6,
       is_elected: false,
@@ -292,7 +292,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   </div>
                   <div className="hover-second ml-3.5 w-8
                   bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
-                    <button data-id={item.id} data-name={item.name} onClick={modalAccessOpen}
+                    <button data-id={item.id} data-name={item.name}
+                    data-access={item.access_type} data-token={item.token} onClick={modalAccessOpen}
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
                       <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 pointer-events-none">
                         <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
@@ -312,7 +313,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                         className=" fill-textLight dark:fill-textDark"></path>
                       </svg>
                     </button>
-                    <button data-id={item.id} data-name={item.name} data-type="folder" onClick={modalRenameOpen}
+                    <button data-id={item.id} data-name={item.name} data-token={item.token} data-type="folder" onClick={modalRenameOpen}
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
                       <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
                       className="w-5 h-5 pointer-events-none"><g>
@@ -618,7 +619,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   {/* Links */}
                   <td data-id={item.id} data-type="folder" draggable="false">
                     <div className="flex hover-child justify-center items-center h-full">
-                      <button data-id={item.id} data-name={item.name} onClick={modalAccessOpen} title="Access settings">
+                      <button data-id={item.id} data-name={item.name}
+                      data-access={item.access_type} data-token={item.token} onClick={modalAccessOpen}>
                         <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" 
                         className="w-5 h-5 pointer-events-none">
                           <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
@@ -963,6 +965,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
         <Box sx={modalWindowStyle}>
           <FolderAccessModal folderId={selectedItem !== undefined && selectedItem.id} 
           folderName={selectedItem !== undefined && selectedItem.name} 
+          folderToken={selectedItem !== undefined && selectedItem.token}
           folderCurrentAccess={selectedItem !== undefined && selectedItem.access}>
             <button onClick={modalAccessClose} 
             className="bg-buttonLight dark:bg-buttonDark transition-colors rounded-full px-4 py-1
