@@ -12,9 +12,18 @@ type Props = {
 export default function FolderAccessModal({children, folderId, folderName, folderCurrentAccess, folderToken}: Props) {
   const [isFolderPublic, setIsFolderPublic] = useState(folderCurrentAccess !== undefined)
   const [currentAccessType, setCurrentAccessType] = useState(folderCurrentAccess)
-  let temp = (document.getElementById("GoogleFontsLink")) as HTMLLinkElement
 
   const [isRolesMenuOpen, setIsRolesMenuOpen] = useState(false)
+
+  // Copied notification
+  const [isCopied, setIsCopied] = useState(false)
+  function CopyText(folderToken:string) {
+    navigator.clipboard.writeText(selfUrl + "disk/folder/" + folderToken);
+    setIsCopied(false)
+    setTimeout(() => {
+      setIsCopied(true)
+    }, 100);
+  }
 
   return (
     <div className="text-textLight dark:text-textDark rounded-2xl
@@ -222,7 +231,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
         <button className="flex flex-row items-center py-1 px-3 rounded-full
         border border-borderLight dark:border-borderDark transition-colors
         hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark"
-        onClick={() => {navigator.clipboard.writeText(selfUrl + "disk/folder/" + folderToken);}}>
+        onClick={() => {CopyText(folderToken)}}>
           <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" 
           className="w-5 h-5 pointer-events-none">
             <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
@@ -246,6 +255,28 @@ export default function FolderAccessModal({children, folderId, folderName, folde
         {/* Close modal button */}
         {children}
       </div>
+
+      <AnimatePresence>
+        {isCopied && (
+          <motion.button initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
+          transition={{stiffness: 200, damping: 24, duration: 0.1}}
+          onClick={(e:any) => {e.target.style.marginTop = "-40px"}}
+          className="text-successLight dark:text-successDark rounded-2xl absolute
+          bg-backgroundLight dark:bg-backgroundDark p-2 min-w-xs w-full -ml-4 mt-6 -z-10
+          flex justify-center items-center font-medium transition-margin">
+            <svg viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 mr-2 pointer-events-none">
+              <path d="M58.395 32.156 42.995 50.625l-5.39-6.463a5.995 5.995 0 1 0-9.212 
+              7.676l9.997 12a5.991 5.991 0 0 0 9.21.006l20.005-24a5.999 5.999 0 1 0-9.211-7.688Z" 
+              className=" fill-successLight dark:fill-successDark"></path>
+              <path d="M48 0a48 48 0 1 0 48 48A48.051 48.051 0 0 0 48 0Zm0 84a36 
+              36 0 1 1 36-36 36.04 36.04 0 0 1-36 36Z" 
+              className=" fill-successLight dark:fill-successDark"></path>
+            </svg>
+            <span className=" pointer-events-none">Copied</span>
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

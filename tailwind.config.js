@@ -37,6 +37,7 @@ module.exports = {
         errorLight: "var(--errorLight)",
       },
       transitionProperty: {
+        margin: "margin",
         userDropDownMenu: "margin, transform",
         inputs: "border, outline, background-color",
         alerts: "margin, opacity, transform, background, background-color",
