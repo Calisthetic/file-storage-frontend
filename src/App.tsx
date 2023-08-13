@@ -13,18 +13,24 @@ function App() {
   // Colors from localstorage
   let isCustomizable:boolean = true
   if (isCustomizable) {
-    let colors_value:string | null = localStorage.getItem("colors")
-    if (colors_value !== null) {
-      let colors:StyleObject[] = JSON.parse(colors_value)
+    let colorsValue:string | null = localStorage.getItem("colors")
+    if (colorsValue !== null) {
+      let colors:StyleObject[] = JSON.parse(colorsValue)
       colors.forEach(x => {
         document.documentElement.style
           .setProperty('--' + x.name, x.value);
       });
     }
+
+    let fontLink = document.getElementById("GoogleFontsLink") as HTMLLinkElement
+    let fontValue = localStorage.getItem("font")
+    if (fontLink && fontValue) {
+      fontLink.href = "https://fonts.googleapis.com/css?family=" + fontValue
+    }
   }
 
   return (
-    <div id="custom-root">
+    <div id="custom-root" style={{fontFamily: localStorage.getItem("font")?.toString()}}>
       <Routes>
         <Route path='/' element={<Layout></Layout>}></Route>
         <Route path='auth/*' element={<AuthPage></AuthPage>}></Route>

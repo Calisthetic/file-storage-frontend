@@ -30,32 +30,14 @@ export default function EditUIModal() {
   }
 
   // Alerts animations
-  const alertSuccessRef:any = useRef();
   const [isAlertSuccessOpen, setIsAlertSuccessOpen] = useState(false);
   function CloseOpenSuccessAlert() {
-    if (isAlertSuccessOpen === false) {
-      alertSuccessRef.current.style.marginTop = "8px"
-      alertSuccessRef.current.style.opacity = "1"
-    } else {
-      alertSuccessRef.current.style.marginTop = "0px"
-      alertSuccessRef.current.style.opacity = "0"
-    }
     setIsAlertSuccessOpen(!isAlertSuccessOpen)
   }
   
-  const alertWarningRef:any = useRef();
   const [isAlertWarningOpen, setIsAlertWarningOpen] = useState(false);
   function CloseOpenWarningAlert() {
-    if (alertWarningRef.current) {
-      if (isAlertWarningOpen === false) {
-        alertWarningRef.current.style.marginTop = "8px"
-        alertWarningRef.current.style.opacity = "1"
-        setIsAlertWarningOpen(!isAlertWarningOpen)
-      } else {
-        alertWarningRef.current.style.marginTop = "0px"
-        alertWarningRef.current.style.opacity = "0"
-      }
-    }
+    setIsAlertWarningOpen(!isAlertWarningOpen)
   }
 
   // Css variables
@@ -114,13 +96,9 @@ export default function EditUIModal() {
   function SaveChanges() {
     // Animation
     if (isCustomizable === true) {
-      if (isAlertSuccessOpen === false) {
-        CloseOpenSuccessAlert()
-      }
+      setIsAlertSuccessOpen(true)
     } else {
-      if (isAlertWarningOpen === false) {
-        CloseOpenWarningAlert()
-      }
+      setIsAlertWarningOpen(true)
     }
 
     // Saving changes
@@ -174,32 +152,44 @@ export default function EditUIModal() {
       rootElement.style.fontFamily = e.target.dataset.name + ""
       fontLink.href = "https://fonts.googleapis.com/css?family=" + e.target.dataset.name
     }
+
+    if (isCustomizable === true) {
+      setTimeout(() => {
+        setIsAlertSuccessOpen(true)
+      }, 500);
+    } else {
+      setTimeout(() => {
+        setIsAlertWarningOpen(true)
+      }, 500);
+    }
+    localStorage.setItem("font", e.target.dataset.name)
   }
 
   return (
     <div className="text-textLight dark:text-textDark bg-backgroundSecondLight dark:bg-backgroundSecondDark 
     rounded-2xl sm:min-w-xs h-full justify-center text-center max-w-xs transition-all overflow-hidden">
-        <AnimatePresence>
-          {currentPage === "colors" ? (
-            <div className="whitespace-nowrap text-lg font-semibold grid grid-cols-2">
-              <button onClick={() => {setCurrentPage("colors")}}
-              className="py-2 pl-3 border-b-2
-              border-buttonLight dark:border-buttonDark">Colors</button>
-              <button onClick={() => {setCurrentPage("fonts")}}
-              className="transition-colors py-2 pr-3 border-b-2
-              border-borderLight dark:border-borderDark">Fonts</button>
-            </div>
-          ) : (
-            <div className="whitespace-nowrap text-lg font-semibold grid grid-cols-2">
-              <button onClick={() => {setCurrentPage("colors")}}
-              className="transition-colors py-2 pl-3 border-b-2
-              border-borderLight dark:border-borderDark">Colors</button>
-              <button onClick={() => {setCurrentPage("fonts")}}
-              className="py-2 pr-3 border-b-2 
-              border-buttonLight dark:border-buttonDark">Fonts</button>
-            </div>
-          )}
-        </AnimatePresence>
+      {/* Header buttons */}
+      <AnimatePresence>
+        {currentPage === "colors" ? (
+          <div className="whitespace-nowrap text-lg font-semibold grid grid-cols-2">
+            <button onClick={() => {setCurrentPage("colors")}}
+            className="py-2 pl-3 border-b-2
+            border-buttonLight dark:border-buttonDark">Colors</button>
+            <button onClick={() => {setCurrentPage("fonts")}}
+            className="transition-colors py-2 pr-3 border-b-2
+            border-borderLight dark:border-borderDark">Fonts</button>
+          </div>
+        ) : (
+          <div className="whitespace-nowrap text-lg font-semibold grid grid-cols-2">
+            <button onClick={() => {setCurrentPage("colors")}}
+            className="transition-colors py-2 pl-3 border-b-2
+            border-borderLight dark:border-borderDark">Colors</button>
+            <button onClick={() => {setCurrentPage("fonts")}}
+            className="py-2 pr-3 border-b-2 
+            border-buttonLight dark:border-buttonDark">Fonts</button>
+          </div>
+        )}
+      </AnimatePresence>
       {currentPage === "colors" ? (
         <div className="whitespace-nowrap py-2 px-4 font-medium w-full">
           <div className=" space-y-1">
@@ -289,54 +279,70 @@ export default function EditUIModal() {
       )}
 
       {/* Alert success */}
-      <div ref={alertSuccessRef} id="alert-1" className="absolute w-full items-center p-4 text-successLight dark:text-successDark opacity-0
-      bg-backgroundSecondLight dark:bg-backgroundSecondDark dark:text-blue-400h flex rounded-xl transition-alerts" role="alert">
-        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check-circle" role="img" xmlns="http://www.w3.org/2000/svg" 
-        viewBox="0 0 512 512" className="w-4 h-4">
-          <path className="fill-successLight dark:fill-successDark" d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 
-          387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 
-          0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 
-          104c6.249 6.249 16.379 6.249 22.628.001z"></path>
-        </svg>
-        <span className="sr-only">Info</span>
-        <div className="ml-3 text-sm font-medium">
-          Changes saved
-        </div>
-        <button type="button" onClick={CloseOpenSuccessAlert} className="bg-backgroundSecondLight dark:bg-backgroundSecondDark 
-        rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 ml-auto -mx-1.5 -my-1.5
-        hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark" data-dismiss-target="#alert-1" aria-label="Close">
-          <span className="sr-only">Close</span>
-          <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-            <path className="stroke-successLight dark:stroke-successDark" strokeLinecap="round" 
-            strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-          </svg>
-        </button>
-      </div>
+      <AnimatePresence>
+        {isAlertSuccessOpen === true && (
+          <motion.div initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
+          transition={{stiffness: 200, damping: 24, duration: 0.1}} exit={{opacity: 0, y: -40}}
+          id="alert-1" className="absolute w-full items-center p-4 text-successLight dark:text-successDark 
+          opacity-0 bg-backgroundSecondLight dark:bg-backgroundSecondDark dark:text-blue-400h 
+          flex rounded-xl mt-2 -z-10" role="alert">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" 
+            viewBox="0 0 512 512" className="w-4 h-4">
+              <path className="fill-successLight dark:fill-successDark" d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 
+              387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 
+              0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 
+              104c6.249 6.249 16.379 6.249 22.628.001z"></path>
+            </svg>
+            <span className="sr-only">Info</span>
+            <div className="ml-3 text-sm font-medium">
+              Changes saved
+            </div>
+            <button type="button" onClick={CloseOpenSuccessAlert} 
+            className="bg-backgroundSecondLight dark:bg-backgroundSecondDark 
+            rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 ml-auto -mx-1.5 -my-1.5
+            hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark">
+              <span className="sr-only">Close</span>
+              <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path className="stroke-successLight dark:stroke-successDark" strokeLinecap="round" 
+                strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+              </svg>
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Alert warning */}
-      <div ref={alertWarningRef} id="alert-1" className="absolute w-full items-center p-2 text-warningLight dark:text-warningDark opacity-0
-      bg-backgroundSecondLight dark:bg-backgroundSecondDark dark:text-blue-400h flex rounded-xl justify-between transition-alerts" role="alert">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-          <path className="fill-warningLight dark:fill-warningDark" fillRule="evenodd" clipRule="evenodd" 
-          d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 
-          3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"/>
-        </svg>
-        <span className="sr-only">Info</span>
-        <div className="ml-2 text-sm font-medium">
-          <p>Upgrade your account to</p>
-          <p>save changes automatically</p>
-           
-        </div>
-        <button type="button" onClick={CloseOpenWarningAlert} className="bg-backgroundSecondLight dark:bg-backgroundSecondDark 
-        rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 -my-1.5
-        hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark" data-dismiss-target="#alert-1" aria-label="Close">
-          <span className="sr-only">Close</span>
-          <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-            <path className="stroke-warningLight dark:stroke-warningDark" strokeLinecap="round" 
-            strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-          </svg>
-        </button>
-      </div>
+      <AnimatePresence>
+        {isAlertWarningOpen === true && (
+          <motion.div initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
+          transition={{stiffness: 200, damping: 24, duration: 0.1}} exit={{opacity: 0, y: -40}}
+          id="alert-1" className="absolute w-full items-center p-2 text-warningLight dark:text-warningDark 
+          opacity-0 bg-backgroundSecondLight dark:bg-backgroundSecondDark dark:text-blue-400h 
+          flex rounded-xl justify-between mt-2 -z-10" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+              <path className="fill-warningLight dark:fill-warningDark" fillRule="evenodd" clipRule="evenodd" 
+              d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 
+              3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"/>
+            </svg>
+            <span className="sr-only">Info</span>
+            <div className="ml-2 text-sm font-medium">
+              <p>Upgrade your account to</p>
+              <p>save changes automatically</p>
+              
+            </div>
+            <button type="button" onClick={CloseOpenWarningAlert} 
+            className="bg-backgroundSecondLight dark:bg-backgroundSecondDark 
+            rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 -my-1.5
+            hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark">
+              <span className="sr-only">Close</span>
+              <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path className="stroke-warningLight dark:stroke-warningDark" strokeLinecap="round" 
+                strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+              </svg>
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
