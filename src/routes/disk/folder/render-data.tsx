@@ -4,6 +4,7 @@ import Modal from '@mui/material/Modal';
 
 import "../../../styles/focus-elems.css"
 import { primaryColors } from "../../../data/folder-colors"
+import FolderAccessModal from "./folder-access-modal";
 
 type Props = {
   currentSortType: string
@@ -293,7 +294,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
                     <button data-id={item.id} data-name={item.name} onClick={modalAccessOpen}
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
-                      <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
+                      <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 pointer-events-none">
                         <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
                         29.47 17.58 41.91 30.02 3.146 3.146 5.898 6.518 8.742 9.838l37.96-37.96C458.5 72.05 477.1 64 498.6 
                         64c20.67 0 40.1 8.047 54.71 22.66 14.61 14.61 22.66 34.04 22.66 54.71s-8.049 40.1-22.66 54.71l-133.3 
@@ -617,7 +618,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   {/* Links */}
                   <td data-id={item.id} data-type="folder" draggable="false">
                     <div className="flex hover-child justify-center items-center h-full">
-                      <button onClick={modalAccessOpen} title="Access settings">
+                      <button data-id={item.id} data-name={item.name} onClick={modalAccessOpen} title="Access settings">
                         <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" 
                         className="w-5 h-5 pointer-events-none">
                           <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
@@ -960,7 +961,15 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
         aria-describedby="modal-modal-description"
       >
         <Box sx={modalWindowStyle}>
-          
+          <FolderAccessModal folderId={selectedItem !== undefined && selectedItem.id} 
+          folderName={selectedItem !== undefined && selectedItem.name} 
+          folderCurrentAccess={selectedItem !== undefined && selectedItem.access}>
+            <button onClick={modalAccessClose} 
+            className="bg-buttonLight dark:bg-buttonDark transition-colors rounded-full px-4 py-1
+            hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark">
+              Ready
+            </button>
+          </FolderAccessModal>
         </Box>
       </Modal>
     </main>
