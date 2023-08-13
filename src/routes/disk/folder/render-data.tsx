@@ -12,14 +12,21 @@ type Props = {
 }
 
 export default function RenderData({currentSortType, currentSortBy, currentRenderType}:Props) {
-  const newFolderRef:any = useRef();
-  const [open, setOpen] = useState(false);
-  const [selectedFolder, setSelectedFolder] = useState<any>();
-  const modalCustomizeOpen = (e:any) => {
-    setOpen(true)
-    setSelectedFolder(e.target)
+  const newNameInputRef:any = useRef();
+  const [selectedItem, setSelectedItem] = useState<any>();
+  const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
+  const modalRenameOpen = (e:any) => {
+    setIsRenameModalOpen(true)
+    setSelectedItem(e.target.dataset)
   };
-  const modalCustomizeClose = () => setOpen(false);
+  const modalRenameClose = () => setIsRenameModalOpen(false);
+  
+  const [isAccessModalOpen, setIsAccessModalOpen] = useState(false);
+  const modalAccessOpen = (e:any) => {
+    setIsAccessModalOpen(true)
+    setSelectedItem(e.target.dataset)
+  };
+  const modalAccessClose = () => setIsAccessModalOpen(false);
 
   // Main part
   interface FoldersResponse {
@@ -284,7 +291,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   </div>
                   <div className="hover-second ml-3.5 w-8
                   bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
-                    <button data-id={item.id} data-name={item.name}
+                    <button data-id={item.id} data-name={item.name} onClick={modalAccessOpen}
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
                       <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
                         <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
@@ -304,7 +311,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                         className=" fill-textLight dark:fill-textDark"></path>
                       </svg>
                     </button>
-                    <button data-id={item.id} data-name={item.name} onClick={modalCustomizeOpen}
+                    <button data-id={item.id} data-name={item.name} data-type="folder" onClick={modalRenameOpen}
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
                       <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
                       className="w-5 h-5 pointer-events-none"><g>
@@ -447,7 +454,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   </div>
                   <div className="hover-second ml-3.5 w-8
                   bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
-                    <button data-id={item.id} data-name={item.name} onClick={modalCustomizeOpen}
+                    <button data-id={item.id} data-name={item.name} data-type="file" onClick={modalRenameOpen}
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
                       <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
                       className="w-5 h-5 pointer-events-none"><g>
@@ -610,8 +617,9 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   {/* Links */}
                   <td data-id={item.id} data-type="folder" draggable="false">
                     <div className="flex hover-child justify-center items-center h-full">
-                      <div className="cursor-pointer" title="Access settings">
-                        <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
+                      <button onClick={modalAccessOpen} title="Access settings">
+                        <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" 
+                        className="w-5 h-5 pointer-events-none">
                           <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
                           29.47 17.58 41.91 30.02 3.146 3.146 5.898 6.518 8.742 9.838l37.96-37.96C458.5 72.05 477.1 64 498.6 
                           64c20.67 0 40.1 8.047 54.71 22.66 14.61 14.61 22.66 34.04 22.66 54.71s-8.049 40.1-22.66 54.71l-133.3 
@@ -628,14 +636,14 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                           72.36-13.8 99.96-41.41l43.36-43.36c-15.11-8.012-29.47-17.58-41.91-30.02-3.21-3.11-5.91-6.51-8.81-9.81z" 
                           className=" fill-textLight dark:fill-textDark"></path>
                         </svg>
-                      </div>
+                      </button>
                     </div>
                   </td>
                   {/* Edit */}
                   <td data-id={item.id} data-type="folder" draggable="false" 
                   className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
-                      <button data-id={item.id} data-name={item.name} onClick={modalCustomizeOpen} 
+                      <button data-id={item.id} data-name={item.name} data-type="folder" onClick={modalRenameOpen} 
                       className="cursor-pointer">
                         <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
                         className="w-5 h-5 pointer-events-none"><g>
@@ -785,7 +793,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td data-id={item.id} data-type="file" draggable="false" 
                   className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
-                      <button data-id={item.id} data-name={item.name} onClick={modalCustomizeOpen} 
+                      <button data-id={item.id} data-name={item.name} data-type="file" onClick={modalRenameOpen} 
                       className="cursor-pointer">
                         <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
                         className="w-5 h-5 pointer-events-none"><g>
@@ -909,36 +917,50 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       )}
 
 
+      {/* Rename file/folder */}
       <Modal
-        open={open}
-        onClose={modalCustomizeClose}
+        open={isRenameModalOpen}
+        onClose={modalRenameClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={modalWindowStyle}>
-          <div className="text-textLight dark:text-textDark px-4 py-4 rounded-lg
+          <div className="text-textLight dark:text-textDark p-4 rounded-lg
           bg-backgroundSecondLight dark:bg-backgroundSecondDark">
             <p className=" text-2xl font-semibold">Rename</p>
             <input className=" my-4 w-64 border border-borderLight dark:border-borderDark 
             text-textLight text-sm rounded-lg block p-2 dark:focus:border-textDark
             focus:border-textLight bg-backgroundThirdLight dark:bg-backgroundThirdDark
             dark:placeholder-gray-400 dark:text-textDark "
-            type="text" placeholder={selectedFolder !== undefined && selectedFolder.dataset.id}
-            defaultValue={selectedFolder !== undefined && selectedFolder.dataset.name}
-            ref={newFolderRef}></input>
+            type="text" placeholder={selectedItem === undefined ? "name"
+              : "last " + selectedItem.type + " name: " + selectedItem.name}
+            defaultValue={selectedItem !== undefined && selectedItem.name}
+            ref={newNameInputRef}></input>
             <div className="flex justify-end text-base gap-2">
               <button className=" hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark
               px-4 rounded-full transition-colors"
-              onClick={() => {modalCustomizeClose();}}>
+              onClick={modalRenameClose}>
                 Calcel
               </button>
               <button className=" bg-buttonLight dark:bg-buttonDark rounded-full px-5 py-1
               hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark transition-colors"
-              onClick={() => {modalCustomizeClose();}}>
+              onClick={modalRenameClose}>
                 OK
               </button>
             </div>
           </div>
+        </Box>
+      </Modal>
+
+      {/* Folder access */}
+      <Modal
+        open={isAccessModalOpen}
+        onClose={modalAccessClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modalWindowStyle}>
+          
         </Box>
       </Modal>
     </main>
