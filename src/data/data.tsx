@@ -1,0 +1,1 @@
+export const selfUrl:string = "https://file-storage-frontend.vercel.app/"
