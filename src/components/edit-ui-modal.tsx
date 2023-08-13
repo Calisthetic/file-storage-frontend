@@ -66,18 +66,43 @@ export default function EditUIModal() {
 
   const getAllCSSVariableNames = (styleSheets: StyleSheetList = document.styleSheets) => {
     const cssVars:string[] = [];
-    Array.from(styleSheets).forEach((styleSheet) => {
-      Array.from(styleSheet.cssRules).forEach((rule:any) => {
-        if (!rule || !rule['style']) {
-          return;
+    Array.from(styleSheets).forEach(function (sheet) {
+      if (sheet.hasOwnProperty("cssRules")) {
+        try {
+          Array.from(sheet.cssRules || []).forEach((rule:any) => {
+            if (!rule || !rule['style']) {
+              return;
+            }
+            Array.from(rule['style']).forEach((style: any) => {
+              if (style.startsWith('--') && cssVars.indexOf(style) === -1 && !style.startsWith('--tw')) {
+                cssVars.push(style.substring(2));
+              }
+            });
+          });
+        } catch (e:any) {
+            console.log('Error while reading CSS rules from ' + sheet.href, e.toString());
         }
-        Array.from(rule['style']).forEach((style: any) => {
-          if (style.startsWith('--') && cssVars.indexOf(style) === -1 && !style.startsWith('--tw')) {
-            cssVars.push(style.substring(2));
-          }
-        });
-      });
+      }
     });
+
+    // Old method
+    // Array.from(styleSheets).forEach((styleSheet) => {
+    //   try {
+    //     Array.from(styleSheet.cssRules).forEach((rule:any) => {
+    //       if (!rule || !rule['style']) {
+    //         return;
+    //       }
+    //       Array.from(rule['style']).forEach((style: any) => {
+    //         if (style.startsWith('--') && cssVars.indexOf(style) === -1 && !style.startsWith('--tw')) {
+    //           cssVars.push(style.substring(2));
+    //         }
+    //       });
+    //     });
+    //   } catch (e:any) {
+    //     console.log('Error while reading CSS rules: ' + e.toString());
+    //   }
+    // });
+
     return cssVars;
   };
 
