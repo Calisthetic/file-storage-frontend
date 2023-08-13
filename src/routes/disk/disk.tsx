@@ -48,8 +48,8 @@ export default function Disk() {
     setIsUserDropMenuOpen(!isUserDropMenuOpen)
     if (userDropMenuRef.current) {
       userDropMenuRef.current.style.transform = isUserDropMenuOpen 
-        ? "scale(1, 1) translate(-168px, 180px)" 
-        : "scale(0, 0) translate(-168px, 160px)"
+        ? "scale(1, 1) translate(calc(-100% + 32px), 180px)" 
+        : "scale(0, 0) translate(calc(-100% + 32px), 160px)"
       userDropMenuRef.current.style.margin = isUserDropMenuOpen ? "0px 0px 0px 0px" : "0px 0px 0px -95px"
     }
   }
