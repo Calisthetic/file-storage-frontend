@@ -265,7 +265,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
           onClick={(e:any) => {e.target.style.marginTop = "-40px"}}
           className="text-successLight dark:text-successDark rounded-2xl absolute
           bg-backgroundLight dark:bg-backgroundDark p-2 min-w-xs w-full -ml-4 mt-6 -z-10
-          flex justify-center items-center font-medium transition-margin">
+          flex justify-center items-center font-medium transition-[margin]">
             <svg viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4 mr-2 pointer-events-none">
               <path d="M58.395 32.156 42.995 50.625l-5.39-6.463a5.995 5.995 0 1 0-9.212 

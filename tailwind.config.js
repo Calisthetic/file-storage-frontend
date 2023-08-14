@@ -37,7 +37,6 @@ module.exports = {
         errorLight: "var(--errorLight)",
       },
       transitionProperty: {
-        margin: "margin",
         inputs: "border, outline, background-color",
         dropFiles: "opacity 1s ease-in-out !important",
       },
@@ -48,14 +47,12 @@ module.exports = {
         fullWithHeader: "calc(100dvh - 56px)",
         fulldvh: "100dvh",
         xs: "320px",
-        xs347: "347px",
       },
       minWidth: {
         xs: "320px",
         fulldvw: "100dvw !important",
       },
       maxHeight: {
-        xs347: "347px",
         xs: "320px",
         fulldvh: "100dvh !important",
       },
@@ -72,7 +69,6 @@ module.exports = {
         full100: "100% !important",
       },
       boxShadow: {
-        pricingCardShadow: "0px 0px 7px 0px",
         defaultDark: "0px 0px 4px 0px var(--shadowDark)",
         defaultLight: "0px 0px 4px 0px var(--shadowLight)"
       },

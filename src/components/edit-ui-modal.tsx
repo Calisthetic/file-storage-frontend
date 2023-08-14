@@ -289,7 +289,7 @@ export default function EditUIModal() {
           <motion.section initial={{opacity: 0, x: 100}} animate={{opacity: 1, x: 0}}
           transition={{stiffness: 200, damping: 24, duration: 0.1}} exit={{opacity: 0, x: -100}}
           className="whitespace-nowrap w-full">
-            <div className=" py-2 px-4 w-full overflow-y-auto overflow-x-hidden min-h-xs347 max-h-xs347 flex flex-col">
+            <div className=" py-2 px-4 w-full overflow-y-auto overflow-x-hidden min-h-[347px] max-h-[347px] flex flex-col">
               {fontsRenderList && fontsRenderList.map((item:any, index:any) => (
                 item.family === currentFont ? (
                   <button key={index} data-name={item.family} 

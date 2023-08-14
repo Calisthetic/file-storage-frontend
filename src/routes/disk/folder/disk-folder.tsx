@@ -151,7 +151,7 @@ export default function DiskFolder() {
                 <motion.div initial={{opacity: 0, y: -110, scaleY: 0.2, x: "calc(-100% + 44px)"}} animate={{opacity: 1, y: 0, scaleY: 1}}
                 transition={{stiffness: 200, damping: 24, duration: 0.16}} exit={{opacity: 0, y: -110, scaleY: 0}}
                 className="rounded w-44 mt-0.5 overflow-hidden
-                absolute shadow-defaultLight dark:shadow-none
+                absolute shadow-defaultLight dark:shadow-none z-10
                 bg-backgroundSecondLight dark:bg-backgroundThirdDark">
                   <ul className="py-1.5 text-sm font-medium text-textLight dark:text-textDark">
                     {sortTypes.map((item, index) => (
