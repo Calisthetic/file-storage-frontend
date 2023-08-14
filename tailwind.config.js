@@ -38,11 +38,8 @@ module.exports = {
       },
       transitionProperty: {
         margin: "margin",
-        userDropDownMenu: "margin, transform",
         inputs: "border, outline, background-color",
-        alerts: "margin, opacity, transform, background, background-color",
         dropFiles: "opacity 1s ease-in-out !important",
-        dropDown: "opacity, transform, background-color, background"
       },
       spacing: {
         withHeader: "72px 16px 16px 16px"
@@ -51,14 +48,14 @@ module.exports = {
         fullWithHeader: "calc(100dvh - 56px)",
         fulldvh: "100dvh",
         xs: "320px",
-        xs324: "347px",
+        xs347: "347px",
       },
       minWidth: {
         xs: "320px",
         fulldvw: "100dvw !important",
       },
       maxHeight: {
-        xs324: "347px",
+        xs347: "347px",
         xs: "320px",
         fulldvh: "100dvh !important",
       },
