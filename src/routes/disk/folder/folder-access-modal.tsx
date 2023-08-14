@@ -47,9 +47,10 @@ export default function FolderAccessModal({children, folderId, folderName, folde
           3.873-5.395v-2.5l-.008-.085a.405.405 0 0 0-.392-.332 4.057 4.057 0 0 1-1.6-.32Z" 
           className="fill-warningLight dark:fill-warningDark"></path>
         </svg>
-        <div>
+        <motion.div initial={{opacity: 0, x: 40}} animate={{opacity: 1, x: 0}}
+        transition={{stiffness: 200, damping: 24}}>
           Everyone who has the link will be able to view and download all the content inside the current folder
-        </div>
+        </motion.div>
       </div>
       <AnimatePresence>
         {isFolderPublic ? (
@@ -98,6 +99,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                   strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
                 </svg>
               </motion.button>
+              {/* Dropdown himself */}
               <AnimatePresence>
                 {isRolesMenuOpen === true && (
                   <motion.div initial={{opacity: 0, y: -20}} animate={{opacity: 1, y: 0}}
@@ -172,7 +174,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                 )}
               </AnimatePresence>
             </div>
-            {/* Dropdown himself */}
+            {/* Role description */}
             <div>
               {currentAccessType === "editor" ? (
                 <motion.p initial={{opacity: 0, x: 40}} animate={{opacity: 1, x: 0}}
@@ -194,10 +196,10 @@ export default function FolderAccessModal({children, folderId, folderName, folde
           </div>
         ) : (
           // Private
-          <div className="bg-backgroundSecondLight dark:bg-backgroundThirdDark rounded-md p-1.5
+          <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
           flex flex-row mt-2 items-center">
             <button onClick={() => {setCurrentAccessType("guest"); setIsFolderPublic(true);}}
-            className="bg-backgroundThirdLight dark:bg-backgroundSecondDark 
+            className="bg-backgroundThirdLight dark:bg-backgroundThirdDark 
             rounded-md transition-colors
             hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark mr-2">
               <motion.section initial={{opacity: 0.4}} animate={{opacity: 1}}>
