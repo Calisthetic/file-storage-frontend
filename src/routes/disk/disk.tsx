@@ -4,7 +4,7 @@ import DiskShared from "./shared/disk-shared";
 import DiskUpgrade from "./upgrade/disk-upgrade";
 import DiskFolder from "./folder/disk-folder";
 import { useRef, useState } from "react";
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import DiskFavorites from "./favorites/disk-favorites";
 import DiskRecycleBin from "./recycle-bin/disk-recycle-bin";
 import DiskFiles from "./files/disk-files";
@@ -18,8 +18,7 @@ import Redirect from "../../components/redirect";
 initTE({ Dropdown, Ripple });
 
 export default function Disk() {
-  const userDropMenuRef:any = useRef()
-  const [isUserDropMenuOpen, setIsUserDropMenuOpen] = useState(true)
+  const [isUserDropMenuOpen, setIsUserDropMenuOpen] = useState(false)
   const sideBarRef:any = useRef()
   const [isSideBarOpen, setIsSideBarOpen] = useState(false)
 
@@ -27,6 +26,8 @@ export default function Disk() {
   const [open, setOpen] = useState(false);
   const modalCustomizeOpen = () => setOpen(true);
   const modalCustomizeClose = () => setOpen(false);
+
+  /* eslint-disable global-require */
 
   // Logos
   let mainLogo: string | undefined = undefined;
@@ -37,6 +38,9 @@ export default function Disk() {
     console.log(error)
   }
 
+  /* eslint-enable global-require */
+  
+
   // Funcs
   function CloseOpenSideBar() {
     setIsSideBarOpen(!isSideBarOpen)
@@ -44,13 +48,10 @@ export default function Disk() {
       sideBarRef.current.style.transform = isSideBarOpen ? "translate(-100%, 0%)" : "none"
     }
   }
-  function CloseOpenUserDropMenu() {
-    setIsUserDropMenuOpen(!isUserDropMenuOpen)
-    if (userDropMenuRef.current) {
-      userDropMenuRef.current.style.transform = isUserDropMenuOpen 
-        ? "scale(1, 1) translate(calc(-100% + 32px), 180px)" 
-        : "scale(0, 0) translate(calc(-100% + 32px), 160px)"
-      userDropMenuRef.current.style.margin = isUserDropMenuOpen ? "0px 0px 0px 0px" : "0px 0px 0px -95px"
+
+  function CloseDropDowns(e:any) {
+    if (e.target.dataset.drop !== "userMenu" && e.target.dataset.drop !== "child") {
+      setIsUserDropMenuOpen(false)
     }
   }
 
@@ -76,7 +77,8 @@ export default function Disk() {
   };
 
   return (
-    <div className="bg-backgroundLight h-full dark:bg-backgroundDark">
+    <div className="bg-backgroundLight h-full dark:bg-backgroundDark"
+    onClick={CloseDropDowns}>
       <nav className="fixed top-0 z-40 w-full bg-backgroundLight dark:bg-backgroundDark">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
@@ -111,52 +113,58 @@ export default function Disk() {
             {/* User profile */}
             <div className="flex items-center">
               <div className="flex items-center ml-3">
-                <div>
-                  <button onClick={CloseOpenUserDropMenu} className="flex text-sm bg-gray-800 rounded-full" 
-                  type="button" aria-expanded="false" data-dropdown-toggle="dropdown-user">
-                    <span className="sr-only">Open user menu</span>
-                    <img className="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
-                  </button>
-                </div>
-                <div ref={userDropMenuRef} className="overflow-hidden transition-userDropDownMenu absolute scale-0 
-                z-50 my-4 text-base list-none bg-backgroundThirdLight divide-y divide-borderLight rounded 
-                dark:bg-backgroundThirdDark dark:divide-borderDark text-textLight dark:text-textDark
-                shadow-sm shadow-shadowDark dark:shadow-shadowLight" id="dropdown-user">
-                  <div className="px-4 py-3" role="none">
-                    <p className="" role="none">
-                      Neil Sims
-                    </p>
-                    <p className="font-medium" role="none">
-                      neil.sims@flowbite.com
-                    </p>
-                  </div>
-                  <ul className="py-1" role="none">
-                    <li>
-                      <a href="#" className="block px-4 py-2 hover:bg-backgroundHoverLight 
-                      dark:hover:bg-backgroundHoverDark" role="menuitem">Statistic</a>
-                    </li>
-                    <li>
-                      <a href="#" className="block px-4 py-2 hover:bg-backgroundHoverLight 
-                      dark:hover:bg-backgroundHoverDark" role="menuitem">Statistic</a>
-                    </li>
-                    <li>
-                      <a className="block px-4 py-2 hover:bg-backgroundHoverLight 
-                      dark:hover:bg-backgroundHoverDark cursor-pointer" role="menuitem" onClick={modalCustomizeOpen}>Customize</a>
-                    </li>
-                    <li>
-                      <a href="#" className="block px-4 py-2 hover:bg-backgroundHoverLight 
-                      dark:hover:bg-backgroundHoverDark" role="menuitem">Settings</a>
-                    </li>
-                    <li>
-                      <a href="documentation" className="block px-4 py-2 hover:bg-backgroundHoverLight 
-                      dark:hover:bg-backgroundHoverDark" role="menuitem">Documentation</a>
-                    </li>
-                    <li>
-                      <a href="#" className="block px-4 py-2 hover:bg-backgroundHoverLight 
-                      dark:hover:bg-backgroundHoverDark" role="menuitem">Sign out</a>
-                    </li>
-                  </ul>
-                </div>
+                <button onClick={() => {setIsUserDropMenuOpen(!isUserDropMenuOpen)}} 
+                data-drop="userMenu" className="flex text-sm bg-gray-800 rounded-full">
+                  <img className="w-8 h-8 rounded-full pointer-events-none" alt="user photo"
+                  src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" />
+                </button>
+                <AnimatePresence>
+                  {isUserDropMenuOpen && (
+                    <motion.div initial={{opacity: 0, y: 44, scaleY: 0.2, x: "calc(-100% + 32px)"}} 
+                    animate={{opacity: 1, y: "calc(50% + 18px)", scaleY: 1}}
+                    exit={{opacity: 0, y: 44, scaleY: 0.2}}
+                    transition={{stiffness: 200, damping: 24, duration: 0.16}}
+                    className="absolute
+                    z-50 my-4 text-base list-none bg-backgroundThirdLight 
+                    dark:bg-backgroundThirdDark dark:divide-borderDark text-textLight dark:text-textDark
+                    shadow-sm shadow-shadowDark dark:shadow-shadowLight rounded">
+                      <div className="px-4 py-3">
+                        <p className="">
+                          Neil Sims
+                        </p>
+                        <p className="font-medium">
+                          neil.sims@flowbite.com
+                        </p>
+                      </div>
+                      <ul className="py-1">
+                        <li>
+                          <a href="#" className="block px-4 py-2 hover:bg-backgroundHoverLight 
+                          dark:hover:bg-backgroundHoverDark" role="menuitem">Statistic</a>
+                        </li>
+                        <li>
+                          <a href="#" className="block px-4 py-2 hover:bg-backgroundHoverLight 
+                          dark:hover:bg-backgroundHoverDark" role="menuitem">Statistic</a>
+                        </li>
+                        <li>
+                          <a className="block px-4 py-2 hover:bg-backgroundHoverLight 
+                          dark:hover:bg-backgroundHoverDark cursor-pointer" role="menuitem" onClick={modalCustomizeOpen}>Customize</a>
+                        </li>
+                        <li>
+                          <a href="#" className="block px-4 py-2 hover:bg-backgroundHoverLight 
+                          dark:hover:bg-backgroundHoverDark" role="menuitem">Settings</a>
+                        </li>
+                        <li>
+                          <a href="documentation" className="block px-4 py-2 hover:bg-backgroundHoverLight 
+                          dark:hover:bg-backgroundHoverDark" role="menuitem">Documentation</a>
+                        </li>
+                        <li>
+                          <a href="#" className="block px-4 py-2 hover:bg-backgroundHoverLight 
+                          dark:hover:bg-backgroundHoverDark" role="menuitem">Sign out</a>
+                        </li>
+                      </ul>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </div>
