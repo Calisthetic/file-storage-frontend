@@ -51,12 +51,14 @@ module.exports = {
         fullWithHeader: "calc(100dvh - 56px)",
         fulldvh: "100dvh",
         xs: "320px",
+        xs324: "347px",
       },
       minWidth: {
         xs: "320px",
         fulldvw: "100dvw !important",
       },
       maxHeight: {
+        xs324: "347px",
         xs: "320px",
         fulldvh: "100dvh !important",
       },
