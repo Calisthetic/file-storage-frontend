@@ -1,11 +1,11 @@
 import { useState, useRef } from "react"
-import { useParams } from "react-router-dom";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
 import "../../../styles/focus-elems.css"
 import { primaryColors } from "../../../data/folder-colors"
 import FolderAccessModal from "./folder-access-modal";
+import IconStar from "../../../components/icons";
 
 type Props = {
   currentSortType: string
@@ -14,8 +14,6 @@ type Props = {
 }
 
 export default function RenderData({currentSortType, currentSortBy, currentRenderType}:Props) {
-  const currentFolderToken = useParams().id
-
   const newNameInputRef:any = useRef();
   const [selectedItem, setSelectedItem] = useState<any>();
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
@@ -177,9 +175,12 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     if (hex.length !== 6) {
       throw new Error('Invalid HEX color.');
     }
-    var r = Math.abs(parseInt(hex.slice(0, 2), 16) + value).toString(16),
-      g = Math.abs(parseInt(hex.slice(2, 4), 16) + value).toString(16),
-      b = Math.abs(parseInt(hex.slice(4, 6), 16) + value).toString(16);
+    var temp_r = parseInt(hex.slice(0, 2), 16) + value,
+      temp_g = parseInt(hex.slice(2, 4), 16) + value,
+      temp_b = parseInt(hex.slice(4, 6), 16) + value;
+    var r = temp_r > 255 ? (temp_r - 255).toString(16) : temp_r < 0 ? (255 - temp_r).toString(16) : temp_r.toString(16),
+      g = temp_g > 255 ? (temp_g - 255).toString(16) : temp_g < 0 ? (255 - temp_g).toString(16) : temp_g.toString(16),
+      b = temp_b > 255 ? (temp_b - 255).toString(16) : temp_b < 0 ? (255 - temp_b).toString(16) : temp_b.toString(16);
     return '#' + padZero(r) + padZero(g) + padZero(b);
   }
 
@@ -195,6 +196,17 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     //overflow: "hidden",
     borderRadius: "16px"
   };
+
+  // Dark mode
+  let isDarkMode:boolean = false;
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    isDarkMode = true
+  }
+  // Css variables
+  var styleVariables = getComputedStyle(document.body)
+  function GetCSSValue(name: string) {
+    return styleVariables.getPropertyValue('--' + name)
+  }
 
   return (
     <main className="py-4">
@@ -237,6 +249,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       fillRule="evenodd" fill={item.color ? ("#" + item.color) : "#888"}></path>
                     </svg>
                   </button>
+                  {/* Color picker */}
                   <div className="bg-backgroundLight dark:bg-backgroundThirdDark 
                   focus-second-right rounded-lg text-base -mt-6 px-2 pb-2 pt-1">
                     <div className="flex flex-row justify-between font-semibold mb-1">
@@ -954,12 +967,12 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           </table>
         </div>
       ) : ( // tile
-        <div className="flex flex-col gap-y-4">
+        <div className="flex flex-col">
           <div className="pl-2 pb-1
           font-semibold text-base border-b border-borderLight dark:border-borderDark">
             <p>Folders</p>
           </div>
-          <div className="flex gap-x-1 md:gap-x-1.5 lg:gap-x-2">
+          <div className="flex gap-x-1 md:gap-x-1.5 lg:gap-x-2 mt-2">
             {folders.sort((a, b) => {
               if (currentSortType === "size" ? a.size < b.size
                 : currentSortType === "date" ? a.created_at < b.created_at
@@ -971,13 +984,72 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               { return currentSortBy === "descending" ? -1 : 1; }
               return 0;
             }).map((item, index) => (
-              <div key={index}
+              <div key={index} data-id={item.id} data-type="folder" draggable="true" data-token={item.token}
+              onDrop={OnDropFolderList} onDragStart={(e:any) => {setCurrentDragElement(e.target);}}
+              onDragOver={(e:any) => {if (currentDragElement.dataset.id !== e.target.dataset.id || 
+                currentDragElement.dataset.type === "file") e.preventDefault()}}
+              onDoubleClick={(e:any) => { 
+                if (e.target.dataset.token !== undefined) 
+                  window.location.replace("/disk/folder/" + item.token)
+              }}
               className=" hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark
-              p-2 w-36 rounded-md">
-                <div className="p-2">
-                  <button>
+              px-2 w-36 rounded-md flex flex-col pt-1 pb-3 hover-parent">
+                {/* Actions */}
+                <div className="h-6 flex flex-row justify-around flex-nowrap">
+                  <div className="hover-child">
+                    <button data-id={item.id} data-name={item.name}
+                    data-access={item.access_type} data-token={item.token} onClick={modalAccessOpen}
+                    className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer p-0.5">
+                      <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 pointer-events-none">
+                        <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
+                        29.47 17.58 41.91 30.02 3.146 3.146 5.898 6.518 8.742 9.838l37.96-37.96C458.5 72.05 477.1 64 498.6 
+                        64c20.67 0 40.1 8.047 54.71 22.66 14.61 14.61 22.66 34.04 22.66 54.71s-8.049 40.1-22.66 54.71l-133.3 
+                        133.3C405.5 343.1 386 352 365.4 352s-40.1-8.048-54.71-22.66C296 314.7 287.1 295.3 287.1 274.6s8.047-40.1 
+                        22.66-54.71l4.44-3.49c-2.1-3.9-4.3-7.9-7.5-11.1-8.6-8.6-19.9-13.3-32.1-13.3-11.93 0-23.1 4.664-31.61 
+                        12.97-30.71 53.96-23.63 123.6 22.39 169.6C293 402.2 329.2 416 365.4 416c36.18 0 72.36-13.8 99.96-41.41L598.6 
+                        241.3c28.45-28.45 42.24-66.01 41.37-103.3-.87-35.9-14.57-69.84-41.37-96.59zM234 387.4l-37.9 37.9C181.5 
+                        439.1 162 448 141.4 448c-20.67 0-40.1-8.047-54.71-22.66-14.61-14.61-22.66-34.04-22.66-54.71s8.049-40.1 
+                        22.66-54.71l133.3-133.3C234.5 168 253.1 160 274.6 160s40.1 8.048 54.71 22.66c14.62 14.61 22.66 34.04 
+                        22.66 54.71s-8.047 40.1-22.66 54.71l-3.51 3.52c2.094 3.939 4.219 7.895 7.465 11.15C341.9 315.3 353.3 
+                        320 365.4 320c11.93 0 23.1-4.664 31.61-12.97 30.71-53.96 23.63-123.6-22.39-169.6C346.1 109.8 310.8 96 
+                        274.6 96c-36.2 0-72.3 13.8-99.9 41.4L41.41 270.7C13.81 298.3 0 334.48 0 370.66c0 36.18 13.8 72.36 41.41 
+                        99.97C69.01 498.2 105.2 512 141.4 512c36.18 0 
+                        72.36-13.8 99.96-41.41l43.36-43.36c-15.11-8.012-29.47-17.58-41.91-30.02-3.21-3.11-5.91-6.51-8.81-9.81z" 
+                        className=" fill-textLight dark:fill-textDark"></path>
+                      </svg>
+                    </button>
+                    <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer p-0.5">
+                      <svg className=" stroke-textLight dark:stroke-textDark h-5 w-5" fill="none" 
+                      strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
+                      </svg>
+                    </button>
+                    <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer p-0.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" className="h-5 w-5" viewBox="0,0,256,256">
+                        <g className="fill-textLight dark:fill-textDark" fillRule="nonzero" stroke="none" 
+                        strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDashoffset="0" 
+                        fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
+                        <g transform="scale(10.66667,10.66667)">
+                          <path d="M10,2l-1,1h-4c-0.6,0 -1,0.4 -1,1c0,0.6 0.4,1 1,1h2h10h2c0.6,0 1,-0.4 1,-1c0,-0.6 
+                          -0.4,-1 -1,-1h-4l-1,-1zM5,7v13c0,1.1 0.9,2 2,2h10c1.1,0 2,-0.9 2,-2v-13zM9,9c0.6,0 
+                          1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1zM15,9c0.6,0 
+                          1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1z"></path>
+                        </g></g>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                {/* Main icon */}
+                <div className="px-2 pb-2 flex flex-col">
+                  <button data-id={item.id} data-token={item.token} data-type="folder" 
+                  className="focus-first-bottom"
+                  onDoubleClick={(e:any) => { 
+                    if (e.target.dataset.token !== undefined) 
+                      window.location.replace("/disk/folder/" + item.token)
+                  }}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                    className="w-28 h-28">
+                    className="w-28 h-28 pointer-events-none">
                       <path d="M12 6c0 1.1-.895 2-2 2H2c-1.105 0-2 .9-2 2v11c0 1.1.895 
                       2 2 2h20c1.105 0 2-.9 2-2V8c0-1.1-.895-2-2-2H12z" 
                       fill={item.color ? blurColor(item.color, -32) : "#888888"}></path>
@@ -988,9 +1060,102 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       fill={item.color ? "#" + item.color : "#686868"}></path>
                     </svg>
                   </button>
+                  {/* Color picker */}
+                  <div className="bg-backgroundLight dark:bg-backgroundThirdDark 
+                  focus-second-bottom rounded-lg text-base px-2 pb-2 pt-1 mt-[112px] -ml-[20px]">
+                    <div className="flex flex-row justify-between font-semibold mb-1">
+                      <div>Folder's color</div>
+                    </div>
+                    <div className="flex flex-col gap-1 md:gap-1.5">
+                      {primaryColors.slice(primaryColors.length - (Math.floor(primaryColors.length / colorsInRow)))
+                      .map((temp_primary_color, temp_primary_color_index) => (
+                        <div key={temp_primary_color_index} className="flex flex-row gap-1 md:gap-1.5">
+                          {primaryColors.slice(temp_primary_color_index * colorsInRow, temp_primary_color_index * colorsInRow + colorsInRow)
+                          .map((primary_color, primary_color_index) => (
+                            <div key={primary_color_index} className="h-6 w-6">
+                              <button className="rounded-full h-6 w-6 transition-shadow
+                              hover:shadow-defaultLight hover:dark:shadow-defaultDark"
+                              style={{backgroundColor: "#" + primary_color.color}}
+                              title={primary_color.name}>
+                                {item.color?.toLowerCase() === primary_color.color.toLowerCase() && (
+                                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
+                                  enableBackground="new 0 0 24 24" className="w-6 h-6">
+                                    <path d="M10 18c-.5 0-1-.2-1.4-.6l-4-4c-.8-.8-.8-2 0-2.8.8-.8 2.1-.8 
+                                    2.8 0l2.6 2.6 6.6-6.6c.8-.8 2-.8 2.8 0 .8.8.8 2 0 2.8l-8 8c-.4.4-.9.6-1.4.6z" 
+                                    fill={invertColor("#" + primary_color.color)}></path>
+                                  </svg>
+                                )}
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  {/* Folder info */}
+                  <div className="absolute w-28 h-28 flex flex-col justify-between
+                  text-textLight dark:text-textDark pointer-events-none">
+                    {/* Watches && items in folder */}
+                    <div className="flex flex-row justify-between pt-2.5 px-0.5">
+                      <div>
+                        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16"
+                        className="w-6 hover-first h-6 pointer-events-auto">
+                          <path d="M8 2C4.69 2 2 4.69 2 8s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 11c-2.76 
+                          0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" 
+                          className="fill-textLight dark:fill-textDark"></path>
+                          <path d="M8 6.85c-.28 0-.5.22-.5.5v3.4c0 .28.22.5.5.5s.5-.22.5-.5v-3.4c0-.27-.22-.5-.5-.5zM8.01 
+                          4.8c-.26-.02-.5.25-.51.52v.08c0 .27.21.47.49.48H8c.27 0 .49-.24.5-.5v-.11c0-.29-.21-.47-.49-.47z" 
+                          className="fill-textLight dark:fill-textDark"></path>
+                        </svg>
+                        <div className="hover-second ml-3 bg-backgroundThirdLight dark:bg-backgroundThirdDark 
+                        px-2 py-1 rounded z-10">
+                          <div className="flex flex-row space-x-2 text-sm font-medium">
+                            <svg className="w-5 h-5"
+                            viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 512 512">
+                              <path d="M256 128c-81.9 0-145.7 48.8-224 128 67.4 67.7 124 128 224 128 99.9 0 173.4-76.4 
+                              224-126.6C428.2 198.6 354.8 128 256 128zm0 219.3c-49.4 0-89.6-41-89.6-91.3 0-50.4 40.2-91.3 
+                              89.6-91.3s89.6 41 89.6 91.3c0 50.4-40.2 91.3-89.6 91.3z" className="fill-textLight dark:fill-textDark"></path>
+                              <path d="M256 224c0-7.9 2.9-15.1 7.6-20.7-2.5-.4-5-.6-7.6-.6-28.8 0-52.3 23.9-52.3 53.3s23.5 
+                              53.3 52.3 53.3 52.3-23.9 52.3-53.3c0-2.3-.2-4.6-.4-6.9-5.5 4.3-12.3 6.9-19.8 6.9-17.8 
+                              0-32.1-14.3-32.1-32z" className="fill-textLight dark:fill-textDark"></path>
+                            </svg>
+                            <p>{item.watches === null ? 0 : item.watches}</p>
+                          </div>
+                          <div className="flex flex-row space-x-2 text-base font-medium">
+                            <svg  fill="none" className="w-5 h-5 stroke-textLight dark:stroke-textDark"
+                            strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
+                            </svg>
+                            <p>{item.downloads === null ? 0 : item.downloads}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className=" mt-2.5 mr-0.5 font-medium"
+                      style={{color: item.color ? blurColor(item.color, -60) : "#888888"}}>
+                        {item.files_inside}
+                      </div>
+                    </div>
+                    {/* Elected && size */}
+                    <div className="flex flex-row justify-between items-end px-1 pb-1.5">
+                      <div className="">
+                        <button className=" pointer-events-auto">
+                          <IconStar width="24px" height="24px" isActive={item.is_elected}
+                          firstColor={GetCSSValue(item.is_elected 
+                            ? (isDarkMode ? "iconDark" : "iconLight") 
+                            : (isDarkMode ? "textDark" : "textLight"))} 
+                          secondColor={blurColor(GetCSSValue(isDarkMode ? "iconDark" : "iconLight"), -48)}></IconStar>
+                        </button>
+                      </div>
+                      <div className=" font-medium">{CutSize(item.size * 10)}</div>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <p className=" text-center whitespace-pre-wrap">eeeej fjjfjf fjfjfj fjfjf jffjfjj{item.name}</p>
+                <div className="pointer-events-none flex justify-center">
+                  <button className="text-center pointer-events-auto transition-all whitespace-pre-wrap hover:underline" 
+                  data-id={item.id} data-name={item.name} data-token={item.token} data-type="folder" onClick={modalRenameOpen}>
+                    {item.name}
+                  </button>
                 </div>
               </div>
               // <div key={index} data-id={item.id} data-type="folder" draggable="true" data-token={item.token}
