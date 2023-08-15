@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { FileUploader } from "react-drag-drop-files";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion"
 import { Dropdown, Ripple, initTE, } from "tw-elements";
 
@@ -15,16 +15,34 @@ export default function DiskFolder() {
   const [isAddDrop, setIsAddDrop] = useState(false)
   const [isCellTypeDrop, setIsCellTypeDrop] = useState(false)
   const [isSortDrop, setIsSortDrop] = useState(false)
-  // sort and render types
-  const [currentRenderType, setCurrentRenderType] = useState("list")
-  const sortTypes = ["name", "type", "size", "date"]
-  const [currentSortType, setCurrentSortType] = useState("name")
-  const [currentSortBy, setCurrentSortBy] = useState("ascending")
-
-  function SelectCurrentRenderType(e: any) {
-    setCurrentRenderType(e.target.dataset.name)
+  // local storage sort and render items
+  interface RenderValues {
+    render_type: string,
+    sort_type: string,
+    sort_by: string
   }
+  const renderValuesString = localStorage.getItem("renderValues")
+  const renderValues:RenderValues = JSON.parse(renderValuesString ? renderValuesString : "{}")
+  // sort and render types
+  const [currentRenderType, setCurrentRenderType] 
+    = useState(renderValues.render_type ? renderValues.render_type : "list")
+  const sortTypes = ["name", "type", "size", "date"]
+  const [currentSortType, setCurrentSortType] 
+    = useState(renderValues.sort_type ? renderValues.sort_type : sortTypes[0])
+  const [currentSortBy, setCurrentSortBy] 
+    = useState(renderValues.sort_by ? renderValues.sort_by : "ascending")
 
+  // Auto saving render types and sorting
+  useEffect(() => {
+    let currentRenderValues:RenderValues = {
+      render_type: currentRenderType,
+      sort_type: currentSortType,
+      sort_by: currentSortBy
+    }
+    localStorage.setItem("renderValues", JSON.stringify(currentRenderValues))
+  }, [currentRenderType, currentSortType, currentSortBy])
+
+  // Dropdowns
   function CloseAllDrops(e:any) {
     if (e.target.dataset.drop !== "add" && e.target.dataset.drop !== "child") {
       setIsAddDrop(false)
@@ -42,7 +60,6 @@ export default function DiskFolder() {
   if (params.id === undefined) {
     window.location.replace("./folder/main")
   }
-
   const fileUploaderRef:any = useRef()
   const [isDragVisible, setIsDragVisible] = useState(false);
   const [file, setFile] = useState([]);
@@ -296,7 +313,8 @@ export default function DiskFolder() {
                       <li>
                         <div className="cursor-pointer transition-colors px-2 py-2 flex flex-row
                         hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center" 
-                        data-name="list" onClick={SelectCurrentRenderType} title="list">
+                        data-name="list" title="list"
+                        onClick={(e:any) => {setCurrentRenderType(e.target.dataset.name)}}>
                           <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
                           viewBox="0 0 18 10" xmlns="http://www.w3.org/2000/svg">
                             <path d="M0 6h2V4H0v2Zm0 4h2V8H0v2Zm0-8h2V0H0v2Zm4 4h14V4H4v2Zm0 4h14V8H4v2ZM4 
@@ -309,7 +327,8 @@ export default function DiskFolder() {
                       <li>
                         <div className="cursor-pointer transition-colors px-2 py-2 flex flex-row
                         hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center" 
-                        data-name="table" onClick={SelectCurrentRenderType} title="table">
+                        data-name="table" title="table"
+                        onClick={(e:any) => {setCurrentRenderType(e.target.dataset.name)}}>
                           <svg className="h-6 w-6 pointer-events-none"
                           viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M9 14h12v-3H9v3Zm-2 0v-3H3v3h4Zm2-8v3h12V6H9ZM7 6H3v3h4V6Zm2 13h12v-3H9v3Zm-2 
@@ -323,7 +342,8 @@ export default function DiskFolder() {
                       <li>
                         <div className="cursor-pointer transition-colors px-2 py-2 flex flex-row
                         hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center" 
-                        data-name="tile" onClick={SelectCurrentRenderType} title="tiles">
+                        data-name="tile" title="tiles"
+                        onClick={(e:any) => {setCurrentRenderType(e.target.dataset.name)}}>
                           <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
                           viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16">
                             <path d="M0 0h4v4H0zM6 0h4v4H6zM12 0h4v4h-4zM0 6h4v4H0zM6 6h4v4H6zM12 6h4v4h-4zM0 12h4v4H0zM6 
