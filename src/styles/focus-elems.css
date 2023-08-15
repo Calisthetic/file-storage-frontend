@@ -30,14 +30,22 @@
 
 /* Bottom to right */
 .focus-first-bottom:focus + .focus-second-bottom {
-  transform: scale(1,1) translate(0%, 0%) !important;
+  transform: scale(1,1) !important;
   opacity: 1 !important;
 }
 
 .focus-second-bottom {
-  transform: scale(0,0) translate(0%, 0px);
+  transform: scale(0,0);
   position: absolute;
   transition: 0.5s ease;
   transition-property: opacity;
   opacity: 0;
+}
+.focus-second-bottom:has(div button:focus) {
+  transform: scale(1,1) !important;
+  opacity: 1;
+}
+.focus-second-bottom:has(div button:focus) {
+  transform: scale(1,1) !important;
+  opacity: 1;
 }

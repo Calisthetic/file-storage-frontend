@@ -115,7 +115,7 @@ export default function Disk() {
               <div className="flex items-center ml-3">
                 <button onClick={() => {setIsUserDropMenuOpen(!isUserDropMenuOpen)}} 
                 data-drop="userMenu" className="flex text-sm bg-gray-800 rounded-full">
-                  <img className="w-8 h-8 rounded-full pointer-events-none" alt="user photo"
+                  <img className="w-8 h-8 rounded-full pointer-events-none" alt="user photo" draggable="false"
                   src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" />
                 </button>
                 <AnimatePresence>
