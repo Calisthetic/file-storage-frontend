@@ -111,23 +111,23 @@ export const primaryColors:ColorsList[] = [
   },
   // ============ //
   {
-    color: "ffffff",
-    name: "White",
-  },
-  {
-    color: "c0c0c0",
+    color: "a7a9ab",
     name: "Silver",
   },
   {
-    color: "808080",
-    name: "Gray",
+    color: "727578",
+    name: "AsphaltGrey",
   },
   {
-    color: "696969",
-    name: "DimGray",
+    color: "5c636c",
+    name: "DeepGrey",
   },
   {
-    color: "000000",
-    name: "Black",
+    color: "575d6e",
+    name: "Grey",
+  },
+  {
+    color: "464550",
+    name: "DarkGrey",
   },
 ]
