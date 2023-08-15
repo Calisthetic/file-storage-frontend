@@ -4,6 +4,9 @@ import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion"
 import { Dropdown, Ripple, initTE, } from "tw-elements";
 
+// @ts-ignore
+import Hammer from 'hammerjs';
+
 import "../../../styles/hover-elems.css"
 import RenderData from "./render-data";
 
@@ -42,7 +45,7 @@ export default function DiskFolder() {
     localStorage.setItem("renderValues", JSON.stringify(currentRenderValues))
   }, [currentRenderType, currentSortType, currentSortBy])
 
-  // Dropdowns
+  // Close dropdowns
   function CloseAllDrops(e:any) {
     if (e.target.dataset.drop !== "add" && e.target.dataset.drop !== "child") {
       setIsAddDrop(false)
@@ -54,6 +57,17 @@ export default function DiskFolder() {
       setIsSortDrop(false)
     }
   }
+
+  useEffect(() => {
+    let rootElem = document.getElementById("root")
+    if (rootElem) {
+      rootElem.addEventListener('click', CloseAllDrops);
+    }
+
+    return () => {
+      rootElem?.removeEventListener("click", CloseAllDrops)
+    }
+  }, [])
 
   // File uploader
   const params: any = useParams();
@@ -87,7 +101,7 @@ export default function DiskFolder() {
 
 
   return (
-    <div onDragEnter={VisualizeUploader} onClick={CloseAllDrops} 
+    <div onDragEnter={VisualizeUploader} 
     className="w-full min-h-fullWithHeader px-2 md:px-6">
       <header className="w-full px-1 sm:px-0 pt-1 flex flex-row justify-between">
         {/* All actions drop */}
@@ -250,7 +264,7 @@ export default function DiskFolder() {
 
           {/* Cell types drop */}
           <div>
-            <button id="dropdownDefaultButton" data-drop="cellType" 
+            <button data-drop="cellType" 
             onClick={() => {setIsCellTypeDrop(!isCellTypeDrop)}}
             className="text-white hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark
             font-medium rounded-full text-center h-10 w-10 inline-flex items-center first-letter:uppercase
@@ -302,7 +316,7 @@ export default function DiskFolder() {
               )))}
             </button>
             <AnimatePresence>
-              {isCellTypeDrop && (
+              {isCellTypeDrop === true && (
                 <motion.div initial={{opacity: 0, y: -70, scaleY: 0.2}} animate={{opacity: 1, y: 0, scaleY: 1}}
                 transition={{stiffness: 200, damping: 24, duration: 0.16}} exit={{opacity: 0, y: -70, scaleY: 0}}
                 className="divide-y divide-gray-100 rounded w-10 mt-0.5

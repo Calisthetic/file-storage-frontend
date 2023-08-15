@@ -3,7 +3,7 @@ import DiskRecent from './recent/disk-recent';
 import DiskShared from "./shared/disk-shared";
 import DiskUpgrade from "./upgrade/disk-upgrade";
 import DiskFolder from "./folder/disk-folder";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion"
 import DiskFavorites from "./favorites/disk-favorites";
 import DiskRecycleBin from "./recycle-bin/disk-recycle-bin";
@@ -14,6 +14,8 @@ import EditUIModal from "../../components/edit-ui-modal";
 import DiskSideBar from "./disk-sidebar";
 import { Dropdown, Ripple, initTE, } from "tw-elements";
 import Redirect from "../../components/redirect";
+// @ts-ignore
+import Hammer from 'hammerjs';
 
 initTE({ Dropdown, Ripple });
 
@@ -55,14 +57,31 @@ export default function Disk() {
     }
   }
 
+  const [canSideBarHide, setCanSideBarHide] = useState(false)
   function ChangeSideBar() {
-    if (window.innerWidth > 640 && isSideBarOpen === false) {
-      CloseOpenSideBar();
-    } else if (window.innerWidth <= 640 && isSideBarOpen === true) {
-      CloseOpenSideBar()
+    if (window.innerWidth > 640) {
+      if (isSideBarOpen === false) {
+        CloseOpenSideBar();
+      }
+      if (canSideBarHide === true) {
+        setCanSideBarHide(false)
+      }
+    } else if (window.innerWidth <= 640) {
+      if (isSideBarOpen === true) {
+        CloseOpenSideBar();
+      }
+      if (canSideBarHide === false) {
+        setCanSideBarHide(true)
+      }
     }
   }
-  window.addEventListener('resize', ChangeSideBar);
+  useEffect(() => {
+    window.addEventListener('resize', ChangeSideBar);
+
+    return () => {
+      window.removeEventListener("resize", ChangeSideBar)
+    }
+  }, [])
 
   const modalWindowStyle = {
     position: 'absolute' as 'absolute',
@@ -75,6 +94,30 @@ export default function Disk() {
     //overflow: "hidden",
     borderRadius: "16px"
   };
+
+  // Swipe sidebar
+  const rootElem = document.getElementById("root")
+  if (rootElem) {
+    var manager = new Hammer.Manager(rootElem);
+    var Swipe = new Hammer.Swipe();
+    manager.add(Swipe);
+    // Left && right events
+    manager.on('swipeleft', function(e:any) {
+      if (canSideBarHide) {
+        if (isSideBarOpen) {
+          CloseOpenSideBar()
+        }
+      }
+    });
+    manager.on('swiperight', function(e:any) {
+      if (canSideBarHide) {
+        if (!isSideBarOpen) {
+          CloseOpenSideBar()
+        }
+      }
+    });
+  }
+  
 
   return (
     <div className="bg-backgroundLight h-full dark:bg-backgroundDark"
