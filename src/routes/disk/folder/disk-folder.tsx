@@ -332,20 +332,6 @@ export default function DiskFolder() {
                         </div>
                       </li>
                     )}
-                    {currentRenderType !== "bigTile" && (
-                      <li>
-                        <div className="cursor-pointer transition-colors px-2 py-2 flex flex-row
-                        hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center" 
-                        data-name="bigTile" onClick={SelectCurrentRenderType} title="big tiles">
-                          <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
-                          viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0 0h9v9H0V0zm2 2v5h5V2H2zm-2 9h9v9H0v-9zm2 2v5h5v-5H2zm9-13h9v9h-9V0zm2 
-                            2v5h5V2h-5zm-2 9h9v9h-9v-9zm2 2v5h5v-5h-5z" 
-                            className="fill-iconLight dark:fill-iconDark"></path>
-                          </svg>
-                        </div>
-                      </li>
-                    )}
                   </ul>
                 </motion.div>
               )}
