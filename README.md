@@ -55,6 +55,12 @@ npm i --save react-drag-drop-files
 npm i hammerjs
 ```
 
+[Zod](https://zod.dev/)
+
+```bash
+npm i zod
+```
+
 ### Also used in project
 
 - [Google Fonts API](https://developers.google.com/fonts/docs/developer_api?hl=ru#APIKey)
