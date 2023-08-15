@@ -1,19 +1,19 @@
 /* All elems in one div */
 .hover-first:hover + .hover-second {
   opacity: 1;
-  transform: scale(1, 1);
+  transform: scale(1, 1) translate(-50%, 0%);
 }
 
 .hover-second:has(button):hover {
   opacity: 1;
-  transform: scale(1, 1);
+  transform: scale(1, 1) translate(-50%, 0%);
 }
 
 .hover-second {
   transition: 0.25s ease;
   transition-property: opacity;
   opacity: 0;
-  transform: scale(0, 0);
+  transform: scale(0, 0) translate(-50%, 0%);
   position: absolute;
 }
 
@@ -21,9 +21,19 @@
 .hover-parent:hover .hover-child {
   opacity: 1;
 }
+.hover-parent:hover .hover-zero-child {
+  opacity: 1;
+  width: auto !important;
+}
 
 .hover-child {
   transition: 0.25s ease;
   transition-property: opacity;
+  opacity: 0;
+}
+.hover-zero-child {
+  width: 0px !important;
+  transition: 0.25s ease;
+  transition-property: opacity, width;
   opacity: 0;
 }
