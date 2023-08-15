@@ -5,8 +5,6 @@
 
 ### Tasks
 
-- Font auto save and init (premium)
-
 ### Dependencies
 
 [React Router DOM](https://www.npmjs.com/package/react-router-dom)
@@ -49,6 +47,12 @@ npm install tw-elements
 
 ```bash
 npm i --save react-drag-drop-files
+```
+
+[Hammer.js](https://www.npmjs.com/package/hammerjs)
+
+```bash
+npm i hammerjs
 ```
 
 ### Also used in project
