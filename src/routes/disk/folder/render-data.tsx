@@ -64,7 +64,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     {
       id: 1,
       token: "123",
-      name: "folder1",
+      name: "folder hjhjh1",
       size: 77828556,
       created_at: "13032001",
       access_type: "editor",
@@ -288,22 +288,58 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     }
 
     return () => {
-      if (folderElems) {
+      if (folderElems && fileElems) {
         for (let i = 0; i < folderElems.length; i++) {
           var hammertime = new Hammer(folderElems[i]);
-          hammertime.off('doubletap', function(e:any) {
+          hammertime.on('doubletap', function(e:any) {
             if (e.target.dataset.token !== undefined) 
               navigate('./../' + e.target.dataset.token)
           });
-          hammertime.off('pan', function(event:any) {
+          hammertime.on('pan', function(event:any) {
             folderElems[i].style["transform"] = "translate(" + event.deltaX + "px, " + event.deltaY + "px)"
+            folderElems[i].style["z-index"] = "20"
+            folderElems[i].style["outline"] 
+              = "2px solid var(--backgroundHover" + (isDarkMode ? "Dark" : "Light") + ")"
+            if (rootElem) {
+              rootElem.style["cursor"] = "grabbing"
+            }
           });
-          hammertime.off('panend', function(event:any) {
-            fileElems[i].style["background-color"] = "inherit"
+          hammertime.on('panend', function(event:any) {
+            folderElems[i].style["transform"] = "translate(0px, 0px)"
+            folderElems[i].style["z-index"] = "unset"
+            folderElems[i].style["outline"] = "none"
             let toElem = document.elementFromPoint(event.center.x, event.center.y) as HTMLElement
             if (toElem !== null) {
               console.log("target: " + toElem.dataset.type + " " + toElem.dataset.id)
               console.log("dragged: " + event.target.dataset.type + " " + event.target.dataset.id)
+            }
+            if (rootElem) {
+              rootElem.style["cursor"] = "auto"
+            }
+          });
+        }
+        for (let i = 0; i < fileElems.length; i++) {
+          var hammertime2 = new Hammer(fileElems[i]);
+          hammertime2.on('pan', function(event:any) {
+            fileElems[i].style["transform"] = "translate(" + event.deltaX + "px, " + event.deltaY + "px)"
+            fileElems[i].style["z-index"] = "20"
+            fileElems[i].style["outline"] 
+              = "2px solid var(--backgroundHover" + (isDarkMode ? "Dark" : "Light") + ")"
+            if (rootElem) {
+              rootElem.style["cursor"] = "grabbing"
+            }
+          });
+          hammertime2.on('panend', function(event:any) {
+            fileElems[i].style["transform"] = "translate(0px, 0px)"
+            fileElems[i].style["z-index"] = "unset"
+            fileElems[i].style["outline"] = "none"
+            let toElem = document.elementFromPoint(event.center.x, event.center.y) as HTMLElement
+            if (toElem !== null) {
+              console.log("target: " + toElem.dataset.type + " " + toElem.dataset.id)
+              console.log("dragged: " + event.target.dataset.type + " " + event.target.dataset.id)
+            }
+            if (rootElem) {
+              rootElem.style["cursor"] = "auto"
             }
           });
         }
@@ -336,10 +372,10 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
               flex-row justify-between text-lg px-2 py-1 rounded-lg rendered-folder
               bg-backgroundSecondLight dark:bg-backgroundSecondDark">
-                <div data-id={item.id} data-type="folder"
+                <div data-id={item.id} data-type="folder" data-token={item.token}
                 className="flex flex-row items-center space-x-2 max-w-[calc(100dvw-88px)] 
                 sm:max-w-[calc(100dvw-348px)] md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]">
-                  <button data-id={item.id} data-type="folder"
+                  <button data-id={item.id} data-type="folder" data-token={item.token}
                   className="w-6 cursor-pointer focus-first-right flex flex-row">
                     <svg viewBox="0 0 20 16" className="w-6 h-6 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M8 0H2C.9 0 0 .9 0 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2h-8L8 0Z" 
@@ -383,7 +419,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                 <div className="flex flex-row items-center">
                   {/* Info */}
                   <div className="w-6 sm:w-7 mg:w-8">
-                    <div data-id={item.id} data-type="folder" className="w-6 sm:w-7 mg:w-8 hover-first">
+                    <div data-id={item.id} data-type="folder" data-token={item.token}
+                    className="w-6 sm:w-7 mg:w-8 hover-first">
                       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
                       enableBackground="new 0 0 24 24" className="h-6 w-6 pointer-events-none"><g id="Layer_2">
                         <path d="M12 10c-.6 0-1 .4-1 1v5c0 .6.4 1 1 1s1-.4 1-1v-5c0-.6-.4-1-1-1z" 
@@ -416,7 +453,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   </div>
                   {/* Actions */}
                   <div className="w-6 sm:w-7 mg:w-8">
-                    <div data-id={item.id} data-type="folder" 
+                    <div data-id={item.id} data-type="folder" data-token={item.token}
                     className="h-full flex items-center justify-center hover-first">
                         <svg viewBox="0 0 256 256"  xmlns="http://www.w3.org/2000/svg"
                         className="w-6 h-6 pointer-events-none">
@@ -555,9 +592,10 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                 <div className="flex flex-row items-center">
                   {/* Info */}
                   <div className="w-6 sm:w-7 mg:w-8">
-                    <div className="w-6 sm:w-7 mg:w-8 hover-first">
+                    <div data-id={item.id} data-type="file"
+                    className="w-6 sm:w-7 mg:w-8 hover-first">
                       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
-                      enableBackground="new 0 0 24 24" className="h-6 w-6"><g id="Layer_2">
+                      enableBackground="new 0 0 24 24" className="h-6 w-6 pointer-events-none"><g id="Layer_2">
                         <path d="M12 10c-.6 0-1 .4-1 1v5c0 .6.4 1 1 1s1-.4 1-1v-5c0-.6-.4-1-1-1z" 
                         className="fill-textLight dark:fill-textDark"></path>
                         <circle cx="12" cy="8" r="1" className="fill-textLight dark:fill-textDark"></circle>
@@ -588,18 +626,17 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   </div>
                   {/* Actions */}
                   <div className="w-6 sm:w-7 mg:w-8">
-                    <div className="h-full flex items-center justify-center hover-first">
-                      <div>
-                        <svg viewBox="0 0 256 256"  xmlns="http://www.w3.org/2000/svg"
-                        className="w-6 h-6">
-                          <path fill="none" d="M0 0h256v256H0z"></path>
-                          <circle cx="128" cy="128" r="96" className="stroke-textLight dark:stroke-textDark" 
-                          strokeMiterlimit="10" strokeWidth="16" fill="none"></circle>
-                          <circle cx="128" cy="128" r="12" className="fill-textLight dark:fill-textDark"></circle>
-                          <circle cx="128" cy="80" r="12" className="fill-textLight dark:fill-textDark"></circle>
-                          <circle cx="128" cy="176" r="12" className="fill-textLight dark:fill-textDark"></circle>
-                        </svg>
-                      </div>
+                    <div data-id={item.id} data-type="file"
+                    className="h-full flex items-center justify-center hover-first">
+                      <svg viewBox="0 0 256 256"  xmlns="http://www.w3.org/2000/svg"
+                      className="w-6 h-6 pointer-events-none">
+                        <path fill="none" d="M0 0h256v256H0z"></path>
+                        <circle cx="128" cy="128" r="96" className="stroke-textLight dark:stroke-textDark" 
+                        strokeMiterlimit="10" strokeWidth="16" fill="none"></circle>
+                        <circle cx="128" cy="128" r="12" className="fill-textLight dark:fill-textDark"></circle>
+                        <circle cx="128" cy="80" r="12" className="fill-textLight dark:fill-textDark"></circle>
+                        <circle cx="128" cy="176" r="12" className="fill-textLight dark:fill-textDark"></circle>
+                      </svg>
                     </div>
                     <div className="hover-second ml-3.5 w-8
                     bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
@@ -670,8 +707,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           </div>
         </div>
       ) : currentRenderType === "table" ? (
-        <div className="overflow-x-auto overflow-y-clip sm:overflow-x-hidden sm:rounded-t-lg">
-          <table className="w-full whitespace-nowrap text-base text-left text-textLight dark:text-textDark">
+        <div className="sm:rounded-t-lg">
+          <table className="w-full whitespace-nowrap overflow-y-visible text-base text-left text-textLight dark:text-textDark">
             <thead className="uppercase font-normal bg-backgroundLight dark:bg-backgroundDark text-textLight dark:text-textDark">
               <tr>
                 <th scope="col" className="px-1 w-8 md:px-3 md:w-12">
@@ -689,9 +726,9 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     d="m222.9 74.6-94 53.4-95.8-53.4M128.9 128l-.9 106.8"></path>
                   </svg>
                 </th>
-                <th scope="col" className="py-3 w-max">name</th>
+                <th scope="col" className="py-3 min-w-[40px]">name</th>
                 <th scope="col" className="py-3 w-20">file size</th>
-                <th scope="col" className="py-3 w-36 hidden md:table-cell">created at</th>
+                <th scope="col" className="py-3 w-36 hidden lg:table-cell">created at</th>
                 {/* For actions */}
                 <th scope="col" className="py-3 w-6 sm:w-7 mg:w-8"></th>
                 <th scope="col" className="py-3 w-6 sm:w-7 mg:w-8"></th>
@@ -714,9 +751,10 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                 return 0;
               }).map((item, index) => (
                 <tr key={index} data-id={item.id} data-type="folder" data-token={item.token}
-                className="border-b border-borderLight transition-colors h-8
+                className="border-b border-borderLight transition-colors h-8 -outline-offset-2
                 dark:border-borderDark hover-parent rendered-folder relative
-                hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark">
+                hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark
+                bg-backgroundSecondLight dark:bg-backgroundSecondDark">
                   <td data-id={item.id} draggable="false" 
                   className="flex items-center justify-center h-8 flex-row">
                     <button data-id={item.id} data-type="folder" className="w-6 focus-first-right">
@@ -726,7 +764,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       </svg>
                     </button>
                     <div className="focus-second-right bg-backgroundLight dark:bg-backgroundThirdDark 
-                    rounded-lg text-base px-2 pb-2 pt-1" data-intable="true">
+                    rounded-lg text-base px-2 pb-2 pt-1 z-10" data-intable="true">
                       <div className="flex flex-row justify-between font-semibold mb-1">
                         <div>Folder's color</div>
                       </div>
@@ -757,12 +795,12 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       </div>
                     </div>
                   </td>
-                  <td data-id={item.id} data-type="folder" draggable="false" 
-                  className="font-medium text" data-token={item.token}>{item.name}</td>
+                  <td data-id={item.id} data-type="folder" draggable="false" data-token={item.token}
+                  className="font-medium text truncate max-w-[1px]">{item.name}</td>
                   <td data-id={item.id} data-type="folder" draggable="false"
                   data-token={item.token}>{CutSize(item.size * 10)}</td>
                   <td data-id={item.id} data-type="folder" draggable="false"
-                  data-token={item.token} className="hidden md:table-cell">{item.created_at}</td>
+                  data-token={item.token} className="hidden lg:table-cell">{item.created_at}</td>
                   {/* Links */}
                   <td data-id={item.id} data-type="folder" draggable="false">
                     <div className="flex hover-child justify-center items-center h-full">
@@ -814,8 +852,9 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   {/* Delete */}
                   <td data-id={item.id} data-type="folder" draggable="false" 
                   className="text-center">
-                    <div className="flex hover-child justify-center items-center h-full">
-                      <button data-id={item.id} className="cursor-pointer">
+                    <div data-id={item.id} data-type="folder" 
+                    className="flex hover-child justify-center items-center h-full">
+                      <button data-id={item.id} data-type="folder" className="cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" 
                         className="h-5 w-5 pointer-events-none" viewBox="0,0,256,256">
                           <g className="fill-textLight dark:fill-textDark" fillRule="nonzero" stroke="none" 
@@ -931,15 +970,16 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               }).map((item, index) => (
                 <tr key={index} data-id={item.id} data-type="file"
                 className="border-b border-borderLight transition-colors h-8 hover-parent rendered-files
-                dark:border-borderDark hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark">
+                dark:border-borderDark hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark 
+                bg-backgroundSecondLight dark:bg-backgroundSecondDark rendered-file -outline-offset-2">
                   <td data-id={item.id} draggable="false" className="flex items-center justify-center">
                     <img src={item.icon_link} alt=""></img>
                   </td>
                   <td data-id={item.id} data-type="file" draggable="false" 
-                  className="font-medium text">{item.name}</td>
+                  className="font-medium text truncate max-w-[1px]">{item.name}</td>
                   <td data-id={item.id} data-type="file" draggable="false">{CutSize(item.size * 10)}</td>
                   <td data-id={item.id} data-type="file" draggable="false"
-                  className="hidden md:table-cell">{item.created_at}</td>
+                  className="hidden lg:table-cell">{item.created_at}</td>
                   {/* Links */}
                   <td data-id={item.id} data-type="file" draggable="false"></td>
                   {/* Edit */}
@@ -968,8 +1008,9 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td data-id={item.id} data-type="file" draggable="false" 
                   className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
-                      <div data-id={item.id} className="cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" className="h-5 w-5" viewBox="0,0,256,256">
+                      <div data-id={item.id} data-type="file" className="cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" 
+                        className="h-5 w-5 pointer-events-none" viewBox="0,0,256,256">
                           <g className="fill-textLight dark:fill-textDark" fillRule="nonzero" stroke="none" 
                           strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDashoffset="0" 
                           fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
@@ -986,7 +1027,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   {/* Info watches and downloads */}
                   <td data-id={item.id} data-type="file" draggable="false">
                     <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16"
-                    className="w-6 hover-first h-6 ml-0 sm:ml-0.5 md:ml-1">
+                    className="w-6 hover-first h-6 ml-0 sm:ml-0.5 md:ml-1 pointer-events-none">
                       <path d="M8 2C4.69 2 2 4.69 2 8s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 11c-2.76 
                       0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" className="fill-textLight dark:fill-textDark"></path>
                       <path d="M8 6.85c-.28 0-.5.22-.5.5v3.4c0 .28.22.5.5.5s.5-.22.5-.5v-3.4c0-.27-.22-.5-.5-.5zM8.01 
@@ -1020,8 +1061,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td data-id={item.id} data-type="file" draggable="false" 
                   className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <div data-id={item.id} className="cursor-pointer">
-                        <svg className=" stroke-textLight dark:stroke-textDark w-5 h-5" fill="none" 
+                      <div data-id={item.id} data-type="file"className="cursor-pointer">
+                        <svg className=" stroke-textLight dark:stroke-textDark w-5 h-5 pointer-events-none" fill="none" 
                         strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
@@ -1033,17 +1074,17 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td data-id={item.id} data-type="file" draggable="false" 
                   className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <div data-id={item.id} className="cursor-pointer">
+                      <div data-id={item.id} data-type="file"className="cursor-pointer">
                         {item.is_elected === true ? (
                           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                          className="w-5 h-5">
+                          className="w-5 h-5 pointer-events-none">
                             <path d="m21.82 10.74-5.12 3.71 2 6a1 1 0 0 1-.37 1.12 1 1 0 0 1-1.17 0L12 17.87l-5.12 
                             3.72a1 1 0 0 1-1.17 0 1 1 0 0 1-.37-1.12l2-6-5.16-3.73a1 1 0 0 1 .59-1.81h6.32l2-6a1 
                             1 0 0 1 1.9 0l2 6h6.32a1 1 0 0 1 .59 1.81Z"
                             className="fill-iconLight dark:fill-iconDark"></path>
                           </svg>
                         ) : (
-                          <svg viewBox="0 0 32 32" className="w-5 h-5" xmlns="http://www.w3.org/2000/svg">
+                          <svg viewBox="0 0 32 32" className="w-5 h-5 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M31.881 12.557a2.303 2.303 0 0 0-1.844-1.511l-8.326-1.238-3.619-7.514A2.318 
                             2.318 0 0 0 16 1c-.896 0-1.711.505-2.092 1.294l-3.619 7.514-8.327 1.238A2.3 2.3 0 0 
                             0 .12 12.557a2.207 2.207 0 0 0 .537 2.285l6.102 6.092-1.415 8.451a2.224 2.224 0 0 0 
@@ -1083,11 +1124,13 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
             }).map((item, index) => (
               <div key={index} data-id={item.id} data-type="folder" data-token={item.token}
               className=" hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark
-              px-2 w-36 rounded-md flex flex-col py-1 hover-parent rendered-folder">
+              px-2 w-36 rounded-md flex flex-col py-1 hover-parent rendered-folder
+              bg-backgroundSecondLight dark:bg-backgroundSecondDark">
                 {/* Actions */}
-                <div className="h-6 flex flex-row justify-around flex-nowrap">
-                  <div className="hover-child">
-                    <button data-id={item.id} data-name={item.name}
+                <div data-id={item.id} data-type="folder" 
+                className="h-6 flex flex-row justify-around flex-nowrap">
+                  <div data-id={item.id} data-type="folder" className="hover-child">
+                    <button data-id={item.id} data-name={item.name} data-type="folder"
                     data-access={item.access_type} data-token={item.token} onClick={modalAccessOpen}
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer p-0.5">
                       <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 pointer-events-none">
@@ -1108,15 +1151,18 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                         className=" fill-textLight dark:fill-textDark"></path>
                       </svg>
                     </button>
-                    <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer p-0.5">
-                      <svg className=" stroke-textLight dark:stroke-textDark h-5 w-5" fill="none" 
+                    <button data-id={item.id} data-type="folder"
+                    className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer p-0.5">
+                      <svg className=" stroke-textLight dark:stroke-textDark h-5 w-5 pointer-events-none" fill="none" 
                       strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                       viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
                       </svg>
                     </button>
-                    <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer p-0.5">
-                      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" className="h-5 w-5" viewBox="0,0,256,256">
+                    <button data-id={item.id} data-type="folder"
+                    className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer p-0.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" 
+                      className="h-5 w-5 pointer-events-none" viewBox="0,0,256,256">
                         <g className="fill-textLight dark:fill-textDark" fillRule="nonzero" stroke="none" 
                         strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDashoffset="0" 
                         fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
@@ -1131,7 +1177,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   </div>
                 </div>
                 {/* Main icon */}
-                <div className="px-2 flex flex-col">
+                <div data-id={item.id} data-type="folder" className="px-2 flex flex-col">
                   <button data-id={item.id} data-token={item.token} data-type="folder" 
                   className="focus-first-bottom">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -1182,10 +1228,11 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <div className="absolute w-28 h-28 flex flex-col justify-between
                   text-textLight dark:text-textDark pointer-events-none">
                     {/* Watches && items in folder */}
-                    <div className="flex flex-row justify-between pt-2.5 px-0.5">
+                    <div data-id={item.id} data-type="folder" 
+                    className="flex flex-row justify-between pt-2.5 px-0.5">
                       <div>
                         <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16"
-                        className="w-6 hover-first h-6 pointer-events-auto">
+                        className="w-6 hover-first h-6 pointer-events-auto" data-id={item.id} data-type="folder">
                           <path d="M8 2C4.69 2 2 4.69 2 8s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 11c-2.76 
                           0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" 
                           className="fill-textLight dark:fill-textDark"></path>
@@ -1217,30 +1264,31 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                           </div>
                         </div>
                       </div>
-                      <div className=" mt-2.5 mr-0.5 font-medium"
+                      <div className=" mt-2.5 mr-0.5 font-medium pointer-events-none"
                       style={{color: item.color ? blurColor(item.color, -60) : "#585858"}}>
                         {item.files_inside}
                       </div>
                     </div>
                     {/* Elected && size */}
-                    <div className="flex flex-row justify-between items-end px-1 pb-1.5">
+                    <div data-id={item.id} data-type="folder" 
+                    className="flex flex-row justify-between items-end px-1 pb-1.5">
                       <div className="">
-                        <button className=" pointer-events-auto">
+                        <button data-id={item.id} data-type="folder" className="pointer-events-auto">
                           <IconStar width="24px" height="24px" isActive={item.is_elected}
                           firstColor={GetCSSValue(item.is_elected ? "icon" : "text")} 
                           secondColor={blurColor(GetCSSValue("icon"), -48)}></IconStar>
                         </button>
                       </div>
-                      <div className=" font-medium">{CutSize(item.size * 10)}</div>
+                      <div data-id={item.id} data-type="folder" 
+                      className="font-medium">{CutSize(item.size * 10)}</div>
                     </div>
                   </div>
                 </div>
-                <div className="flex cursor-default justify-center">
-                  <div>
+                <div data-id={item.id} data-type="folder" className="flex cursor-default justify-center">
                   <button className="text-center pointer-events-auto transition-all whitespace-pre-wrap hover:underline" 
                   data-id={item.id} data-name={item.name} data-token={item.token} data-type="folder" onClick={modalRenameOpen}>
                     {item.name}
-                  </button></div>
+                  </button>
                 </div>
               </div>
             ))}
