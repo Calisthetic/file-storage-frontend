@@ -33,6 +33,10 @@
   transform: scale(1,1) !important;
   opacity: 1 !important;
 }
+.focus-first-bottom:focus:active + .focus-second-bottom {
+  transform: scale(0,0) !important;
+  opacity: 0 !important;
+}
 
 .focus-second-bottom {
   transform: scale(0,0);

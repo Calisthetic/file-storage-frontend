@@ -4,9 +4,6 @@ import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion"
 import { Dropdown, Ripple, initTE, } from "tw-elements";
 
-// @ts-ignore
-import Hammer from 'hammerjs';
-
 import "../../../styles/hover-elems.css"
 import RenderData from "./render-data";
 
@@ -72,7 +69,7 @@ export default function DiskFolder() {
   // File uploader
   const params: any = useParams();
   if (params.id === undefined) {
-    window.location.replace("./folder/main")
+    throw Error("Check params")
   }
   const fileUploaderRef:any = useRef()
   const [isDragVisible, setIsDragVisible] = useState(false);
@@ -320,7 +317,7 @@ export default function DiskFolder() {
                 <motion.div initial={{opacity: 0, y: -70, scaleY: 0.2}} animate={{opacity: 1, y: 0, scaleY: 1}}
                 transition={{stiffness: 200, damping: 24, duration: 0.16}} exit={{opacity: 0, y: -70, scaleY: 0}}
                 className="divide-y divide-gray-100 rounded w-10 mt-0.5
-                absolute shadow-defaultLight dark:shadow-none
+                absolute shadow-defaultLight dark:shadow-none z-10
                 bg-backgroundSecondLight dark:bg-backgroundThirdDark">
                   <ul className=" text-sm font-medium text-textLight dark:text-textDark">
                     {currentRenderType !== "list" && (

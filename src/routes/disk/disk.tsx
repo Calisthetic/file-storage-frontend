@@ -86,11 +86,19 @@ export default function Disk() {
       manager.add(Swipe);
       // Left && right events
       manager.on('swipeleft swiperight', function(e:any) {
-        console.log(0)
         if (window.innerWidth < 640) {
-          setIsSideBarOpen(!isSideBarOpen)
+          setIsSideBarOpen(e.type === "swiperight" ? true : false)
         }
       });
+    }
+
+    return () => {
+      manager.off('swipeleft swiperight', function(e:any) {
+        console.log(e)
+        if (window.innerWidth < 640) {
+          setIsSideBarOpen(e.type === "swiperight" ? true : false)
+        }
+      })
     }
   }, [rootElem, isSideBarOpen])
   
