@@ -99,7 +99,20 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       is_elected: false,
       color: "0000ff",
       files_inside: 999,
-    }
+    },
+    {
+      id: 4,
+      token: "456",
+      name: "folder4",
+      size: 900000000000,
+      created_at: "14042004",
+      access_type: "guest",
+      watches: 12,
+      downloads: 6,
+      is_elected: true,
+      color: "a7a9ab",
+      files_inside: 65,
+    },
   ]
   let files:FilesResponse[] = [
     {
@@ -144,12 +157,6 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       : stage === 2 ? " MB"
       : stage === 3 ? " GB" : " TB"
     ) : CutSize(Math.round(num / 1024), stage+1)
-  }
-
-  const [currentDragElement, setCurrentDragElement]:any = useState(null)
-  function OnDropFolder(e:any) {
-    console.log("Target: " + e.nativeEvent.target.dataset.type + " " + e.nativeEvent.target.dataset.id)
-    console.log("Drag: " + currentDragElement.dataset.type + " " + currentDragElement.dataset.id)
   }
 
   // Render colors
@@ -214,23 +221,95 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
   // Css variables
   var styleVariables = getComputedStyle(document.body)
   function GetCSSValue(name: string) {
-    return styleVariables.getPropertyValue('--' + name)
+    return styleVariables.getPropertyValue('--' + name + (isDarkMode ? "Dark" : "Light"))
   }
 
   const navigate = useNavigate();
   // Folder's double click
   useEffect(() => {
-    const folderElems = document.getElementsByClassName("rendered-folder")
-    if (folderElems) {
+    const folderElems:any = document.getElementsByClassName("rendered-folder")
+    const fileElems:any = document.getElementsByClassName("rendered-file")
+    let rootElem = document.getElementById("root")
+    if (folderElems && fileElems) {
       for (let i = 0; i < folderElems.length; i++) {
         var hammertime = new Hammer(folderElems[i]);
         hammertime.on('doubletap', function(e:any) {
           if (e.target.dataset.token !== undefined) 
             navigate('./../' + e.target.dataset.token)
         });
+        hammertime.on('pan', function(event:any) {
+          folderElems[i].style["transform"] = "translate(" + event.deltaX + "px, " + event.deltaY + "px)"
+          folderElems[i].style["z-index"] = "20"
+          folderElems[i].style["outline"] 
+            = "2px solid var(--backgroundHover" + (isDarkMode ? "Dark" : "Light") + ")"
+          if (rootElem) {
+            rootElem.style["cursor"] = "grabbing"
+          }
+        });
+        hammertime.on('panend', function(event:any) {
+          folderElems[i].style["transform"] = "translate(0px, 0px)"
+          folderElems[i].style["z-index"] = "unset"
+          folderElems[i].style["outline"] = "none"
+          let toElem = document.elementFromPoint(event.center.x, event.center.y) as HTMLElement
+          if (toElem !== null) {
+            console.log("target: " + toElem.dataset.type + " " + toElem.dataset.id)
+            console.log("dragged: " + event.target.dataset.type + " " + event.target.dataset.id)
+          }
+          if (rootElem) {
+            rootElem.style["cursor"] = "auto"
+          }
+        });
+      }
+      for (let i = 0; i < fileElems.length; i++) {
+        var hammertime2 = new Hammer(fileElems[i]);
+        hammertime2.on('pan', function(event:any) {
+          fileElems[i].style["transform"] = "translate(" + event.deltaX + "px, " + event.deltaY + "px)"
+          fileElems[i].style["z-index"] = "20"
+          fileElems[i].style["outline"] 
+            = "2px solid var(--backgroundHover" + (isDarkMode ? "Dark" : "Light") + ")"
+          if (rootElem) {
+            rootElem.style["cursor"] = "grabbing"
+          }
+        });
+        hammertime2.on('panend', function(event:any) {
+          fileElems[i].style["transform"] = "translate(0px, 0px)"
+          fileElems[i].style["z-index"] = "unset"
+          fileElems[i].style["outline"] = "none"
+          let toElem = document.elementFromPoint(event.center.x, event.center.y) as HTMLElement
+          if (toElem !== null) {
+            console.log("target: " + toElem.dataset.type + " " + toElem.dataset.id)
+            console.log("dragged: " + event.target.dataset.type + " " + event.target.dataset.id)
+          }
+          if (rootElem) {
+            rootElem.style["cursor"] = "auto"
+          }
+        });
       }
     }
-  }, [currentSortType, currentSortBy, currentRenderType, navigate])
+
+    return () => {
+      if (folderElems) {
+        for (let i = 0; i < folderElems.length; i++) {
+          var hammertime = new Hammer(folderElems[i]);
+          hammertime.off('doubletap', function(e:any) {
+            if (e.target.dataset.token !== undefined) 
+              navigate('./../' + e.target.dataset.token)
+          });
+          hammertime.off('pan', function(event:any) {
+            folderElems[i].style["transform"] = "translate(" + event.deltaX + "px, " + event.deltaY + "px)"
+          });
+          hammertime.off('panend', function(event:any) {
+            fileElems[i].style["background-color"] = "inherit"
+            let toElem = document.elementFromPoint(event.center.x, event.center.y) as HTMLElement
+            if (toElem !== null) {
+              console.log("target: " + toElem.dataset.type + " " + toElem.dataset.id)
+              console.log("dragged: " + event.target.dataset.type + " " + event.target.dataset.id)
+            }
+          });
+        }
+      }
+    }
+  }, [currentSortType, currentSortBy, currentRenderType, navigate, styleVariables, isDarkMode])
 
   return (
     <main className="py-4">
@@ -252,13 +331,11 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               { return currentSortBy === "descending" ? -1 : 1; }
               return 0;
             }).map((item, index) => (
-              <div key={index} data-id={item.id} data-type="folder" draggable="true" data-token={item.token}
-              onDrop={OnDropFolder} onDragStart={(e:any) => {setCurrentDragElement(e.target);}}
-              onDragOver={(e:any) => {if (currentDragElement.dataset.id !== e.target.dataset.id || 
-                currentDragElement.dataset.type === "file") e.preventDefault()}}
+              <div key={index} data-id={item.id} data-type="folder" data-token={item.token}
               className="flex h-full w-full text-textLight dark:text-textDark
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
-              flex-row justify-between text-lg px-2 py-1 rounded-lg rendered-folder">
+              flex-row justify-between text-lg px-2 py-1 rounded-lg rendered-folder
+              bg-backgroundSecondLight dark:bg-backgroundSecondDark">
                 <div data-id={item.id} data-type="folder"
                 className="flex flex-row items-center space-x-2 max-w-[calc(100dvw-88px)] 
                 sm:max-w-[calc(100dvw-348px)] md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]">
@@ -301,7 +378,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       ))}
                     </div>
                   </div>
-                  <div data-token={item.token} className="truncate">{item.name}</div>
+                  <div data-token={item.token} className="truncate pointer-events-none">{item.name}</div>
                 </div>
                 <div className="flex flex-row items-center">
                   {/* Info */}
@@ -464,16 +541,16 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               { return currentSortBy === "descending" ? -1 : 1; }
               return 0;
             }).map((item, index) => (
-              <div key={index} data-id={item.id} draggable="true" onDrop={OnDropFolder} tada-type="file"
-              onDragStart={(e:any) => {setCurrentDragElement(e.target);}}
+              <div key={index} data-id={item.id} data-type="file"
               className="flex h-full w-full text-textLight dark:text-textDark
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
-              flex-row justify-between text-lg px-2 py-1 rounded-lg">
+              flex-row justify-between text-lg px-2 py-1 rounded-lg rendered-file
+              bg-backgroundSecondLight dark:bg-backgroundSecondDark">
                 <div className="flex flex-row items-center space-x-2 
                 pointer-events-none max-w-[calc(100dvw-88px)] 
                 sm:max-w-[calc(100dvw-348px)] md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]">
-                  <div className="w-6 pointer-events-none">i</div>
-                  <div className="pointer-even-nonets truncate">{item.name}</div>
+                  <div className="w-6">i</div>
+                  <div className="truncate">{item.name}</div>
                 </div>
                 <div className="flex flex-row items-center">
                   {/* Info */}
@@ -593,7 +670,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           </div>
         </div>
       ) : currentRenderType === "table" ? (
-        <div className="overflow-x-auto sm:overflow-x-hidden sm:rounded-t-lg">
+        <div className="overflow-x-auto overflow-y-clip sm:overflow-x-hidden sm:rounded-t-lg">
           <table className="w-full whitespace-nowrap text-base text-left text-textLight dark:text-textDark">
             <thead className="uppercase font-normal bg-backgroundLight dark:bg-backgroundDark text-textLight dark:text-textDark">
               <tr>
@@ -614,7 +691,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                 </th>
                 <th scope="col" className="py-3 w-max">name</th>
                 <th scope="col" className="py-3 w-20">file size</th>
-                <th scope="col" className="py-3 w-36">created at</th>
+                <th scope="col" className="py-3 w-36 hidden md:table-cell">created at</th>
                 {/* For actions */}
                 <th scope="col" className="py-3 w-6 sm:w-7 mg:w-8"></th>
                 <th scope="col" className="py-3 w-6 sm:w-7 mg:w-8"></th>
@@ -636,12 +713,9 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                 { return currentSortBy === "descending" ? -1 : 1; }
                 return 0;
               }).map((item, index) => (
-                <tr key={index} data-id={item.id} draggable="true" data-type="folder" data-token={item.token}
-                onDragOver={(e:any) => {if (currentDragElement.dataset.id !== e.target.dataset.id || 
-                  currentDragElement.dataset.type === "file") e.preventDefault()}}
-                onDrop={OnDropFolder} onDragStart={(e:any) => {setCurrentDragElement(e.target)}}
+                <tr key={index} data-id={item.id} data-type="folder" data-token={item.token}
                 className="border-b border-borderLight transition-colors h-8
-                dark:border-borderDark hover-parent rendered-folder 
+                dark:border-borderDark hover-parent rendered-folder relative
                 hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark">
                   <td data-id={item.id} draggable="false" 
                   className="flex items-center justify-center h-8 flex-row">
@@ -688,7 +762,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td data-id={item.id} data-type="folder" draggable="false"
                   data-token={item.token}>{CutSize(item.size * 10)}</td>
                   <td data-id={item.id} data-type="folder" draggable="false"
-                  data-token={item.token}>change later</td>
+                  data-token={item.token} className="hidden md:table-cell">{item.created_at}</td>
                   {/* Links */}
                   <td data-id={item.id} data-type="folder" draggable="false">
                     <div className="flex hover-child justify-center items-center h-full">
@@ -741,8 +815,9 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td data-id={item.id} data-type="folder" draggable="false" 
                   className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
-                      <div data-id={item.id} className="cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" className="h-5 w-5" viewBox="0,0,256,256">
+                      <button data-id={item.id} className="cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" 
+                        className="h-5 w-5 pointer-events-none" viewBox="0,0,256,256">
                           <g className="fill-textLight dark:fill-textDark" fillRule="nonzero" stroke="none" 
                           strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDashoffset="0" 
                           fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
@@ -753,20 +828,22 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                             1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1z"></path>
                           </g></g>
                         </svg>
-                      </div>
+                      </button>
                     </div>
                   </td>
                   {/* Info watches and downloads */}
                   <td data-id={item.id} data-type="folder" draggable="false">
-                    <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16"
-                    className="w-6 hover-first h-6 ml-0 sm:ml-0.5 md:ml-1">
-                      <path d="M8 2C4.69 2 2 4.69 2 8s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 11c-2.76 
-                      0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" className="fill-textLight dark:fill-textDark"></path>
-                      <path d="M8 6.85c-.28 0-.5.22-.5.5v3.4c0 .28.22.5.5.5s.5-.22.5-.5v-3.4c0-.27-.22-.5-.5-.5zM8.01 
-                      4.8c-.26-.02-.5.25-.51.52v.08c0 .27.21.47.49.48H8c.27 0 .49-.24.5-.5v-.11c0-.29-.21-.47-.49-.47z" 
-                      className="fill-textLight dark:fill-textDark"></path>
-                    </svg>
-                    <div className="hover-second ml-4 bg-backgroundThirdLight dark:bg-backgroundThirdDark px-2 py-1 rounded">
+                    <div data-id={item.id} data-type="folder" className="hover-first">
+                      <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16"
+                      className="w-6 h-6 ml-0 sm:ml-0.5 md:ml-1 pointer-events-none">
+                        <path d="M8 2C4.69 2 2 4.69 2 8s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 11c-2.76 
+                        0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" className="fill-textLight dark:fill-textDark"></path>
+                        <path d="M8 6.85c-.28 0-.5.22-.5.5v3.4c0 .28.22.5.5.5s.5-.22.5-.5v-3.4c0-.27-.22-.5-.5-.5zM8.01 
+                        4.8c-.26-.02-.5.25-.51.52v.08c0 .27.21.47.49.48H8c.27 0 .49-.24.5-.5v-.11c0-.29-.21-.47-.49-.47z" 
+                        className="fill-textLight dark:fill-textDark"></path>
+                      </svg>
+                    </div>
+                    <div className="hover-second ml-4 bg-backgroundThirdLight dark:bg-backgroundThirdDark px-2 py-1 rounded z-10">
                       <div className="flex flex-row space-x-2 text-sm font-medium">
                         <svg className="w-5 h-5"
                         viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 512 512">
@@ -793,30 +870,30 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td data-id={item.id} data-type="folder" draggable="false" 
                   className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <div data-id={item.id} className="cursor-pointer">
-                        <svg className=" stroke-textLight dark:stroke-textDark w-5 h-5" fill="none" 
+                      <button data-id={item.id} data-type="folder" className="cursor-pointer">
+                        <svg className=" stroke-textLight dark:stroke-textDark w-5 h-5 pointer-events-none" fill="none" 
                         strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
                         </svg>
-                      </div>
+                      </button>
                     </div>
                   </td>
                   {/* Star */}
-                  <td data-id={item.id} data-type="folder" draggable="false" 
-                  className="text-center">
+                  <td draggable="false" className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <div data-id={item.id} className="cursor-pointer">
+                      <button data-id={item.id} data-type="folder">
                         {item.is_elected === true ? (
                           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                          className="w-5 h-5">
+                          className="w-5 h-5 pointer-events-none">
                             <path d="m21.82 10.74-5.12 3.71 2 6a1 1 0 0 1-.37 1.12 1 1 0 0 1-1.17 0L12 17.87l-5.12 
                             3.72a1 1 0 0 1-1.17 0 1 1 0 0 1-.37-1.12l2-6-5.16-3.73a1 1 0 0 1 .59-1.81h6.32l2-6a1 
                             1 0 0 1 1.9 0l2 6h6.32a1 1 0 0 1 .59 1.81Z"
                             className="fill-iconLight dark:fill-iconDark"></path>
                           </svg>
                         ) : (
-                          <svg viewBox="0 0 32 32" className="w-5 h-5" xmlns="http://www.w3.org/2000/svg">
+                          <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" 
+                          className="w-5 h-5 pointer-events-none">
                             <path d="M31.881 12.557a2.303 2.303 0 0 0-1.844-1.511l-8.326-1.238-3.619-7.514A2.318 
                             2.318 0 0 0 16 1c-.896 0-1.711.505-2.092 1.294l-3.619 7.514-8.327 1.238A2.3 2.3 0 0 
                             0 .12 12.557a2.207 2.207 0 0 0 .537 2.285l6.102 6.092-1.415 8.451a2.224 2.224 0 0 0 
@@ -828,7 +905,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                             className="fill-textLight dark:fill-textDark"></path>
                           </svg>
                         )}
-                      </div>
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -852,9 +929,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                 { return currentSortBy === "descending" ? -1 : 1; }
                 return 0;
               }).map((item, index) => (
-                <tr key={index} data-id={item.id} draggable="true" data-type="file"
-                onDrop={OnDropFolder} onDragStart={(e:any) => {setCurrentDragElement(e.target)}}
-                className="border-b border-borderLight transition-colors h-8 hover-parent
+                <tr key={index} data-id={item.id} data-type="file"
+                className="border-b border-borderLight transition-colors h-8 hover-parent rendered-files
                 dark:border-borderDark hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark">
                   <td data-id={item.id} draggable="false" className="flex items-center justify-center">
                     <img src={item.icon_link} alt=""></img>
@@ -862,7 +938,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td data-id={item.id} data-type="file" draggable="false" 
                   className="font-medium text">{item.name}</td>
                   <td data-id={item.id} data-type="file" draggable="false">{CutSize(item.size * 10)}</td>
-                  <td data-id={item.id} data-type="file" draggable="false">change later</td>
+                  <td data-id={item.id} data-type="file" draggable="false"
+                  className="hidden md:table-cell">{item.created_at}</td>
                   {/* Links */}
                   <td data-id={item.id} data-type="file" draggable="false"></td>
                   {/* Edit */}
@@ -1004,10 +1081,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               { return currentSortBy === "descending" ? -1 : 1; }
               return 0;
             }).map((item, index) => (
-              <div key={index} data-id={item.id} data-type="folder" draggable="true" data-token={item.token}
-              onDrop={OnDropFolder} onDragStart={(e:any) => {setCurrentDragElement(e.target);}}
-              onDragOver={(e:any) => {if (currentDragElement.dataset.id !== e.target.dataset.id || 
-                currentDragElement.dataset.type === "file") e.preventDefault()}}
+              <div key={index} data-id={item.id} data-type="folder" data-token={item.token}
               className=" hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark
               px-2 w-36 rounded-md flex flex-col py-1 hover-parent rendered-folder">
                 {/* Actions */}
@@ -1153,10 +1227,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       <div className="">
                         <button className=" pointer-events-auto">
                           <IconStar width="24px" height="24px" isActive={item.is_elected}
-                          firstColor={GetCSSValue(item.is_elected 
-                            ? (isDarkMode ? "iconDark" : "iconLight") 
-                            : (isDarkMode ? "textDark" : "textLight"))} 
-                          secondColor={blurColor(GetCSSValue(isDarkMode ? "iconDark" : "iconLight"), -48)}></IconStar>
+                          firstColor={GetCSSValue(item.is_elected ? "icon" : "text")} 
+                          secondColor={blurColor(GetCSSValue("icon"), -48)}></IconStar>
                         </button>
                       </div>
                       <div className=" font-medium">{CutSize(item.size * 10)}</div>
@@ -1198,11 +1270,10 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               { return currentSortBy === "descending" ? -1 : 1; }
               return 0;
             }).map((item, index) => (
-              <div key={index} data-id={item.id} draggable="true" data-type="file" onDrop={OnDropFolder}
-              onDragStart={(e:any) => {setCurrentDragElement(e.target);}}
+              <div key={index} data-id={item.id} data-type="file"
               className="flex h-full w-full text-textLight dark:text-textDark
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
-              flex-row justify-between text-lg px-2 py-1 rounded-lg">
+              flex-row justify-between text-lg px-2 py-1 rounded-lg rendered-files">
                 <div className="flex flex-row items-center space-x-2 
                 pointer-events-none max-w-[calc(100dvw-88px)] 
                 sm:max-w-[calc(100dvw-348px)] md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]">
@@ -1330,12 +1401,10 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
 
 
       {/* Rename file/folder */}
-      <Modal
-        open={isRenameModalOpen}
+      <Modal open={isRenameModalOpen}
         onClose={modalRenameClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={modalWindowStyle}>
           <div className="text-textLight dark:text-textDark p-4 rounded-lg
           bg-backgroundSecondLight dark:bg-backgroundSecondDark">
@@ -1365,12 +1434,10 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       </Modal>
 
       {/* Folder access */}
-      <Modal
-        open={isAccessModalOpen}
+      <Modal open={isAccessModalOpen}
         onClose={modalAccessClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        aria-describedby="modal-modal-description">
         <Box sx={modalWindowStyle}>
           <FolderAccessModal folderId={selectedItem !== undefined && selectedItem.id} 
           folderName={selectedItem !== undefined && selectedItem.name} 
