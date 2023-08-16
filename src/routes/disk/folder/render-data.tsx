@@ -1,11 +1,14 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
+import { useNavigate } from 'react-router-dom';
 
 import "../../../styles/focus-elems.css"
 import { primaryColors } from "../../../data/folder-colors"
 import FolderAccessModal from "./folder-access-modal";
 import IconStar from "../../../components/icons";
+// @ts-ignore
+import Hammer from 'hammerjs';
 
 type Props = {
   currentSortType: string
@@ -16,6 +19,7 @@ type Props = {
 export default function RenderData({currentSortType, currentSortBy, currentRenderType}:Props) {
   const newNameInputRef:any = useRef();
   const [selectedItem, setSelectedItem] = useState<any>();
+  // Modal windows
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
   const modalRenameOpen = (e:any) => {
     setIsRenameModalOpen(true)
@@ -30,11 +34,10 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
   };
   const modalAccessClose = () => setIsAccessModalOpen(false);
 
-  // Main part
+  // Data
   interface FoldersResponse {
     id: number,
     token: string,
-    icon_link: string,
     name: string,
     size: number, // in bytes
     created_at: string,
@@ -61,7 +64,6 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     {
       id: 1,
       token: "123",
-      icon_link: "url",
       name: "folder1",
       size: 77828556,
       created_at: "13032001",
@@ -75,7 +77,6 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     {
       id: 2,
       token: "234",
-      icon_link: "url",
       name: "folder2",
       size: 90000,
       created_at: "14042004",
@@ -84,6 +85,19 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       downloads: 6,
       is_elected: false,
       color: "00ff00",
+      files_inside: 999,
+    },
+    {
+      id: 3,
+      token: "345",
+      name: "folder3",
+      size: 9000000000,
+      created_at: "14042004",
+      access_type: null,
+      watches: 12,
+      downloads: 6,
+      is_elected: false,
+      color: "0000ff",
       files_inside: 999,
     }
   ]
@@ -203,6 +217,21 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     return styleVariables.getPropertyValue('--' + name)
   }
 
+  const navigate = useNavigate();
+  // Folder's double click
+  useEffect(() => {
+    const folderElems = document.getElementsByClassName("rendered-folder")
+    if (folderElems) {
+      for (let i = 0; i < folderElems.length; i++) {
+        var hammertime = new Hammer(folderElems[i]);
+        hammertime.on('doubletap', function(e:any) {
+          if (e.target.dataset.token !== undefined) 
+            navigate('./../' + e.target.dataset.token)
+        });
+      }
+    }
+  }, [currentSortType, currentSortBy, currentRenderType, navigate])
+
   return (
     <main className="py-4">
       {currentRenderType === "list" ? (
@@ -227,13 +256,9 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               onDrop={OnDropFolder} onDragStart={(e:any) => {setCurrentDragElement(e.target);}}
               onDragOver={(e:any) => {if (currentDragElement.dataset.id !== e.target.dataset.id || 
                 currentDragElement.dataset.type === "file") e.preventDefault()}}
-              onDoubleClick={(e:any) => { 
-                if (e.target.dataset.token !== undefined) 
-                  window.location.replace("/disk/folder/" + item.token)
-              }}
               className="flex h-full w-full text-textLight dark:text-textDark
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
-              flex-row justify-between text-lg px-2 py-1 rounded-lg">
+              flex-row justify-between text-lg px-2 py-1 rounded-lg rendered-folder">
                 <div data-id={item.id} data-type="folder"
                 className="flex flex-row items-center space-x-2 max-w-[calc(100dvw-88px)] 
                 sm:max-w-[calc(100dvw-348px)] md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]">
@@ -615,11 +640,9 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                 onDragOver={(e:any) => {if (currentDragElement.dataset.id !== e.target.dataset.id || 
                   currentDragElement.dataset.type === "file") e.preventDefault()}}
                 onDrop={OnDropFolder} onDragStart={(e:any) => {setCurrentDragElement(e.target)}}
-                className="border-b border-borderLight transition-colors h-8 hover-parent
-                dark:border-borderDark hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark" 
-                onDoubleClick={(e:any) => {
-                  if (e.target.dataset.token !== undefined) 
-                    window.location.replace("/disk/folder/" + item.token)}}>
+                className="border-b border-borderLight transition-colors h-8
+                dark:border-borderDark hover-parent rendered-folder 
+                hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark">
                   <td data-id={item.id} draggable="false" 
                   className="flex items-center justify-center h-8 flex-row">
                     <button data-id={item.id} data-type="folder" className="w-6 focus-first-right">
@@ -661,9 +684,11 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     </div>
                   </td>
                   <td data-id={item.id} data-type="folder" draggable="false" 
-                  className="font-medium text">{item.name}</td>
-                  <td data-id={item.id} data-type="folder" draggable="false">{CutSize(item.size * 10)}</td>
-                  <td data-id={item.id} data-type="folder" draggable="false">change later</td>
+                  className="font-medium text" data-token={item.token}>{item.name}</td>
+                  <td data-id={item.id} data-type="folder" draggable="false"
+                  data-token={item.token}>{CutSize(item.size * 10)}</td>
+                  <td data-id={item.id} data-type="folder" draggable="false"
+                  data-token={item.token}>change later</td>
                   {/* Links */}
                   <td data-id={item.id} data-type="folder" draggable="false">
                     <div className="flex hover-child justify-center items-center h-full">
@@ -967,7 +992,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           font-semibold text-base border-b border-borderLight dark:border-borderDark">
             <p>Folders</p>
           </div>
-          <div className="flex gap-x-1 md:gap-x-1.5 lg:gap-x-2 mt-2">
+          <div className="flex gap-x-1 md:gap-x-1.5 lg:gap-x-2 mt-2 flex-row flex-wrap">
             {folders.sort((a, b) => {
               if (currentSortType === "size" ? a.size < b.size
                 : currentSortType === "date" ? a.created_at < b.created_at
@@ -983,12 +1008,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               onDrop={OnDropFolder} onDragStart={(e:any) => {setCurrentDragElement(e.target);}}
               onDragOver={(e:any) => {if (currentDragElement.dataset.id !== e.target.dataset.id || 
                 currentDragElement.dataset.type === "file") e.preventDefault()}}
-              onDoubleClick={(e:any) => { 
-                if (e.target.dataset.token !== undefined) 
-                  window.location.replace("/disk/folder/" + item.token)
-              }}
               className=" hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark
-              px-2 w-36 rounded-md flex flex-col py-1 hover-parent">
+              px-2 w-36 rounded-md flex flex-col py-1 hover-parent rendered-folder">
                 {/* Actions */}
                 <div className="h-6 flex flex-row justify-around flex-nowrap">
                   <div className="hover-child">
@@ -1038,11 +1059,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                 {/* Main icon */}
                 <div className="px-2 flex flex-col">
                   <button data-id={item.id} data-token={item.token} data-type="folder" 
-                  className="focus-first-bottom"
-                  onDoubleClick={(e:any) => { 
-                    if (e.target.dataset.token !== undefined) 
-                      window.location.replace("/disk/folder/" + item.token)
-                  }}>
+                  className="focus-first-bottom">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                     className="w-28 h-28 pointer-events-none">
                       <path d="M12 6c0 1.1-.895 2-2 2H2c-1.105 0-2 .9-2 2v11c0 1.1.895 
@@ -1056,7 +1073,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     </svg>
                   </button>
                   {/* Color picker */}
-                  <div className="bg-backgroundLight dark:bg-backgroundThirdDark 
+                  <div className="bg-backgroundLight dark:bg-backgroundThirdDark z-10
                   focus-second-bottom rounded-lg text-base px-2 pb-2 pt-1 mt-[112px] -ml-[20px]">
                     <div className="flex flex-row justify-between font-semibold mb-1">
                       <div>Folder's color</div>
@@ -1146,11 +1163,12 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     </div>
                   </div>
                 </div>
-                <div className="pointer-events-none flex justify-center">
+                <div className="flex cursor-default justify-center">
+                  <div>
                   <button className="text-center pointer-events-auto transition-all whitespace-pre-wrap hover:underline" 
                   data-id={item.id} data-name={item.name} data-token={item.token} data-type="folder" onClick={modalRenameOpen}>
                     {item.name}
-                  </button>
+                  </button></div>
                 </div>
               </div>
             ))}
