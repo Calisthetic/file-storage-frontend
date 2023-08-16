@@ -62,6 +62,7 @@ module.exports = {
       height: {
         fulldvh: "100dvh !important",
         full100: "100% !important",
+        fullWithHeader: "calc(100dvh - 56px) !important",
       },
       width: {
         fullcvw: "100cvw",

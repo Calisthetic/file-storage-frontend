@@ -110,20 +110,29 @@ export default function Disk() {
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start">
-              <label className="btn btn-circle swap swap-rotate min-h-8 h-8 w-8 m-0 p-0 border-none sm:hidden
+              <label className="min-h-8 h-8 w-8 m-0 p-0 border-none sm:hidden
               bg-backgroundLight dark:bg-backgroundDark hover:bg-backgroundLight hover:dark:bg-backgroundDark">
-                <input type="checkbox" onInput={() => {setIsSideBarOpen(!isSideBarOpen)}}/>
-                {/* open */}
-                <svg className="swap-off h-8 w-8 fill-iconLight dark:fill-iconDark pointer-events-none" 
-                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
-                  <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"/>
-                </svg>
-                {/* close */}
-                <svg className="swap-on h-8 w-8 fill-iconLight dark:fill-iconDark pointer-events-none" 
-                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
-                  <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 
-                  112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49"/>
-                </svg>
+                <AnimatePresence>
+                  {isSideBarOpen ? (
+                    <motion.div initial={{rotate: -90, opacity: 0.4}} animate={{rotate: 0, opacity: 1}}
+                    transition={{damping: 24, stiffness: 200, duration: 0.2}} exit={{rotate: 90, opacity: 0}}>
+                      <svg onClick={() => {setIsSideBarOpen(!isSideBarOpen)}}
+                      className="h-8 w-8 fill-iconLight dark:fill-iconDark" 
+                      xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
+                        <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 
+                        112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49"/>
+                      </svg>
+                    </motion.div>
+                  ) : (
+                    <motion.svg initial={{rotate: 90, opacity: 0.4}} animate={{rotate: 0, opacity: 1}}
+                    transition={{damping: 24, stiffness: 200, duration: 0.2}} exit={{rotate: -90, opacity: 0}}
+                    onClick={() => {setIsSideBarOpen(!isSideBarOpen)}}
+                    className="h-8 w-8 fill-iconLight dark:fill-iconDark" 
+                    xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
+                      <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"/>
+                    </motion.svg>
+                  )}
+                </AnimatePresence>
               </label>
               <Link to="../disk" className="flex ml-2 md:mr-24">
                 <motion.img src={mainLogo} className="h-8 w-8 mr-3" alt="Logo"
@@ -151,10 +160,9 @@ export default function Disk() {
                     animate={{opacity: 1, y: "calc(50% + 18px)", scaleY: 1}}
                     exit={{opacity: 0, y: 44, scaleY: 0.2}}
                     transition={{stiffness: 200, damping: 24, duration: 0.16}}
-                    className="absolute
-                    z-50 my-4 text-base list-none bg-backgroundThirdLight 
+                    className="absolute z-50 my-4 text-base list-none bg-backgroundThirdLight 
                     dark:bg-backgroundThirdDark dark:divide-borderDark text-textLight dark:text-textDark
-                    shadow-sm shadow-shadowDark dark:shadow-shadowLight rounded">
+                    shadow-sm shadow-shadowDark dark:shadow-shadowLight rounded mb-2">
                       <div className="px-4 py-3">
                         <p className="">
                           Neil Sims

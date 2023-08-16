@@ -99,7 +99,7 @@ export default function DiskFolder() {
 
   return (
     <div onDragEnter={VisualizeUploader} 
-    className="w-full min-h-fullWithHeader px-2 md:px-6">
+    className="w-full min-h-fullWithHeader h-fullWithHeader px-2 md:px-6">
       <header className="w-full px-1 sm:px-0 pt-1 flex flex-row justify-between">
         {/* All actions drop */}
         <div>
