@@ -22,7 +22,7 @@ initTE({ Dropdown, Ripple });
 export default function Disk() {
   const [isUserDropMenuOpen, setIsUserDropMenuOpen] = useState(false)
   const sideBarRef:any = useRef()
-  const [isSideBarOpen, setIsSideBarOpen] = useState(false)
+  const [isSideBarOpen, setIsSideBarOpen] = useState(window.innerWidth > 640 ? true : false)
 
   
   const [open, setOpen] = useState(false);
@@ -44,35 +44,17 @@ export default function Disk() {
   
 
   // Funcs
-  function CloseOpenSideBar() {
-    setIsSideBarOpen(!isSideBarOpen)
-    if (sideBarRef.current) {
-      sideBarRef.current.style.transform = isSideBarOpen ? "translate(-100%, 0%)" : "none"
-    }
-  }
-
   function CloseDropDowns(e:any) {
     if (e.target.dataset.drop !== "userMenu" && e.target.dataset.drop !== "child") {
       setIsUserDropMenuOpen(false)
     }
   }
 
-  const [canSideBarHide, setCanSideBarHide] = useState(false)
   function ChangeSideBar() {
     if (window.innerWidth > 640) {
-      if (isSideBarOpen === false) {
-        CloseOpenSideBar();
-      }
-      if (canSideBarHide === true) {
-        setCanSideBarHide(false)
-      }
-    } else if (window.innerWidth <= 640) {
-      if (isSideBarOpen === true) {
-        CloseOpenSideBar();
-      }
-      if (canSideBarHide === false) {
-        setCanSideBarHide(true)
-      }
+      setIsSideBarOpen(true)
+    } else {
+      setIsSideBarOpen(false)
     }
   }
   useEffect(() => {
@@ -97,26 +79,20 @@ export default function Disk() {
 
   // Swipe sidebar
   const rootElem = document.getElementById("root")
-  if (rootElem) {
-    var manager = new Hammer.Manager(rootElem);
-    var Swipe = new Hammer.Swipe();
-    manager.add(Swipe);
-    // Left && right events
-    manager.on('swipeleft', function(e:any) {
-      if (canSideBarHide) {
-        if (isSideBarOpen) {
-          CloseOpenSideBar()
+  useEffect(() => {
+    if (rootElem) {
+      var manager = new Hammer.Manager(rootElem);
+      var Swipe = new Hammer.Swipe();
+      manager.add(Swipe);
+      // Left && right events
+      manager.on('swipeleft swiperight', function(e:any) {
+        console.log(0)
+        if (window.innerWidth < 640) {
+          setIsSideBarOpen(!isSideBarOpen)
         }
-      }
-    });
-    manager.on('swiperight', function(e:any) {
-      if (canSideBarHide) {
-        if (!isSideBarOpen) {
-          CloseOpenSideBar()
-        }
-      }
-    });
-  }
+      });
+    }
+  }, [rootElem, isSideBarOpen])
   
 
   return (
@@ -128,7 +104,7 @@ export default function Disk() {
             <div className="flex items-center justify-start">
               <label className="btn btn-circle swap swap-rotate min-h-8 h-8 w-8 m-0 p-0 border-none sm:hidden
               bg-backgroundLight dark:bg-backgroundDark hover:bg-backgroundLight hover:dark:bg-backgroundDark">
-                <input type="checkbox" onInput={CloseOpenSideBar}/>
+                <input type="checkbox" onInput={() => {setIsSideBarOpen(!isSideBarOpen)}}/>
                 {/* open */}
                 <svg className="swap-off h-8 w-8 fill-iconLight dark:fill-iconDark pointer-events-none" 
                 xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
@@ -158,7 +134,7 @@ export default function Disk() {
               <div className="flex items-center ml-3">
                 <button onClick={() => {setIsUserDropMenuOpen(!isUserDropMenuOpen)}} 
                 data-drop="userMenu" className="flex text-sm bg-gray-800 rounded-full">
-                  <img className="w-8 h-8 rounded-full pointer-events-none" alt="user photo" draggable="false"
+                  <img className="w-8 h-8 rounded-full pointer-events-none" alt="user" draggable="false"
                   src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" />
                 </button>
                 <AnimatePresence>
@@ -214,11 +190,17 @@ export default function Disk() {
         </div>
       </nav>
 
-      <aside ref={sideBarRef} id="logo-sidebar" 
-      className="fixed top-0 left-0 z-30 w-64 h-screen pt-20 transition-transform border-borderLight dark:border-borderDark sm:translate-x-0 
-      -translate-x-full bg-backgroundLight dark:bg-backgroundDark" aria-label="Sidebar">
-        <DiskSideBar></DiskSideBar>
-      </aside>
+      <AnimatePresence>
+        {isSideBarOpen && (
+          <motion.aside initial={{x: -256}} animate={{x: 0}}
+          transition={{duration: 0.1, damping:24, stiffness: 200}} exit={{x: -256}}
+          ref={sideBarRef} id="logo-sidebar" 
+          className="fixed top-0 left-0 z-30 w-64 h-screen pt-20 transition-transform border-borderLight dark:border-borderDark 
+          bg-backgroundLight dark:bg-backgroundDark" aria-label="Sidebar">
+            <DiskSideBar></DiskSideBar>
+          </motion.aside>
+        )}
+      </AnimatePresence>
       
       <Modal
         open={open}
@@ -231,7 +213,7 @@ export default function Disk() {
         </Box>
       </Modal>
 
-      <div className="pt-14  sm:ml-64">
+      <div className="pt-14 transition-transform sm:ml-64">
         <div className="bg-backgroundSecondLight overflow-hidden dark:bg-backgroundSecondDark min-h-fullWithHeader sm:rounded-tl-2xl ">
           <Routes>
             <Route path='*' element={<Redirect location="/disk/folder/main"></Redirect>}></Route>
@@ -242,7 +224,8 @@ export default function Disk() {
             <Route path='files' element={<DiskFiles></DiskFiles>}></Route>
             <Route path='trash' element={<DiskRecycleBin></DiskRecycleBin>}></Route>
             <Route path='folder/:id' element={<DiskFolder></DiskFolder>}></Route>
-            <Route path='folder' element={<DiskFolder></DiskFolder>}></Route>
+            <Route path='folder' element={<Redirect location="/disk/folder/main"></Redirect>}></Route>
+            <Route path='folder/' element={<Redirect location="/disk/folder/main"></Redirect>}></Route>
           </Routes>
         </div>
       </div>

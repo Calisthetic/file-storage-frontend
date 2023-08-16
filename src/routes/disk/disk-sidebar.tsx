@@ -9,8 +9,7 @@ export default function DiskSideBar() {
   return (
     <div className="h-full px-3 pb-4 overflow-y-auto bg-backgroundLight dark:bg-backgroundDark">
       <ul className="space-y-1 font-medium">
-        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} 
-        transition={{delay: 0, stiffness: 300, damping: 24}}>
+        <li>
           <Link to="folder/main" className="flex items-center p-2 dark:text-textDark text-textLight transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg className="w-6" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
@@ -19,9 +18,8 @@ export default function DiskSideBar() {
               className="fill-iconLight dark:fill-iconDark"></path></svg>
             <span className="ml-3">My storage</span>
           </Link>
-        </motion.li>
-        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} 
-        transition={{delay: 0.02, stiffness: 300, damping: 24}}>
+        </li>
+        <li>
           <Link to="favorites" className="flex items-center p-2 dark:text-textDark text-textLight transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
           <svg className="w-6" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -37,7 +35,7 @@ export default function DiskSideBar() {
           </svg>
           <span className="ml-3">Favorites</span>
           </Link>
-        </motion.li>
+        </li>
         {/* <li>
             <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
               <span className="flex-1 ml-3 whitespace-nowrap">Kanban</span>
@@ -50,8 +48,7 @@ export default function DiskSideBar() {
               <span className="inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
             </a>
         </li> */}
-        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} 
-        transition={{delay: 0.04, stiffness: 300, damping: 24}}>
+        <li>
           <Link to="recent" className="flex items-center p-2 dark:text-textDark text-textLight transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg className="w-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -64,9 +61,8 @@ export default function DiskSideBar() {
             </svg>
             <span className="ml-3">Recent</span>
           </Link>
-        </motion.li>
-        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} 
-        transition={{delay: 0.06, stiffness: 300, damping: 24}}>
+        </li>
+        <li>
           <Link to="trash" className="flex items-center p-2 dark:text-textDark text-textLight transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0,0,256,256">
@@ -82,9 +78,8 @@ export default function DiskSideBar() {
             </svg>
             <span className="ml-3">Recycle bin</span>
           </Link>
-        </motion.li>
-        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} 
-        transition={{delay: 0.08, stiffness: 300, damping: 24}}>
+        </li>
+        <li>
           <Link to="shared" className="flex items-center p-2 dark:text-textDark text-textLight transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg className="w-6" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 512 512">
@@ -116,9 +111,8 @@ export default function DiskSideBar() {
               14.47 7.59 25.68 18.18 31.56 29.81 5.83 11.51 7.51 25.57 5.31 44.27z" className="fill-iconLight dark:fill-iconDark"></path></svg>
             <span className="ml-3">Shared with me</span>
           </Link>
-        </motion.li>
-        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} 
-        transition={{delay: 0.1, stiffness: 300, damping: 24}}>
+        </li>
+        <li>
           <Link to="files" className="flex items-center p-2 dark:text-textDark text-textLight transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg className="w-6" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
@@ -132,7 +126,7 @@ export default function DiskSideBar() {
             </svg>
             <span className="ml-3">Files</span>
           </Link>
-        </motion.li>
+        </li>
       </ul>
       {/* Storage usage */}
       <div className="mt-3 font-medium border-y pt-2 pb-4 border-borderLight dark:border-borderDark">
@@ -148,7 +142,7 @@ export default function DiskSideBar() {
         </div>
       </div>
       <ul className="pt-3 space-y-1 font-medium">
-        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.12, stiffness: 300, damping: 24}}>
+        <li>
           <Link to="upgrade" className="flex items-center p-2 dark:text-textDark text-textLight transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <motion.svg className="w-6 h-6 fill-iconLight dark:fill-iconDark" 
@@ -161,8 +155,8 @@ export default function DiskSideBar() {
             </motion.svg>
             <span className="flex-1 ml-3 whitespace-nowrap">Upgrade</span>
           </Link>
-        </motion.li>
-        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: 0.16, stiffness: 300, damping: 24}}>
+        </li>
+        <motion.li>
           <Link to="help" className="flex items-center p-2 dark:text-textDark text-textLight transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg className="w-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24"><g>
@@ -188,7 +182,7 @@ export default function DiskSideBar() {
             <div className="flex items-center mb-3">
               <span className=" bg-backgroundAccentLight text-textLight text-sm font-semibold mr-2 px-2.5 py-0.5 rounded 
               dark:bg-backgroundAccentDark dark:text-textDark">Beta</span>
-              <button onClick={() => setIsAdOpen(false)} type="button" className="ml-auto -mx-1.5 -my-1.5 bg-backgroundThirdLight 
+              <button onClick={() => {setIsAdOpen(false)}} type="button" className="ml-auto -mx-1.5 -my-1.5 bg-backgroundThirdLight 
               justify-center items-center w-6 h-6 text-textLight rounded-lg transition-all p-1 inline-flex
               hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark dark:bg-backgroundThirdDark dark:text-textDark">
                 <svg className="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -201,7 +195,7 @@ export default function DiskSideBar() {
               Prewiew new feature with <u>favorites</u> files! 
               Now you can get fast access to your files without special links and folders search.
             </p>
-            <Link to="favorites" onClick={(() => setIsAdOpen(false))} className="text-sm text-buttonLight underline font-medium transition-all
+            <Link to="favorites" onClick={(() => {setIsAdOpen(false)})} className="text-sm text-buttonLight underline font-medium transition-all
             hover:text-buttonHoverLight dark:text-buttonDark dark:hover:text-buttonHoverDark">Try new feature now</Link>
           </motion.div>
         )}
