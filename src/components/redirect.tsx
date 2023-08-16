@@ -1,4 +1,5 @@
-import { Component} from 'react';
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // export default function Redirect(props: any) {
 //   window.location.replace(props.location)
@@ -13,7 +14,10 @@ type Props = {
 }
 
 export default function Redirect({location}: Props) {
-  window.location.replace(location)
+  const navigate = useNavigate()
+  useEffect(() => {
+    navigate(location)
+  }, [navigate, location])
 
   return (
     <div></div>
