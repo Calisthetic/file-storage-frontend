@@ -114,7 +114,7 @@ export default function Disk() {
               bg-backgroundLight dark:bg-backgroundDark hover:bg-backgroundLight hover:dark:bg-backgroundDark">
                 <AnimatePresence>
                   {isSideBarOpen ? (
-                    <motion.div initial={{rotate: -90, opacity: 0.4}} animate={{rotate: 0, opacity: 1}}
+                    <motion.div initial={{rotate: -180, opacity: 0}} animate={{rotate: 0, opacity: 1}}
                     transition={{damping: 24, stiffness: 200, duration: 0.2}} exit={{rotate: 90, opacity: 0}}>
                       <svg onClick={() => {setIsSideBarOpen(!isSideBarOpen)}}
                       className="h-8 w-8 fill-iconLight dark:fill-iconDark" 
@@ -124,7 +124,7 @@ export default function Disk() {
                       </svg>
                     </motion.div>
                   ) : (
-                    <motion.svg initial={{rotate: 90, opacity: 0.4}} animate={{rotate: 0, opacity: 1}}
+                    <motion.svg initial={{rotate: 180, opacity: 0}} animate={{rotate: 0, opacity: 1}}
                     transition={{damping: 24, stiffness: 200, duration: 0.2}} exit={{rotate: -90, opacity: 0}}
                     onClick={() => {setIsSideBarOpen(!isSideBarOpen)}}
                     className="h-8 w-8 fill-iconLight dark:fill-iconDark" 
@@ -230,7 +230,7 @@ export default function Disk() {
       </Modal>
 
       <div className="pt-14 transition-transform sm:ml-64">
-        <div className="bg-backgroundSecondLight overflow-hidden dark:bg-backgroundSecondDark min-h-fullWithHeader sm:rounded-tl-2xl ">
+        <div className="bg-backgroundSecondLight overflow-x-hidden dark:bg-backgroundSecondDark min-h-fullWithHeader sm:rounded-tl-2xl ">
           <Routes>
             <Route path='*' element={<Redirect location="/disk/folder/main"></Redirect>}></Route>
             <Route path='recent' element={<DiskRecent></DiskRecent>}></Route>
