@@ -297,7 +297,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           folderElems[i].style["transition-property"] = "initial"
           folderElems[i].style["transition"] = "initial"
           folderElems[i].style["z-index"] = "16"
-          folderElems[i].style["outline"] 
+          folderElems[i].style["border"] 
             = "2px solid var(--backgroundHover" + (isDarkMode ? "Dark" : "Light") + ")"
           // Mask && cursor
           setIsMaskActive(true)
@@ -312,7 +312,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           folderElems[i].style["transition"] = "0.2s ease"
           setTimeout(() => {
             folderElems[i].style["transform"] = "initial"
-            folderElems[i].style["outline"] = "initial"
+            folderElems[i].style["border"] = "initial"
             setTimeout(() => {
               folderElems[i].style["z-index"] = "initial"
               // Main moving action
@@ -346,7 +346,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           fileElems[i].style["transition-property"] = "initial"
           fileElems[i].style["transition"] = "initial"
           fileElems[i].style["z-index"] = "16"
-          fileElems[i].style["outline"] 
+          fileElems[i].style["border"] 
             = "2px solid var(--backgroundHover" + (isDarkMode ? "Dark" : "Light") + ")"
           // Mask && cursor
           setIsMaskActive(true)
@@ -361,7 +361,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           fileElems[i].style["transition"] = "0.2s ease"
           setTimeout(() => {
             fileElems[i].style["transform"] = "initial"
-            fileElems[i].style["outline"] = "initial"
+            fileElems[i].style["border"] = "initial"
             setTimeout(() => {
               fileElems[i].style["z-index"] = "initial"
               // Main moving action
@@ -400,7 +400,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
             folderElems[i].style["transition-property"] = "initial"
             folderElems[i].style["transition"] = "initial"
             folderElems[i].style["z-index"] = "16"
-            folderElems[i].style["outline"] 
+            folderElems[i].style["border"] 
               = "2px solid var(--backgroundHover" + (isDarkMode ? "Dark" : "Light") + ")"
             // Mask && cursor
             setIsMaskActive(true)
@@ -415,7 +415,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
             folderElems[i].style["transition"] = "0.2s ease"
             setTimeout(() => {
               folderElems[i].style["transform"] = "initial"
-              folderElems[i].style["outline"] = "initial"
+              folderElems[i].style["border"] = "initial"
               setTimeout(() => {
                 folderElems[i].style["z-index"] = "initial"
                 // Main moving action
@@ -449,7 +449,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
             fileElems[i].style["transition-property"] = "initial"
             fileElems[i].style["transition"] = "initial"
             fileElems[i].style["z-index"] = "16"
-            fileElems[i].style["outline"] 
+            fileElems[i].style["border"] 
               = "2px solid var(--backgroundHover" + (isDarkMode ? "Dark" : "Light") + ")"
             // Mask && cursor
             setIsMaskActive(true)
@@ -464,7 +464,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
             fileElems[i].style["transition"] = "0.2s ease"
             setTimeout(() => {
               fileElems[i].style["transform"] = "initial"
-              fileElems[i].style["outline"] = "initial"
+              fileElems[i].style["border"] = "initial"
               setTimeout(() => {
                 fileElems[i].style["z-index"] = "initial"
                 // Main moving action
