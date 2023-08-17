@@ -114,8 +114,8 @@ export default function Disk() {
               bg-backgroundLight dark:bg-backgroundDark hover:bg-backgroundLight hover:dark:bg-backgroundDark">
                 <AnimatePresence>
                   {isSideBarOpen ? (
-                    <motion.div initial={{rotate: -180, opacity: 0}} animate={{rotate: 0, opacity: 1}}
-                    transition={{damping: 24, stiffness: 200, duration: 0.2}} exit={{rotate: 90, opacity: 0}}>
+                    <motion.div initial={{rotate: 360, opacity: 0}} animate={{rotate: 0, opacity: 1}}
+                    transition={{damping: 24, stiffness: 200, duration: 0.2}} exit={{rotate: -360, opacity: 0}}>
                       <svg onClick={() => {setIsSideBarOpen(!isSideBarOpen)}}
                       className="h-8 w-8 fill-iconLight dark:fill-iconDark" 
                       xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
@@ -124,7 +124,7 @@ export default function Disk() {
                       </svg>
                     </motion.div>
                   ) : (
-                    <motion.svg initial={{rotate: 180, opacity: 0}} animate={{rotate: 0, opacity: 1}}
+                    <motion.svg initial={{opacity: 0}} animate={{opacity: 1}}
                     transition={{damping: 24, stiffness: 200, duration: 0.2}} exit={{rotate: -90, opacity: 0}}
                     onClick={() => {setIsSideBarOpen(!isSideBarOpen)}}
                     className="h-8 w-8 fill-iconLight dark:fill-iconDark" 
@@ -211,7 +211,7 @@ export default function Disk() {
           <motion.aside initial={{x: -256}} animate={{x: 0}}
           transition={{duration: 0.1, damping:24, stiffness: 200}} exit={{x: -256}}
           ref={sideBarRef} id="logo-sidebar" 
-          className="fixed top-0 left-0 z-30 w-64 h-screen pt-20 transition-transform border-borderLight dark:border-borderDark 
+          className="fixed top-0 left-0 z-30 w-56 sm:w-64 h-screen pt-16 transition-transform border-borderLight dark:border-borderDark 
           bg-backgroundLight dark:bg-backgroundDark" aria-label="Sidebar">
             <DiskSideBar></DiskSideBar>
           </motion.aside>
