@@ -9,6 +9,7 @@ import FolderAccessModal from "./folder-access-modal";
 import IconStar from "../../../components/icons";
 // @ts-ignore
 import Hammer from 'hammerjs';
+import { cn } from "../../../lib/utils";
 
 type Props = {
   currentSortType: string
@@ -19,6 +20,10 @@ type Props = {
 export default function RenderData({currentSortType, currentSortBy, currentRenderType}:Props) {
   const newNameInputRef:any = useRef();
   const [selectedItem, setSelectedItem] = useState<any>();
+
+  // Hide files and folders
+  const [isFoldersVisible, setIsFoldersVisible] = useState(true)
+  const [isFilesVisible, setIsFilesVisible] = useState(true)
 
   // Modal windows
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
@@ -231,18 +236,19 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
   }
 
 
+  // Last moved item/folder data
   type MoveItemsProps = {
     dragged_id:string | undefined,
     target_id:string | undefined,
     dragged_type:string | undefined,
     target_type:string | undefined,
   }
-  let lastMovedData:MoveItemsProps = {
-    dragged_id: "",
-    target_id: "",
-    dragged_type: "",
-    target_type: "",
-  }
+  const [lastMovedData, setLastMovedData] = useState<MoveItemsProps>({
+    dragged_id:"",
+    target_id:"",
+    dragged_type:"",
+    target_type:"",
+  })
   // Move files/folders to folders
   const MoveItems = useCallback(({
     dragged_id, target_id,
@@ -265,12 +271,14 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     }
     console.log("Target: " + target_type + ", id: " + target_id)
     console.log("Dragged: " + dragged_type + ", id: " + dragged_id)
-    
-    lastMovedData.dragged_id = dragged_id
-    lastMovedData.target_id = target_id
-    lastMovedData.dragged_type = dragged_type
-    lastMovedData.target_type = target_type
-  }, [])
+
+    setLastMovedData({
+      dragged_id: dragged_id,
+      target_id: target_id,
+      dragged_type: dragged_type,
+      target_type: target_type,
+    })
+  }, [lastMovedData])
 
   // Mask to detect id and type of hover element
   const [isMaskActive, setIsMaskActive] = useState(false)
@@ -284,8 +292,18 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       for (let i = 0; i < folderElems.length; i++) {
         var hammer_folders = new Hammer(folderElems[i]);
         hammer_folders.on('doubletap', function(e:any) {
-          if (e.target.dataset.token !== undefined) 
+          if (e.target.dataset.token !== undefined) {
             navigate('./../' + e.target.dataset.token)
+            return
+          }
+          if (e.target.parentElement.dataset.token !== undefined) {
+            navigate('./../' + e.target.parentElement.dataset.token)
+            return
+          }
+          if (e.target.parentElement.parentElement.dataset.token !== undefined) {
+            navigate('./../' + e.target.parentElement.parentElement.dataset.token)
+            return
+          }
         });
 
         hammer_folders.on('pan', function(event:any) {
@@ -401,8 +419,18 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
         for (let i = 0; i < folderElems.length; i++) {
           var hammer_folders = new Hammer(folderElems[i]);
           hammer_folders.on('doubletap', function(e:any) {
-            if (e.target.dataset.token !== undefined) 
+            if (e.target.dataset.token !== undefined) {
               navigate('./../' + e.target.dataset.token)
+              return
+            }
+            if (e.target.parentElement.dataset.token !== undefined) {
+              navigate('./../' + e.target.parentElement.dataset.token)
+              return
+            }
+            if (e.target.parentElement.parentElement.dataset.token !== undefined) {
+              navigate('./../' + e.target.parentElement.parentElement.dataset.token)
+              return
+            }
           });
   
           hammer_folders.on('pan', function(event:any) {
@@ -521,12 +549,25 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
   return (
     <main className="py-4">
       {currentRenderType === "list" ? (
-        <div className="flex flex-col gap-y-4">
-          <div className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1">
-            <div className="pl-2 lg:col-span-2 xl:col-span-3 2xl:col-span-4 mb-2 pb-1
-            font-semibold text-base border-b border-borderLight dark:border-borderDark">
-              <p>Folders</p>
-            </div>
+        <div className="flex flex-col">
+          <div className="px-2 lg:col-span-2 xl:col-span-3 2xl:col-span-4 mb-2 pb-1
+          font-semibold text-base border-b border-borderLight dark:border-borderDark
+          flex flex-row justify-between items-center opacity-80"
+          onClick={() => {setIsFoldersVisible(!isFoldersVisible)}}>
+            <p className=" text-textLight dark:text-textDark">Folders</p>
+            <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none", {
+              "rotate-180": isFoldersVisible,
+              "rotate-0": !isFoldersVisible,
+            })} aria-hidden="true" 
+            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+              <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" 
+              strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
+            </svg>
+          </div>
+          <div className={cn("grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all", {
+            "h-0 overflow-hidden -translate-y-4 opacity-0": !isFoldersVisible,
+            "translate-y-0": isFoldersVisible
+          })}>
             {folders.sort((a, b) => {
               if (currentSortType === "size" ? a.size < b.size
                 : currentSortType === "date" ? a.created_at < b.created_at
@@ -538,7 +579,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               { return currentSortBy === "descending" ? -1 : 1; }
               return 0;
             }).map((item, index) => (
-              <div key={index} data-id={item.id} data-type="folder"
+              <div key={index} data-id={item.id} data-type="folder" data-token={item.token}
               className="h-full w-full text-textLight dark:text-textDark
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
               text-lg rounded-lg rendered-folder transition-colors
@@ -592,7 +633,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   </div>
                   <div className="flex flex-row items-center">
                     {/* Info */}
-                    <div className="w-6 sm:w-7 mg:w-8">
+                    <div className="w-6 sm:w-7 mg:w-8" data-token={item.token}>
                       <div className="w-6 sm:w-7 mg:w-8 hover-first">
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
                         enableBackground="new 0 0 24 24" className="h-6 w-6 pointer-events-none"><g id="Layer_2">
@@ -625,7 +666,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       </div>
                     </div>
                     {/* Actions */}
-                    <div className="w-6 sm:w-7 mg:w-8">
+                    <div className="w-6 sm:w-7 mg:w-8" data-token={item.token}>
                       <div className="h-full flex items-center justify-center hover-first">
                           <svg viewBox="0 0 256 256"  xmlns="http://www.w3.org/2000/svg"
                           className="w-6 h-6 pointer-events-none">
@@ -728,11 +769,24 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
             ))}
           </div>
           
-          <div className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1">
-            <div className="pl-2 lg:col-span-2 xl:col-span-3 2xl:col-span-4 mb-2 pb-1
-            font-semibold text-base border-b border-borderLight dark:border-borderDark">
-              <p>Files</p>
-            </div>
+          <div className="px-2 lg:col-span-2 xl:col-span-3 2xl:col-span-4 mb-2 pb-1 mt-4
+          font-semibold text-base border-b border-borderLight dark:border-borderDark
+          flex flex-row justify-between items-center opacity-80"
+          onClick={() => {setIsFilesVisible(!isFilesVisible)}}>
+            <p className=" text-textLight dark:text-textDark">Folders</p>
+            <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none", {
+              "rotate-180": isFilesVisible,
+              "rotate-0": !isFilesVisible,
+            })} aria-hidden="true" 
+            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+              <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" 
+              strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
+            </svg>
+          </div>
+          <div className={cn("grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all", {
+          "h-0 overflow-hidden -translate-y-4 opacity-0": !isFilesVisible,
+          "translate-y-0": isFilesVisible
+          })}>
             {files.sort((a, b) => {
               if (currentSortType === "name" ? a.name < b.name
               : currentSortType === "type" 
@@ -936,7 +990,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                 bg-backgroundSecondLight dark:bg-backgroundSecondDark">
                   {isMaskActive && (
                     <td data-id={item.id} data-type="folder" data-token={item.token} 
-                    className="absolute h-full w-full rendered-folder-mask pointer-events-auto"></td>
+                    className="absolute h-full w-full bg-white"></td>
                   )}
                   <td draggable="false" 
                   className="flex items-center justify-center h-8 flex-row">
@@ -1295,11 +1349,24 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
         </div>
       ) : ( // tile
         <div className="flex flex-col">
-          <div className="pl-2 pb-1
-          font-semibold text-base border-b border-borderLight dark:border-borderDark">
-            <p>Folders</p>
+          <div className="px-2 lg:col-span-2 xl:col-span-3 2xl:col-span-4 mb-2 pb-1
+          font-semibold text-base border-b border-borderLight dark:border-borderDark
+          flex flex-row justify-between items-center opacity-80"
+          onClick={() => {setIsFoldersVisible(!isFoldersVisible)}}>
+            <p className=" text-textLight dark:text-textDark">Folders</p>
+            <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none", {
+              "rotate-180": isFoldersVisible,
+              "rotate-0": !isFoldersVisible,
+            })} aria-hidden="true" 
+            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+              <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" 
+              strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
+            </svg>
           </div>
-          <div className="flex gap-x-1 md:gap-x-1.5 lg:gap-x-2 mt-2 flex-row flex-wrap">
+          <div className={cn("flex gap-x-1 md:gap-x-1.5 lg:gap-x-2 mt-2 flex-row flex-wrap transition-all", {
+            "h-0 overflow-hidden -translate-y-4 opacity-0": !isFoldersVisible,
+            "translate-y-0": isFoldersVisible
+          })}>
             {folders.sort((a, b) => {
               if (currentSortType === "size" ? a.size < b.size
                 : currentSortType === "date" ? a.created_at < b.created_at
@@ -1314,7 +1381,11 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               <div key={index} data-id={item.id} data-type="folder" data-token={item.token}
               className=" hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark
               px-2 w-36 rounded-md flex flex-col py-1 hover-parent rendered-folder
-              bg-backgroundSecondLight dark:bg-backgroundSecondDark">
+              bg-backgroundSecondLight dark:bg-backgroundSecondDark relative">
+                {isMaskActive && (
+                  <div data-id={item.id} data-type="folder" 
+                  className="absolute h-full w-full z-20"></div>
+                )}
                 {/* Actions */}
                 <div data-id={item.id} data-type="folder" 
                 className="h-6 flex flex-row justify-around flex-nowrap">
@@ -1483,11 +1554,24 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
             ))}
           </div>
           
-          <div className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-4">
-            <div className="pl-2 lg:col-span-2 xl:col-span-3 2xl:col-span-4 mb-2 pb-1
-            font-semibold text-base border-b border-borderLight dark:border-borderDark">
-              <p>Files</p>
-            </div>
+          <div className="px-2 lg:col-span-2 xl:col-span-3 2xl:col-span-4 mb-2 pb-1 mt-4
+          font-semibold text-base border-b border-borderLight dark:border-borderDark
+          flex flex-row justify-between items-center opacity-80"
+          onClick={() => {setIsFilesVisible(!isFilesVisible)}}>
+            <p className=" text-textLight dark:text-textDark">Folders</p>
+            <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none", {
+              "rotate-180": isFilesVisible,
+              "rotate-0": !isFilesVisible,
+            })} aria-hidden="true" 
+            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+              <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" 
+              strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
+            </svg>
+          </div>
+          <div className={cn("grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-4 transition-all", {
+          "h-0 overflow-hidden -translate-y-4 opacity-0": !isFilesVisible,
+          "translate-y-0": isFilesVisible
+          })}>
             {files.sort((a, b) => {
               if (currentSortType === "name" ? a.name < b.name
               : currentSortType === "type" 

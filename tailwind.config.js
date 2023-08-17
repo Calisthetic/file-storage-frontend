@@ -39,6 +39,8 @@ module.exports = {
       transitionProperty: {
         inputs: "border, outline, background-color",
         dropFiles: "opacity 1s ease-in-out !important",
+        height: "height",
+        def: "0.25s ease",
       },
       spacing: {
         withHeader: "72px 16px 16px 16px"
