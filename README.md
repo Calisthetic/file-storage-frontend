@@ -61,6 +61,18 @@ npm i hammerjs
 npm i zod
 ```
 
+[Tailwind-merge](https://www.npmjs.com/package/tailwind-merge?activeTab=readme)
+
+```bash
+npm i tailwind-merge
+```
+
+[clsx](https://www.npmjs.com/package/clsx)
+
+```bash
+npm i clsx
+```
+
 ### Also used in project
 
 - [Google Fonts API](https://developers.google.com/fonts/docs/developer_api?hl=ru#APIKey)
