@@ -290,6 +290,9 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
 
         hammer_folders.on('pan', function(event:any) {
           folderElems[i].style["transform"] = "translate(" + event.deltaX + "px, " + event.deltaY + "px)"
+          if (event.isFinal) {
+            folderElems[i].style["transform"] = "translate(0px, 0px)"
+          }
         });
 
         hammer_folders.on('panstart', function(event:any) {
@@ -297,8 +300,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           folderElems[i].style["transition-property"] = "initial"
           folderElems[i].style["transition"] = "initial"
           folderElems[i].style["z-index"] = "16"
-          folderElems[i].style["border"] 
-            = "2px solid var(--backgroundHover" + (isDarkMode ? "Dark" : "Light") + ")"
+          folderElems[i].style["box-shadow"] = "0px 0px 5px -2px var(--shadow" + (isDarkMode ? "Dark" : "Light") + ")"
           // Mask && cursor
           setIsMaskActive(true)
           if (rootElem) {
@@ -312,10 +314,10 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           folderElems[i].style["transition"] = "0.2s ease"
           setTimeout(() => {
             folderElems[i].style["transform"] = "initial"
-            folderElems[i].style["border"] = "initial"
+            folderElems[i].style["box-shadow"] = "initial"
             setTimeout(() => {
               folderElems[i].style["z-index"] = "initial"
-              // Main moving action
+              // Main moving action ! only PC works
               if (event.target.dataset.id && event.srcEvent.target.dataset.id && 
                 event.srcEvent.target.dataset.type && event.target.dataset.type) {
                 MoveItems({
@@ -325,12 +327,22 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   dragged_type: event.target.dataset.type,
                 })
               }
-              // Mask && cursor
-              setIsMaskActive(false)
-              if (rootElem) {
-                rootElem.style["cursor"] = "auto"
-              }
             }, 200);
+            // Mobile + PC version detect
+            let targetElem = document.elementFromPoint(event.center.x, event.center.y) as HTMLElement
+            if (targetElem) {
+              MoveItems({
+                target_id: targetElem.dataset.id,
+                dragged_id: folderElems[i].dataset.id,
+                target_type: targetElem.dataset.type,
+                dragged_type: folderElems[i].dataset.type,
+              })
+            }
+            // Mask && cursor
+            setIsMaskActive(false)
+            if (rootElem) {
+              rootElem.style["cursor"] = "auto"
+            }
           }, 10);
         });
       }
@@ -346,8 +358,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           fileElems[i].style["transition-property"] = "initial"
           fileElems[i].style["transition"] = "initial"
           fileElems[i].style["z-index"] = "16"
-          fileElems[i].style["border"] 
-            = "2px solid var(--backgroundHover" + (isDarkMode ? "Dark" : "Light") + ")"
+          fileElems[i].style["box-shadow"] = "0px 0px 5px -2px var(--shadow" + (isDarkMode ? "Dark" : "Light") + ")"
           // Mask && cursor
           setIsMaskActive(true)
           if (rootElem) {
@@ -361,22 +372,25 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           fileElems[i].style["transition"] = "0.2s ease"
           setTimeout(() => {
             fileElems[i].style["transform"] = "initial"
-            fileElems[i].style["border"] = "initial"
+            fileElems[i].style["box-shadow"] = "initial"
             setTimeout(() => {
               fileElems[i].style["z-index"] = "initial"
-              // Main moving action
-              MoveItems({
-                target_id: event.srcEvent.target.dataset.id,
-                dragged_id: event.target.dataset.id,
-                target_type: event.srcEvent.target.dataset.type,
-                dragged_type: event.target.dataset.type,
-              })
-              // Mask && cursor
-              setIsMaskActive(false)
-              if (rootElem) {
-                rootElem.style["cursor"] = "auto"
-              }
             }, 200);
+            // Mobile + PC version detect
+            let targetElem = document.elementFromPoint(event.center.x, event.center.y) as HTMLElement
+            if (targetElem) {
+              MoveItems({
+                target_id: targetElem.dataset.id,
+                dragged_id: fileElems[i].dataset.id,
+                target_type: targetElem.dataset.type,
+                dragged_type: fileElems[i].dataset.type,
+              })
+            }
+            // Mask && cursor
+            setIsMaskActive(false)
+            if (rootElem) {
+              rootElem.style["cursor"] = "auto"
+            }
           }, 10);
         });
       }
@@ -390,35 +404,37 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
             if (e.target.dataset.token !== undefined) 
               navigate('./../' + e.target.dataset.token)
           });
-
+  
           hammer_folders.on('pan', function(event:any) {
             folderElems[i].style["transform"] = "translate(" + event.deltaX + "px, " + event.deltaY + "px)"
+            if (event.isFinal) {
+              folderElems[i].style["transform"] = "translate(0px, 0px)"
+            }
           });
-
+  
           hammer_folders.on('panstart', function(event:any) {
             // Animations
             folderElems[i].style["transition-property"] = "initial"
             folderElems[i].style["transition"] = "initial"
             folderElems[i].style["z-index"] = "16"
-            folderElems[i].style["border"] 
-              = "2px solid var(--backgroundHover" + (isDarkMode ? "Dark" : "Light") + ")"
+            folderElems[i].style["box-shadow"] = "0px 0px 5px -2px var(--shadow" + (isDarkMode ? "Dark" : "Light") + ")"
             // Mask && cursor
             setIsMaskActive(true)
             if (rootElem) {
               rootElem.style["cursor"] = "grabbing"
             }
           });
-
+  
           hammer_folders.on('panend', function(event:any) {
             // Animations
             folderElems[i].style["transition-property"] = "transform"
             folderElems[i].style["transition"] = "0.2s ease"
             setTimeout(() => {
               folderElems[i].style["transform"] = "initial"
-              folderElems[i].style["border"] = "initial"
+              folderElems[i].style["box-shadow"] = "initial"
               setTimeout(() => {
                 folderElems[i].style["z-index"] = "initial"
-                // Main moving action
+                // Main moving action ! only PC works
                 if (event.target.dataset.id && event.srcEvent.target.dataset.id && 
                   event.srcEvent.target.dataset.type && event.target.dataset.type) {
                   MoveItems({
@@ -428,58 +444,70 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     dragged_type: event.target.dataset.type,
                   })
                 }
-                // Mask && cursor
-                setIsMaskActive(false)
-                if (rootElem) {
-                  rootElem.style["cursor"] = "auto"
-                }
               }, 200);
+              // Mobile + PC version detect
+              let targetElem = document.elementFromPoint(event.center.x, event.center.y) as HTMLElement
+              if (targetElem) {
+                MoveItems({
+                  target_id: targetElem.dataset.id,
+                  dragged_id: folderElems[i].dataset.id,
+                  target_type: targetElem.dataset.type,
+                  dragged_type: folderElems[i].dataset.type,
+                })
+              }
+              // Mask && cursor
+              setIsMaskActive(false)
+              if (rootElem) {
+                rootElem.style["cursor"] = "auto"
+              }
             }, 10);
           });
         }
-
+  
         for (let i = 0; i < fileElems.length; i++) {
           var hammer_files = new Hammer(fileElems[i]);
           hammer_files.on('pan', function(event:any) {
             fileElems[i].style["transform"] = "translate(" + event.deltaX + "px, " + event.deltaY + "px)"
           });
-
+  
           hammer_files.on('panstart', function(event:any) {
             // Animations
             fileElems[i].style["transition-property"] = "initial"
             fileElems[i].style["transition"] = "initial"
             fileElems[i].style["z-index"] = "16"
-            fileElems[i].style["border"] 
-              = "2px solid var(--backgroundHover" + (isDarkMode ? "Dark" : "Light") + ")"
+            fileElems[i].style["box-shadow"] = "0px 0px 5px -2px var(--shadow" + (isDarkMode ? "Dark" : "Light") + ")"
             // Mask && cursor
             setIsMaskActive(true)
             if (rootElem) {
               rootElem.style["cursor"] = "grabbing"
             }
           });
-
+  
           hammer_files.on('panend', function(event:any) {
             // Animations
             fileElems[i].style["transition-property"] = "transform"
             fileElems[i].style["transition"] = "0.2s ease"
             setTimeout(() => {
               fileElems[i].style["transform"] = "initial"
-              fileElems[i].style["border"] = "initial"
+              fileElems[i].style["box-shadow"] = "initial"
               setTimeout(() => {
                 fileElems[i].style["z-index"] = "initial"
-                // Main moving action
-                MoveItems({
-                  target_id: event.srcEvent.target.dataset.id,
-                  dragged_id: event.target.dataset.id,
-                  target_type: event.srcEvent.target.dataset.type,
-                  dragged_type: event.target.dataset.type,
-                })
-                // Mask && cursor
-                setIsMaskActive(false)
-                if (rootElem) {
-                  rootElem.style["cursor"] = "auto"
-                }
               }, 200);
+              // Mobile + PC version detect
+              let targetElem = document.elementFromPoint(event.center.x, event.center.y) as HTMLElement
+              if (targetElem) {
+                MoveItems({
+                  target_id: targetElem.dataset.id,
+                  dragged_id: fileElems[i].dataset.id,
+                  target_type: targetElem.dataset.type,
+                  dragged_type: fileElems[i].dataset.type,
+                })
+              }
+              // Mask && cursor
+              setIsMaskActive(false)
+              if (rootElem) {
+                rootElem.style["cursor"] = "auto"
+              }
             }, 10);
           });
         }
