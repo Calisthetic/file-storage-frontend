@@ -4,7 +4,11 @@
   opacity: 1;
 }
 
-.focus-second-right:has(div button:focus) {
+.focus-first-right + .focus-second-right:has(div button:focus) {
+  transform: scale(1, 1) translate(24px, 50%);
+  opacity: 1;
+}
+.focus-first-right + .focus-second-right:hover {
   transform: scale(1, 1) translate(24px, 50%);
   opacity: 1;
 }
