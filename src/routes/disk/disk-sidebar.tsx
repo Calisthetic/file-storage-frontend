@@ -177,7 +177,7 @@ export default function DiskSideBar() {
           ref={adRef} role="alert"
           className="p-2 sm:p-4 mt-4 sm:mt-6 transition rounded-lg bg-backgroundThirdLight dark:bg-backgroundThirdDark 
           text-textLight dark:text-textDark text-sm">
-            <div className="flex items-center mb-3">
+            <div className="flex items-center mb-3 justify-between">
               <span className=" bg-backgroundAccentLight text-textLight font-semibold mr-2 px-2.5 py-0.5 rounded 
               dark:bg-backgroundAccentDark dark:text-textDark">Beta</span>
               <button onClick={() => {setIsAdOpen(false)}} type="button" className="ml-auto sm:-mx-1.5 -my-1.5 bg-backgroundThirdLight 
