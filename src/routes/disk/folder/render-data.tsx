@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react"
+import { useState, useRef, useEffect } from "react"
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { useNavigate } from 'react-router-dom';
@@ -24,6 +24,37 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
   // Hide files and folders
   const [isFoldersVisible, setIsFoldersVisible] = useState(true)
   const [isFilesVisible, setIsFilesVisible] = useState(true)
+  const visualizeFoldersRef:any = useRef()
+  const visualizeFilesRef:any = useRef()
+
+  function OpenCloseFolders() {
+    setIsFoldersVisible(!isFoldersVisible)
+    if (!isFoldersVisible) {
+      visualizeFoldersRef.current.style.height = "auto"
+      visualizeFoldersRef.current.style.transform = "translate(0px, 0px)"
+      visualizeFoldersRef.current.style.opacity = "1"
+    } else {
+      visualizeFoldersRef.current.style.transform = "translate(0px, -16px)"
+      visualizeFoldersRef.current.style.opacity = "0"
+      setTimeout(() => {
+        visualizeFoldersRef.current.style.height = "0px"
+      }, 250);
+    }
+  }
+  function OpenCloseFiles() {
+    setIsFilesVisible(!isFilesVisible)
+    if (!isFilesVisible) {
+      visualizeFilesRef.current.style.height = "auto"
+      visualizeFilesRef.current.style.transform = "translate(0px, 0px)"
+      visualizeFilesRef.current.style.opacity = "1"
+    } else {
+      visualizeFilesRef.current.style.transform = "translate(0px, -16px)"
+      visualizeFilesRef.current.style.opacity = "0"
+      setTimeout(() => {
+        visualizeFilesRef.current.style.height = "0px"
+      }, 250);
+    }
+  }
 
   // Modal windows
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
@@ -243,42 +274,12 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     dragged_type:string | undefined,
     target_type:string | undefined,
   }
-  const [lastMovedData, setLastMovedData] = useState<MoveItemsProps>({
+  let lastMovedData = useRef({
     dragged_id:"",
     target_id:"",
     dragged_type:"",
     target_type:"",
   })
-  // Move files/folders to folders
-  const MoveItems = useCallback(({
-    dragged_id, target_id,
-    dragged_type, target_type,
-  }:MoveItemsProps) => {
-    if (!isNumeric(target_id) || !isNumeric(dragged_id)) {
-      return false
-    }
-    if (target_type !== "folder" || dragged_type === undefined) {
-      return false
-    }
-    if (target_id === dragged_id && target_type === dragged_type) {
-      return false
-    }
-    if (lastMovedData.dragged_id === dragged_id
-    && lastMovedData.target_id === target_id
-    && lastMovedData.dragged_type === dragged_type
-    && lastMovedData.target_type === target_type) {
-      return false
-    }
-    console.log("Target: " + target_type + ", id: " + target_id)
-    console.log("Dragged: " + dragged_type + ", id: " + dragged_id)
-
-    setLastMovedData({
-      dragged_id: dragged_id,
-      target_id: target_id,
-      dragged_type: dragged_type,
-      target_type: target_type,
-    })
-  }, [lastMovedData])
 
   // Mask to detect id and type of hover element
   const [isMaskActive, setIsMaskActive] = useState(false)
@@ -414,6 +415,38 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       }
     }
 
+    // Move files/folders to folders
+    const MoveItems = ({
+      dragged_id, target_id,
+      dragged_type, target_type,
+    }:MoveItemsProps) => {
+      if (!isNumeric(target_id) || !isNumeric(dragged_id)) {
+        return false
+      }
+      if (target_type !== "folder" || dragged_type === undefined
+      || target_id === undefined || dragged_id === undefined) {
+        return false
+      }
+      if (target_id === dragged_id && target_type === dragged_type) {
+        return false
+      }
+      if (lastMovedData.current.dragged_id === dragged_id
+      && lastMovedData.current.target_id === target_id
+      && lastMovedData.current.dragged_type === dragged_type
+      && lastMovedData.current.target_type === target_type) {
+        return false
+      }
+      console.log("Target: " + target_type + ", id: " + target_id)
+      console.log("Dragged: " + dragged_type + ", id: " + dragged_id)
+  
+      lastMovedData.current = {
+        dragged_id: dragged_id,
+        target_id: target_id,
+        dragged_type: dragged_type,
+        target_type: target_type,
+      }
+    }
+
     return () => {
       if (folderElems && fileElems) {
         for (let i = 0; i < folderElems.length; i++) {
@@ -541,7 +574,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
         }
       }
     }
-  }, [currentSortType, currentSortBy, currentRenderType, navigate, isDarkMode, MoveItems])
+  }, [currentSortType, currentSortBy, currentRenderType, navigate, isDarkMode, lastMovedData])
 
 
 
@@ -549,12 +582,12 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
   return (
     <main className="py-4">
       {currentRenderType === "list" ? (
-        <div className="flex flex-col">
-          <div className="px-2 lg:col-span-2 xl:col-span-3 2xl:col-span-4 mb-2 pb-1
+        <div>
+          <div className="px-2 mb-2 pb-1
           font-semibold text-base border-b border-borderLight dark:border-borderDark
           flex flex-row justify-between items-center opacity-80"
-          onClick={() => {setIsFoldersVisible(!isFoldersVisible)}}>
-            <p className=" text-textLight dark:text-textDark">Folders</p>
+          onClick={OpenCloseFolders}>
+            <p className=" text-textLight dark:text-textDark pointer-events-none">Folders</p>
             <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none", {
               "rotate-180": isFoldersVisible,
               "rotate-0": !isFoldersVisible,
@@ -564,10 +597,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
             </svg>
           </div>
-          <div className={cn("grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all", {
-            "h-0 overflow-hidden -translate-y-4 opacity-0": !isFoldersVisible,
-            "translate-y-0": isFoldersVisible
-          })}>
+          <div ref={visualizeFoldersRef}
+          className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all">
             {folders.sort((a, b) => {
               if (currentSortType === "size" ? a.size < b.size
                 : currentSortType === "date" ? a.created_at < b.created_at
@@ -611,12 +642,12 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                             .map((primary_color, primary_color_index) => (
                               <div key={primary_color_index} className="h-6 w-6">
                                 <button className="rounded-full h-6 w-6 transition-shadow
-                                hover:shadow-defaultLight hover:dark:shadow-defaultDark"
+                                hover:shadow-defaultLight hover:dark:shadow-defaultDark pointer-events-auto"
                                 style={{backgroundColor: "#" + primary_color.color}}
                                 title={primary_color.name} onClick={() => {alert("Clicked")}}>
                                   {item.color?.toLowerCase() === primary_color.color.toLowerCase() && (
                                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
-                                    enableBackground="new 0 0 24 24" className="w-6 h-6">
+                                    enableBackground="new 0 0 24 24" className="w-6 h-6 pointer-events-none">
                                       <path d="M10 18c-.5 0-1-.2-1.4-.6l-4-4c-.8-.8-.8-2 0-2.8.8-.8 2.1-.8 
                                       2.8 0l2.6 2.6 6.6-6.6c.8-.8 2-.8 2.8 0 .8.8.8 2 0 2.8l-8 8c-.4.4-.9.6-1.4.6z" 
                                       fill={invertColor("#" + primary_color.color)}></path>
@@ -769,11 +800,11 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
             ))}
           </div>
           
-          <div className="px-2 lg:col-span-2 xl:col-span-3 2xl:col-span-4 mb-2 pb-1 mt-4
+          <div className="px-2 mb-2 pb-1 mt-4
           font-semibold text-base border-b border-borderLight dark:border-borderDark
           flex flex-row justify-between items-center opacity-80"
-          onClick={() => {setIsFilesVisible(!isFilesVisible)}}>
-            <p className=" text-textLight dark:text-textDark">Folders</p>
+          onClick={OpenCloseFiles}>
+            <p className=" text-textLight dark:text-textDark pointer-events-none">Files</p>
             <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none", {
               "rotate-180": isFilesVisible,
               "rotate-0": !isFilesVisible,
@@ -783,10 +814,13 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
             </svg>
           </div>
-          <div className={cn("grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all", {
-          "h-0 overflow-hidden -translate-y-4 opacity-0": !isFilesVisible,
-          "translate-y-0": isFilesVisible
-          })}>
+          <div ref={visualizeFilesRef}
+          className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all overflow-hidden"
+          // className={cn("grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all", {
+          // "h-0 overflow-hidden -translate-y-4 opacity-0": !isFilesVisible,
+          // "translate-y-0": isFilesVisible
+          // })}
+          >
             {files.sort((a, b) => {
               if (currentSortType === "name" ? a.name < b.name
               : currentSortType === "type" 
