@@ -30,28 +30,42 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
   function OpenCloseFolders() {
     setIsFoldersVisible(!isFoldersVisible)
     if (!isFoldersVisible) {
-      visualizeFoldersRef.current.style.height = "auto"
-      visualizeFoldersRef.current.style.transform = "translate(0px, 0px)"
-      visualizeFoldersRef.current.style.opacity = "1"
+      visualizeFoldersRef.current.style.display = currentRenderType === "list" ? "grid" : "flex"
+      setTimeout(() => {
+        visualizeFoldersRef.current.style.height = "auto"
+        visualizeFoldersRef.current.style.transform = "translate(0px, 0px)"
+        visualizeFoldersRef.current.style.opacity = "1"
+        setTimeout(() => {
+          visualizeFoldersRef.current.style.transform = "initial"
+        }, 250);
+      }, 10);
     } else {
       visualizeFoldersRef.current.style.transform = "translate(0px, -16px)"
       visualizeFoldersRef.current.style.opacity = "0"
       setTimeout(() => {
         visualizeFoldersRef.current.style.height = "0px"
+        visualizeFoldersRef.current.style.display = "none"
       }, 250);
     }
   }
   function OpenCloseFiles() {
     setIsFilesVisible(!isFilesVisible)
     if (!isFilesVisible) {
-      visualizeFilesRef.current.style.height = "auto"
-      visualizeFilesRef.current.style.transform = "translate(0px, 0px)"
-      visualizeFilesRef.current.style.opacity = "1"
+      visualizeFilesRef.current.style.display = currentRenderType === "list" ? "grid" : "flex"
+      setTimeout(() => {
+        visualizeFilesRef.current.style.height = "auto"
+        visualizeFilesRef.current.style.transform = "translate(0px, 0px)"
+        visualizeFilesRef.current.style.opacity = "1"
+        setTimeout(() => {
+          visualizeFilesRef.current.style.transform = "initial"
+        }, 250);
+      }, 10);
     } else {
       visualizeFilesRef.current.style.transform = "translate(0px, -16px)"
       visualizeFilesRef.current.style.opacity = "0"
       setTimeout(() => {
         visualizeFilesRef.current.style.height = "0px"
+        visualizeFilesRef.current.style.display = "none"
       }, 250);
     }
   }
@@ -598,7 +612,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
             </svg>
           </div>
           <div ref={visualizeFoldersRef}
-          className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all">
+          className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all h-auto">
             {folders.sort((a, b) => {
               if (currentSortType === "size" ? a.size < b.size
                 : currentSortType === "date" ? a.created_at < b.created_at
@@ -815,7 +829,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
             </svg>
           </div>
           <div ref={visualizeFilesRef}
-          className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all overflow-hidden"
+          className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all h-auto"
           // className={cn("grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all", {
           // "h-0 overflow-hidden -translate-y-4 opacity-0": !isFilesVisible,
           // "translate-y-0": isFilesVisible
@@ -870,7 +884,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                           className="fill-textLight dark:fill-textDark"></path></g>
                         </svg>
                       </div>
-                      <div className="hover-second px-1 overflow-hidden text-base whitespace-pre
+                      <div className="hover-second px-1 overflow-hidden text-base whitespace-pre z-10
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded text-gray-700 dark:text-gray-400">
                         <div className="space-x-1">
                           <span className="text-sm">Size:</span>
@@ -904,7 +918,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                           <circle cx="128" cy="176" r="12" className="fill-textLight dark:fill-textDark"></circle>
                         </svg>
                       </div>
-                      <div className="hover-second ml-3.5 w-8
+                      <div className="hover-second ml-3.5 w-8 z-10
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
                         <button data-id={item.id} data-name={item.name} data-type="file" onClick={modalRenameOpen}
                         className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
@@ -1405,10 +1419,10 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           <div className="px-2 lg:col-span-2 xl:col-span-3 2xl:col-span-4 mb-2 pb-1
           font-semibold text-base border-b border-borderLight dark:border-borderDark
           flex flex-row justify-between items-center opacity-80"
-          onClick={() => {setIsFoldersVisible(!isFoldersVisible)}}>
+          onClick={OpenCloseFolders}>
             <p className=" text-textLight dark:text-textDark">Folders</p>
-            <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none", {
-              "rotate-180": isFoldersVisible,
+            <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none transition-transform", {
+              "-rotate-180": isFoldersVisible,
               "rotate-0": !isFoldersVisible,
             })} aria-hidden="true" 
             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -1416,10 +1430,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
             </svg>
           </div>
-          <div className={cn("flex gap-x-1 md:gap-x-1.5 lg:gap-x-2 mt-2 flex-row flex-wrap transition-all", {
-            "h-0 overflow-hidden -translate-y-4 opacity-0": !isFoldersVisible,
-            "translate-y-0": isFoldersVisible
-          })}>
+          <div ref={visualizeFoldersRef}
+          className="flex gap-x-1 md:gap-x-1.5 lg:gap-x-2 mt-2 flex-row flex-wrap transition-all h-auto">
             {folders.sort((a, b) => {
               if (currentSortType === "size" ? a.size < b.size
                 : currentSortType === "date" ? a.created_at < b.created_at
@@ -1610,10 +1622,10 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           <div className="px-2 lg:col-span-2 xl:col-span-3 2xl:col-span-4 mb-2 pb-1 mt-4
           font-semibold text-base border-b border-borderLight dark:border-borderDark
           flex flex-row justify-between items-center opacity-80"
-          onClick={() => {setIsFilesVisible(!isFilesVisible)}}>
+          onClick={OpenCloseFiles}>
             <p className=" text-textLight dark:text-textDark">Folders</p>
-            <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none", {
-              "rotate-180": isFilesVisible,
+            <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none transition-transform", {
+              "-rotate-180": isFilesVisible,
               "rotate-0": !isFilesVisible,
             })} aria-hidden="true" 
             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -1621,10 +1633,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
             </svg>
           </div>
-          <div className={cn("grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-4 transition-all", {
-          "h-0 overflow-hidden -translate-y-4 opacity-0": !isFilesVisible,
-          "translate-y-0": isFilesVisible
-          })}>
+          <div className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-4 transition-all h-auto">
             {files.sort((a, b) => {
               if (currentSortType === "name" ? a.name < b.name
               : currentSortType === "type" 
