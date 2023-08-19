@@ -32,7 +32,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
       <div className="font-medium text-center text-xl">{"Share - " + folderName}</div>
       {/* Warning */}
       <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md
-      flex flex-row mt-2 p-2 items-center">
+      grid grid-cols-alerts mt-2 p-2 items-center gap-x-2">
         <svg fill="none" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
         className="h-7 w-7 min-w-min pointer-events-none mr-2">
           <path d="M17 9a8 8 0 1 0-6.278 7.814 5.932 5.932 0 0 1-.388-.94 7 7 0 1 1 

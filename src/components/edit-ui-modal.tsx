@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from "framer-motion"
 
 export default function EditUIModal() {
@@ -141,7 +141,7 @@ export default function EditUIModal() {
         setFontsRenderList(currentFontSort2 === "descending" ? RotateArray(data.items) : data.items)
       }
     )
-  }, [currentFontSort])
+  }, [currentFontSort, currentFontSort2])
 
   // Fonts filters
   function SearchFonts(e:any) {

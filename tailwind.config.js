@@ -36,6 +36,9 @@ module.exports = {
         errorDark: "var(--errorDark)",
         errorLight: "var(--errorLight)",
       },
+      gridTemplateColumns: {
+        alerts: "minmax(24px, 28px) minmax(0, 1fr)"
+      },
       transitionProperty: {
         inputs: "border, outline, background-color",
         dropFiles: "opacity 1s ease-in-out !important",
