@@ -588,8 +588,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           flex flex-row justify-between items-center opacity-80"
           onClick={OpenCloseFolders}>
             <p className=" text-textLight dark:text-textDark pointer-events-none">Folders</p>
-            <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none", {
-              "rotate-180": isFoldersVisible,
+            <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none transition-transform", {
+              "-rotate-180": isFoldersVisible,
               "rotate-0": !isFoldersVisible,
             })} aria-hidden="true" 
             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -805,8 +805,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           flex flex-row justify-between items-center opacity-80"
           onClick={OpenCloseFiles}>
             <p className=" text-textLight dark:text-textDark pointer-events-none">Files</p>
-            <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none", {
-              "rotate-180": isFilesVisible,
+            <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none transition-transform", {
+              "-rotate-180": isFilesVisible,
               "rotate-0": !isFilesVisible,
             })} aria-hidden="true" 
             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
