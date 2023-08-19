@@ -7,10 +7,10 @@ export default function DiskUpgrade() {
   let secondPriceId: number = 1
   let thirdPriceId: number = 2
 
-  let isDarkMode:boolean = false;
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    isDarkMode = true
-  }
+  // let isDarkMode:boolean = false;
+  // if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  //   isDarkMode = true
+  // }
 
   return (
     <div className="min-h-fullWithHeader bg-backgroundSecondLight w-full 
@@ -21,12 +21,13 @@ export default function DiskUpgrade() {
         transition={{delay: 0, stiffness: 300, damping: 24}} 
         className="w-full h-full max-w-sm p-4 xl:p-8 bg-backgroundLight dark:bg-backgroundThirdDark rounded-xl
         dark:border-backgroundThirdDark border-backgroundThirdLight border-2 flex flex-col justify-between" 
-        style={{boxShadow: currentTariff === 0 ? "0px 0px 8px 0px " + getComputedStyle(document.body).getPropertyValue("--shadow" + (
-          isDarkMode === true ? "Dark" : "Light"
-        )) : "none"}}>
+        // style={{boxShadow: currentTariff === 0 ? "0px 0px 8px 0px " + getComputedStyle(document.body).getPropertyValue("--shadow" + (
+        //   isDarkMode === true ? "Dark" : "Light"
+        // )) : "none"}}
+        >
           <div>
-            <h5 className="mb-4 text-xl font-medium text-textLight dark:text-textDark opacity-60">Standard</h5>
-            <div className="flex items-baseline text-textLight dark:text-textDark">
+            <p className="w-min mb-4 text-xl font-medium text-textLight dark:text-textDark opacity-60">Standard</p>
+            <div className="w-min flex items-baseline text-textLight dark:text-textDark">
               <span className="text-5xl font-bold tracking-tight mr-2">{10}</span>
               <span className="text-5xl font-semibold">GB</span>
             </div>
@@ -46,8 +47,8 @@ export default function DiskUpgrade() {
           style={{cursor: currentTariff === firstPriceId ? "default" : "pointer"}} 
           onClick={() => {if (currentTariff !== firstPriceId) {console.log("change")}}}>
             {currentTariff === firstPriceId ? (
-              <div className="flex items-baseline text-textLight dark:text-textDark">
-                <span className="text-2xl font-semibold tracking-tight">Selected</span>
+              <div className="flex items-baseline text-textLight dark:text-textDark text-2xl font-semibold tracking-tight">
+                <span>Current</span>
               </div>
             ) : (
               <div className="flex items-baseline text-textLight dark:text-textDark">
@@ -60,14 +61,15 @@ export default function DiskUpgrade() {
         <motion.div initial={{y: -100, opacity: 0}} animate={{y: 0, opacity: 1}} 
         transition={{delay: 0.04, stiffness: 300, damping: 24}}
         className="rounded-xl h-full w-full max-w-sm p-1 bg-gradient-to-tr from-[#3575db] via-[#9333EA] to-[#e22a3c]"
-        style={{boxShadow: currentTariff === 1 ? "0px 0px 8px 0px " + getComputedStyle(document.body).getPropertyValue("--shadow" + (
-          isDarkMode === true ? "Dark" : "Light"
-        )) : "none"}}>
+        // style={{boxShadow: currentTariff === 1 ? "0px 0px 8px 0px " + getComputedStyle(document.body).getPropertyValue("--shadow" + (
+        //   isDarkMode === true ? "Dark" : "Light"
+        // )) : "none"}}
+        >
           <div className="py-3 xl:py-7 pr-3 xl:pr-7 h-full pl-4 xl:pl-8 bg-backgroundLight dark:bg-backgroundThirdDark rounded-lg
           dark:border-backgroundThirdDark border-backgroundThirdLight transition-all flex flex-col justify-between">
             <div>
-              <h5 className="mb-4 text-xl font-medium text-textLight dark:text-textDark opacity-60">VIP</h5>
-              <div className="flex items-baseline text-textLight dark:text-textDark">
+              <p className="w-min mb-4 text-xl font-medium text-textLight dark:text-textDark opacity-60">VIP</p>
+              <div className="w-min flex items-baseline text-textLight dark:text-textDark">
                 <span className="text-5xl font-bold tracking-tight mr-2">{256}</span>
                 <span className="text-5xl font-semibold">GB</span>
               </div>
@@ -87,8 +89,8 @@ export default function DiskUpgrade() {
             style={{cursor: currentTariff === secondPriceId ? "default" : "pointer"}} 
             onClick={() => {if (currentTariff !== secondPriceId) {console.log("change")}}}>
                 {currentTariff === secondPriceId ? (
-                  <div className="flex items-baseline text-textLight dark:text-textDark">
-                    <span className="text-2xl font-semibold tracking-tight">Selected</span>
+                  <div className="flex items-baseline text-textLight dark:text-textDark text-2xl font-semibold tracking-tight">
+                    <span>Current</span>
                   </div>
                 ) : (
                   <div className="flex items-baseline text-textLight dark:text-textDark">
@@ -104,12 +106,13 @@ export default function DiskUpgrade() {
         transition={{delay: 0.08, stiffness: 300, damping: 24}}
         className="w-full h-full max-w-sm p-4 xl:p-8 bg-backgroundLight dark:bg-backgroundThirdDark rounded-xl
         dark:border-backgroundThirdDark border-backgroundThirdLight border-2 flex flex-col justify-between"
-        style={{boxShadow: currentTariff === 2 ? "0px 0px 8px 0px " + getComputedStyle(document.body).getPropertyValue("--shadow" + (
-          isDarkMode === true ? "Dark" : "Light"
-        )) : "none"}}>
+        // style={{boxShadow: currentTariff === 2 ? "0px 0px 8px 0px " + getComputedStyle(document.body).getPropertyValue("--shadow" + (
+        //   isDarkMode === true ? "Dark" : "Light"
+        // )) : "none"}}
+        >
           <div>
-            <h5 className="mb-4 text-xl font-medium text-textLight dark:text-textDark opacity-60">Premium</h5>
-            <div className="flex items-baseline text-textLight dark:text-textDark">
+            <p className="w-min mb-4 text-xl font-medium text-textLight dark:text-textDark opacity-60">Premium</p>
+            <div className="w-min flex items-baseline text-textLight dark:text-textDark">
               <span className="text-5xl font-bold tracking-tight mr-2">{1}</span>
               <span className="text-5xl font-semibold">TB</span>
             </div>
@@ -129,8 +132,8 @@ export default function DiskUpgrade() {
           style={{cursor: currentTariff === thirdPriceId ? "default" : "pointer"}} 
           onClick={() => {if (currentTariff !== thirdPriceId) {console.log("change")}}}>
             {currentTariff === thirdPriceId ? (
-              <div className="flex items-baseline text-textLight dark:text-textDark">
-                <span className="text-2xl font-semibold tracking-tight">Selected</span>
+              <div className="flex items-baseline text-textLight dark:text-textDark text-2xl font-semibold tracking-tight">
+                <span>Current</span>
               </div>
             ) : (
               <div className="flex items-baseline text-textLight dark:text-textDark">
