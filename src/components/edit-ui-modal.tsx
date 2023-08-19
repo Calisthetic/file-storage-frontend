@@ -317,7 +317,7 @@ export default function EditUIModal() {
                   bg-backgroundLight dark:bg-backgroundDark px-2 rounded-lg
                   hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark">
                     <p className="pointer-events-none">Sort By</p>
-                    <svg className="w-2.5 h-2.5 ml-1.5 pointer-events-none" aria-hidden="true" 
+                    <svg className="w-2.5 h-2.5 ml-1.5" aria-hidden="true" 
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                       <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" 
                       strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
@@ -343,7 +343,7 @@ export default function EditUIModal() {
                                     <motion.svg initial={{opacity: 0, x: -24}} animate={{opacity: 1, x: 0}}
                                     transition={{damping: 24, stiffness: 300, duration: 0.1}} exit={{opacity: 0, x: -24}}
                                     viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
-                                    className="w-4 h-4 pointer-events-none absolute">
+                                    className="w-4 h-4 absolute">
                                       <path d="M480 128c0 8.188-3.125 16.38-9.375 22.62l-256 256C208.4 412.9 200.2 416 192 
                                       416s-16.38-3.125-22.62-9.375l-128-128C35.13 272.4 32 264.2 32 256c0-18.28 14.95-32 32-32 
                                       8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 

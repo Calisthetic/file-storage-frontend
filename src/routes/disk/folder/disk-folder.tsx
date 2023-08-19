@@ -108,7 +108,7 @@ export default function DiskFolder() {
           dark:hover:bg-backgroundHoverDark first-letter:uppercase
           font-medium rounded-full text-base sm:text-lg px-4 py-2 text-center
           focus:dark:bg-backgroundThirdDark inline-flex items-center">My storage
-            <svg className="w-2.5 h-2.5 ml-2.5 pointer-events-none" aria-hidden="true" 
+            <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true" 
             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
               <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" 
               strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
@@ -169,7 +169,7 @@ export default function DiskFolder() {
             focus:bg-none focus:dark:bg-backgroundThirdDark first-letter:uppercase">
               <motion.svg initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
               transition={{damping: 24, duration: 0.25, stiffness: 300}}
-              viewBox="0 0 24 24" className="w-7 h-7 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+              viewBox="0 0 24 24" className="w-7 h-7" xmlns="http://www.w3.org/2000/svg">
                 <path d="m6 20 4-4H7V4H5v12H2zm5-12h9v2h-9zm0 4h7v2h-7zm0-8h11v2H11zm0 12h5v2h-5z" 
                 className="fill-iconLight dark:fill-iconDark"></path>
               </motion.svg>
@@ -193,7 +193,7 @@ export default function DiskFolder() {
                               <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
                               transition={{damping: 24, stiffness: 300, duration: 0.25}}
                               viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
-                              className="w-4 h-4 pointer-events-none absolute">
+                              className="w-4 h-4 absolute">
                                 <path d="M480 128c0 8.188-3.125 16.38-9.375 22.62l-256 256C208.4 
                                 412.9 200.2 416 192 416s-16.38-3.125-22.62-9.375l-128-128C35.13 272.4 
                                 32 264.2 32 256c0-18.28 14.95-32 32-32 8.188 0 16.38 3.125 22.62 9.375L192 
@@ -220,7 +220,7 @@ export default function DiskFolder() {
                             <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
                             transition={{damping: 24, stiffness: 300, duration: 0.25}}
                             viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4 pointer-events-none absolute">
+                            className="w-4 h-4 absolute">
                               <path d="M480 128c0 8.188-3.125 16.38-9.375 22.62l-256 256C208.4 412.9 200.2 416 192 
                               416s-16.38-3.125-22.62-9.375l-128-128C35.13 272.4 32 264.2 32 256c0-18.28 14.95-32 32-32 
                               8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
@@ -241,7 +241,7 @@ export default function DiskFolder() {
                             <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
                             transition={{damping: 24, stiffness: 300, duration: 0.25}}
                             viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4 pointer-events-none absolute">
+                            className="w-4 h-4 absolute">
                               <path d="M480 128c0 8.188-3.125 16.38-9.375 22.62l-256 256C208.4 412.9 200.2 416 192 
                               416s-16.38-3.125-22.62-9.375l-128-128C35.13 272.4 32 264.2 32 256c0-18.28 14.95-32 32-32 
                               8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
@@ -270,19 +270,18 @@ export default function DiskFolder() {
                 <motion.p initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
                 transition={{damping: 24, duration: 0.25, stiffness: 300}}
                 className="w-10 h-10 flex justify-center items-center pointer-events-none">
-                  <motion.svg
-                  className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
+                  <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark"
                   viewBox="0 0 18 10" xmlns="http://www.w3.org/2000/svg">
                     <path d="M0 6h2V4H0v2Zm0 4h2V8H0v2Zm0-8h2V0H0v2Zm4 4h14V4H4v2Zm0 4h14V8H4v2ZM4 
                     0v2h14V0H4Z" fillRule="evenodd" className="fill-iconLight dark:fill-iconDark"></path>
-                  </motion.svg>
+                  </svg>
                 </motion.p>
                 
               ) : (currentRenderType === "table" ? (
                 <motion.section initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
                 transition={{damping: 24, duration: 0.25, stiffness: 300}}
                 className="w-10 h-10 flex justify-center items-center pointer-events-none">
-                  <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
+                  <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark"
                   viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 14h12v-3H9v3Zm-2 0v-3H3v3h4Zm2-8v3h12V6H9ZM7 6H3v3h4V6Zm2 13h12v-3H9v3Zm-2 
                     0v-3H3v3h4ZM3 4h18a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" 
@@ -293,7 +292,7 @@ export default function DiskFolder() {
                 <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
                 transition={{damping: 24, duration: 0.25, stiffness: 300}}
                 className="w-10 h-10 flex justify-center items-center pointer-events-none">
-                  <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
+                  <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark"
                   viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16">
                     <path d="M0 0h4v4H0zM6 0h4v4H6zM12 0h4v4h-4zM0 6h4v4H0zM6 6h4v4H6zM12 6h4v4h-4zM0 12h4v4H0zM6 
                     12h4v4H6zM12 12h4v4h-4z" className="fill-iconLight dark:fill-iconDark"></path>
@@ -303,7 +302,7 @@ export default function DiskFolder() {
                 <motion.span initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
                 transition={{damping: 24, duration: 0.25, stiffness: 300}}
                 className="w-10 h-10 flex justify-center items-center pointer-events-none">
-                  <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
+                  <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark"
                   viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path d="M0 0h9v9H0V0zm2 2v5h5V2H2zm-2 9h9v9H0v-9zm2 2v5h5v-5H2zm9-13h9v9h-9V0zm2 
                     2v5h5V2h-5zm-2 9h9v9h-9v-9zm2 2v5h5v-5h-5z" 
@@ -326,7 +325,7 @@ export default function DiskFolder() {
                         hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center" 
                         data-name="list" title="list"
                         onClick={(e:any) => {setCurrentRenderType(e.target.dataset.name)}}>
-                          <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
+                          <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark"
                           viewBox="0 0 18 10" xmlns="http://www.w3.org/2000/svg">
                             <path d="M0 6h2V4H0v2Zm0 4h2V8H0v2Zm0-8h2V0H0v2Zm4 4h14V4H4v2Zm0 4h14V8H4v2ZM4 
                             0v2h14V0H4Z" fillRule="evenodd" className="fill-iconLight dark:fill-iconDark"></path>
@@ -340,7 +339,7 @@ export default function DiskFolder() {
                         hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center" 
                         data-name="table" title="table"
                         onClick={(e:any) => {setCurrentRenderType(e.target.dataset.name)}}>
-                          <svg className="h-6 w-6 pointer-events-none"
+                          <svg className="h-6 w-6"
                           viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M9 14h12v-3H9v3Zm-2 0v-3H3v3h4Zm2-8v3h12V6H9ZM7 6H3v3h4V6Zm2 13h12v-3H9v3Zm-2 
                             0v-3H3v3h4ZM3 4h18a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" 
@@ -355,7 +354,7 @@ export default function DiskFolder() {
                         hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center" 
                         data-name="tile" title="tiles"
                         onClick={(e:any) => {setCurrentRenderType(e.target.dataset.name)}}>
-                          <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark pointer-events-none"
+                          <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark"
                           viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16">
                             <path d="M0 0h4v4H0zM6 0h4v4H6zM12 0h4v4h-4zM0 6h4v4H0zM6 6h4v4H6zM12 6h4v4h-4zM0 12h4v4H0zM6 
                             12h4v4H6zM12 12h4v4h-4z" className="fill-iconLight dark:fill-iconDark"></path>

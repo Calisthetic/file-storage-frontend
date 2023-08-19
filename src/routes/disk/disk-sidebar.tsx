@@ -7,11 +7,11 @@ export default function DiskSideBar() {
   const [isAdOpen, setIsAdOpen] = useState(true)
 
   return (
-    <div className="h-full px-3 pb-4 overflow-y-auto bg-backgroundLight dark:bg-backgroundDark
+    <div className="h-full px-3 pb-4 bg-backgroundLight dark:bg-backgroundDark
     dark:text-textDark text-textLight font-medium text-sm sm:text-base">
       <ul className="space-y-1">
         <li>
-          <Link to="folder/main" className="flex items-center p-1.5 sm:p-2 transition-all
+          <Link to="folder/main" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
               <path d="M0 128h128V96H0Zm23-22a6 6 0 1 1-6 6 6 6 0 0 1 6-6ZM0 80h128V48H0Zm23-22a6 
@@ -21,7 +21,7 @@ export default function DiskSideBar() {
           </Link>
         </li>
         <li>
-          <Link to="favorites" className="flex items-center p-1.5 sm:p-2 transition-all
+          <Link to="favorites" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
           <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
             <path d="M31.881 12.557a2.303 2.303 0 0 0-1.844-1.511l-8.326-1.238-3.619-7.514A2.318 
@@ -45,7 +45,7 @@ export default function DiskSideBar() {
         </li>
         <li> */}
         <li>
-          <Link to="recent" className="flex items-center p-1.5 sm:p-2 transition-all
+          <Link to="recent" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M12.25 2a9.81 9.81 0 0 0-7.48 3.46L3.41 4.25a1 1 0 0 0-1.07-.16 1 
@@ -59,7 +59,7 @@ export default function DiskSideBar() {
           </Link>
         </li>
         <li>
-          <Link to="trash" className="flex items-center p-1.5 sm:p-2 transition-all
+          <Link to="trash" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0,0,256,256">
               <g className="fill-iconLight dark:fill-iconDark" fillRule="nonzero" stroke="none" 
@@ -76,7 +76,7 @@ export default function DiskSideBar() {
           </Link>
         </li>
         <li>
-          <Link to="shared" className="flex items-center p-1.5 sm:p-2 transition-all
+          <Link to="shared" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 512 512">
               <path d="M162.04 246.91c48.27 0 84.34-51.05 84.34-96.69 0-22.73-9.02-43.66-25.39-58.96-15.67-14.64-36.6-22.7-58.95-22.7-22.34 
@@ -109,7 +109,7 @@ export default function DiskSideBar() {
           </Link>
         </li>
         <li>
-          <Link to="files" className="flex items-center p-1.5 sm:p-2 transition-all
+          <Link to="files" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
               <path fill="none" d="M0 0h256v256H0z"></path>
@@ -139,7 +139,7 @@ export default function DiskSideBar() {
       </div>
       <ul className="pt-1 sm:pt-3 space-y-1">
         <li>
-          <Link to="upgrade" className="flex items-center p-1.5 sm:p-2 transition-all
+          <Link to="upgrade" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <motion.svg className="w-5 h-5 sm:w-6 sm:h-6 fill-iconLight dark:fill-iconDark" 
             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 20">
@@ -153,7 +153,7 @@ export default function DiskSideBar() {
           </Link>
         </li>
         <motion.li>
-          <Link to="help" className="flex items-center p-1.5 sm:p-2 transition-all
+          <Link to="help" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24"><g>
               <path d="M12 3c-5 0-9 4-9 9 0 1.8.6 3.6 1.6 5.1l-1.4 2.4c-.2.3-.2.7 0 1s.4.5.8.5h8c5 
@@ -193,7 +193,7 @@ export default function DiskSideBar() {
               Prewiew new feature with <u>favorites</u> files! 
               Now you can get fast access to your files without special links and folders search.
             </p>
-            <Link to="favorites" onClick={(() => {setIsAdOpen(false)})} 
+            <Link to="favorites" draggable="false" onClick={() => {setIsAdOpen(false)}} 
             className="text-buttonLight underline font-medium transition-all
             hover:text-buttonHoverLight dark:text-buttonDark dark:hover:text-buttonHoverDark">
               Try new feature now

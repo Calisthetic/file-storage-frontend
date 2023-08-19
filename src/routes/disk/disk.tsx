@@ -25,6 +25,7 @@ export default function Disk() {
   const [isSideBarOpen, setIsSideBarOpen] = useState(window.innerWidth > 640 ? true : false)
 
   
+  // Modal customize
   const [open, setOpen] = useState(false);
   const modalCustomizeOpen = () => setOpen(true);
   const modalCustomizeClose = () => setOpen(false);
@@ -50,13 +51,14 @@ export default function Disk() {
     }
   }
 
+  // Sidebar
   function ChangeSideBar() {
     if (window.innerWidth > 640) {
       setIsSideBarOpen(true)
     } else {
       setIsSideBarOpen(false)
     }
-  }
+  } 
   useEffect(() => {
     window.addEventListener('resize', ChangeSideBar);
 
@@ -151,7 +153,7 @@ export default function Disk() {
               <div className="flex items-center ml-3">
                 <button onClick={() => {setIsUserDropMenuOpen(!isUserDropMenuOpen)}} 
                 data-drop="userMenu" className="flex text-sm bg-gray-800 rounded-full">
-                  <img className="w-8 h-8 rounded-full pointer-events-none" alt="user" draggable="false"
+                  <img className="w-8 h-8 rounded-full" alt="user" draggable="false"
                   src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" />
                 </button>
                 <AnimatePresence>
@@ -171,32 +173,26 @@ export default function Disk() {
                           neil.sims@flowbite.com
                         </p>
                       </div>
-                      <ul className="py-1">
-                        <li>
-                          <a href="#" className="block px-4 py-2 hover:bg-backgroundHoverLight 
-                          dark:hover:bg-backgroundHoverDark" role="menuitem">Statistic</a>
-                        </li>
-                        <li>
-                          <a href="#" className="block px-4 py-2 hover:bg-backgroundHoverLight 
-                          dark:hover:bg-backgroundHoverDark" role="menuitem">Statistic</a>
-                        </li>
-                        <li>
-                          <a className="block px-4 py-2 hover:bg-backgroundHoverLight 
-                          dark:hover:bg-backgroundHoverDark cursor-pointer" role="menuitem" onClick={modalCustomizeOpen}>Customize</a>
-                        </li>
-                        <li>
-                          <a href="#" className="block px-4 py-2 hover:bg-backgroundHoverLight 
-                          dark:hover:bg-backgroundHoverDark" role="menuitem">Settings</a>
-                        </li>
-                        <li>
-                          <a href="documentation" className="block px-4 py-2 hover:bg-backgroundHoverLight 
-                          dark:hover:bg-backgroundHoverDark" role="menuitem">Documentation</a>
-                        </li>
-                        <li>
-                          <a href="#" className="block px-4 py-2 hover:bg-backgroundHoverLight 
-                          dark:hover:bg-backgroundHoverDark" role="menuitem">Sign out</a>
-                        </li>
-                      </ul>
+                      <div className="py-1">
+                        <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
+                          dark:hover:bg-backgroundHoverDark" role="menuitem">Statistic
+                        </button>
+                        <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
+                          dark:hover:bg-backgroundHoverDark" role="menuitem">Statistic
+                        </button>
+                        <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
+                          dark:hover:bg-backgroundHoverDark" role="menuitem" onClick={modalCustomizeOpen}>Customize
+                        </button>
+                        <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
+                          dark:hover:bg-backgroundHoverDark" role="menuitem">Settings
+                        </button>
+                        <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
+                          dark:hover:bg-backgroundHoverDark" role="menuitem">Documentation
+                        </button>
+                        <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
+                          dark:hover:bg-backgroundHoverDark" role="menuitem">Sign out
+                        </button>
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -218,6 +214,7 @@ export default function Disk() {
         )}
       </AnimatePresence>
       
+      {/* Customize modal */}
       <Modal
         open={open}
         onClose={modalCustomizeClose}

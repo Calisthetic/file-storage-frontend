@@ -461,6 +461,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       }
     }
 
+    // Swith "on" => "off"
     return () => {
       if (folderElems && fileElems) {
         for (let i = 0; i < folderElems.length; i++) {
@@ -602,7 +603,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           flex flex-row justify-between items-center opacity-80"
           onClick={OpenCloseFolders}>
             <p className=" text-textLight dark:text-textDark pointer-events-none">Folders</p>
-            <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none transition-transform", {
+            <svg className={cn("w-2.5 h-2.5 ml-2.5 transition-transform", {
               "-rotate-180": isFoldersVisible,
               "rotate-0": !isFoldersVisible,
             })} aria-hidden="true" 
@@ -637,7 +638,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <div className="flex flex-row items-center space-x-2 max-w-[calc(100dvw-88px)] 
                   sm:max-w-[calc(100dvw-348px)] md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]">
                     <button className="w-6 cursor-pointer focus-first-right flex flex-row">
-                      <svg viewBox="0 0 20 16" className="w-6 h-6 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+                      <svg viewBox="0 0 20 16" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 0H2C.9 0 0 .9 0 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2h-8L8 0Z" 
                         fillRule="evenodd" fill={item.color ? ("#" + item.color) : "#888"}></path>
                       </svg>
@@ -661,7 +662,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                                 title={primary_color.name} onClick={() => {alert("Clicked")}}>
                                   {item.color?.toLowerCase() === primary_color.color.toLowerCase() && (
                                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
-                                    enableBackground="new 0 0 24 24" className="w-6 h-6 pointer-events-none">
+                                    enableBackground="new 0 0 24 24" className="w-6 h-6">
                                       <path d="M10 18c-.5 0-1-.2-1.4-.6l-4-4c-.8-.8-.8-2 0-2.8.8-.8 2.1-.8 
                                       2.8 0l2.6 2.6 6.6-6.6c.8-.8 2-.8 2.8 0 .8.8.8 2 0 2.8l-8 8c-.4.4-.9.6-1.4.6z" 
                                       fill={invertColor("#" + primary_color.color)}></path>
@@ -819,7 +820,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           flex flex-row justify-between items-center opacity-80"
           onClick={OpenCloseFiles}>
             <p className=" text-textLight dark:text-textDark pointer-events-none">Files</p>
-            <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none transition-transform", {
+            <svg className={cn("w-2.5 h-2.5 ml-2.5 transition-transform", {
               "-rotate-180": isFilesVisible,
               "rotate-0": !isFilesVisible,
             })} aria-hidden="true" 
@@ -875,7 +876,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     <div className="w-6 sm:w-7 mg:w-8">
                       <div className="w-6 sm:w-7 mg:w-8 hover-first">
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
-                        enableBackground="new 0 0 24 24" className="h-6 w-6 pointer-events-none"><g id="Layer_2">
+                        enableBackground="new 0 0 24 24" className="h-6 w-6"><g id="Layer_2">
                           <path d="M12 10c-.6 0-1 .4-1 1v5c0 .6.4 1 1 1s1-.4 1-1v-5c0-.6-.4-1-1-1z" 
                           className="fill-textLight dark:fill-textDark"></path>
                           <circle cx="12" cy="8" r="1" className="fill-textLight dark:fill-textDark"></circle>
@@ -909,7 +910,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       <div data-id={item.id} data-type="file"
                       className="h-full flex items-center justify-center hover-first">
                         <svg viewBox="0 0 256 256"  xmlns="http://www.w3.org/2000/svg"
-                        className="w-6 h-6 pointer-events-none">
+                        className="w-6 h-6">
                           <path fill="none" d="M0 0h256v256H0z"></path>
                           <circle cx="128" cy="128" r="96" className="stroke-textLight dark:stroke-textDark" 
                           strokeMiterlimit="10" strokeWidth="16" fill="none"></circle>
@@ -923,7 +924,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                         <button data-id={item.id} data-name={item.name} data-type="file" onClick={modalRenameOpen}
                         className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
                           <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
-                          className="w-5 h-5 pointer-events-none"><g>
+                          className="w-5 h-5"><g>
                             <path d="M2 29a1 1 0 0 1-1-1.11l.77-7a1 1 0 0 1 .29-.59L18.42 3.94a3.2 
                             3.2 0 0 1 4.53 0l3.11 3.11a3.2 3.2 0 0 1 0 4.53L9.71 27.93a1 1 0 0 1-.59.29l-7 
                             .77Zm7-1.78Zm-5.27-5.77-.6 5.42 5.42-.6 16.1-16.1a1.2 1.2 0 0 0 0-1.7l-3.12-3.12a1.2 
@@ -1062,7 +1063,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td draggable="false" 
                   className="flex items-center justify-center h-8 flex-row">
                     <button data-id={item.id} data-type="folder" className="w-6 focus-first-right">
-                      <svg viewBox="0 0 20 16" className="w-6 h-6 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+                      <svg viewBox="0 0 20 16" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 0H2C.9 0 0 .9 0 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2h-8L8 0Z" 
                         fillRule="evenodd" fill={item.color ? ("#" + item.color) : "#888"}></path>
                       </svg>
@@ -1111,7 +1112,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       <button data-id={item.id} data-name={item.name}
                       data-access={item.access_type} data-token={item.token} onClick={modalAccessOpen}>
                         <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" 
-                        className="w-5 h-5 pointer-events-none">
+                        className="w-5 h-5">
                           <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
                           29.47 17.58 41.91 30.02 3.146 3.146 5.898 6.518 8.742 9.838l37.96-37.96C458.5 72.05 477.1 64 498.6 
                           64c20.67 0 40.1 8.047 54.71 22.66 14.61 14.61 22.66 34.04 22.66 54.71s-8.049 40.1-22.66 54.71l-133.3 
@@ -1138,7 +1139,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       <button data-id={item.id} data-name={item.name} data-type="folder" onClick={modalRenameOpen} 
                       className="cursor-pointer">
                         <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
-                        className="w-5 h-5 pointer-events-none"><g>
+                        className="w-5 h-5"><g>
                           <path d="M2 29a1 1 0 0 1-1-1.11l.77-7a1 1 0 0 1 .29-.59L18.42 3.94a3.2 
                           3.2 0 0 1 4.53 0l3.11 3.11a3.2 3.2 0 0 1 0 4.53L9.71 27.93a1 1 0 0 1-.59.29l-7 
                           .77Zm7-1.78Zm-5.27-5.77-.6 5.42 5.42-.6 16.1-16.1a1.2 1.2 0 0 0 0-1.7l-3.12-3.12a1.2 
@@ -1160,7 +1161,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     className="flex hover-child justify-center items-center h-full">
                       <button data-id={item.id} data-type="folder" className="cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" 
-                        className="h-5 w-5 pointer-events-none" viewBox="0,0,256,256">
+                        className="h-5 w-5" viewBox="0,0,256,256">
                           <g className="fill-textLight dark:fill-textDark" fillRule="nonzero" stroke="none" 
                           strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDashoffset="0" 
                           fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
@@ -1178,7 +1179,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td>
                     <div data-id={item.id} data-type="folder" className="hover-first">
                       <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16"
-                      className="w-6 h-6 ml-0 sm:ml-0.5 md:ml-1 pointer-events-none">
+                      className="w-6 h-6 ml-0 sm:ml-0.5 md:ml-1">
                         <path d="M8 2C4.69 2 2 4.69 2 8s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 11c-2.76 
                         0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" className="fill-textLight dark:fill-textDark"></path>
                         <path d="M8 6.85c-.28 0-.5.22-.5.5v3.4c0 .28.22.5.5.5s.5-.22.5-.5v-3.4c0-.27-.22-.5-.5-.5zM8.01 
@@ -1214,7 +1215,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   className="text-center">
                     <div className="flex justify-center items-center h-full">
                       <button data-id={item.id} data-type="folder" className="cursor-pointer">
-                        <svg className=" stroke-textLight dark:stroke-textDark w-5 h-5 pointer-events-none" fill="none" 
+                        <svg className=" stroke-textLight dark:stroke-textDark w-5 h-5" fill="none" 
                         strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
@@ -1228,7 +1229,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       <button data-id={item.id} data-type="folder">
                         {item.is_elected === true ? (
                           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                          className="w-5 h-5 pointer-events-none">
+                          className="w-5 h-5">
                             <path d="m21.82 10.74-5.12 3.71 2 6a1 1 0 0 1-.37 1.12 1 1 0 0 1-1.17 0L12 17.87l-5.12 
                             3.72a1 1 0 0 1-1.17 0 1 1 0 0 1-.37-1.12l2-6-5.16-3.73a1 1 0 0 1 .59-1.81h6.32l2-6a1 
                             1 0 0 1 1.9 0l2 6h6.32a1 1 0 0 1 .59 1.81Z"
@@ -1236,7 +1237,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                           </svg>
                         ) : (
                           <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" 
-                          className="w-5 h-5 pointer-events-none">
+                          className="w-5 h-5">
                             <path d="M31.881 12.557a2.303 2.303 0 0 0-1.844-1.511l-8.326-1.238-3.619-7.514A2.318 
                             2.318 0 0 0 16 1c-.896 0-1.711.505-2.092 1.294l-3.619 7.514-8.327 1.238A2.3 2.3 0 0 
                             0 .12 12.557a2.207 2.207 0 0 0 .537 2.285l6.102 6.092-1.415 8.451a2.224 2.224 0 0 0 
@@ -1299,7 +1300,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       <button data-id={item.id} data-name={item.name} data-type="file" onClick={modalRenameOpen} 
                       className="cursor-pointer">
                         <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
-                        className="w-5 h-5 pointer-events-none"><g>
+                        className="w-5 h-5"><g>
                           <path d="M2 29a1 1 0 0 1-1-1.11l.77-7a1 1 0 0 1 .29-.59L18.42 3.94a3.2 
                           3.2 0 0 1 4.53 0l3.11 3.11a3.2 3.2 0 0 1 0 4.53L9.71 27.93a1 1 0 0 1-.59.29l-7 
                           .77Zm7-1.78Zm-5.27-5.77-.6 5.42 5.42-.6 16.1-16.1a1.2 1.2 0 0 0 0-1.7l-3.12-3.12a1.2 
@@ -1320,7 +1321,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     <div className="flex hover-child justify-center items-center h-full">
                       <div data-id={item.id} data-type="file" className="cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" 
-                        className="h-5 w-5 pointer-events-none" viewBox="0,0,256,256">
+                        className="h-5 w-5" viewBox="0,0,256,256">
                           <g className="fill-textLight dark:fill-textDark" fillRule="nonzero" stroke="none" 
                           strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDashoffset="0" 
                           fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
@@ -1337,7 +1338,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   {/* Info watches and downloads */}
                   <td data-id={item.id} data-type="file" draggable="false">
                     <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16"
-                    className="w-6 hover-first h-6 ml-0 sm:ml-0.5 md:ml-1 pointer-events-none">
+                    className="w-6 hover-first h-6 ml-0 sm:ml-0.5 md:ml-1">
                       <path d="M8 2C4.69 2 2 4.69 2 8s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 11c-2.76 
                       0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" className="fill-textLight dark:fill-textDark"></path>
                       <path d="M8 6.85c-.28 0-.5.22-.5.5v3.4c0 .28.22.5.5.5s.5-.22.5-.5v-3.4c0-.27-.22-.5-.5-.5zM8.01 
@@ -1372,7 +1373,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   className="text-center">
                     <div className="flex justify-center items-center h-full">
                       <div data-id={item.id} data-type="file"className="cursor-pointer">
-                        <svg className=" stroke-textLight dark:stroke-textDark w-5 h-5 pointer-events-none" fill="none" 
+                        <svg className=" stroke-textLight dark:stroke-textDark w-5 h-5" fill="none" 
                         strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
@@ -1387,14 +1388,14 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       <div data-id={item.id} data-type="file"className="cursor-pointer">
                         {item.is_elected === true ? (
                           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                          className="w-5 h-5 pointer-events-none">
+                          className="w-5 h-5">
                             <path d="m21.82 10.74-5.12 3.71 2 6a1 1 0 0 1-.37 1.12 1 1 0 0 1-1.17 0L12 17.87l-5.12 
                             3.72a1 1 0 0 1-1.17 0 1 1 0 0 1-.37-1.12l2-6-5.16-3.73a1 1 0 0 1 .59-1.81h6.32l2-6a1 
                             1 0 0 1 1.9 0l2 6h6.32a1 1 0 0 1 .59 1.81Z"
                             className="fill-iconLight dark:fill-iconDark"></path>
                           </svg>
                         ) : (
-                          <svg viewBox="0 0 32 32" className="w-5 h-5 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+                          <svg viewBox="0 0 32 32" className="w-5 h-5" xmlns="http://www.w3.org/2000/svg">
                             <path d="M31.881 12.557a2.303 2.303 0 0 0-1.844-1.511l-8.326-1.238-3.619-7.514A2.318 
                             2.318 0 0 0 16 1c-.896 0-1.711.505-2.092 1.294l-3.619 7.514-8.327 1.238A2.3 2.3 0 0 
                             0 .12 12.557a2.207 2.207 0 0 0 .537 2.285l6.102 6.092-1.415 8.451a2.224 2.224 0 0 0 
@@ -1458,7 +1459,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     <button data-id={item.id} data-name={item.name} data-type="folder"
                     data-access={item.access_type} data-token={item.token} onClick={modalAccessOpen}
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer p-0.5">
-                      <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 pointer-events-none">
+                      <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
                         <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
                         29.47 17.58 41.91 30.02 3.146 3.146 5.898 6.518 8.742 9.838l37.96-37.96C458.5 72.05 477.1 64 498.6 
                         64c20.67 0 40.1 8.047 54.71 22.66 14.61 14.61 22.66 34.04 22.66 54.71s-8.049 40.1-22.66 54.71l-133.3 
@@ -1478,7 +1479,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     </button>
                     <button data-id={item.id} data-type="folder"
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer p-0.5">
-                      <svg className=" stroke-textLight dark:stroke-textDark h-5 w-5 pointer-events-none" fill="none" 
+                      <svg className=" stroke-textLight dark:stroke-textDark h-5 w-5" fill="none" 
                       strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                       viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
@@ -1487,7 +1488,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     <button data-id={item.id} data-type="folder"
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer p-0.5">
                       <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" 
-                      className="h-5 w-5 pointer-events-none" viewBox="0,0,256,256">
+                      className="h-5 w-5" viewBox="0,0,256,256">
                         <g className="fill-textLight dark:fill-textDark" fillRule="nonzero" stroke="none" 
                         strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDashoffset="0" 
                         fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
@@ -1506,7 +1507,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <button data-id={item.id} data-token={item.token} data-type="folder" 
                   className="focus-first-bottom">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                    className="w-28 h-28 pointer-events-none">
+                    className="w-28 h-28">
                       <path d="M12 6c0 1.1-.895 2-2 2H2c-1.105 0-2 .9-2 2v11c0 1.1.895 
                       2 2 2h20c1.105 0 2-.9 2-2V8c0-1.1-.895-2-2-2H12z" 
                       fill={item.color ? blurColor(item.color, -32) : "#686868"}></path>
@@ -1624,7 +1625,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           flex flex-row justify-between items-center opacity-80"
           onClick={OpenCloseFiles}>
             <p className=" text-textLight dark:text-textDark">Folders</p>
-            <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none transition-transform", {
+            <svg className={cn("w-2.5 h-2.5 ml-2.5 transition-transform", {
               "-rotate-180": isFilesVisible,
               "rotate-0": !isFilesVisible,
             })} aria-hidden="true" 
@@ -1717,7 +1718,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       <button data-id={item.id} data-name={item.name} data-type="file" onClick={modalRenameOpen}
                       className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
                         <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
-                        className="w-5 h-5 pointer-events-none"><g>
+                        className="w-5 h-5"><g>
                           <path d="M2 29a1 1 0 0 1-1-1.11l.77-7a1 1 0 0 1 .29-.59L18.42 3.94a3.2 
                           3.2 0 0 1 4.53 0l3.11 3.11a3.2 3.2 0 0 1 0 4.53L9.71 27.93a1 1 0 0 1-.59.29l-7 
                           .77Zm7-1.78Zm-5.27-5.77-.6 5.42 5.42-.6 16.1-16.1a1.2 1.2 0 0 0 0-1.7l-3.12-3.12a1.2 

@@ -34,7 +34,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
       <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md
       grid grid-cols-alerts mt-2 p-2 items-center gap-x-2">
         <svg fill="none" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
-        className="h-7 w-7 min-w-min pointer-events-none mr-2">
+        className="h-7 w-7 min-w-min mr-2">
           <path d="M17 9a8 8 0 1 0-6.278 7.814 5.932 5.932 0 0 1-.388-.94 7 7 0 1 1 
           5.64-7.474l.032.03c.2.209.399.387.597.537.131.1.263.186.394.263.002-.077.003-.153.003-.23Z" 
           className="fill-warningLight dark:fill-warningDark"></path>
@@ -93,7 +93,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                 <span className=" first-letter:uppercase pointer-events-none">
                   {currentAccessType}
                 </span>
-                <svg className="w-2.5 h-2.5 ml-1.5 pointer-events-none" aria-hidden="true" 
+                <svg className="w-2.5 h-2.5 ml-1.5" aria-hidden="true" 
                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                   <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" 
                   strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
@@ -117,7 +117,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                             <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
                             transition={{damping: 24, stiffness: 300, duration: 0.25}}
                             viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4 pointer-events-none absolute">
+                            className="w-4 h-4 absolute">
                               <path d="M480 128c0 8.188-3.125 16.38-9.375 22.62l-256 256C208.4 412.9 200.2 416 192 
                               416s-16.38-3.125-22.62-9.375l-128-128C35.13 272.4 32 264.2 32 256c0-18.28 14.95-32 32-32 
                               8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
@@ -138,7 +138,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                             <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
                             transition={{damping: 24, stiffness: 300, duration: 0.25}}
                             viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4 pointer-events-none absolute">
+                            className="w-4 h-4 absolute">
                               <path d="M480 128c0 8.188-3.125 16.38-9.375 22.62l-256 256C208.4 412.9 200.2 416 192 
                               416s-16.38-3.125-22.62-9.375l-128-128C35.13 272.4 32 264.2 32 256c0-18.28 14.95-32 32-32 
                               8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
@@ -159,7 +159,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                             <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
                             transition={{damping: 24, stiffness: 300, duration: 0.25}}
                             viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4 pointer-events-none absolute">
+                            className="w-4 h-4 absolute">
                               <path d="M480 128c0 8.188-3.125 16.38-9.375 22.62l-256 256C208.4 412.9 200.2 416 192 
                               416s-16.38-3.125-22.62-9.375l-128-128C35.13 272.4 32 264.2 32 256c0-18.28 14.95-32 32-32 
                               8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
@@ -235,7 +235,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
         hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark"
         onClick={() => {CopyText(folderToken)}}>
           <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" 
-          className="w-5 h-5 pointer-events-none">
+          className="w-5 h-5">
             <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
             29.47 17.58 41.91 30.02 3.146 3.146 5.898 6.518 8.742 9.838l37.96-37.96C458.5 72.05 477.1 64 498.6 
             64c20.67 0 40.1 8.047 54.71 22.66 14.61 14.61 22.66 34.04 22.66 54.71s-8.049 40.1-22.66 54.71l-133.3 
@@ -267,7 +267,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
           bg-backgroundLight dark:bg-backgroundDark p-2 min-w-xs w-full -ml-4 mt-6 -z-10
           flex justify-center items-center font-medium transition-[margin]">
             <svg viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 mr-2 pointer-events-none">
+            className="h-4 w-4 mr-2">
               <path d="M58.395 32.156 42.995 50.625l-5.39-6.463a5.995 5.995 0 1 0-9.212 
               7.676l9.997 12a5.991 5.991 0 0 0 9.21.006l20.005-24a5.999 5.999 0 1 0-9.211-7.688Z" 
               className=" fill-successLight dark:fill-successDark"></path>
@@ -275,7 +275,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
               36 0 1 1 36-36 36.04 36.04 0 0 1-36 36Z" 
               className=" fill-successLight dark:fill-successDark"></path>
             </svg>
-            <span className=" pointer-events-none">Copied</span>
+            <span className="pointer-events-none">Copied</span>
           </motion.button>
         )}
       </AnimatePresence>
