@@ -688,7 +688,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <div className="flex flex-row items-center">
                     {/* Info */}
                     <div className="w-6 sm:w-7 mg:w-8" data-token={item.token}>
-                      <div className="w-6 sm:w-7 mg:w-8 hover-first">
+                      <div className="w-6 sm:w-7 mg:w-8 hover-first-info">
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
                         enableBackground="new 0 0 24 24" className="h-6 w-6 pointer-events-none"><g id="Layer_2">
                           <path d="M12 10c-.6 0-1 .4-1 1v5c0 .6.4 1 1 1s1-.4 1-1v-5c0-.6-.4-1-1-1z" 
@@ -699,7 +699,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                           className="fill-textLight dark:fill-textDark"></path></g>
                         </svg>
                       </div>
-                      <div className="hover-second px-1 overflow-hidden text-base whitespace-pre z-10
+                      <div className="hover-second-info px-1 overflow-hidden text-base whitespace-pre z-10
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded text-gray-700 dark:text-gray-400">
                         <div className="space-x-1">
                           <span className="text-sm">Size:</span>
@@ -882,7 +882,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <div className="flex flex-row items-center">
                     {/* Info */}
                     <div className="w-6 sm:w-7 mg:w-8">
-                      <div className="w-6 sm:w-7 mg:w-8 hover-first">
+                      <div className="w-6 sm:w-7 mg:w-8 hover-first-info">
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
                         enableBackground="new 0 0 24 24" className="h-6 w-6"><g id="Layer_2">
                           <path d="M12 10c-.6 0-1 .4-1 1v5c0 .6.4 1 1 1s1-.4 1-1v-5c0-.6-.4-1-1-1z" 
@@ -893,7 +893,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                           className="fill-textLight dark:fill-textDark"></path></g>
                         </svg>
                       </div>
-                      <div className="hover-second px-1 overflow-hidden text-base whitespace-pre z-10
+                      <div className="hover-second-info px-1 overflow-hidden text-base whitespace-pre z-10
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded text-gray-700 dark:text-gray-400">
                         <div className="space-x-1">
                           <span className="text-sm">Size:</span>
@@ -1165,7 +1165,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   </td>
                   {/* Info watches and downloads */}
                   <td>
-                    <div data-id={item.id} data-type="folder" className="hover-first">
+                    <div className="hover-first-info">
                       <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16"
                       className="w-6 h-6 ml-0 sm:ml-0.5 md:ml-1">
                         <path d="M8 2C4.69 2 2 4.69 2 8s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 11c-2.76 
@@ -1175,7 +1175,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                         className="fill-textLight dark:fill-textDark"></path>
                       </svg>
                     </div>
-                    <div className="hover-second ml-4 bg-backgroundThirdLight dark:bg-backgroundThirdDark px-2 py-1 rounded z-10">
+                    <div className="hover-second-info ml-4 bg-backgroundThirdLight dark:bg-backgroundThirdDark px-2 py-1 rounded z-10">
                       <div className="flex flex-row space-x-2 text-sm font-medium">
                         <svg className="w-5 h-5"
                         viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 512 512">
@@ -1307,7 +1307,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td data-id={item.id} data-type="file" draggable="false" 
                   className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
-                      <div data-id={item.id} data-type="file" className="cursor-pointer">
+                      <button data-id={item.id} data-type="file">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" 
                         className="h-5 w-5" viewBox="0,0,256,256">
                           <g className="fill-textLight dark:fill-textDark" fillRule="nonzero" stroke="none" 
@@ -1320,12 +1320,12 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                             1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1z"></path>
                           </g></g>
                         </svg>
-                      </div>
+                      </button>
                     </div>
                   </td>
                   {/* Info watches and downloads */}
-                  <td data-id={item.id} data-type="file" draggable="false">
-                    <div className="hover-first">
+                  <td>
+                    <div className="hover-first-info">
                       <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16"
                       className="w-6 h-6 ml-0 sm:ml-0.5 md:ml-1">
                         <path d="M8 2C4.69 2 2 4.69 2 8s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 11c-2.76 
@@ -1335,7 +1335,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                         className="fill-textLight dark:fill-textDark"></path>
                       </svg>
                     </div>
-                    <div className="hover-second ml-4 bg-backgroundThirdLight dark:bg-backgroundThirdDark px-2 py-1 rounded z-10">
+                    <div className="hover-second-info ml-4 bg-backgroundThirdLight dark:bg-backgroundThirdDark px-2 py-1 rounded z-10">
                       <div className="flex flex-row space-x-2 text-sm font-medium">
                         <svg className="w-5 h-5"
                         viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 512 512">
@@ -1548,7 +1548,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     className="flex flex-row justify-between pt-2.5 px-0.5">
                       <div>
                         <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16"
-                        className="w-6 hover-first h-6 pointer-events-auto" data-id={item.id} data-type="folder">
+                        className="w-6 hover-first-info h-6 pointer-events-auto" data-id={item.id} data-type="folder">
                           <path d="M8 2C4.69 2 2 4.69 2 8s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 11c-2.76 
                           0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" 
                           className="fill-textLight dark:fill-textDark"></path>
@@ -1556,7 +1556,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                           4.8c-.26-.02-.5.25-.51.52v.08c0 .27.21.47.49.48H8c.27 0 .49-.24.5-.5v-.11c0-.29-.21-.47-.49-.47z" 
                           className="fill-textLight dark:fill-textDark"></path>
                         </svg>
-                        <div className="hover-second ml-3 bg-backgroundThirdLight dark:bg-backgroundThirdDark 
+                        <div className="hover-second-info ml-3 bg-backgroundThirdLight dark:bg-backgroundThirdDark 
                         px-2 py-1 rounded z-10">
                           <div className="flex flex-row space-x-2 text-sm font-medium">
                             <svg className="w-5 h-5"
@@ -1657,7 +1657,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                 <div className="flex flex-row items-center">
                   {/* Info */}
                   <div className="w-6 sm:w-7 mg:w-8">
-                    <div className="w-6 sm:w-7 mg:w-8 hover-first">
+                    <div className="w-6 sm:w-7 mg:w-8 hover-first-info">
                       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
                       enableBackground="new 0 0 24 24" className="h-6 w-6"><g id="Layer_2">
                         <path d="M12 10c-.6 0-1 .4-1 1v5c0 .6.4 1 1 1s1-.4 1-1v-5c0-.6-.4-1-1-1z" 
@@ -1668,7 +1668,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                         className="fill-textLight dark:fill-textDark"></path></g>
                       </svg>
                     </div>
-                    <div className="hover-second px-1 overflow-hidden text-base whitespace-pre
+                    <div className="hover-second-info px-1 overflow-hidden text-base whitespace-pre
                     bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded text-gray-700 dark:text-gray-400">
                       <div className="space-x-1">
                         <span className="text-sm">Size:</span>
