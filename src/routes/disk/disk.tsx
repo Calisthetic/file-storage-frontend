@@ -12,16 +12,13 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import EditUIModal from "../../components/edit-ui-modal";
 import DiskSideBar from "./disk-sidebar";
-import { Dropdown, Ripple, initTE, } from "tw-elements";
 import Redirect from "../../components/redirect";
 // @ts-ignore
 import Hammer from 'hammerjs';
-
-initTE({ Dropdown, Ripple });
+import { cn } from "../../lib/utils";
 
 export default function Disk() {
   const [isUserDropMenuOpen, setIsUserDropMenuOpen] = useState(false)
-  const sideBarRef:any = useRef()
   const [isSideBarOpen, setIsSideBarOpen] = useState(window.innerWidth > 640 ? true : false)
 
   
@@ -153,8 +150,8 @@ export default function Disk() {
               <div className="flex items-center ml-3">
                 <button onClick={() => {setIsUserDropMenuOpen(!isUserDropMenuOpen)}} 
                 data-drop="userMenu" className="flex text-sm bg-gray-800 rounded-full">
-                  <img className="w-8 h-8 rounded-full" alt="user" draggable="false"
-                  src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" />
+                  <img className="w-8 h-8 rounded-full pointer-events-none" alt="user" draggable="false"
+                  src="" />
                 </button>
                 <AnimatePresence>
                   {isUserDropMenuOpen && (
@@ -189,9 +186,9 @@ export default function Disk() {
                         <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
                           dark:hover:bg-backgroundHoverDark" role="menuitem">Documentation
                         </button>
-                        <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
+                        <Link to="/auth" className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
                           dark:hover:bg-backgroundHoverDark" role="menuitem">Sign out
-                        </button>
+                        </Link>
                       </div>
                     </motion.div>
                   )}
@@ -202,17 +199,12 @@ export default function Disk() {
         </div>
       </nav>
 
-      <AnimatePresence>
-        {isSideBarOpen && (
-          <motion.aside initial={{x: -256}} animate={{x: 0}}
-          transition={{duration: 0.1, damping:24, stiffness: 200}} exit={{x: -256}}
-          ref={sideBarRef} id="logo-sidebar" 
-          className="fixed top-0 left-0 z-30 w-56 sm:w-64 h-screen pt-16 transition-transform border-borderLight dark:border-borderDark 
-          bg-backgroundLight dark:bg-backgroundDark" aria-label="Sidebar">
-            <DiskSideBar></DiskSideBar>
-          </motion.aside>
-        )}
-      </AnimatePresence>
+      <aside id="main-sidebar" 
+      className={cn("fixed top-0 left-0 z-30 w-56 sm:w-64 h-screen pt-16 transition-transform border-borderLight dark:border-borderDark bg-backgroundLight dark:bg-backgroundDark", {
+        "-translate-x-64": !isSideBarOpen
+      })} aria-label="Sidebar">
+        <DiskSideBar></DiskSideBar>
+      </aside>
       
       {/* Customize modal */}
       <Modal
