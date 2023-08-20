@@ -132,8 +132,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       size: 90000,
       created_at: "14042004",
       access_type: null,
-      watches: 12,
-      downloads: 6,
+      watches: 1212,
+      downloads: 64646,
       is_elected: false,
       color: "00ff00",
       files_inside: 999,
@@ -145,8 +145,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       size: 9000000000,
       created_at: "14042004",
       access_type: null,
-      watches: 12,
-      downloads: 6,
+      watches: 125987654,
+      downloads: 65646,
       is_elected: false,
       color: "0000ff",
       files_inside: 999,
@@ -158,7 +158,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       size: 900000000000,
       created_at: "14042004",
       access_type: "guest",
-      watches: 12,
+      watches: 12555555555555,
       downloads: 6,
       is_elected: true,
       color: "a7a9ab",
@@ -208,6 +208,14 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       : stage === 2 ? " MB"
       : stage === 3 ? " GB" : " TB"
     ) : CutSize(Math.round(num / 1024), stage+1)
+  }
+  function CutNumber(num: number, stage: number = 0):string {
+    return num < 1000 ? (
+      stage === 0 ? num + " "
+      : stage === 1 ? num + "k"
+      : stage === 2 ? num + "M"
+      : "999M"
+    ) : CutNumber(Math.round(num / 1024), stage+1)
   }
 
   // Render colors
@@ -990,24 +998,153 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
         </div>
       ) : currentRenderType === "table" ? (
         <div>
-          <div className="font-bold bg-backgroundLight dark:bg-backgroundDark text-textLight dark:text-textDark uppercase mb-10
-          w-full whitespace-nowrap overflow-y-visible text-base text-left flex flex-row items-center sm:rounded-t-lg">
-            <div className="h-8 w-8 py-1 px-1 md:w-12 md:px-3">
-              <svg viewBox="0 0 256 256" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
-                <path fill="none" d="M0 0h256v256H0z"></path>
-                <path d="M224 177.3V78.7a8.1 8.1 0 0 0-4.1-7l-88-49.5a7.8 7.8 0 
-                0 0-7.8 0l-88 49.5a8.1 8.1 0 0 0-4.1 7v98.6a8.1 8.1 0 0 0 4.1 7l88 
-                49.5a7.8 7.8 0 0 0 7.8 0l88-49.5a8.1 8.1 0 0 0 4.1-7Z" 
-                fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16" 
-                className=" stroke-textLight dark:stroke-textDark"></path>
-                <path fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16" 
-                d="M177 152.5v-52L80 47" className="stroke-textLight dark:stroke-textDark"></path>
-                <path fill="none" className="stroke-textLight dark:stroke-textDark" 
-                strokeLinecap="round" strokeLinejoin="round" strokeWidth="16" 
-                d="m222.9 74.6-94 53.4-95.8-53.4M128.9 128l-.9 106.8"></path>
-              </svg>
+          <div className="mb-10">
+            <div className="font-bold bg-backgroundLight dark:bg-backgroundDark text-textLight dark:text-textDark uppercase
+            w-full whitespace-nowrap overflow-y-visible text-base text-left flex flex-row items-center sm:rounded-t-lg justify-between">
+              {/* Icon and name */}
+              <div className="flex flex-row justify-center items-center">
+                <div className="h-8 w-8 py-1 px-1 md:w-12 md:px-3">
+                  <svg viewBox="0 0 256 256" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h256v256H0z"></path>
+                    <path d="M224 177.3V78.7a8.1 8.1 0 0 0-4.1-7l-88-49.5a7.8 7.8 0 
+                    0 0-7.8 0l-88 49.5a8.1 8.1 0 0 0-4.1 7v98.6a8.1 8.1 0 0 0 4.1 7l88 
+                    49.5a7.8 7.8 0 0 0 7.8 0l88-49.5a8.1 8.1 0 0 0 4.1-7Z" 
+                    fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16" 
+                    className=" stroke-textLight dark:stroke-textDark"></path>
+                    <path fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16" 
+                    d="M177 152.5v-52L80 47" className="stroke-textLight dark:stroke-textDark"></path>
+                    <path fill="none" className="stroke-textLight dark:stroke-textDark" 
+                    strokeLinecap="round" strokeLinejoin="round" strokeWidth="16" 
+                    d="m222.9 74.6-94 53.4-95.8-53.4M128.9 128l-.9 106.8"></path>
+                  </svg>
+                </div>
+                <div>name</div>
+              </div>
+              <div>size</div>
+              <div>created at</div>
+              {/* Watches and downloads */}
+              <div className="flex flex-row justify-center">
+                <div className="w-10 hidden md:flex justify-center">
+                  <svg className="w-6 h-6"
+                  viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 512 512">
+                    <path d="M256 128c-81.9 0-145.7 48.8-224 128 67.4 67.7 124 128 224 128 99.9 0 173.4-76.4 
+                    224-126.6C428.2 198.6 354.8 128 256 128zm0 219.3c-49.4 0-89.6-41-89.6-91.3 0-50.4 40.2-91.3 
+                    89.6-91.3s89.6 41 89.6 91.3c0 50.4-40.2 91.3-89.6 91.3z" className="fill-textLight dark:fill-textDark"></path>
+                    <path d="M256 224c0-7.9 2.9-15.1 7.6-20.7-2.5-.4-5-.6-7.6-.6-28.8 0-52.3 23.9-52.3 53.3s23.5 
+                    53.3 52.3 53.3 52.3-23.9 52.3-53.3c0-2.3-.2-4.6-.4-6.9-5.5 4.3-12.3 6.9-19.8 6.9-17.8 
+                    0-32.1-14.3-32.1-32z" className="fill-textLight dark:fill-textDark"></path>
+                  </svg>
+                </div>
+                <div className="w-10 hidden md:flex justify-center">
+                  <svg fill="none" className="w-6 h-6 stroke-textLight dark:stroke-textDark"
+                  strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
+                  </svg>
+                </div>
+                {/*  */}
+                <div className="w-8 md:hidden"></div>
+              </div>
+              {/* Actions */}
             </div>
-            <div>name</div>
+            {folders.sort((a, b) => {
+              if (currentSortType === "size" ? a.size < b.size
+                : currentSortType === "date" ? a.created_at < b.created_at
+                : a.name < b.name) 
+              { return currentSortBy === "descending" ? 1 : -1; }
+              if (currentSortType === "size" ? a.size > b.size
+              : currentSortType === "date" ? a.created_at > b.created_at
+              : a.name > b.name) 
+              { return currentSortBy === "descending" ? -1 : 1; }
+              return 0;
+            }).map((item, index) => (
+              <div key={index} data-id={item.id} data-type="folder" data-token={item.token}
+              className="bg-backgroundSecondLight dark:bg-backgroundSecondDark text-textLight dark:text-textDark relative rendered-folder
+              w-full whitespace-nowrap overflow-y-visible text-base text-left flex flex-row items-center justify-between">
+                {isMaskActive && (
+                  <div data-id={item.id} data-type="folder"
+                  className="absolute h-full w-full z-20 bg-white"></div>
+                )}
+                {/* Icon and name */}
+                <div className="flex flex-row justify-center items-center">
+                  <div className="h-8 w-8 py-1 px-1 md:w-12 md:px-3">
+                    <svg viewBox="0 0 256 256" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
+                      <path fill="none" d="M0 0h256v256H0z"></path>
+                      <path d="M224 177.3V78.7a8.1 8.1 0 0 0-4.1-7l-88-49.5a7.8 7.8 0 
+                      0 0-7.8 0l-88 49.5a8.1 8.1 0 0 0-4.1 7v98.6a8.1 8.1 0 0 0 4.1 7l88 
+                      49.5a7.8 7.8 0 0 0 7.8 0l88-49.5a8.1 8.1 0 0 0 4.1-7Z" 
+                      fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16" 
+                      className=" stroke-textLight dark:stroke-textDark"></path>
+                      <path fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16" 
+                      d="M177 152.5v-52L80 47" className="stroke-textLight dark:stroke-textDark"></path>
+                      <path fill="none" className="stroke-textLight dark:stroke-textDark" 
+                      strokeLinecap="round" strokeLinejoin="round" strokeWidth="16" 
+                      d="m222.9 74.6-94 53.4-95.8-53.4M128.9 128l-.9 106.8"></path>
+                    </svg>
+                  </div>
+                  <div>name</div>
+                </div>
+                <div>size</div>
+                <div>created at</div>
+                {/* Watches and downloads */}
+                <div className="flex flex-row justify-center">
+                  <div className="w-10 hidden md:flex justify-center">
+                    <svg className="w-6 h-6"
+                    viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 512 512">
+                      <path d="M256 128c-81.9 0-145.7 48.8-224 128 67.4 67.7 124 128 224 128 99.9 0 173.4-76.4 
+                      224-126.6C428.2 198.6 354.8 128 256 128zm0 219.3c-49.4 0-89.6-41-89.6-91.3 0-50.4 40.2-91.3 
+                      89.6-91.3s89.6 41 89.6 91.3c0 50.4-40.2 91.3-89.6 91.3z" className="fill-textLight dark:fill-textDark"></path>
+                      <path d="M256 224c0-7.9 2.9-15.1 7.6-20.7-2.5-.4-5-.6-7.6-.6-28.8 0-52.3 23.9-52.3 53.3s23.5 
+                      53.3 52.3 53.3 52.3-23.9 52.3-53.3c0-2.3-.2-4.6-.4-6.9-5.5 4.3-12.3 6.9-19.8 6.9-17.8 
+                      0-32.1-14.3-32.1-32z" className="fill-textLight dark:fill-textDark"></path>
+                    </svg>
+                  </div>
+                  <div className="w-10 hidden md:flex justify-center">
+                    <svg fill="none" className="w-6 h-6 stroke-textLight dark:stroke-textDark"
+                    strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
+                    </svg>
+                  </div>
+                  {/* Adapt */}
+                  <div className="md:hidden w-8">
+                    <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16"
+                    className="w-6 hover-first h-6 pointer-events-auto" data-id={item.id} data-type="folder">
+                      <path d="M8 2C4.69 2 2 4.69 2 8s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 11c-2.76 
+                      0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" 
+                      className="fill-textLight dark:fill-textDark"></path>
+                      <path d="M8 6.85c-.28 0-.5.22-.5.5v3.4c0 .28.22.5.5.5s.5-.22.5-.5v-3.4c0-.27-.22-.5-.5-.5zM8.01 
+                      4.8c-.26-.02-.5.25-.51.52v.08c0 .27.21.47.49.48H8c.27 0 .49-.24.5-.5v-.11c0-.29-.21-.47-.49-.47z" 
+                      className="fill-textLight dark:fill-textDark"></path>
+                    </svg>
+                    <div className="hover-second ml-3 bg-backgroundThirdLight dark:bg-backgroundThirdDark 
+                    px-2 py-1 rounded z-10">
+                      <div className="flex flex-row space-x-2 text-sm font-medium">
+                        <svg className="w-5 h-5"
+                        viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 512 512">
+                          <path d="M256 128c-81.9 0-145.7 48.8-224 128 67.4 67.7 124 128 224 128 99.9 0 173.4-76.4 
+                          224-126.6C428.2 198.6 354.8 128 256 128zm0 219.3c-49.4 0-89.6-41-89.6-91.3 0-50.4 40.2-91.3 
+                          89.6-91.3s89.6 41 89.6 91.3c0 50.4-40.2 91.3-89.6 91.3z" className="fill-textLight dark:fill-textDark"></path>
+                          <path d="M256 224c0-7.9 2.9-15.1 7.6-20.7-2.5-.4-5-.6-7.6-.6-28.8 0-52.3 23.9-52.3 53.3s23.5 
+                          53.3 52.3 53.3 52.3-23.9 52.3-53.3c0-2.3-.2-4.6-.4-6.9-5.5 4.3-12.3 6.9-19.8 6.9-17.8 
+                          0-32.1-14.3-32.1-32z" className="fill-textLight dark:fill-textDark"></path>
+                        </svg>
+                        <p>{item.watches === null ? 0 : CutNumber(item.watches)}</p>
+                      </div>
+                      <div className="flex flex-row space-x-2 text-base font-medium">
+                        <svg  fill="none" className="w-5 h-5 stroke-textLight dark:stroke-textDark"
+                        strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
+                        </svg>
+                        <p>{item.downloads === null ? 0 : CutNumber(item.downloads)}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Actions */}
+              </div>
+            ))}
           </div>
           <table className="w-full whitespace-nowrap overflow-y-visible text-base text-left text-textLight dark:text-textDark">
             <thead className="uppercase font-normal bg-backgroundLight dark:bg-backgroundDark text-textLight dark:text-textDark">
@@ -1281,7 +1418,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                 rendered-file -outline-offset-2">
                   {isMaskActive && (
                     <td data-id={item.id} data-type="file"
-                    className="absolute h-full w-full rendered-file-mask pointer-events-auto"></td>
+                    className="absolute h-full w-full z-20"></td>
                   )}
                   <td data-id={item.id} draggable="false" className="flex items-center justify-center">
                     <img src={item.icon_link} alt=""></img>
