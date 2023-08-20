@@ -83,7 +83,6 @@ export default function Disk() {
       var manager = new Hammer.Manager(sidebar);
       var Swipe = new Hammer.Swipe();
       manager.add(Swipe);
-      // Left && right events
       manager.on('swipeleft', function(e:any) {
         if (window.innerWidth < 640) {
           setIsSideBarOpen(false)

@@ -2,14 +2,11 @@ import { useParams } from "react-router-dom";
 import { FileUploader } from "react-drag-drop-files";
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion"
-import { Dropdown, Ripple, initTE, } from "tw-elements";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
 import "../../../styles/hover-elems.css"
 import RenderData from "./render-data";
-
-initTE({ Dropdown, Ripple });
 
 export default function DiskFolder() {
   const inputFileButtonRef:any = useRef()
