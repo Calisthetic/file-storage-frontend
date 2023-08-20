@@ -119,7 +119,7 @@ export default function Disk() {
                     <motion.div initial={{rotate: 360, opacity: 0}} animate={{rotate: 0, opacity: 1}}
                     transition={{damping: 24, stiffness: 200, duration: 0.2}} exit={{rotate: -360, opacity: 0}}>
                       <svg onClick={() => {setIsSideBarOpen(!isSideBarOpen)}}
-                      className="h-8 w-8 fill-iconLight dark:fill-iconDark" 
+                      className="h-8 w-8 fill-iconLight dark:fill-iconDark pointer-events-auto cursor-pointer" 
                       xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
                         <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 
                         112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49"/>
@@ -129,7 +129,7 @@ export default function Disk() {
                     <motion.svg initial={{opacity: 0}} animate={{opacity: 1}}
                     transition={{damping: 24, stiffness: 200, duration: 0.2}} exit={{rotate: -90, opacity: 0}}
                     onClick={() => {setIsSideBarOpen(!isSideBarOpen)}}
-                    className="h-8 w-8 fill-iconLight dark:fill-iconDark" 
+                    className="h-8 w-8 fill-iconLight dark:fill-iconDark pointer-events-auto cursor-pointer" 
                     xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
                       <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"/>
                     </motion.svg>

@@ -1781,9 +1781,9 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
         aria-describedby="modal-modal-description">
         <Box sx={modalWindowStyle}>
           <div className="text-textLight dark:text-textDark p-4 rounded-lg
-          bg-backgroundSecondLight dark:bg-backgroundSecondDark">
+          bg-backgroundSecondLight dark:bg-backgroundSecondDark min-w-xs">
             <p className=" text-2xl font-semibold">Rename</p>
-            <input className=" my-4 w-64 border border-borderLight dark:border-borderDark 
+            <input className=" my-4 w-full border border-borderLight dark:border-borderDark 
             text-textLight text-sm rounded-lg block p-2 dark:focus:border-textDark
             focus:border-textLight bg-backgroundThirdLight dark:bg-backgroundThirdDark
             dark:placeholder-gray-400 dark:text-textDark "
