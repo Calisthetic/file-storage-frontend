@@ -3,7 +3,7 @@ import DiskRecent from './recent/disk-recent';
 import DiskShared from "./shared/disk-shared";
 import DiskUpgrade from "./upgrade/disk-upgrade";
 import DiskFolder from "./folder/disk-folder";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion"
 import DiskFavorites from "./favorites/disk-favorites";
 import DiskRecycleBin from "./recycle-bin/disk-recycle-bin";
@@ -77,31 +77,28 @@ export default function Disk() {
   };
 
   // Swipe sidebar
-  const rootElem = document.getElementById("root")
+  const sidebar = document.getElementById("main-sidebar")
   useEffect(() => {
-    if (rootElem) {
-      // var manager = new Hammer.Manager(rootElem);
-      // var Swipe = new Hammer.Swipe();
-      // manager.add(Swipe);
-      var manager = new Hammer(rootElem)
+    if (sidebar) {
+      var manager = new Hammer.Manager(sidebar);
+      var Swipe = new Hammer.Swipe();
+      manager.add(Swipe);
       // Left && right events
-      manager.on('swipeleft swiperight', function(e:any) {
-        console.log(e)
+      manager.on('swipeleft', function(e:any) {
         if (window.innerWidth < 640) {
-          setIsSideBarOpen(e.type === "swiperight" ? true : false)
+          setIsSideBarOpen(false)
         }
       });
-    }
 
-    return () => {
-      manager.off('swipeleft swiperight', function(e:any) {
-        console.log(e)
-        if (window.innerWidth < 640) {
-          setIsSideBarOpen(e.type === "swiperight" ? true : false)
-        }
-      })
+      return () => {
+        manager.off('swipeleft', function(e:any) {
+          if (window.innerWidth < 640) {
+            setIsSideBarOpen(false)
+          }
+        })
+      }
     }
-  }, [rootElem, isSideBarOpen])
+  }, [isSideBarOpen, sidebar])
   
 
   return (
