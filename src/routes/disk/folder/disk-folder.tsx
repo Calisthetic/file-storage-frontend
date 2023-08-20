@@ -3,6 +3,8 @@ import { FileUploader } from "react-drag-drop-files";
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion"
 import { Dropdown, Ripple, initTE, } from "tw-elements";
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 
 import "../../../styles/hover-elems.css"
 import RenderData from "./render-data";
@@ -31,6 +33,54 @@ export default function DiskFolder() {
     = useState(renderValues.sort_type ? renderValues.sort_type : sortTypes[0])
   const [currentSortBy, setCurrentSortBy] 
     = useState(renderValues.sort_by ? renderValues.sort_by : "ascending")
+
+  
+  // Modal create folder
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const modalCreateOpen = (e:any) => {
+    setIsCreateModalOpen(true)
+  };
+  const modalCreateClose = () => {
+    setIsErrorAlert(false)
+    setIsCreateModalOpen(false)
+  };
+
+  const modalWindowStyle = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: "auto",
+    bgcolor: 'none',
+    boxShadow: 24,
+    borderRadius: "16px"
+  };
+
+  // Create folder
+  const newFolderNameInputRef:any = useRef()
+  function CreateFolder() {
+    let currentName = newFolderNameInputRef.current.value
+    if (currentName.length <= 0) {
+      PushCreateFolderError("Please enter folder name")
+    } else if (currentName.length > 21) {
+      PushCreateFolderError("Folder name is too long")
+    } else {
+      modalCreateClose()
+    }
+  }
+
+  // Alerts
+  const [isErrorAlert, setIsErrorAlert] = useState(false)
+  const [currentError, setCurrentError] = useState<string>()
+  function PushCreateFolderError(text:string) {
+    setCurrentError(text)
+    if (!isErrorAlert) {
+      setIsErrorAlert(false)
+      setTimeout(() => {
+        setIsErrorAlert(true)
+      }, 100);
+    }
+  }
 
   // Auto saving render types and sorting
   useEffect(() => {
@@ -121,39 +171,35 @@ export default function DiskFolder() {
               className="z-10 opacity-0 divide-y divide-gray-100 rounded w-44 mt-0.5
               absolute shadow-defaultLight dark:shadow-none scale-y-0
               bg-backgroundSecondLight dark:bg-backgroundThirdDark overflow-hidden">
-                <ul className="py-2 text-sm font-medium text-textLight dark:text-textDark">
-                  <li>
-                    <p className="cursor-pointer transition-colors px-2 py-2 flex flex-row 
-                    hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center
-                    bg-backgroundSecondLight dark:bg-backgroundThirdDark">
-                      <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M11 12V9h2v3h3v2h-3v3h-2v-3H8v-2h3Zm10-7a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V5a2 
-                        2 0 0 1 2-2h6c1.12 0 1.833.475 2.549 1.379.048.06.261.337.313.402.158.195.19.219.14.219H21Zm0 
-                        14V7h-9.005c-.719-.004-1.186-.34-1.69-.963-.069-.086-.29-.373-.323-.416C9.607 5.15 9.384 5 9 5H3v14h18Z" 
-                        fillRule="evenodd" className="fill-iconLight dark:fill-iconDark"></path>
-                      </svg>
-                      <span>Create folder</span>
-                    </p>
-                  </li>
-                  <li>
-                      <input className="absolute w-full text-sm text-gray-900 border border-gray-300 cursor-pointer -z-10
-                      bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 py-1
-                      dark:placeholder-gray-400" id="file_input" multiple={true} type="file" ref={inputFileButtonRef}/>
-                      <p onClick={() => {inputFileButtonRef.current.click()}} 
-                      className="cursor-pointer transition-colors px-2 py-2 flex flex-row
-                      hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center
-                      bg-backgroundSecondLight dark:bg-backgroundThirdDark">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24"
-                        className="w-6 h-6 mr-2"><g id="_icons">
-                          <path d="M11.3 15.7c.1.1.2.2.3.2.1.1.3.1.4.1s.3 0 .4-.1c.1-.1.2-.1.3-.2l4-4c.4-.4.4-1 0-1.4s-1-.4-1.4 0L13 
-                          12.6V5c0-.6-.4-1-1-1s-1 .4-1 1v7.6l-2.3-2.3c-.4-.4-1-.4-1.4 0s-.4 1 0 1.4l4 4z" className="fill-iconLight dark:fill-iconDark"></path>
-                          <path d="M19 13c-.6 0-1 .4-1 1v2c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2v-2c0-.6-.4-1-1-1s-1 .4-1 1v2c0 2.2 1.8 4 4 
-                          4h8c2.2 0 4-1.8 4-4v-2c0-.6-.4-1-1-1z" className="fill-iconLight dark:fill-iconDark"></path></g>
-                        </svg>
-                        <span>Add files</span>
-                      </p>
-                  </li>
-                </ul>
+                <div className="py-2 text-sm font-medium text-textLight dark:text-textDark">
+                  <button className="transition-colors px-2 py-2 flex flex-row w-full
+                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center
+                  bg-backgroundSecondLight dark:bg-backgroundThirdDark" onClick={modalCreateOpen}>
+                    <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M11 12V9h2v3h3v2h-3v3h-2v-3H8v-2h3Zm10-7a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V5a2 
+                      2 0 0 1 2-2h6c1.12 0 1.833.475 2.549 1.379.048.06.261.337.313.402.158.195.19.219.14.219H21Zm0 
+                      14V7h-9.005c-.719-.004-1.186-.34-1.69-.963-.069-.086-.29-.373-.323-.416C9.607 5.15 9.384 5 9 5H3v14h18Z" 
+                      fillRule="evenodd" className="fill-iconLight dark:fill-iconDark"></path>
+                    </svg>
+                    <span>Create folder</span>
+                  </button>
+                  <input className="absolute w-full text-sm text-gray-900 border border-gray-300 cursor-pointer -z-10
+                  bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 py-1
+                  dark:placeholder-gray-400" id="file_input" multiple={true} type="file" ref={inputFileButtonRef}/>
+                  <button onClick={() => {inputFileButtonRef.current.click()}} 
+                  className="transition-colors px-2 py-2 flex flex-row w-full
+                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center
+                  bg-backgroundSecondLight dark:bg-backgroundThirdDark">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24"
+                    className="w-6 h-6 mr-2"><g id="_icons">
+                      <path d="M11.3 15.7c.1.1.2.2.3.2.1.1.3.1.4.1s.3 0 .4-.1c.1-.1.2-.1.3-.2l4-4c.4-.4.4-1 0-1.4s-1-.4-1.4 0L13 
+                      12.6V5c0-.6-.4-1-1-1s-1 .4-1 1v7.6l-2.3-2.3c-.4-.4-1-.4-1.4 0s-.4 1 0 1.4l4 4z" className="fill-iconLight dark:fill-iconDark"></path>
+                      <path d="M19 13c-.6 0-1 .4-1 1v2c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2v-2c0-.6-.4-1-1-1s-1 .4-1 1v2c0 2.2 1.8 4 4 
+                      4h8c2.2 0 4-1.8 4-4v-2c0-.6-.4-1-1-1z" className="fill-iconLight dark:fill-iconDark"></path></g>
+                    </svg>
+                    <span>Add files</span>
+                  </button>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -257,7 +303,6 @@ export default function DiskFolder() {
               )}
             </AnimatePresence>
           </div>
-
 
           {/* Cell types drop */}
           <div>
@@ -372,6 +417,58 @@ export default function DiskFolder() {
 
       <RenderData currentSortBy={currentSortBy}
       currentSortType={currentSortType} currentRenderType={currentRenderType}></RenderData>
+
+      {/* Create folder */}
+      <Modal open={isCreateModalOpen}
+        onClose={modalCreateClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description">
+        <Box sx={modalWindowStyle}>
+          <div className="text-textLight dark:text-textDark p-4 rounded-lg
+          bg-backgroundSecondLight dark:bg-backgroundSecondDark min-w-xs">
+            <p className=" text-2xl font-semibold">Create</p>
+            <input className=" my-4 w-full border border-borderLight dark:border-borderDark 
+            text-textLight text-sm rounded-lg block p-2 dark:focus:border-textDark
+            focus:border-textLight bg-backgroundThirdLight dark:bg-backgroundThirdDark
+            dark:placeholder-gray-400 dark:text-textDark "
+            type="text" placeholder="folder name"
+            ref={newFolderNameInputRef}></input>
+            <div className="flex justify-end text-base gap-2">
+              <button className=" hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark
+              px-4 rounded-full transition-colors"
+              onClick={modalCreateClose}>
+                Calcel
+              </button>
+              <button className=" bg-buttonLight dark:bg-buttonDark rounded-full px-3 py-1
+              hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark transition-colors"
+              onClick={CreateFolder}>
+                Create
+              </button>
+            </div>
+
+            <AnimatePresence>
+              {isErrorAlert && (
+                <motion.button initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
+                transition={{stiffness: 200, damping: 24, duration: 0.1}}
+                onClick={(e:any) => {e.target.style.marginTop = "-40px"; 
+                  setTimeout(() => {
+                    setIsErrorAlert(false)
+                  }, 250);}}
+                className="text-errorLight dark:text-errorDark rounded-2xl absolute
+                bg-backgroundLight dark:bg-backgroundDark p-2 min-w-xs w-full -ml-4 mt-6 -z-10
+                flex justify-center items-center font-medium transition-[margin]">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2">
+                    <path d="M20 2H4c-1.103 0-2 .894-2 1.992v12.016C2 17.106 2.897 18 4 
+                    18h3v4l6.351-4H20c1.103 0 2-.894 2-1.992V3.992A1.998 1.998 0 0 0 20 
+                    2zm-7 13h-2v-2h2v2zm0-4h-2V5h2v6z" className=" fill-errorLight dark:fill-errorDark"></path>
+                  </svg>
+                  <span className="pointer-events-none">{currentError}</span>
+                </motion.button>
+              )}
+            </AnimatePresence>
+          </div>
+        </Box>
+      </Modal>
 
       {/* Drag and drop files */}
       {isDragVisible === true && (
