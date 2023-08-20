@@ -14,7 +14,7 @@ export default function SignUp() {
   return (
     <div className=" min-h-fulldvh sm:flex justify-center items-center">
       <form className='py-6 flex flex-col justify-center min-h-fulldvh sm:h-auto bg-backgroundLight dark:bg-backgroundDark 
-      sm:rounded-xl w-fullcvw sm:w-auto px-10' action={void(0)}>
+      sm:rounded-xl w-[100cvw] sm:w-auto px-10' action={void(0)}>
         <div className="w-full flex justify-center">
           <motion.img initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.00, damping: 24, stiffness: 300}} src={mainLogo}
           className="w-12 pb-2 text-center font-semibold leading-6 text-textLight dark:text-textDark"></motion.img>
