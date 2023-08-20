@@ -80,11 +80,13 @@ export default function Disk() {
   const rootElem = document.getElementById("root")
   useEffect(() => {
     if (rootElem) {
-      var manager = new Hammer.Manager(rootElem);
-      var Swipe = new Hammer.Swipe();
-      manager.add(Swipe);
+      // var manager = new Hammer.Manager(rootElem);
+      // var Swipe = new Hammer.Swipe();
+      // manager.add(Swipe);
+      var manager = new Hammer(rootElem)
       // Left && right events
       manager.on('swipeleft swiperight', function(e:any) {
+        console.log(e)
         if (window.innerWidth < 640) {
           setIsSideBarOpen(e.type === "swiperight" ? true : false)
         }
