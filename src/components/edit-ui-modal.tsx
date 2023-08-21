@@ -41,6 +41,7 @@ export default function EditUIModal() {
   }
   
   const [isAlertErrorOpen, setIsAlertErrorOpen] = useState(false);
+  const [currentErrorText, setCurrentErrorText] = useState<string>("Please try again");
   function CloseOpenErrorAlert() {
     setIsAlertErrorOpen(!isAlertErrorOpen)
   }
@@ -67,7 +68,11 @@ export default function EditUIModal() {
             });
           });
         } catch (e:any) {
-            console.log('Error while reading CSS rules from ' + sheet.href, e.toString());
+          console.log('Error while reading CSS rules from ' + sheet.href, e.toString());
+          setCurrentErrorText("Error while reading CSS rules\nfrom " + sheet.href)
+          if (isAlertErrorOpen === false) {
+            CloseOpenErrorAlert()
+          }
         }
       }
     });
@@ -100,10 +105,12 @@ export default function EditUIModal() {
   }
   function SaveChanges() {
     // Animation
-    if (isCustomizable === true) {
-      setIsAlertSuccessOpen(true)
-    } else {
-      setIsAlertWarningOpen(true)
+    if (isAlertErrorOpen === false) {
+      if (isCustomizable === true) {
+        setIsAlertSuccessOpen(true)
+      } else {
+        setIsAlertWarningOpen(true)
+      }
     }
 
     // Saving changes
@@ -148,10 +155,13 @@ export default function EditUIModal() {
     ).catch((e:any) => {
       console.log(e);
       setFontsRenderList(null)
+      // Show error
+      setCurrentErrorText("Unable to get response\nfrom Google Font API")
       if (isAlertErrorOpen === false) {
         CloseOpenErrorAlert()
       }
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentFontSort, currentFontSort2])
 
   // Fonts filters
@@ -216,19 +226,19 @@ export default function EditUIModal() {
         {currentPage === "colors" ? (
           <div className="whitespace-nowrap text-lg font-semibold grid grid-cols-2">
             <button onClick={() => {setCurrentPage("colors")}}
-            className="py-2 pl-3 border-b-2
+            className="py-2 pl-3 border-b-2 rounded-ss-2xl
             border-buttonLight dark:border-buttonDark">Colors</button>
             <button onClick={() => {setCurrentPage("fonts")}}
-            className="transition-colors py-2 pr-3 border-b-2
+            className="transition-colors py-2 pr-3 border-b-2 rounded-se-2xl
             border-borderLight dark:border-borderDark">Fonts</button>
           </div>
         ) : (
           <div className="whitespace-nowrap text-lg font-semibold grid grid-cols-2">
             <button onClick={() => {setCurrentPage("colors")}}
-            className="transition-colors py-2 pl-3 border-b-2
+            className="transition-colors py-2 pl-3 border-b-2 rounded-ss-2xl
             border-borderLight dark:border-borderDark">Colors</button>
             <button onClick={() => {setCurrentPage("fonts")}}
-            className="py-2 pr-3 border-b-2 
+            className="py-2 pr-3 border-b-2 rounded-se-2xl
             border-buttonLight dark:border-buttonDark">Fonts</button>
           </div>
         )}
@@ -513,7 +523,7 @@ export default function EditUIModal() {
 
       {/* Alert fonts error */}
       <AnimatePresence>
-        {(isAlertErrorOpen === true && currentPage === "fonts") && (
+        {isAlertErrorOpen === true && (
           <motion.div initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
           transition={{stiffness: 200, damping: 24, duration: 0.1}} exit={{opacity: 0, y: -40}}
           id="alert-1" className="absolute w-full items-center p-2 text-errorLight dark:text-errorDark 
@@ -525,9 +535,8 @@ export default function EditUIModal() {
               2zm-7 13h-2v-2h2v2zm0-4h-2V5h2v6z" className=" fill-errorLight dark:fill-errorDark"></path>
             </svg>
             <span className="sr-only">Info</span>
-            <div className="ml-2 text-sm font-medium">
-              <p>Unable to get response</p>
-              <p>from Google Font API</p>
+            <div className="ml-2 text-sm font-medium whitespace-pre-wrap">
+              {currentErrorText}
             </div>
             <button type="button" onClick={CloseOpenErrorAlert} 
             className="bg-backgroundSecondLight dark:bg-backgroundSecondDark 
