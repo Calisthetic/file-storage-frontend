@@ -39,6 +39,11 @@ export default function EditUIModal() {
   function CloseOpenWarningAlert() {
     setIsAlertWarningOpen(!isAlertWarningOpen)
   }
+  
+  const [isAlertErrorOpen, setIsAlertErrorOpen] = useState(false);
+  function CloseOpenErrorAlert() {
+    setIsAlertErrorOpen(!isAlertErrorOpen)
+  }
 
   // Css variables
   var styleVariables = getComputedStyle(document.body)
@@ -140,14 +145,22 @@ export default function EditUIModal() {
         setFontsList(data.items)
         setFontsRenderList(currentFontSort2 === "descending" ? RotateArray(data.items) : data.items)
       }
-    )
+    ).catch((e:any) => {
+      console.log(e);
+      setFontsRenderList(null)
+      if (isAlertErrorOpen === false) {
+        CloseOpenErrorAlert()
+      }
+    })
   }, [currentFontSort, currentFontSort2])
 
   // Fonts filters
   function SearchFonts(e:any) {
-    setFontsRenderList(fontsList.filter(
-      (x:any) => e.target.value.length > 0 ? (x.family.toLowerCase().includes(e.target.value)) : true
-    ))
+    if (fontsList) {
+      setFontsRenderList(fontsList.filter(
+        (x:any) => e.target.value.length > 0 ? (x.family.toLowerCase().includes(e.target.value)) : true
+      ))
+    }
   }
 
   let fontLink = document.getElementById("GoogleFontsLink") as HTMLLinkElement
@@ -196,7 +209,7 @@ export default function EditUIModal() {
 
   return (
     <div className="text-textLight dark:text-textDark bg-backgroundSecondLight dark:bg-backgroundSecondDark 
-    rounded-2xl sm:min-w-xs h-full justify-center text-center max-w-xs transition-all overflow-x-hidden"
+    rounded-2xl min-w-xs h-full justify-center text-center max-w-xs transition-all overflow-x-hidden"
     onClick={CloseDropdown}>
       {/* Header buttons */}
       <AnimatePresence>
@@ -290,7 +303,22 @@ export default function EditUIModal() {
           transition={{stiffness: 200, damping: 24, duration: 0.1}} exit={{opacity: 0, x: -100}}
           className="whitespace-nowrap w-full">
             <div className=" py-2 px-4 w-full overflow-y-auto overflow-x-hidden min-h-[347px] max-h-[347px] flex flex-col">
-              {fontsRenderList && fontsRenderList.map((item:any, index:any) => (
+              {!fontsRenderList ? ( // Skeleton
+                <div className="animate-pulse">
+                {Array(10).fill(null).map(() => (
+                  <>
+                    <div className="h-2 rounded-full bg-backgroundThirdLight dark:bg-backgroundThirdDark max-w-[160px] mb-2.5"></div>
+                    <div className="h-2 rounded-full bg-backgroundThirdLight dark:bg-backgroundThirdDark max-w-[180px] mb-2.5"></div>
+                    <div className="h-2 rounded-full bg-backgroundThirdLight dark:bg-backgroundThirdDark max-w-[220px] mb-2.5"></div>
+                    <div className="h-2 rounded-full bg-backgroundThirdLight dark:bg-backgroundThirdDark max-w-[200px] mb-2.5"></div>
+                    <div className="h-2 rounded-full bg-backgroundThirdLight dark:bg-backgroundThirdDark max-w-[240px] mb-2.5"></div>
+                    <div className="h-2 rounded-full bg-backgroundThirdLight dark:bg-backgroundThirdDark max-w-[200px] mb-2.5"></div>
+                    <div className="h-2 rounded-full bg-backgroundThirdLight dark:bg-backgroundThirdDark max-w-[180px] mb-2.5"></div>
+                    <div className="h-2 rounded-full bg-backgroundThirdLight dark:bg-backgroundThirdDark max-w-[190px] mb-2.5"></div>
+                  </>
+                ))}
+              </div>
+              ) : fontsRenderList.map((item:any, index:any) => (
                 item.family === currentFont ? (
                   <button key={index} data-name={item.family} 
                   onClick={(e:any) => {SetSelectedFont(e.target.dataset.name.toString())}}
@@ -332,7 +360,7 @@ export default function EditUIModal() {
                         className=" bg-backgroundLight dark:bg-backgroundThirdDark
                           rounded-md transition-colors flex flex-col text-base overflow-hidden
                           shadow-defaultLight dark:shadow-none font-normal">
-                          {sortParams.map((item, index) => (
+                          {fontsRenderList ? sortParams.map((item, index) => (
                             <button key={index} onClick={() => {setCurrentFontSort(item)}}
                             className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
                             pl-2 pr-8 transition-colors flex flex-row items-center gap-2 py-0.5
@@ -354,9 +382,17 @@ export default function EditUIModal() {
                               </div>
                               <span className="pointer-events-none first-letter:uppercase">{item}</span>
                             </button>
+                          )) : sortParams.map((item, index) => (
+                            <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
+                            pl-2 pr-8 transition-colors flex flex-row items-center gap-2 py-0.5
+                            border-borderLight dark:border-borderDark h-7" key={index}>
+                              <div className="w-4 h-4 pointer-events-none"></div>
+                              <div className="rounded-full text-backgroundSecondLight dark:text-backgroundSecondDark
+                              bg-backgroundSecondLight dark:bg-backgroundSecondDark animate-pulse text-xs px-4">{item}</div>
+                            </button>
                           ))}
                           <div className="border-t border-borderLight dark:border-borderDark w-full"></div>
-                          {sortParams2.map((item, index) => (
+                          {fontsRenderList ? sortParams2.map((item, index) => (
                             <button key={index} onClick={() => { 
                               setFontsRenderList(item === currentFontSort2 ? fontsList : RotateArray(fontsList));
                               setCurrentFontSort2(item);
@@ -380,6 +416,14 @@ export default function EditUIModal() {
                                 </AnimatePresence>
                               </div>
                               <span className="pointer-events-none first-letter:uppercase">{item}</span>
+                            </button>
+                          )) : sortParams2.map((item, index) => (
+                            <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
+                            pl-2 pr-8 transition-colors flex flex-row items-center gap-2 py-0.5
+                            border-borderLight dark:border-borderDark h-7" key={index}>
+                              <div className="w-4 h-4 pointer-events-none"></div>
+                              <div className="rounded-full text-backgroundSecondLight dark:text-backgroundSecondDark
+                              bg-backgroundSecondLight dark:bg-backgroundSecondDark animate-pulse text-xs px-4">{item}</div>
                             </button>
                           ))}
                         </motion.div>
@@ -453,7 +497,6 @@ export default function EditUIModal() {
             <div className="ml-2 text-sm font-medium">
               <p>Upgrade your account to</p>
               <p>save changes automatically</p>
-              
             </div>
             <button type="button" onClick={CloseOpenWarningAlert} 
             className="bg-backgroundSecondLight dark:bg-backgroundSecondDark 
@@ -461,6 +504,37 @@ export default function EditUIModal() {
             hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark">
               <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                 <path className="stroke-warningLight dark:stroke-warningDark" strokeLinecap="round" 
+                strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+              </svg>
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Alert fonts error */}
+      <AnimatePresence>
+        {(isAlertErrorOpen === true && currentPage === "fonts") && (
+          <motion.div initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
+          transition={{stiffness: 200, damping: 24, duration: 0.1}} exit={{opacity: 0, y: -40}}
+          id="alert-1" className="absolute w-full items-center p-2 text-errorLight dark:text-errorDark 
+          opacity-0 bg-backgroundSecondLight dark:bg-backgroundSecondDark dark:text-blue-400h 
+          flex rounded-xl justify-between mt-2 -z-10" role="alert">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2">
+              <path d="M20 2H4c-1.103 0-2 .894-2 1.992v12.016C2 17.106 2.897 18 4 
+              18h3v4l6.351-4H20c1.103 0 2-.894 2-1.992V3.992A1.998 1.998 0 0 0 20 
+              2zm-7 13h-2v-2h2v2zm0-4h-2V5h2v6z" className=" fill-errorLight dark:fill-errorDark"></path>
+            </svg>
+            <span className="sr-only">Info</span>
+            <div className="ml-2 text-sm font-medium">
+              <p>Unable to get response</p>
+              <p>from Google Font API</p>
+            </div>
+            <button type="button" onClick={CloseOpenErrorAlert} 
+            className="bg-backgroundSecondLight dark:bg-backgroundSecondDark 
+            rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 -my-1.5
+            hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark">
+              <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path className="stroke-errorLight dark:stroke-errorDark" strokeLinecap="round" 
                 strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
               </svg>
             </button>
