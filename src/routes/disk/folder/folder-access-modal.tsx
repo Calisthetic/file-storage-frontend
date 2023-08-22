@@ -10,6 +10,9 @@ type Props = {
   folderToken:string
 }
 export default function FolderAccessModal({children, folderId, folderName, folderCurrentAccess, folderToken}: Props) {
+  const [currentPage, setCurrentPage] = useState("default")
+
+  // Default access
   const [isFolderPublic, setIsFolderPublic] = useState(folderCurrentAccess !== undefined)
   const [currentAccessType, setCurrentAccessType] = useState(folderCurrentAccess)
 
@@ -49,191 +52,199 @@ export default function FolderAccessModal({children, folderId, folderName, folde
         </svg>
         <motion.div initial={{opacity: 0, x: 40}} animate={{opacity: 1, x: 0}}
         transition={{stiffness: 200, damping: 24}}>
-          Everyone who has the link will be able to view and download all the content inside the current folder
+          {currentPage === "default" ? (
+            "Everyone who has the link will be able to view and download all the content inside the current folder"
+          ) : (
+            "Access to the content inside of the current folder will depend on your settings"
+          )}
         </motion.div>
       </div>
-      <AnimatePresence>
-        {isFolderPublic ? (
-          <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
-          flex flex-row mt-2 items-center relative">
-            {/* Open icon */}
-            <button onClick={() => {setCurrentAccessType(null); setIsFolderPublic(false); }}
-            className="bg-backgroundThirdLight dark:bg-backgroundThirdDark 
-            rounded-md transition-colors
-            hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark mr-1.5">
-              <motion.div initial={{opacity: 0.4}} animate={{opacity: 1}}>
-                <svg viewBox="0 0 1262 1710.258" xmlns="http://www.w3.org/2000/svg" 
-                enableBackground="new 0 0 1262 1710.258" className="w-8 h-8 p-1.5">
-                  <path d="M1196.495 713.258H1090V459.592C1090 206.307 
-                  884.397.242 631.198.242c-253.198 0-458.994 206.2-458.994 459.649 
-                  0 36.494 29.678 66.071 66.168 66.071 36.491 0 66.119-29.577 
-                  66.119-66.071 0-180.588 146.418-327.508 326.753-327.508C811.58 
-                  132.384 958 279.168 958 459.592v253.666H66.686C30.195 713.258 0 
-                  742.241 0 778.731v766.42c0 91.079 74.712 165.106 165.792 
-                  165.106h931.597c91.08 0 164.611-74.027 
-                  164.611-165.106v-766.42c0-36.49-29.015-65.473-65.505-65.473zM1130 
-                  1545.151c0 18.218-14.395 33.106-32.611 33.106H165.792c-18.216 
-                  0-33.792-14.889-33.792-33.106V845.258h998v699.893z" 
-                  className="fill-successLight dark:fill-successDark"></path>
-                  <path d="M631 1409.707c36.491 0 
-                  66-29.58 66-66.071v-237.854c0-36.49-29.51-66.07-66-66.07-36.49 
-                  0-66 29.58-66 66.07v237.854c0 36.491 29.509 66.071 66 66.071z" 
-                  className="fill-successLight dark:fill-successDark"></path>
-                </svg>
-              </motion.div>
-            </button>
-            {/* Dropdown roles */}
-            <div>
-              <motion.button initial={{opacity: 0}} animate={{opacity: 1}}
-              transition={{stiffness: 200, damping: 24}} exit={{opacity: 0}} 
-              data-name="dropdown-button" onClick={() => {setIsRolesMenuOpen(!isRolesMenuOpen)}}
-              className="bg-backgroundThirdLight dark:bg-backgroundThirdDark
-              rounded-md transition-colors flex flex-row items-center h-8 px-2 font-medium
-              hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark mr-2">
-                <span className=" first-letter:uppercase pointer-events-none">
-                  {currentAccessType}
-                </span>
-                <svg className="w-2.5 h-2.5 ml-1.5" aria-hidden="true" 
-                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                  <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" 
-                  strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
-                </svg>
-              </motion.button>
-              {/* Dropdown himself */}
-              <AnimatePresence>
-                {isRolesMenuOpen === true && (
-                  <motion.div initial={{opacity: 0, y: -20}} animate={{opacity: 1, y: 0}}
-                  transition={{stiffness: 200, damping: 24, duration: 0.1}} exit={{opacity: 0, y: -20}} 
-                  className="absolute bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                  rounded-md transition-colors flex flex-col text-lg mt-1 overflow-hidden
-                  shadow-defaultLight dark:shadow-none">
-                    <button data-name="editor" onClick={() => {setCurrentAccessType("editor")}}
-                    className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
-                    pl-2 pr-8 transition-colors flex flex-row items-center gap-2 py-0.5
-                    border-borderLight dark:border-borderDark">
-                      <div className="h-4 w-4 pointer-events-none">
-                        <AnimatePresence>
-                          {currentAccessType === "editor" && (
-                            <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
-                            transition={{damping: 24, stiffness: 300, duration: 0.25}}
-                            viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4 absolute">
-                              <path d="M480 128c0 8.188-3.125 16.38-9.375 22.62l-256 256C208.4 412.9 200.2 416 192 
-                              416s-16.38-3.125-22.62-9.375l-128-128C35.13 272.4 32 264.2 32 256c0-18.28 14.95-32 32-32 
-                              8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
-                              32 13.7 32 32z" className=" fill-iconLight dark:fill-iconDark"></path>
-                            </motion.svg>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                      <span className="pointer-events-none">Editor</span>
-                    </button>
-                    <button data-name="editor" onClick={() => {setCurrentAccessType("reader")}}
-                    className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
-                    pl-2 pr-8 transition-colors flex flex-row items-center gap-2 py-0.5
-                    border-borderLight dark:border-borderDark">
-                      <div className="h-4 w-4 pointer-events-none">
-                        <AnimatePresence>
-                          {currentAccessType === "reader" && (
-                            <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
-                            transition={{damping: 24, stiffness: 300, duration: 0.25}}
-                            viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4 absolute">
-                              <path d="M480 128c0 8.188-3.125 16.38-9.375 22.62l-256 256C208.4 412.9 200.2 416 192 
-                              416s-16.38-3.125-22.62-9.375l-128-128C35.13 272.4 32 264.2 32 256c0-18.28 14.95-32 32-32 
-                              8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
-                              32 13.7 32 32z" className=" fill-iconLight dark:fill-iconDark"></path>
-                            </motion.svg>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                      <span className="pointer-events-none">Reader</span>
-                    </button>
-                    <button data-name="editor" onClick={() => {setCurrentAccessType("guest")}}
-                    className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
-                    pl-2 pr-8 transition-colors flex flex-row items-center gap-2 py-0.5
-                    border-borderLight dark:border-borderDark">
-                      <div className="h-4 w-4 pointer-events-none">
-                        <AnimatePresence>
-                          {currentAccessType === "guest" && (
-                            <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
-                            transition={{damping: 24, stiffness: 300, duration: 0.25}}
-                            viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4 absolute">
-                              <path d="M480 128c0 8.188-3.125 16.38-9.375 22.62l-256 256C208.4 412.9 200.2 416 192 
-                              416s-16.38-3.125-22.62-9.375l-128-128C35.13 272.4 32 264.2 32 256c0-18.28 14.95-32 32-32 
-                              8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
-                              32 13.7 32 32z" className=" fill-iconLight dark:fill-iconDark"></path>
-                            </motion.svg>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                      <span className="pointer-events-none">Guest</span>
-                    </button>
+      {currentPage === "default" ? (
+        <AnimatePresence>
+          {isFolderPublic ? (
+            <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
+            flex flex-row mt-2 items-center relative">
+              {/* Open icon */}
+              <button onClick={() => {setCurrentAccessType(null); setIsFolderPublic(false); }}
+              className="bg-backgroundThirdLight dark:bg-backgroundThirdDark 
+              rounded-md transition-colors
+              hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark mr-1.5">
+                <motion.div initial={{opacity: 0.4}} animate={{opacity: 1}}>
+                  <svg viewBox="0 0 1262 1710.258" xmlns="http://www.w3.org/2000/svg" 
+                  enableBackground="new 0 0 1262 1710.258" className="w-8 h-8 p-1.5">
+                    <path d="M1196.495 713.258H1090V459.592C1090 206.307 
+                    884.397.242 631.198.242c-253.198 0-458.994 206.2-458.994 459.649 
+                    0 36.494 29.678 66.071 66.168 66.071 36.491 0 66.119-29.577 
+                    66.119-66.071 0-180.588 146.418-327.508 326.753-327.508C811.58 
+                    132.384 958 279.168 958 459.592v253.666H66.686C30.195 713.258 0 
+                    742.241 0 778.731v766.42c0 91.079 74.712 165.106 165.792 
+                    165.106h931.597c91.08 0 164.611-74.027 
+                    164.611-165.106v-766.42c0-36.49-29.015-65.473-65.505-65.473zM1130 
+                    1545.151c0 18.218-14.395 33.106-32.611 33.106H165.792c-18.216 
+                    0-33.792-14.889-33.792-33.106V845.258h998v699.893z" 
+                    className="fill-successLight dark:fill-successDark"></path>
+                    <path d="M631 1409.707c36.491 0 
+                    66-29.58 66-66.071v-237.854c0-36.49-29.51-66.07-66-66.07-36.49 
+                    0-66 29.58-66 66.07v237.854c0 36.491 29.509 66.071 66 66.071z" 
+                    className="fill-successLight dark:fill-successDark"></path>
+                  </svg>
+                </motion.div>
+              </button>
+              {/* Dropdown roles */}
+              <div>
+                <motion.button initial={{opacity: 0}} animate={{opacity: 1}}
+                transition={{stiffness: 200, damping: 24}} exit={{opacity: 0}} 
+                data-name="dropdown-button" onClick={() => {setIsRolesMenuOpen(!isRolesMenuOpen)}}
+                className="bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                rounded-md transition-colors flex flex-row items-center h-8 px-2 font-medium
+                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark mr-2">
+                  <span className=" first-letter:uppercase pointer-events-none">
+                    {currentAccessType}
+                  </span>
+                  <svg className="w-2.5 h-2.5 ml-1.5" aria-hidden="true" 
+                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" 
+                    strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
+                  </svg>
+                </motion.button>
+                {/* Dropdown himself */}
+                <AnimatePresence>
+                  {isRolesMenuOpen === true && (
+                    <motion.div initial={{opacity: 0, y: -20}} animate={{opacity: 1, y: 0}}
+                    transition={{stiffness: 200, damping: 24, duration: 0.1}} exit={{opacity: 0, y: -20}} 
+                    className="absolute bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                    rounded-md transition-colors flex flex-col text-lg mt-1 overflow-hidden
+                    shadow-defaultLight dark:shadow-none">
+                      <button data-name="editor" onClick={() => {setCurrentAccessType("editor")}}
+                      className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
+                      pl-2 pr-8 transition-colors flex flex-row items-center gap-2 py-0.5
+                      border-borderLight dark:border-borderDark">
+                        <div className="h-4 w-4 pointer-events-none">
+                          <AnimatePresence>
+                            {currentAccessType === "editor" && (
+                              <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
+                              transition={{damping: 24, stiffness: 300, duration: 0.25}}
+                              viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
+                              className="w-4 h-4 absolute">
+                                <path d="M480 128c0 8.188-3.125 16.38-9.375 22.62l-256 256C208.4 412.9 200.2 416 192 
+                                416s-16.38-3.125-22.62-9.375l-128-128C35.13 272.4 32 264.2 32 256c0-18.28 14.95-32 32-32 
+                                8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
+                                32 13.7 32 32z" className=" fill-iconLight dark:fill-iconDark"></path>
+                              </motion.svg>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                        <span className="pointer-events-none">Editor</span>
+                      </button>
+                      <button data-name="editor" onClick={() => {setCurrentAccessType("reader")}}
+                      className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
+                      pl-2 pr-8 transition-colors flex flex-row items-center gap-2 py-0.5
+                      border-borderLight dark:border-borderDark">
+                        <div className="h-4 w-4 pointer-events-none">
+                          <AnimatePresence>
+                            {currentAccessType === "reader" && (
+                              <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
+                              transition={{damping: 24, stiffness: 300, duration: 0.25}}
+                              viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
+                              className="w-4 h-4 absolute">
+                                <path d="M480 128c0 8.188-3.125 16.38-9.375 22.62l-256 256C208.4 412.9 200.2 416 192 
+                                416s-16.38-3.125-22.62-9.375l-128-128C35.13 272.4 32 264.2 32 256c0-18.28 14.95-32 32-32 
+                                8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
+                                32 13.7 32 32z" className=" fill-iconLight dark:fill-iconDark"></path>
+                              </motion.svg>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                        <span className="pointer-events-none">Reader</span>
+                      </button>
+                      <button data-name="editor" onClick={() => {setCurrentAccessType("guest")}}
+                      className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
+                      pl-2 pr-8 transition-colors flex flex-row items-center gap-2 py-0.5
+                      border-borderLight dark:border-borderDark">
+                        <div className="h-4 w-4 pointer-events-none">
+                          <AnimatePresence>
+                            {currentAccessType === "guest" && (
+                              <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
+                              transition={{damping: 24, stiffness: 300, duration: 0.25}}
+                              viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
+                              className="w-4 h-4 absolute">
+                                <path d="M480 128c0 8.188-3.125 16.38-9.375 22.62l-256 256C208.4 412.9 200.2 416 192 
+                                416s-16.38-3.125-22.62-9.375l-128-128C35.13 272.4 32 264.2 32 256c0-18.28 14.95-32 32-32 
+                                8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
+                                32 13.7 32 32z" className=" fill-iconLight dark:fill-iconDark"></path>
+                              </motion.svg>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                        <span className="pointer-events-none">Guest</span>
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+              {/* Role description */}
+              <div>
+                {currentAccessType === "editor" ? (
+                  <motion.p initial={{opacity: 0, x: 40}} animate={{opacity: 1, x: 0}}
+                  transition={{stiffness: 200, damping: 24}} exit={{opacity: 0, x: -40}}>
+                    Anyone with this link can edit content inside this folder (sign-in required)
+                  </motion.p>
+                ) : currentAccessType === "reader" ? (
+                  <motion.section initial={{opacity: 0, x: 40}} animate={{opacity: 1, x: 0}}
+                  transition={{stiffness: 200, damping: 24}} exit={{opacity: 0, x: -40}}>
+                    Anyone with this link can watch and download content inside this folder (sign-in required)
+                  </motion.section>
+                ) : ( // guest
+                  <motion.div initial={{opacity: 0, x: 40}} animate={{opacity: 1, x: 0}}
+                  transition={{stiffness: 200, damping: 24}} exit={{opacity: 0, x: -40}}>
+                    Anyone with this link can watch and download content inside this folder (doesn't affect stats)
                   </motion.div>
                 )}
-              </AnimatePresence>
+              </div>
             </div>
-            {/* Role description */}
-            <div>
-              {currentAccessType === "editor" ? (
-                <motion.p initial={{opacity: 0, x: 40}} animate={{opacity: 1, x: 0}}
-                transition={{stiffness: 200, damping: 24}} exit={{opacity: 0, x: -40}}>
-                  Anyone with this link can edit content inside this folder (sign-in required)
-                </motion.p>
-              ) : currentAccessType === "reader" ? (
-                <motion.section initial={{opacity: 0, x: 40}} animate={{opacity: 1, x: 0}}
-                transition={{stiffness: 200, damping: 24}} exit={{opacity: 0, x: -40}}>
-                  Anyone with this link can watch and download content inside this folder (sign-in required)
+          ) : (
+            // Private
+            <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
+            flex flex-row mt-2 items-center">
+              <button onClick={() => {setCurrentAccessType("guest"); setIsFolderPublic(true);}}
+              className="bg-backgroundThirdLight dark:bg-backgroundThirdDark 
+              rounded-md transition-colors
+              hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark mr-2">
+                <motion.section initial={{opacity: 0.4}} animate={{opacity: 1}}>
+                  <svg viewBox="0 0 1262 1710.258" xmlns="http://www.w3.org/2000/svg" 
+                  enableBackground="new 0 0 1262 1710.258" className="w-8 h-8 p-1.5">
+                    <path d="M1196.495 713.258H1090V459.592C1090 206.307 884.198.242 630.999.242 
+                    377.799.242 172 206.442 172 459.892v253.366H66.686C30.195 713.258 0 742.241 
+                    0 778.731v766.42c0 91.079 74.712 165.106 165.792 165.106h931.597c91.08 0 
+                    164.611-74.027 164.611-165.106v-766.42c0-36.49-29.015-65.473-65.505-65.473zM304 
+                    459.892c0-180.588 146.664-327.508 326.999-327.508C811.335 132.384 958 279.168 
+                    958 459.592v253.666H304V459.892zm826 1085.259c0 18.218-14.395 33.106-32.611 
+                    33.106H165.792c-18.216 0-33.792-14.889-33.792-33.106V845.258h998v699.893z" 
+                    className="fill-errorLight dark:fill-errorDark"></path>
+                    <path d="M631 1409.707c36.491 0 66-29.58 
+                    66-66.071v-237.854c0-36.49-29.51-66.07-66-66.07-36.49 0-66 29.58-66 
+                    66.07v237.854c0 36.491 29.509 66.071 66 66.071z"
+                    className="fill-errorLight dark:fill-errorDark"></path>
+                  </svg>
                 </motion.section>
-              ) : ( // guest
-                <motion.div initial={{opacity: 0, x: 40}} animate={{opacity: 1, x: 0}}
-                transition={{stiffness: 200, damping: 24}} exit={{opacity: 0, x: -40}}>
-                  Anyone with this link can watch and download content inside this folder (doesn't affect stats)
-                </motion.div>
-              )}
+              </button>
+              <div>
+                <motion.p initial={{opacity: 0, x: 40}} animate={{opacity: 1, x: 0}}
+                  transition={{stiffness: 200, damping: 24}} exit={{opacity: 0, x: -40}}
+                className="font-semibold">Access is limited</motion.p>
+              </div>
             </div>
-          </div>
-        ) : (
-          // Private
-          <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
-          flex flex-row mt-2 items-center">
-            <button onClick={() => {setCurrentAccessType("guest"); setIsFolderPublic(true);}}
-            className="bg-backgroundThirdLight dark:bg-backgroundThirdDark 
-            rounded-md transition-colors
-            hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark mr-2">
-              <motion.section initial={{opacity: 0.4}} animate={{opacity: 1}}>
-                <svg viewBox="0 0 1262 1710.258" xmlns="http://www.w3.org/2000/svg" 
-                enableBackground="new 0 0 1262 1710.258" className="w-8 h-8 p-1.5">
-                  <path d="M1196.495 713.258H1090V459.592C1090 206.307 884.198.242 630.999.242 
-                  377.799.242 172 206.442 172 459.892v253.366H66.686C30.195 713.258 0 742.241 
-                  0 778.731v766.42c0 91.079 74.712 165.106 165.792 165.106h931.597c91.08 0 
-                  164.611-74.027 164.611-165.106v-766.42c0-36.49-29.015-65.473-65.505-65.473zM304 
-                  459.892c0-180.588 146.664-327.508 326.999-327.508C811.335 132.384 958 279.168 
-                  958 459.592v253.666H304V459.892zm826 1085.259c0 18.218-14.395 33.106-32.611 
-                  33.106H165.792c-18.216 0-33.792-14.889-33.792-33.106V845.258h998v699.893z" 
-                  className="fill-errorLight dark:fill-errorDark"></path>
-                  <path d="M631 1409.707c36.491 0 66-29.58 
-                  66-66.071v-237.854c0-36.49-29.51-66.07-66-66.07-36.49 0-66 29.58-66 
-                  66.07v237.854c0 36.491 29.509 66.071 66 66.071z"
-                  className="fill-errorLight dark:fill-errorDark"></path>
-                </svg>
-              </motion.section>
-            </button>
-            <div>
-              <motion.p initial={{opacity: 0, x: 40}} animate={{opacity: 1, x: 0}}
-                transition={{stiffness: 200, damping: 24}} exit={{opacity: 0, x: -40}}
-              className="font-semibold">Access is limited</motion.p>
-            </div>
-          </div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
+      ) : (
+        <div>change later</div>
+      )}
       {/* Buttons */}
       <div className="flex flex-row justify-between font-medium mt-4">
         <button className="flex flex-row items-center py-1 px-3 rounded-full
         border border-borderLight dark:border-borderDark transition-colors
         hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark"
-        onClick={() => {CopyText(folderToken)}}>
+        onClick={() => {CopyText(currentPage === "default" ? folderToken : "change later")}}>
           <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" 
           className="w-5 h-5">
             <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
