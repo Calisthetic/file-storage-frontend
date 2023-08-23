@@ -20,13 +20,19 @@ export default function FolderAccessModal({children, folderId, folderName, folde
 
   // Copied notification
   const [isCopied, setIsCopied] = useState(false)
-  function CopyText(folderToken:string) {
-    navigator.clipboard.writeText(selfUrl + "disk/folder/" + folderToken);
-    setIsCopied(false)
-    setTimeout(() => {
-      setIsCopied(true)
-    }, 100);
+  function CopyText(token:string | undefined | null) {
+    if (token) {
+      navigator.clipboard.writeText(selfUrl + "disk/folder/" + token);
+      setIsCopied(false)
+      setTimeout(() => {
+        setIsCopied(true)
+      }, 100);
+    }
   }
+
+
+  // Generate new url
+  const [generatedToken, setGeneratedToken] = useState<string | undefined | null>()
 
   return (
     <div className="text-textLight dark:text-textDark rounded-2xl
@@ -114,7 +120,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                       transition={{stiffness: 200, damping: 24, duration: 0.1}} exit={{opacity: 0, y: -20}} 
                       className="absolute bg-backgroundThirdLight dark:bg-backgroundThirdDark
                       rounded-md transition-colors flex flex-col text-lg mt-1 overflow-hidden
-                      shadow-defaultLight dark:shadow-none">
+                      shadow-defaultLight dark:shadow-none z-20">
                         <button data-name="editor" onClick={() => {setCurrentAccessType("editor")}}
                         className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
                         pl-2 pr-8 transition-colors flex flex-row items-center gap-2 py-0.5
@@ -236,35 +242,31 @@ export default function FolderAccessModal({children, folderId, folderName, folde
               </div>
             )}
           </AnimatePresence>
-          <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
-          flex flex-row mt-2 items-center relative gap-x-2">
+          <button className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
+          flex flex-row mt-2 items-center relative gap-x-2 w-full transition-colors
+          hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark" onClick={() => {setCurrentPage("generate")}}>
             {/* Shield */}
-            <button className=" bg-backgroundThirdLight dark:bg-backgroundThirdDark
-            hover:bg-gradient-to-tl hover:from-backgroundHoverLight hover:to-backgroundHoverLight
-            dark:hover:from-backgroundHoverDark dark:hover:to-backgroundHoverDark
-            h-7 w-7 rounded-md transition-colors items-center flex justify-center"
-            onClick={() => {setCurrentPage("generate")}}>
-              {/* parent - group */}
-              {/* child - group-hover */}
-              <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" 
-              className="fill-[url(#ShieldGradient)] h-6 w-6">
-                <defs>
-                  <linearGradient id="ShieldGradient" gradientTransform="rotate(30)">
-                    <stop offset="0%" stopColor="#e22a3c"></stop>
-                    <stop offset="80%" stopColor="#9333EA"></stop>
-                    <stop offset="100%" stopColor="#3875db"></stop>
-                  </linearGradient>
-                </defs>
-                <path d="M496 127.1C496 381.3 309.1 512 255.1 512C204.9 512 16 385.3 16 
-                127.1c0-19.41 11.7-36.89 29.61-44.28l191.1-80.01c4.906-2.031 13.13-3.701 
-                18.44-3.701c5.281 0 13.58 1.67 18.46 3.701l192 80.01C484.3 91.1 496 108.6 496 127.1z"/>
-              </svg>
-            </button>
+            {/* parent - group */}
+            {/* child - group-hover */}
+            <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" 
+            className="fill-[url(#ShieldGradient)] h-6 w-6 m-0.5">
+              <defs>
+                <linearGradient id="ShieldGradient" gradientTransform="rotate(30)">
+                  <stop offset="0%" stopColor="#e22a3c"></stop>
+                  <stop offset="80%" stopColor="#9333EA"></stop>
+                  <stop offset="100%" stopColor="#3875db"></stop>
+                </linearGradient>
+              </defs>
+              <path d="M496 127.1C496 381.3 309.1 512 255.1 512C204.9 512 16 385.3 16 
+              127.1c0-19.41 11.7-36.89 29.61-44.28l191.1-80.01c4.906-2.031 13.13-3.701 
+              18.44-3.701c5.281 0 13.58 1.67 18.46 3.701l192 80.01C484.3 91.1 496 108.6 496 127.1z"/>
+            </svg>
             <div>Generate a link with the ability to set a password, expiration date and disable downloads</div>
-          </div>
+          </button>
         </>
       ) : ( // generate
         <>
+          {/* password */}
           <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
           flex flex-row mt-2 items-center relative gap-x-2">
             <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
@@ -279,6 +281,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
             </svg>
             <div>Generate a link with the ability to set a password, expiration date and disable downloads</div>
           </div>
+          {/* time */}
           <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
           flex flex-row mt-2 items-center relative gap-x-2">
             <div className="p-1 flex items-center justify-center">
@@ -292,7 +295,16 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                 strokeLinejoin="round" strokeWidth="2px"></path></g>
               </svg>
             </div>
+            <svg aria-hidden="true" viewBox="0 0 16 16" version="1.1" className="h-5 w-5">
+              <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 
+              0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 
+              0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
+              <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 
+              1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 
+              .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+            </svg>
           </div>
+          {/* download */}
           <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
           flex flex-row mt-2 items-center relative gap-x-2">
             <div className="p-1 flex items-center justify-center">
@@ -302,35 +314,84 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
               </svg>
             </div>
+            <label className="relative inline-flex items-center mr-5 cursor-pointer">
+              <input type="checkbox" value="" className="sr-only peer"/>
+              <div className="w-9 h-5 rounded-full peer peer-checked:after:translate-x-full 
+              bg-backgroundThirdLight dark:bg-backgroundThirdDark 
+              after:content-[''] after:absolute after:top-0.5 after:left-[2px] 
+              after:bg-white after:border-gray-300 after:border after:rounded-full 
+              after:h-4 after:w-4 after:transition-all border-borderLight dark:border-borderDark 
+              peer-checked:bg-iconLight peer-checked:dark:bg-iconDark" title="Download files"></div>
+            </label>
+          </div>
+          {/* can edit */}
+          <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
+          flex flex-row mt-2 items-center relative gap-x-2">
+            <div className="p-1 flex items-center justify-center">
+              <svg viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5">
+                <path d="m402.3 344.9 32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 
+                0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 
+                1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 
+                10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 
+                43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174 402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 
+                174zm64.8-79.7-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"
+                className="fill-iconLight dark:fill-iconDark"></path>
+              </svg>
+            </div>
+          </div>
+          {/* auth required */}
+          <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
+          flex flex-row mt-2 items-center relative gap-x-2">
+            <div className="flex items-center justify-center">
+              <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" className="h-7 w-7">
+                <path fill="none" d="M0 0h256v256H0z"></path>
+                <path fill="none" strokeLinecap="round" className="stroke-iconLight dark:stroke-iconDark" 
+                strokeLinejoin="round" strokeWidth="12" d="M152 112h40M152 144h40"></path>
+                <circle cx="92.1" cy="120" fill="none" r="24" strokeLinecap="round" strokeLinejoin="round" 
+                strokeWidth="12" className="stroke-iconLight dark:stroke-iconDark"></circle>
+                <path d="M61.1 168a32 32 0 0 1 62 0" fill="none" strokeLinecap="round" strokeLinejoin="round"
+                strokeWidth="12" className="stroke-iconLight dark:stroke-iconDark"></path>
+                <rect fill="none" height="160" rx="8" strokeLinecap="round" strokeLinejoin="round" 
+                strokeWidth="12" width="192" x="32" y="48" className="stroke-iconLight dark:stroke-iconDark"></rect>
+              </svg>
+            </div>
           </div>
         </>
       )}
       {/* Buttons */}
       <div className="flex flex-row justify-between font-medium mt-4">
-        <button className="flex flex-row items-center py-1 px-3 rounded-full
-        border border-borderLight dark:border-borderDark transition-colors
-        hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark"
-        onClick={() => {CopyText(currentPage === "default" ? folderToken : "change later")}}>
-          <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" 
-          className="w-5 h-5">
-            <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
-            29.47 17.58 41.91 30.02 3.146 3.146 5.898 6.518 8.742 9.838l37.96-37.96C458.5 72.05 477.1 64 498.6 
-            64c20.67 0 40.1 8.047 54.71 22.66 14.61 14.61 22.66 34.04 22.66 54.71s-8.049 40.1-22.66 54.71l-133.3 
-            133.3C405.5 343.1 386 352 365.4 352s-40.1-8.048-54.71-22.66C296 314.7 287.1 295.3 287.1 274.6s8.047-40.1 
-            22.66-54.71l4.44-3.49c-2.1-3.9-4.3-7.9-7.5-11.1-8.6-8.6-19.9-13.3-32.1-13.3-11.93 0-23.1 4.664-31.61 
-            12.97-30.71 53.96-23.63 123.6 22.39 169.6C293 402.2 329.2 416 365.4 416c36.18 0 72.36-13.8 99.96-41.41L598.6 
-            241.3c28.45-28.45 42.24-66.01 41.37-103.3-.87-35.9-14.57-69.84-41.37-96.59zM234 387.4l-37.9 37.9C181.5 
-            439.1 162 448 141.4 448c-20.67 0-40.1-8.047-54.71-22.66-14.61-14.61-22.66-34.04-22.66-54.71s8.049-40.1 
-            22.66-54.71l133.3-133.3C234.5 168 253.1 160 274.6 160s40.1 8.048 54.71 22.66c14.62 14.61 22.66 34.04 
-            22.66 54.71s-8.047 40.1-22.66 54.71l-3.51 3.52c2.094 3.939 4.219 7.895 7.465 11.15C341.9 315.3 353.3 
-            320 365.4 320c11.93 0 23.1-4.664 31.61-12.97 30.71-53.96 23.63-123.6-22.39-169.6C346.1 109.8 310.8 96 
-            274.6 96c-36.2 0-72.3 13.8-99.9 41.4L41.41 270.7C13.81 298.3 0 334.48 0 370.66c0 36.18 13.8 72.36 41.41 
-            99.97C69.01 498.2 105.2 512 141.4 512c36.18 0 
-            72.36-13.8 99.96-41.41l43.36-43.36c-15.11-8.012-29.47-17.58-41.91-30.02-3.21-3.11-5.91-6.51-8.81-9.81z" 
-            className=" fill-textLight dark:fill-textDark"></path>
-          </svg>
-          <p className="pointer-events-none ml-2">Copy link</p>
-        </button>
+        {currentPage === "default" ? (
+          <button className="flex flex-row items-center py-1 px-3 rounded-full
+          border border-borderLight dark:border-borderDark transition-colors
+          hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark"
+          onClick={() => {CopyText(folderToken)}}>
+            <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" 
+            className="w-5 h-5">
+              <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
+              29.47 17.58 41.91 30.02 3.146 3.146 5.898 6.518 8.742 9.838l37.96-37.96C458.5 72.05 477.1 64 498.6 
+              64c20.67 0 40.1 8.047 54.71 22.66 14.61 14.61 22.66 34.04 22.66 54.71s-8.049 40.1-22.66 54.71l-133.3 
+              133.3C405.5 343.1 386 352 365.4 352s-40.1-8.048-54.71-22.66C296 314.7 287.1 295.3 287.1 274.6s8.047-40.1 
+              22.66-54.71l4.44-3.49c-2.1-3.9-4.3-7.9-7.5-11.1-8.6-8.6-19.9-13.3-32.1-13.3-11.93 0-23.1 4.664-31.61 
+              12.97-30.71 53.96-23.63 123.6 22.39 169.6C293 402.2 329.2 416 365.4 416c36.18 0 72.36-13.8 99.96-41.41L598.6 
+              241.3c28.45-28.45 42.24-66.01 41.37-103.3-.87-35.9-14.57-69.84-41.37-96.59zM234 387.4l-37.9 37.9C181.5 
+              439.1 162 448 141.4 448c-20.67 0-40.1-8.047-54.71-22.66-14.61-14.61-22.66-34.04-22.66-54.71s8.049-40.1 
+              22.66-54.71l133.3-133.3C234.5 168 253.1 160 274.6 160s40.1 8.048 54.71 22.66c14.62 14.61 22.66 34.04 
+              22.66 54.71s-8.047 40.1-22.66 54.71l-3.51 3.52c2.094 3.939 4.219 7.895 7.465 11.15C341.9 315.3 353.3 
+              320 365.4 320c11.93 0 23.1-4.664 31.61-12.97 30.71-53.96 23.63-123.6-22.39-169.6C346.1 109.8 310.8 96 
+              274.6 96c-36.2 0-72.3 13.8-99.9 41.4L41.41 270.7C13.81 298.3 0 334.48 0 370.66c0 36.18 13.8 72.36 41.41 
+              99.97C69.01 498.2 105.2 512 141.4 512c36.18 0 
+              72.36-13.8 99.96-41.41l43.36-43.36c-15.11-8.012-29.47-17.58-41.91-30.02-3.21-3.11-5.91-6.51-8.81-9.81z" 
+              className=" fill-textLight dark:fill-textDark"></path>
+            </svg>
+            <p className="pointer-events-none ml-2">Copy link</p>
+          </button>
+        ) : (
+          <button className="flex flex-row items-center py-1 px-4 rounded-full
+          border border-borderLight dark:border-borderDark transition-colors
+          hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark"
+          onClick={() => {setCurrentPage("default")}}>Back</button>
+        )}
         {/* Close modal button */}
         {children}
       </div>
