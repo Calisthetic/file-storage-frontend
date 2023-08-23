@@ -90,7 +90,10 @@ module.exports = {
   },
   plugins: [
     require("daisyui"),
-    //require("tw-elements/dist/plugin.cjs")
+    // function ({addVariant}) {
+    //   addVariant('child', '&>*');
+    //   addVariant('child-hover', '&>*:hover');
+    // }
   ],
 }
 

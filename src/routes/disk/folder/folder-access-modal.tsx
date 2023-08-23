@@ -239,16 +239,20 @@ export default function FolderAccessModal({children, folderId, folderName, folde
           </AnimatePresence>
           <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
           flex flex-row mt-2 items-center relative">
-            <button className="bg-gradient-to-tl from-[#3575db] via-[#9333EA] to-[#e22a3c]
+            <button className=" bg-backgroundThirdLight dark:bg-backgroundThirdDark
             hover:bg-gradient-to-tl hover:from-backgroundHoverLight hover:to-backgroundHoverLight
             dark:hover:from-backgroundHoverDark dark:hover:to-backgroundHoverDark
-            h-7 w-7 rounded-md transition-colors">
-              <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="fill-[url(#ShieldGradient)]">
+            h-7 w-7 rounded-md transition-colors items-center flex justify-center"
+            onClick={() => {setCurrentPage("generate")}}>
+              {/* parent - group */}
+              {/* child - group-hover */}
+              <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" 
+              className="fill-[url(#ShieldGradient)] h-6 w-6">
                 <defs>
                   <linearGradient id="ShieldGradient" gradientTransform="rotate(30)">
                     <stop offset="0%" stopColor="#e22a3c"></stop>
                     <stop offset="80%" stopColor="#9333EA"></stop>
-                    <stop offset="100%" stopColor="#3575db"></stop>
+                    <stop offset="100%" stopColor="#3875db"></stop>
                   </linearGradient>
                 </defs>
                 <path d="M496 127.1C496 381.3 309.1 512 255.1 512C204.9 512 16 385.3 16 
@@ -258,7 +262,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
             </button>
           </div>
         </>
-      ) : (
+      ) : ( // generate
         <div>change later</div>
       )}
       {/* Buttons */}
