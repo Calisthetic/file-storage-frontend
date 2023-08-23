@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { selfUrl } from "../../../data/data"
 
@@ -33,6 +33,18 @@ export default function FolderAccessModal({children, folderId, folderName, folde
 
   // Generate new url
   const [generatedToken, setGeneratedToken] = useState<string | undefined | null>()
+
+  const newUrlPasswordRef:any = useRef()
+
+  function GenerateToken() {
+    setGeneratedToken(null)
+
+
+    
+    setTimeout(() => {
+      setGeneratedToken("rkkfjfk")
+    }, 1000);
+  }
 
   return (
     <div className="text-textLight dark:text-textDark rounded-2xl
@@ -267,10 +279,10 @@ export default function FolderAccessModal({children, folderId, folderName, folde
       ) : ( // generate
         <>
           {/* password */}
-          <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
+          <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md
           flex flex-row mt-2 items-center relative gap-x-2">
             <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
-            className="h-7 w-7">
+            className="h-7 w-7 absolute translate-x-1.5">
               <path d="M21 2a8.998 8.998 0 0 0-8.612 11.612L2 24v6h6l10.388-10.388A9 
               9 0 1 0 21 2Zm0 16a7.013 7.013 0 0 1-2.032-.302l-1.147-.348-.847.847-3.181 
               3.181L12.414 20 11 21.414l1.379 1.379-1.586 1.586L9.414 23 8 24.414l1.379 
@@ -279,11 +291,24 @@ export default function FolderAccessModal({children, folderId, folderName, folde
               <circle cx="22" cy="10" r="2" className="fill-iconLight dark:fill-iconDark"></circle>
               <path d="M0 0h32v32H0z" fill="none"></path>
             </svg>
-            <div>Generate a link with the ability to set a password, expiration date and disable downloads</div>
+            <input className="w-full border-borderLight dark:border-borderDark 
+            text-textLight text-sm rounded-lg block dark:focus:border-textDark
+            focus:border-textLight bg-backgroundSecondLight dark:bg-backgroundSecondDark
+            dark:text-textDark py-2.5 pl-11 pr-9"
+            type="text" placeholder="Folder's password..." ref={newUrlPasswordRef}/>
+            <button className=" absolute left-full group -translate-x-11 p-1 rounded-md" 
+            title="Clear password" onClick={() => {newUrlPasswordRef.current.value = ""}}>
+              <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" className="h-7 w-7">
+                <path d="m7 7 18 18M7 25 25 7" fill="none" strokeLinecap="round" 
+                strokeLinejoin="round" strokeWidth="3px"
+                className="stroke-iconLight dark:stroke-iconDark transition-colors
+                group-hover:stroke-buttonHoverLight group-hover:dark:to-buttonHoverDark"></path>
+              </svg>
+            </button>
           </div>
           {/* time */}
           <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
-          flex flex-row mt-2 items-center relative gap-x-2">
+          flex flex-row mt-2 items-center gap-x-2 relative">
             <div className="p-1 flex items-center justify-center">
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"><g data-name="22.time">
@@ -295,14 +320,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                 strokeLinejoin="round" strokeWidth="2px"></path></g>
               </svg>
             </div>
-            <svg aria-hidden="true" viewBox="0 0 16 16" version="1.1" className="h-5 w-5">
-              <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 
-              0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 
-              0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
-              <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 
-              1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 
-              .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
-            </svg>
+            <input type="date"/>
           </div>
           {/* download */}
           <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
@@ -315,7 +333,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
               </svg>
             </div>
             <label className="relative inline-flex items-center mr-5 cursor-pointer">
-              <input type="checkbox" value="" className="sr-only peer"/>
+              <input type="checkbox" defaultChecked={true} className="sr-only peer"/>
               <div className="w-9 h-5 rounded-full peer peer-checked:after:translate-x-full 
               bg-backgroundThirdLight dark:bg-backgroundThirdDark 
               after:content-[''] after:absolute after:top-0.5 after:left-[2px] 
@@ -339,6 +357,15 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                 className="fill-iconLight dark:fill-iconDark"></path>
               </svg>
             </div>
+            <label className="relative inline-flex items-center mr-5 cursor-pointer">
+              <input type="checkbox" value="" className="sr-only peer"/>
+              <div className="w-9 h-5 rounded-full peer peer-checked:after:translate-x-full 
+              bg-backgroundThirdLight dark:bg-backgroundThirdDark 
+              after:content-[''] after:absolute after:top-0.5 after:left-[2px] 
+              after:bg-white after:border-gray-300 after:border after:rounded-full 
+              after:h-4 after:w-4 after:transition-all border-borderLight dark:border-borderDark 
+              peer-checked:bg-iconLight peer-checked:dark:bg-iconDark" title="Edit permissions"></div>
+            </label>
           </div>
           {/* auth required */}
           <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
@@ -356,6 +383,34 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                 strokeWidth="12" width="192" x="32" y="48" className="stroke-iconLight dark:stroke-iconDark"></rect>
               </svg>
             </div>
+            <label className="relative inline-flex items-center mr-5 cursor-pointer">
+              <input type="checkbox" value="" className="sr-only peer"/>
+              <div className="w-9 h-5 rounded-full peer peer-checked:after:translate-x-full 
+              bg-backgroundThirdLight dark:bg-backgroundThirdDark 
+              after:content-[''] after:absolute after:top-0.5 after:left-[2px] 
+              after:bg-white after:border-gray-300 after:border after:rounded-full 
+              after:h-4 after:w-4 after:transition-all border-borderLight dark:border-borderDark 
+              peer-checked:bg-iconLight peer-checked:dark:bg-iconDark" title="Authentification required"></div>
+            </label>
+          </div>
+          <button className="mt-2 rounded-md p-1.5"
+          onClick={GenerateToken}></button>
+          <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
+          flex flex-row mt-2 items-center relative gap-x-2 justify-between w-full">
+            <p></p>
+            <button className="bg-backgroundThirdLight dark:bg-backgroundThirdDark
+            hover:bg-backgroundThirdLight hover:dark:bg-backgroundThirdDark
+            border border-borderLight dark:border-borderDark rounded-md"
+            onClick={() => {CopyText(generatedToken)}}>
+              <svg aria-hidden="true" viewBox="0 0 16 16" version="1.1" className="h-5 w-5">
+                <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 
+                0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 
+                0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
+                <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 
+                1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 
+                .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+              </svg>
+            </button>
           </div>
         </>
       )}
