@@ -50,14 +50,13 @@ export default function FolderAccessModal({children, folderId, folderName, folde
           3.873-5.395v-2.5l-.008-.085a.405.405 0 0 0-.392-.332 4.057 4.057 0 0 1-1.6-.32Z" 
           className="fill-warningLight dark:fill-warningDark"></path>
         </svg>
-        <motion.div initial={{opacity: 0, x: 40}} animate={{opacity: 1, x: 0}}
-        transition={{stiffness: 200, damping: 24}}>
+        <div>
           {currentPage === "default" ? (
             "Everyone who has the link will be able to view and download all the content inside the current folder"
           ) : (
             "Access to the content inside of the current folder will depend on your settings"
           )}
-        </motion.div>
+        </div>
       </div>
       {currentPage === "default" ? (
         <>
@@ -238,7 +237,8 @@ export default function FolderAccessModal({children, folderId, folderName, folde
             )}
           </AnimatePresence>
           <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
-          flex flex-row mt-2 items-center relative">
+          flex flex-row mt-2 items-center relative gap-x-2">
+            {/* Shield */}
             <button className=" bg-backgroundThirdLight dark:bg-backgroundThirdDark
             hover:bg-gradient-to-tl hover:from-backgroundHoverLight hover:to-backgroundHoverLight
             dark:hover:from-backgroundHoverDark dark:hover:to-backgroundHoverDark
@@ -260,10 +260,50 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                 18.44-3.701c5.281 0 13.58 1.67 18.46 3.701l192 80.01C484.3 91.1 496 108.6 496 127.1z"/>
               </svg>
             </button>
+            <div>Generate a link with the ability to set a password, expiration date and disable downloads</div>
           </div>
         </>
       ) : ( // generate
-        <div>change later</div>
+        <>
+          <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
+          flex flex-row mt-2 items-center relative gap-x-2">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
+            className="h-7 w-7">
+              <path d="M21 2a8.998 8.998 0 0 0-8.612 11.612L2 24v6h6l10.388-10.388A9 
+              9 0 1 0 21 2Zm0 16a7.013 7.013 0 0 1-2.032-.302l-1.147-.348-.847.847-3.181 
+              3.181L12.414 20 11 21.414l1.379 1.379-1.586 1.586L9.414 23 8 24.414l1.379 
+              1.379L7.172 28H4v-3.172l9.802-9.802.848-.847-.348-1.147A7 7 0 1 1 21 18Z" 
+              className="fill-iconLight dark:fill-iconDark"></path>
+              <circle cx="22" cy="10" r="2" className="fill-iconLight dark:fill-iconDark"></circle>
+              <path d="M0 0h32v32H0z" fill="none"></path>
+            </svg>
+            <div>Generate a link with the ability to set a password, expiration date and disable downloads</div>
+          </div>
+          <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
+          flex flex-row mt-2 items-center relative gap-x-2">
+            <div className="p-1 flex items-center justify-center">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"><g data-name="22.time">
+                <circle cx="12" cy="12" r="11" fill="none" 
+                className="stroke-iconLight dark:stroke-iconDark" 
+                strokeLinecap="round" strokeLinejoin="round" strokeWidth="2px"></circle>
+                <path d="M12 6v6l4 4" fill="none" 
+                className="stroke-iconLight dark:stroke-iconDark" strokeLinecap="round" 
+                strokeLinejoin="round" strokeWidth="2px"></path></g>
+              </svg>
+            </div>
+          </div>
+          <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
+          flex flex-row mt-2 items-center relative gap-x-2">
+            <div className="p-1 flex items-center justify-center">
+              <svg className="stroke-iconLight dark:stroke-iconDark w-5 h-5" fill="none" 
+              strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
+              </svg>
+            </div>
+          </div>
+        </>
       )}
       {/* Buttons */}
       <div className="flex flex-row justify-between font-medium mt-4">
