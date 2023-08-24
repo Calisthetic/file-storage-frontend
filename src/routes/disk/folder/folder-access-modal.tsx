@@ -1,7 +1,6 @@
 import { useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { selfUrl } from "../../../data/data"
-import { BlurColor, GetCSSValue } from "../../../lib/utils"
 
 type Props = {
   children:string | JSX.Element | JSX.Element[]
@@ -40,13 +39,43 @@ export default function FolderAccessModal({children, folderId, folderName, folde
   const inputTimeDaysRef:any = useState()
   const inputTimeHoursRef:any = useState()
 
-  const SubtractMonth = () => {
-    inputTimeMonthsRef.current.value = parseInt(inputTimeMonthsRef.current.value) <= 12 
-      ? 0 : inputTimeMonthsRef.current.value - 1
+  const SubtractMonths = () => {
+    inputTimeMonthsRef.current.value = parseInt(inputTimeMonthsRef.current.value) <= 0 
+      ? 12 : parseInt(inputTimeMonthsRef.current.value) - 1
   }
-  const AddMonth = () => {
+  const AddMonths = () => {
     inputTimeMonthsRef.current.value = parseInt(inputTimeMonthsRef.current.value) >= 12 
-      ? 12 : inputTimeMonthsRef.current.value + 1
+      ? 0 : parseInt(inputTimeMonthsRef.current.value) + 1
+  }
+
+  const SubtractDays = () => {
+    let currentValue = parseInt(inputTimeDaysRef.current.value)
+    if (currentValue === 0 && inputTimeMonthsRef.current.value > 0) {
+      SubtractMonths()
+    }
+    inputTimeDaysRef.current.value = currentValue <= 0 ? 30 : currentValue - 1
+  }
+  const AddDays = () => {
+    let currentValue = parseInt(inputTimeDaysRef.current.value)
+    if (currentValue === 30) {
+      AddMonths()
+    }
+    inputTimeDaysRef.current.value = currentValue >= 30 ? 0 : currentValue + 1
+  }
+
+  const SubtractHours = () => {
+    let currentValue = parseInt(inputTimeHoursRef.current.value)
+    if (currentValue === 0 && inputTimeDaysRef.current.value > 0) {
+      SubtractDays()
+    }
+    inputTimeHoursRef.current.value = currentValue <= 0 ? 24 : currentValue - 1
+  }
+  const AddHours = () => {
+    let currentValue = parseInt(inputTimeHoursRef.current.value)
+    if (currentValue === 24) {
+      AddDays()
+    }
+    inputTimeHoursRef.current.value = currentValue >= 24 ? 0 : currentValue + 1
   }
 
   function GenerateToken() {
@@ -339,7 +368,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                 <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
                 hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
                 text-lg border-r border-borderLight dark:border-borderDark"
-                onClick={SubtractMonth}>-</button>
+                onClick={SubtractMonths}>-</button>
                 <input className="w-9 text-sm block focus:outline-none
                 bg-backgroundThirdLight dark:bg-backgroundThirdDark
                 dark:text-textDark text-textLight py-1 text-center"
@@ -348,7 +377,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                 <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
                 hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
                 text-lg border-l border-borderLight dark:border-borderDark"
-                onClick={AddMonth}>+</button>
+                onClick={AddMonths}>+</button>
               </div>
             </div>
             <div>
@@ -357,8 +386,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                 <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
                 hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
                 text-lg border-r border-borderLight dark:border-borderDark"
-                onClick={() => {parseInt(inputTimeDaysRef.current.value) <= 0 ? 0 
-                    : parseInt(inputTimeDaysRef.current.value) - 1}}>-</button>
+                onClick={SubtractDays}>-</button>
                 <input className="w-9 text-sm block focus:outline-none
                 bg-backgroundThirdLight dark:bg-backgroundThirdDark
                 dark:text-textDark text-textLight py-1 text-center"
@@ -366,7 +394,8 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                 max="2" min="0" defaultValue={0}/>
                 <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
                 hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
-                text-lg border-l border-borderLight dark:border-borderDark">+</button>
+                text-lg border-l border-borderLight dark:border-borderDark"
+                onClick={AddDays}>+</button>
               </div>
             </div>
             <div>
@@ -374,7 +403,8 @@ export default function FolderAccessModal({children, folderId, folderName, folde
               <div className="flex flex-row font-semibold">
                 <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
                 hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
-                text-lg border-r border-borderLight dark:border-borderDark">-</button>
+                text-lg border-r border-borderLight dark:border-borderDark"
+                onClick={SubtractHours}>-</button>
                 <input className="w-9 text-sm block focus:outline-none
                 bg-backgroundThirdLight dark:bg-backgroundThirdDark
                 dark:text-textDark text-textLight py-1 text-center"
@@ -382,7 +412,8 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                 max="2" min="0" defaultValue={0}/>
                 <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
                 hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
-                text-lg border-l border-borderLight dark:border-borderDark">+</button>
+                text-lg border-l border-borderLight dark:border-borderDark"
+                onClick={AddHours}>+</button>
               </div>
             </div>
           </div>
