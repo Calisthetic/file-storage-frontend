@@ -35,9 +35,9 @@ export default function FolderAccessModal({children, folderId, folderName, folde
   const [generatedToken, setGeneratedToken] = useState<string | undefined | null>()
 
   const newUrlPasswordRef:any = useRef()
-  const inputTimeMonthsRef:any = useState()
-  const inputTimeDaysRef:any = useState()
-  const inputTimeHoursRef:any = useState()
+  const inputTimeMonthsRef:any = useRef()
+  const inputTimeDaysRef:any = useRef()
+  const inputTimeHoursRef:any = useRef()
 
   const SubtractMonths = () => {
     inputTimeMonthsRef.current.value = parseInt(inputTimeMonthsRef.current.value) <= 0 
@@ -297,7 +297,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
             )}
           </AnimatePresence>
           <button className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
-          flex flex-row mt-2 items-center relative gap-x-2 w-full transition-colors
+          grid grid-cols-alerts mt-2 items-center relative gap-x-2 w-full transition-colors
           hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark" onClick={() => {setCurrentPage("generate")}}>
             {/* Shield */}
             <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" 
