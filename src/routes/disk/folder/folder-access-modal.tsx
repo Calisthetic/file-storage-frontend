@@ -300,8 +300,6 @@ export default function FolderAccessModal({children, folderId, folderName, folde
           flex flex-row mt-2 items-center relative gap-x-2 w-full transition-colors
           hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark" onClick={() => {setCurrentPage("generate")}}>
             {/* Shield */}
-            {/* parent - group */}
-            {/* child - group-hover */}
             <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" 
             className="fill-[url(#ShieldGradient)] h-6 w-6 m-0.5">
               <defs>
@@ -334,8 +332,8 @@ export default function FolderAccessModal({children, folderId, folderName, folde
               <path d="M0 0h32v32H0z" fill="none"></path>
             </svg>
             <input className="w-full border-borderLight dark:border-borderDark 
-            text-textLight text-sm rounded-lg block dark:focus:border-textDark
-            focus:border-textLight bg-backgroundSecondLight dark:bg-backgroundSecondDark
+            text-textLight text-sm rounded-lg block focus:outline-none 
+            bg-backgroundSecondLight dark:bg-backgroundSecondDark
             dark:text-textDark py-2.5 pl-11 pr-9"
             type="text" placeholder="Folder's password..." ref={newUrlPasswordRef}/>
             <button className=" absolute left-full group -translate-x-10 p-1.5 rounded-md" 
@@ -350,7 +348,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
           </div>
           {/* time */}
           <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
-          flex flex-row mt-2 items-center gap-x-2 relative">
+          flex flex-row mt-2 items-center gap-x-2 relative flex-wrap">
             <div className="p-1 flex items-center justify-center">
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"><g data-name="22.time">
@@ -363,57 +361,59 @@ export default function FolderAccessModal({children, folderId, folderName, folde
               </svg>
             </div>
             <div>
-              <p className="text-center font-medium">Months</p>
-              <div className="flex flex-row font-semibold">
-                <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
-                text-lg border-r border-borderLight dark:border-borderDark"
-                onClick={SubtractMonths}>-</button>
-                <input className="w-9 text-sm block focus:outline-none
-                bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                dark:text-textDark text-textLight py-1 text-center"
-                type="number" placeholder="0" ref={inputTimeMonthsRef}
-                max="2" min="0" defaultValue={0}/>
-                <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
-                text-lg border-l border-borderLight dark:border-borderDark"
-                onClick={AddMonths}>+</button>
+              <div>
+                <p className="text-center font-medium">Months</p>
+                <div className="flex flex-row font-semibold">
+                  <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+                  text-lg border-r border-borderLight dark:border-borderDark"
+                  onClick={SubtractMonths}>-</button>
+                  <input className="w-9 text-sm block focus:outline-none
+                  bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                  dark:text-textDark text-textLight py-1 text-center"
+                  type="number" placeholder="0" ref={inputTimeMonthsRef}
+                  max="2" min="0" defaultValue={0}/>
+                  <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+                  text-lg border-l border-borderLight dark:border-borderDark"
+                  onClick={AddMonths}>+</button>
+                </div>
               </div>
-            </div>
-            <div>
-              <p className="text-center font-medium">Days</p>
-              <div className="flex flex-row font-semibold">
-                <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
-                text-lg border-r border-borderLight dark:border-borderDark"
-                onClick={SubtractDays}>-</button>
-                <input className="w-9 text-sm block focus:outline-none
-                bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                dark:text-textDark text-textLight py-1 text-center"
-                type="number" placeholder="0" ref={inputTimeDaysRef}
-                max="2" min="0" defaultValue={0}/>
-                <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
-                text-lg border-l border-borderLight dark:border-borderDark"
-                onClick={AddDays}>+</button>
+              <div>
+                <p className="text-center font-medium">Days</p>
+                <div className="flex flex-row font-semibold">
+                  <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+                  text-lg border-r border-borderLight dark:border-borderDark"
+                  onClick={SubtractDays}>-</button>
+                  <input className="w-9 text-sm block focus:outline-none
+                  bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                  dark:text-textDark text-textLight py-1 text-center"
+                  type="number" placeholder="0" ref={inputTimeDaysRef}
+                  max="2" min="0" defaultValue={0}/>
+                  <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+                  text-lg border-l border-borderLight dark:border-borderDark"
+                  onClick={AddDays}>+</button>
+                </div>
               </div>
-            </div>
-            <div>
-              <p className="text-center font-medium">Hours</p>
-              <div className="flex flex-row font-semibold">
-                <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
-                text-lg border-r border-borderLight dark:border-borderDark"
-                onClick={SubtractHours}>-</button>
-                <input className="w-9 text-sm block focus:outline-none
-                bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                dark:text-textDark text-textLight py-1 text-center"
-                type="number" placeholder="0" ref={inputTimeHoursRef}
-                max="2" min="0" defaultValue={0}/>
-                <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
-                text-lg border-l border-borderLight dark:border-borderDark"
-                onClick={AddHours}>+</button>
+              <div>
+                <p className="text-center font-medium">Hours</p>
+                <div className="flex flex-row font-semibold">
+                  <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+                  text-lg border-r border-borderLight dark:border-borderDark"
+                  onClick={SubtractHours}>-</button>
+                  <input className="w-9 text-sm block focus:outline-none
+                  bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                  dark:text-textDark text-textLight py-1 text-center"
+                  type="number" placeholder="0" ref={inputTimeHoursRef}
+                  max="2" min="0" defaultValue={0}/>
+                  <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+                  text-lg border-l border-borderLight dark:border-borderDark"
+                  onClick={AddHours}>+</button>
+                </div>
               </div>
             </div>
           </div>
@@ -491,23 +491,55 @@ export default function FolderAccessModal({children, folderId, folderName, folde
             </label>
             <p>Require authorization</p>
           </div>
-          <button className="mt-2 rounded-md p-1.5
-          bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark"
-          onClick={GenerateToken}>Generate link</button>
+          {/* Generate new url button */}
+          <button className="mt-2 rounded-md p-1.5 transition-colors gap-x-2 w-full
+          bg-backgroundThirdLight dark:bg-backgroundThirdDark flex flex-row items-center
+          hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark
+          border border-borderLight dark:border-borderDark font-medium"
+          onClick={GenerateToken}>
+            {generatedToken === null ? (
+              <>
+                <svg aria-hidden="true" role="status" className="w-4 h-4 animate-spin" 
+                viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 
+                  100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 
+                  100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 
+                  91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 
+                  9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" 
+                  className="fill-iconLight dark:fill-iconDark"/>
+                  <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 
+                  28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 
+                  7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 
+                  0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 
+                  9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 
+                  10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 
+                  21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 
+                  38.2158 91.5421 39.6781 93.9676 39.0409Z" 
+                  className="fill-iconLight dark:fill-iconDark"/>
+                </svg>
+                <span>Loading...</span>
+              </>
+            ) : (
+              <span>Generate token</span>
+            )}
+          </button>
+          {/* Copy place */}
           <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
           flex flex-row mt-2 items-center relative gap-x-2 justify-between w-full">
-            <p></p>
-            <button className="bg-backgroundThirdLight dark:bg-backgroundThirdDark
-            hover:bg-backgroundThirdLight hover:dark:bg-backgroundThirdDark
-            border border-borderLight dark:border-borderDark rounded-md"
+            <p className="truncate max-w-[240px] sm:max-w-[40dvw] xl:max-w-[540px]">ddddddddddddd sssssssssssss dddddddddddddd ssssssssssss dddddddddddddd sssssss</p>
+            <button className="bg-backgroundSecondLight dark:bg-backgroundSecondDark
+            hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+            border border-borderLight dark:border-borderDark rounded-md p-1"
             onClick={() => {CopyText(generatedToken)}}>
               <svg aria-hidden="true" viewBox="0 0 16 16" version="1.1" className="h-5 w-5">
                 <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 
                 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 
-                0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
+                0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"
+                className="fill-iconLight dark:fill-iconDark"></path>
                 <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 
                 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 
-                .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+                .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"
+                className="fill-iconLight dark:fill-iconDark"></path>
               </svg>
             </button>
           </div>
