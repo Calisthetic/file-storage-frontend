@@ -7,9 +7,9 @@ import "../../../styles/focus-elems.css"
 import { primaryColors } from "../../../data/folder-colors"
 import FolderAccessModal from "./folder-access-modal";
 import IconStar from "../../../components/icons";
+import { CutNumber, CutSize, GetCSSValue, BlurColor, cn, InvertColor, isDarkMode, IsNumeric } from "../../../lib/utils";
 // @ts-ignore
 import Hammer from 'hammerjs';
-import { cn } from "../../../lib/utils";
 
 type Props = {
   currentSortType: string
@@ -201,68 +201,6 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     }
   ]
 
-  function CutSize(num: number, stage: number = 0):string {
-    return num < 10240 ? num / 10 + (
-      stage === 0 ? " B"
-      : stage === 1 ? " KB"
-      : stage === 2 ? " MB"
-      : stage === 3 ? " GB" : " TB"
-    ) : CutSize(Math.floor(num / 1024), stage+1)
-  }
-  function CutNumber(num: number, stage: number = 0):string {
-    return num < 1000 ? (
-      stage === 0 ? num + " "
-      : stage === 1 ? num + "k"
-      : stage === 2 ? num + "M"
-      : "1B+"
-    ) : CutNumber(Math.floor(num / 1000), stage+1)
-  }
-
-  // Render colors
-  const colorsInRow:number = 5
-  function invertColor(hex:string) {
-    if (hex.indexOf('#') === 0) {
-      hex = hex.slice(1);
-    }
-    if (hex.length === 3) {
-      hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-    }
-    if (hex.length !== 6) {
-      throw new Error('Invalid HEX color.');
-    }
-    var r = (255 - parseInt(hex.slice(0, 2), 16)).toString(16),
-      g = (255 - parseInt(hex.slice(2, 4), 16)).toString(16),
-      b = (255 - parseInt(hex.slice(4, 6), 16)).toString(16);
-    return '#' + padZero(r) + padZero(g) + padZero(b);
-  }
-  function padZero(str:string) {
-    let len:number = 2;
-    var zeros = new Array(len).join('0');
-    return (zeros + str).slice(-len);
-  }
-  function blurColor(hex:string, value: number) {
-    if (hex.indexOf('#') === 0) {
-      hex = hex.slice(1);
-    }
-    if (hex.length === 3) {
-      hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-    }
-    if (hex.length !== 6) {
-      throw new Error('Invalid HEX color.');
-    }
-    var temp_r = parseInt(hex.slice(0, 2), 16) + value,
-      temp_g = parseInt(hex.slice(2, 4), 16) + value,
-      temp_b = parseInt(hex.slice(4, 6), 16) + value;
-    var r = temp_r > 255 ? (temp_r - 255).toString(16) : temp_r < 0 ? (255 - temp_r).toString(16) : temp_r.toString(16),
-      g = temp_g > 255 ? (temp_g - 255).toString(16) : temp_g < 0 ? (255 - temp_g).toString(16) : temp_g.toString(16),
-      b = temp_b > 255 ? (temp_b - 255).toString(16) : temp_b < 0 ? (255 - temp_b).toString(16) : temp_b.toString(16);
-    return '#' + padZero(r) + padZero(g) + padZero(b);
-  }
-
-  // Other useful functions
-  function isNumeric(n:any) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
-  }
 
   // Modal windows styles
   const modalWindowStyle = {
@@ -277,16 +215,9 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     borderRadius: "16px"
   };
 
-  // Dark mode
-  let isDarkMode:boolean = false;
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    isDarkMode = true
-  }
-  // Css variables
-  var styleVariables = getComputedStyle(document.body)
-  function GetCSSValue(name: string) {
-    return styleVariables.getPropertyValue('--' + name + (isDarkMode ? "Dark" : "Light"))
-  }
+  
+  // Render colors
+  const colorsInRow:number = 5
 
 
   // Last moved item/folder data
@@ -442,7 +373,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       dragged_id, target_id,
       dragged_type, target_type,
     }:MoveItemsProps) => {
-      if (!isNumeric(target_id) || !isNumeric(dragged_id)) {
+      if (!IsNumeric(target_id) || !IsNumeric(dragged_id)) {
         return false
       }
       if (target_type !== "folder" || dragged_type === undefined
@@ -597,7 +528,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
         }
       }
     }
-  }, [currentSortType, currentSortBy, currentRenderType, navigate, isDarkMode, lastMovedData])
+  }, [currentSortType, currentSortBy, currentRenderType, navigate, lastMovedData])
 
 
 
@@ -673,7 +604,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                                     enableBackground="new 0 0 24 24" className="w-6 h-6">
                                       <path d="M10 18c-.5 0-1-.2-1.4-.6l-4-4c-.8-.8-.8-2 0-2.8.8-.8 2.1-.8 
                                       2.8 0l2.6 2.6 6.6-6.6c.8-.8 2-.8 2.8 0 .8.8.8 2 0 2.8l-8 8c-.4.4-.9.6-1.4.6z" 
-                                      fill={invertColor("#" + primary_color.color)}></path>
+                                      fill={InvertColor("#" + primary_color.color)}></path>
                                     </svg>
                                   )}
                                 </button>
@@ -1078,7 +1009,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                                     enableBackground="new 0 0 24 24" className="w-6 h-6">
                                       <path d="M10 18c-.5 0-1-.2-1.4-.6l-4-4c-.8-.8-.8-2 0-2.8.8-.8 2.1-.8 
                                       2.8 0l2.6 2.6 6.6-6.6c.8-.8 2-.8 2.8 0 .8.8.8 2 0 2.8l-8 8c-.4.4-.9.6-1.4.6z" 
-                                      fill={invertColor("#" + primary_color.color)}></path>
+                                      fill={InvertColor("#" + primary_color.color)}></path>
                                     </svg>
                                   )}
                                 </button>
@@ -1500,9 +1431,9 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     className="w-28 h-28">
                       <path d="M12 6c0 1.1-.895 2-2 2H2c-1.105 0-2 .9-2 2v11c0 1.1.895 
                       2 2 2h20c1.105 0 2-.9 2-2V8c0-1.1-.895-2-2-2H12z" 
-                      fill={item.color ? blurColor(item.color, -32) : "#686868"}></path>
+                      fill={item.color ? BlurColor(item.color, -32) : "#686868"}></path>
                       <path d="M2 2a2 2 0 0 0-2 2v5h10v1h14V5a2 2 0 0 0-2-2H11.719A1.98 1.98 0 0 0 10 2H2z" 
-                      fill={item.color ? blurColor(item.color, -32) : "#686868"}></path>
+                      fill={item.color ? BlurColor(item.color, -32) : "#686868"}></path>
                       <path d="M12 5c0 1.1-.895 2-2 2H2C.895 7 0 7.9 0 9v11c0 1.1.895 
                       2 2 2h20c1.105 0 2-.9 2-2V7c0-1.1-.895-2-2-2H12z" 
                       fill={item.color ? "#" + item.color : "#888888"}></path>
@@ -1530,7 +1461,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                                   enableBackground="new 0 0 24 24" className="w-6 h-6">
                                     <path d="M10 18c-.5 0-1-.2-1.4-.6l-4-4c-.8-.8-.8-2 0-2.8.8-.8 2.1-.8 
                                     2.8 0l2.6 2.6 6.6-6.6c.8-.8 2-.8 2.8 0 .8.8.8 2 0 2.8l-8 8c-.4.4-.9.6-1.4.6z" 
-                                    fill={invertColor("#" + primary_color.color)}></path>
+                                    fill={InvertColor("#" + primary_color.color)}></path>
                                   </svg>
                                 )}
                               </button>
@@ -1581,7 +1512,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                         </div>
                       </div>
                       <div className=" mt-2.5 mr-0.5 font-medium pointer-events-none"
-                      style={{color: item.color ? blurColor(item.color, -60) : "#585858"}}>
+                      style={{color: item.color ? BlurColor(item.color, -60) : "#585858"}}>
                         {item.files_inside}
                       </div>
                     </div>
@@ -1592,7 +1523,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                         <button data-id={item.id} data-type="folder" className="pointer-events-auto">
                           <IconStar width="24px" height="24px" isActive={item.is_elected}
                           firstColor={GetCSSValue(item.is_elected ? "icon" : "text")} 
-                          secondColor={blurColor(GetCSSValue("icon"), -48)}></IconStar>
+                          secondColor={BlurColor(GetCSSValue("icon"), -48)}></IconStar>
                         </button>
                       </div>
                       <div data-id={item.id} data-type="folder" 
