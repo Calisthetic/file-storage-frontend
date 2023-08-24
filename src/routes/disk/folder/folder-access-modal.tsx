@@ -1,6 +1,7 @@
 import { useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { selfUrl } from "../../../data/data"
+import { BlurColor, GetCSSValue } from "../../../lib/utils"
 
 type Props = {
   children:string | JSX.Element | JSX.Element[]
@@ -35,6 +36,18 @@ export default function FolderAccessModal({children, folderId, folderName, folde
   const [generatedToken, setGeneratedToken] = useState<string | undefined | null>()
 
   const newUrlPasswordRef:any = useRef()
+  const inputTimeMonthsRef:any = useState()
+  const inputTimeDaysRef:any = useState()
+  const inputTimeHoursRef:any = useState()
+
+  const SubtractMonth = () => {
+    inputTimeMonthsRef.current.value = parseInt(inputTimeMonthsRef.current.value) <= 12 
+      ? 0 : inputTimeMonthsRef.current.value - 1
+  }
+  const AddMonth = () => {
+    inputTimeMonthsRef.current.value = parseInt(inputTimeMonthsRef.current.value) >= 12 
+      ? 12 : inputTimeMonthsRef.current.value + 1
+  }
 
   function GenerateToken() {
     setGeneratedToken(null)
@@ -48,7 +61,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
 
   return (
     <div className="text-textLight dark:text-textDark rounded-2xl
-    bg-backgroundLight dark:bg-backgroundDark p-4 min-w-xs"
+    bg-backgroundLight dark:bg-backgroundDark p-4 min-w-xs max-w-3xl"
     onClick={(e:any) => {if (e.target.dataset.name === undefined) {setIsRolesMenuOpen(false)}}}>
       <div className="font-medium text-center text-xl">{"Share - " + folderName}</div>
       {/* Warning */}
@@ -273,7 +286,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
               127.1c0-19.41 11.7-36.89 29.61-44.28l191.1-80.01c4.906-2.031 13.13-3.701 
               18.44-3.701c5.281 0 13.58 1.67 18.46 3.701l192 80.01C484.3 91.1 496 108.6 496 127.1z"/>
             </svg>
-            <div>Generate a link with the ability to set a password, expiration date and disable downloads</div>
+            <p className=" text-left">Generate a link with the ability to set a password, expiration date and disable downloads</p>
           </button>
         </>
       ) : ( // generate
@@ -296,7 +309,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
             focus:border-textLight bg-backgroundSecondLight dark:bg-backgroundSecondDark
             dark:text-textDark py-2.5 pl-11 pr-9"
             type="text" placeholder="Folder's password..." ref={newUrlPasswordRef}/>
-            <button className=" absolute left-full group -translate-x-11 p-1 rounded-md" 
+            <button className=" absolute left-full group -translate-x-10 p-1.5 rounded-md" 
             title="Clear password" onClick={() => {newUrlPasswordRef.current.value = ""}}>
               <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" className="h-7 w-7">
                 <path d="m7 7 18 18M7 25 25 7" fill="none" strokeLinecap="round" 
@@ -320,7 +333,58 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                 strokeLinejoin="round" strokeWidth="2px"></path></g>
               </svg>
             </div>
-            <input type="date"/>
+            <div>
+              <p className="text-center font-medium">Months</p>
+              <div className="flex flex-row font-semibold">
+                <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+                text-lg border-r border-borderLight dark:border-borderDark"
+                onClick={SubtractMonth}>-</button>
+                <input className="w-9 text-sm block focus:outline-none
+                bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                dark:text-textDark text-textLight py-1 text-center"
+                type="number" placeholder="0" ref={inputTimeMonthsRef}
+                max="2" min="0" defaultValue={0}/>
+                <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+                text-lg border-l border-borderLight dark:border-borderDark"
+                onClick={AddMonth}>+</button>
+              </div>
+            </div>
+            <div>
+              <p className="text-center font-medium">Days</p>
+              <div className="flex flex-row font-semibold">
+                <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+                text-lg border-r border-borderLight dark:border-borderDark"
+                onClick={() => {parseInt(inputTimeDaysRef.current.value) <= 0 ? 0 
+                    : parseInt(inputTimeDaysRef.current.value) - 1}}>-</button>
+                <input className="w-9 text-sm block focus:outline-none
+                bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                dark:text-textDark text-textLight py-1 text-center"
+                type="number" placeholder="0" ref={inputTimeDaysRef}
+                max="2" min="0" defaultValue={0}/>
+                <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+                text-lg border-l border-borderLight dark:border-borderDark">+</button>
+              </div>
+            </div>
+            <div>
+              <p className="text-center font-medium">Hours</p>
+              <div className="flex flex-row font-semibold">
+                <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+                text-lg border-r border-borderLight dark:border-borderDark">-</button>
+                <input className="w-9 text-sm block focus:outline-none
+                bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                dark:text-textDark text-textLight py-1 text-center"
+                type="number" placeholder="0" ref={inputTimeHoursRef}
+                max="2" min="0" defaultValue={0}/>
+                <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+                text-lg border-l border-borderLight dark:border-borderDark">+</button>
+              </div>
+            </div>
           </div>
           {/* download */}
           <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
@@ -332,15 +396,16 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
               </svg>
             </div>
-            <label className="relative inline-flex items-center mr-5 cursor-pointer">
+            <label className="relative inline-flex items-center mr-1 cursor-pointer">
               <input type="checkbox" defaultChecked={true} className="sr-only peer"/>
               <div className="w-9 h-5 rounded-full peer peer-checked:after:translate-x-full 
-              bg-backgroundThirdLight dark:bg-backgroundThirdDark 
+              bg-backgroundThirdLight dark:bg-backgroundThirdDark transition-colors
               after:content-[''] after:absolute after:top-0.5 after:left-[2px] 
               after:bg-white after:border-gray-300 after:border after:rounded-full 
               after:h-4 after:w-4 after:transition-all border-borderLight dark:border-borderDark 
               peer-checked:bg-iconLight peer-checked:dark:bg-iconDark" title="Download files"></div>
             </label>
+            <p>Allow downloads</p>
           </div>
           {/* can edit */}
           <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
@@ -357,15 +422,16 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                 className="fill-iconLight dark:fill-iconDark"></path>
               </svg>
             </div>
-            <label className="relative inline-flex items-center mr-5 cursor-pointer">
+            <label className="relative inline-flex items-center mr-1 cursor-pointer">
               <input type="checkbox" value="" className="sr-only peer"/>
               <div className="w-9 h-5 rounded-full peer peer-checked:after:translate-x-full 
-              bg-backgroundThirdLight dark:bg-backgroundThirdDark 
+              bg-backgroundThirdLight dark:bg-backgroundThirdDark transition-colors
               after:content-[''] after:absolute after:top-0.5 after:left-[2px] 
               after:bg-white after:border-gray-300 after:border after:rounded-full 
               after:h-4 after:w-4 after:transition-all border-borderLight dark:border-borderDark 
               peer-checked:bg-iconLight peer-checked:dark:bg-iconDark" title="Edit permissions"></div>
             </label>
+            <p>Edit permissions</p>
           </div>
           {/* auth required */}
           <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
@@ -383,18 +449,20 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                 strokeWidth="12" width="192" x="32" y="48" className="stroke-iconLight dark:stroke-iconDark"></rect>
               </svg>
             </div>
-            <label className="relative inline-flex items-center mr-5 cursor-pointer">
+            <label className="relative inline-flex items-center mr-1 cursor-pointer">
               <input type="checkbox" value="" className="sr-only peer"/>
               <div className="w-9 h-5 rounded-full peer peer-checked:after:translate-x-full 
-              bg-backgroundThirdLight dark:bg-backgroundThirdDark 
+              bg-backgroundThirdLight dark:bg-backgroundThirdDark transition-colors
               after:content-[''] after:absolute after:top-0.5 after:left-[2px] 
               after:bg-white after:border-gray-300 after:border after:rounded-full 
               after:h-4 after:w-4 after:transition-all border-borderLight dark:border-borderDark 
               peer-checked:bg-iconLight peer-checked:dark:bg-iconDark" title="Authentification required"></div>
             </label>
+            <p>Require authorization</p>
           </div>
-          <button className="mt-2 rounded-md p-1.5"
-          onClick={GenerateToken}></button>
+          <button className="mt-2 rounded-md p-1.5
+          bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark"
+          onClick={GenerateToken}>Generate link</button>
           <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
           flex flex-row mt-2 items-center relative gap-x-2 justify-between w-full">
             <p></p>
