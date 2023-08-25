@@ -49,6 +49,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
   const inputTimeDaysRef:any = useRef()
   const inputTimeHoursRef:any = useRef()
 
+  // Increment/decrement click functions
   const SubtractMonths = () => {
     inputTimeMonthsRef.current.value = parseInt(inputTimeMonthsRef.current.value) <= 0 
       ? 12 : parseInt(inputTimeMonthsRef.current.value) - 1
@@ -88,6 +89,13 @@ export default function FolderAccessModal({children, folderId, folderName, folde
     inputTimeHoursRef.current.value = currentValue >= 24 ? 0 : currentValue + 1
   }
 
+  function ClearExpirationTime() {
+    inputTimeMonthsRef.current.value = 0
+    inputTimeDaysRef.current.value = 0
+    inputTimeHoursRef.current.value = 0
+  }
+
+  // Generate request
   function GenerateToken() {
     setGeneratedToken(null)
     let newToken = "dksdskdlsk"
@@ -106,9 +114,9 @@ export default function FolderAccessModal({children, folderId, folderName, folde
     onClick={(e:any) => {if (e.target.dataset.name === undefined) {setIsRolesMenuOpen(false)}}}>
       <div className="font-medium text-center text-xl md:col-span-2">{"Share - " + folderName}</div>
       {/* Warning */}
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row w-full gap-x-2">
         <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md
-        grid grid-cols-alerts mt-2 p-2 items-center gap-x-2">
+        grid grid-cols-alerts mt-2 p-2 items-center gap-x-2 w-full">
           <svg fill="none" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
           className="h-7 w-7">
             <path d="M17 9a8 8 0 1 0-6.278 7.814 5.932 5.932 0 0 1-.388-.94 7 7 0 1 1 
@@ -133,7 +141,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
         </div>
         {/* Back button */}
         {currentPage !== "default" && (
-          <button className="mt-2 rounded-md p-1.5 transition-colors gap-x-2 w-full md:max-w-[10dvw]
+          <button className="mt-2 rounded-md p-1.5 transition-colors gap-x-2 w-full md:max-w-[80px]
           bg-backgroundLight dark:bg-backgroundDark flex flex-row items-center justify-center
           hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark
           border border-borderLight dark:border-borderDark font-medium"
@@ -337,7 +345,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
               127.1c0-19.41 11.7-36.89 29.61-44.28l191.1-80.01c4.906-2.031 13.13-3.701 
               18.44-3.701c5.281 0 13.58 1.67 18.46 3.701l192 80.01C484.3 91.1 496 108.6 496 127.1z"/>
             </svg>
-            <p className=" text-left">Generate a link with the ability to set a password, expiration date and disable downloads</p>
+            <p className="text-left">Generate a link with the ability to set a password, expiration time and disable downloads</p>
           </button>
         </>
       ) : ( // generate
@@ -372,8 +380,8 @@ export default function FolderAccessModal({children, folderId, folderName, folde
           </div>
           {/* time */}
           <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md p-1.5
-          flex flex-row mt-2 items-center gap-x-2 relative flex-wrap">
-            <div className="p-1 flex items-center justify-center">
+          flex flex-row mt-2 items-start gap-x-2">
+            <div className="p-1 absolute md:static md:flex items-center justify-center">
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"><g data-name="22.time">
                 <circle cx="12" cy="12" r="11" fill="none" 
@@ -384,60 +392,76 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                 strokeLinejoin="round" strokeWidth="2px"></path></g>
               </svg>
             </div>
-            <div>
-              <div>
-                <p className="text-center font-medium">Months</p>
-                <div className="flex flex-row font-semibold">
-                  <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
-                  text-lg border-r border-borderLight dark:border-borderDark"
-                  onClick={SubtractMonths}>-</button>
-                  <input className="w-9 text-sm block focus:outline-none
-                  bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                  dark:text-textDark text-textLight py-1 text-center"
-                  type="number" placeholder="0" ref={inputTimeMonthsRef}
-                  max="2" min="0" defaultValue={0}/>
-                  <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
-                  text-lg border-l border-borderLight dark:border-borderDark"
-                  onClick={AddMonths}>+</button>
+            {/* w-92 MDH */}
+            <div className="flex flex-row-reverse md:flex-row lg:flex-col gap-x-2">
+              <div className="w-min flex flex-col lg:flex-row lg:gap-x-2">
+                <div>
+                  <p className="text-center font-medium">Months</p>
+                  <div className="flex flex-row font-semibold">
+                    <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                    hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+                    text-lg border-r border-borderLight dark:border-borderDark"
+                    onClick={SubtractMonths}>-</button>
+                    <input className="w-9 text-sm block focus:outline-none
+                    bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                    dark:text-textDark text-textLight py-1 text-center"
+                    type="number" placeholder="0" ref={inputTimeMonthsRef}
+                    max="2" min="0" defaultValue={0}/>
+                    <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                    hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+                    text-lg border-l border-borderLight dark:border-borderDark"
+                    onClick={AddMonths}>+</button>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-center font-medium">Days</p>
+                  <div className="flex flex-row font-semibold">
+                    <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                    hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+                    text-lg border-r border-borderLight dark:border-borderDark"
+                    onClick={SubtractDays}>-</button>
+                    <input className="w-9 text-sm block focus:outline-none
+                    bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                    dark:text-textDark text-textLight py-1 text-center"
+                    type="number" placeholder="0" ref={inputTimeDaysRef}
+                    max="2" min="0" defaultValue={0}/>
+                    <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                    hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+                    text-lg border-l border-borderLight dark:border-borderDark"
+                    onClick={AddDays}>+</button>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-center font-medium">Hours</p>
+                  <div className="flex flex-row font-semibold">
+                    <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                    hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+                    text-lg border-r border-borderLight dark:border-borderDark"
+                    onClick={SubtractHours}>-</button>
+                    <input className="w-9 text-sm block focus:outline-none
+                    bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                    dark:text-textDark text-textLight py-1 text-center"
+                    type="number" placeholder="0" ref={inputTimeHoursRef}
+                    max="2" min="0" defaultValue={0}/>
+                    <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
+                    hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
+                    text-lg border-l border-borderLight dark:border-borderDark"
+                    onClick={AddHours}>+</button>
+                  </div>
                 </div>
               </div>
               <div>
-                <p className="text-center font-medium">Days</p>
-                <div className="flex flex-row font-semibold">
-                  <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
-                  text-lg border-r border-borderLight dark:border-borderDark"
-                  onClick={SubtractDays}>-</button>
-                  <input className="w-9 text-sm block focus:outline-none
-                  bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                  dark:text-textDark text-textLight py-1 text-center"
-                  type="number" placeholder="0" ref={inputTimeDaysRef}
-                  max="2" min="0" defaultValue={0}/>
-                  <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
-                  text-lg border-l border-borderLight dark:border-borderDark"
-                  onClick={AddDays}>+</button>
-                </div>
-              </div>
-              <div>
-                <p className="text-center font-medium">Hours</p>
-                <div className="flex flex-row font-semibold">
-                  <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
-                  text-lg border-r border-borderLight dark:border-borderDark"
-                  onClick={SubtractHours}>-</button>
-                  <input className="w-9 text-sm block focus:outline-none
-                  bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                  dark:text-textDark text-textLight py-1 text-center"
-                  type="number" placeholder="0" ref={inputTimeHoursRef}
-                  max="2" min="0" defaultValue={0}/>
-                  <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
-                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
-                  text-lg border-l border-borderLight dark:border-borderDark"
-                  onClick={AddHours}>+</button>
-                </div>
+                <p className="indent-8 md:indent-0 mt-0.5 text-justify">
+                  <span>Set link expiration time. </span>
+                  <span>After the expiration date, the link will be unavailable. </span>
+                </p>
+                <p>
+                  <span>Leave the fields 
+                    <button className="mx-1 underline text-buttonLight dark:text-buttonDark
+                    hover:text-buttonHoverLight hover:dark:text-buttonHoverDark transition-colors"
+                    onClick={ClearExpirationTime}>blank</button> 
+                  to clear the expiration time.</span>
+                </p>
               </div>
             </div>
           </div>
@@ -573,6 +597,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
         {children}
       </div>
 
+      {/* Successfully copied */}
       <AnimatePresence>
         {isCopied && (
           <motion.button initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
@@ -594,6 +619,8 @@ export default function FolderAccessModal({children, folderId, folderName, folde
           </motion.button>
         )}
       </AnimatePresence>
+
+      {/* Error alert */}
     </div>
   )
 }
