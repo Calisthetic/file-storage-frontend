@@ -101,34 +101,46 @@ export default function FolderAccessModal({children, folderId, folderName, folde
   }
 
   return (
-    <div className="text-textLight dark:text-textDark rounded-2xl
-    bg-backgroundLight dark:bg-backgroundDark p-4 min-w-xs max-w-3xl"
+    <div className="text-textLight dark:text-textDark rounded-2xl max-h-fulldvh
+    bg-backgroundLight dark:bg-backgroundDark p-4 min-w-xs max-w-3xl overflow-y-scroll"
     onClick={(e:any) => {if (e.target.dataset.name === undefined) {setIsRolesMenuOpen(false)}}}>
-      <div className="font-medium text-center text-xl">{"Share - " + folderName}</div>
+      <div className="font-medium text-center text-xl md:col-span-2">{"Share - " + folderName}</div>
       {/* Warning */}
-      <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md
-      grid grid-cols-alerts mt-2 p-2 items-center gap-x-2">
-        <svg fill="none" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
-        className="h-7 w-7">
-          <path d="M17 9a8 8 0 1 0-6.278 7.814 5.932 5.932 0 0 1-.388-.94 7 7 0 1 1 
-          5.64-7.474l.032.03c.2.209.399.387.597.537.131.1.263.186.394.263.002-.077.003-.153.003-.23Z" 
-          className="fill-warningLight dark:fill-warningDark"></path>
-          <path d="M9.049 5a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5ZM9 7.5a.5.5 0 0 1 
-          .492.41L9.5 8v4.502a.5.5 0 0 1-.992.09l-.008-.09V8a.5.5 0 0 1 .5-.5ZM17 
-          10.347a4.632 4.632 0 0 1-1-.583 6.055 6.055 0 0 1-.716-.642.389.389 0 0 
-          0-.566 0c-.995 1.036-2.095 1.545-3.318 1.545-.22 
-          0-.4.186-.4.416v2.501l.004.266c.027.797.174 1.514.44 2.15A4.813 4.813 0 0 0 13 
-          18c.524.4 1.15.727 1.874.979.083.028.171.028.254 0 2.56-.89 3.873-2.713 
-          3.873-5.395v-2.5l-.008-.085a.405.405 0 0 0-.392-.332 4.057 4.057 0 0 1-1.6-.32Z" 
-          className="fill-warningLight dark:fill-warningDark"></path>
-        </svg>
-        <div>
-          {currentPage === "default" ? (
-            "Everyone who has the link will be able to view and download all the content inside the current folder"
-          ) : (
-            "Access to the content inside of the current folder will depend on your settings"
-          )}
+      <div className="flex flex-col md:flex-row">
+        <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md
+        grid grid-cols-alerts mt-2 p-2 items-center gap-x-2">
+          <svg fill="none" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
+          className="h-7 w-7">
+            <path d="M17 9a8 8 0 1 0-6.278 7.814 5.932 5.932 0 0 1-.388-.94 7 7 0 1 1 
+            5.64-7.474l.032.03c.2.209.399.387.597.537.131.1.263.186.394.263.002-.077.003-.153.003-.23Z" 
+            className="fill-warningLight dark:fill-warningDark"></path>
+            <path d="M9.049 5a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5ZM9 7.5a.5.5 0 0 1 
+            .492.41L9.5 8v4.502a.5.5 0 0 1-.992.09l-.008-.09V8a.5.5 0 0 1 .5-.5ZM17 
+            10.347a4.632 4.632 0 0 1-1-.583 6.055 6.055 0 0 1-.716-.642.389.389 0 0 
+            0-.566 0c-.995 1.036-2.095 1.545-3.318 1.545-.22 
+            0-.4.186-.4.416v2.501l.004.266c.027.797.174 1.514.44 2.15A4.813 4.813 0 0 0 13 
+            18c.524.4 1.15.727 1.874.979.083.028.171.028.254 0 2.56-.89 3.873-2.713 
+            3.873-5.395v-2.5l-.008-.085a.405.405 0 0 0-.392-.332 4.057 4.057 0 0 1-1.6-.32Z" 
+            className="fill-warningLight dark:fill-warningDark"></path>
+          </svg>
+          <div>
+            {currentPage === "default" ? (
+              "Everyone who has the link will be able to view and download all the content inside the current folder"
+            ) : (
+              "Access to the content inside of the current folder will depend on your settings"
+            )}
+          </div>
         </div>
+        {/* Back button */}
+        {currentPage !== "default" && (
+          <button className="mt-2 rounded-md p-1.5 transition-colors gap-x-2 w-full md:max-w-[10dvw]
+          bg-backgroundLight dark:bg-backgroundDark flex flex-row items-center justify-center
+          hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark
+          border border-borderLight dark:border-borderDark font-medium"
+          onClick={() => {setCurrentPage("default")}}>
+            <span>Back</span>
+          </button>
+        )}
       </div>
       {currentPage === "default" ? (
         <>
@@ -330,14 +342,6 @@ export default function FolderAccessModal({children, folderId, folderName, folde
         </>
       ) : ( // generate
         <>
-          {/* Back button */}
-          <button className="mt-2 rounded-md p-1.5 transition-colors gap-x-2 w-full
-          bg-backgroundLight dark:bg-backgroundDark flex flex-row items-center justify-center
-          hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark
-          border border-borderLight dark:border-borderDark font-medium"
-          onClick={() => {setCurrentPage("default")}}>
-            <span>Back</span>
-          </button>
           {/* password */}
           <div className="bg-backgroundSecondLight dark:bg-backgroundSecondDark rounded-md
           flex flex-row mt-2 items-center relative gap-x-2">
