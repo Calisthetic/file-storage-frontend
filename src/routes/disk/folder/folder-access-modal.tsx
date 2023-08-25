@@ -21,15 +21,30 @@ export default function FolderAccessModal({children, folderId, folderName, folde
   // Notifications
   const [isCopied, setIsCopied] = useState(false)
   const [isError, setIsError] = useState(false)
+  const [isWarning, setIsWarning] = useState(false)
+  const [warningText, setWarningText] = useState<string>("Something went wrong")
+
+  function OpenAlert(type:string) {
+    setIsCopied(false)
+    setIsError(false)
+    setIsWarning(false)
+
+    setTimeout(() => {
+      if (type === "copied") {
+        setIsCopied(true)
+      } else if (type === "error") {
+        setIsError(true)
+      } else if (type === "warning") {
+        setIsWarning(true)
+      }
+    }, 100);
+  }
 
 
   function CopyText(token:string | undefined | null) {
     if (token) {
       navigator.clipboard.writeText(selfUrl + "disk/folder/" + token);
-      setIsCopied(false)
-      setTimeout(() => {
-        setIsCopied(true)
-      }, 100);
+      OpenAlert("copied")
     }
   }
 
@@ -100,15 +115,33 @@ export default function FolderAccessModal({children, folderId, folderName, folde
 
   // Generate request
   function GenerateToken() {
+    // Data check
+    if (inputTimeMonthsRef.current.value < 0 
+    || inputTimeDaysRef.current.value < 0
+    || inputTimeHoursRef.current.value < 0) {
+      setWarningText("Number cannot be negative")
+      OpenAlert("warning")
+      return
+    } else if (inputTimeMonthsRef.current.value > 12) {
+      setWarningText("The number of months is too long")
+      OpenAlert("warning")
+      return
+    } else if (inputTimeDaysRef.current.value > 31) {
+      setWarningText("The number of days is too long")
+      OpenAlert("warning")
+      return
+    } else if (inputTimeHoursRef.current.value > 24) {
+      setWarningText("The number of hours is too long")
+      OpenAlert("warning")
+      return
+    }
+
     setGeneratedToken(null)
     let newToken = "dksdskdlsk"
-
-
-    
+    // Request
     setTimeout(() => {
       setGeneratedToken(newToken)
       CopyText(newToken)
-      //setIsError(true)
     }, 1000);
   }
 
@@ -641,6 +674,27 @@ export default function FolderAccessModal({children, folderId, folderName, folde
               2zm-7 13h-2v-2h2v2zm0-4h-2V5h2v6z" className="fill-errorLight dark:fill-errorDark"></path>
             </svg>
             <span className="pointer-events-none">Failes to copy new link</span>
+          </motion.button>
+        )}
+      </AnimatePresence>
+
+      {/* Warning alert */}
+      <AnimatePresence>
+        {isWarning && (
+          <motion.button initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
+          transition={{stiffness: 200, damping: 24, duration: 0.1}}
+          onClick={(e:any) => {e.target.style.marginTop = "-40px"; setTimeout(() => {
+            setIsWarning(false)
+          }, 100);}}
+          className="text-warningLight dark:text-warningDark rounded-2xl absolute
+          bg-backgroundLight dark:bg-backgroundDark p-2 min-w-xs w-full -ml-4 mt-6 -z-10
+          flex justify-center items-center font-medium transition-[margin]">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 mr-2">
+              <path className="fill-warningLight dark:fill-warningDark" fillRule="evenodd" clipRule="evenodd" 
+              d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 
+              3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"/>
+            </svg>
+            <span className="pointer-events-none">{warningText}</span>
           </motion.button>
         )}
       </AnimatePresence>
