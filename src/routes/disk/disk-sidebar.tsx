@@ -8,7 +8,8 @@ export default function DiskSideBar() {
 
   return (
     <div className="h-full px-3 pb-4 bg-backgroundLight dark:bg-backgroundDark
-    dark:text-textDark text-textLight font-medium text-sm sm:text-base">
+    dark:text-textDark text-textLight font-medium text-sm sm:text-base
+    overflow-y-auto">
       <ul className="space-y-1">
         <li>
           <Link to="folder/main" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
