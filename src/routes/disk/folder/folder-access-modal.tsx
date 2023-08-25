@@ -18,8 +18,11 @@ export default function FolderAccessModal({children, folderId, folderName, folde
 
   const [isRolesMenuOpen, setIsRolesMenuOpen] = useState(false)
 
-  // Copied notification
+  // Notifications
   const [isCopied, setIsCopied] = useState(false)
+  const [isError, setIsError] = useState(false)
+
+
   function CopyText(token:string | undefined | null) {
     if (token) {
       navigator.clipboard.writeText(selfUrl + "disk/folder/" + token);
@@ -105,6 +108,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
     setTimeout(() => {
       setGeneratedToken(newToken)
       CopyText(newToken)
+      //setIsError(true)
     }, 1000);
   }
 
@@ -406,7 +410,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                     bg-backgroundThirdLight dark:bg-backgroundThirdDark
                     dark:text-textDark text-textLight py-1 text-center"
                     type="number" placeholder="0" ref={inputTimeMonthsRef}
-                    max="2" min="0" defaultValue={0}/>
+                    max="2" min="0" maxLength={2} defaultValue={0}/>
                     <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
                     hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
                     text-lg border-l border-borderLight dark:border-borderDark"
@@ -424,7 +428,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                     bg-backgroundThirdLight dark:bg-backgroundThirdDark
                     dark:text-textDark text-textLight py-1 text-center"
                     type="number" placeholder="0" ref={inputTimeDaysRef}
-                    max="2" min="0" defaultValue={0}/>
+                    max="2" min="0" maxLength={2} defaultValue={0}/>
                     <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
                     hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
                     text-lg border-l border-borderLight dark:border-borderDark"
@@ -442,7 +446,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                     bg-backgroundThirdLight dark:bg-backgroundThirdDark
                     dark:text-textDark text-textLight py-1 text-center"
                     type="number" placeholder="0" ref={inputTimeHoursRef}
-                    max="2" min="0" defaultValue={0}/>
+                    max="2" min="0" maxLength={2} defaultValue={0}/>
                     <button className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
                     hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
                     text-lg border-l border-borderLight dark:border-borderDark"
@@ -610,10 +614,10 @@ export default function FolderAccessModal({children, folderId, folderName, folde
             className="h-4 w-4 mr-2">
               <path d="M58.395 32.156 42.995 50.625l-5.39-6.463a5.995 5.995 0 1 0-9.212 
               7.676l9.997 12a5.991 5.991 0 0 0 9.21.006l20.005-24a5.999 5.999 0 1 0-9.211-7.688Z" 
-              className=" fill-successLight dark:fill-successDark"></path>
+              className="fill-successLight dark:fill-successDark"></path>
               <path d="M48 0a48 48 0 1 0 48 48A48.051 48.051 0 0 0 48 0Zm0 84a36 
               36 0 1 1 36-36 36.04 36.04 0 0 1-36 36Z" 
-              className=" fill-successLight dark:fill-successDark"></path>
+              className="fill-successLight dark:fill-successDark"></path>
             </svg>
             <span className="pointer-events-none">Copied</span>
           </motion.button>
@@ -621,6 +625,25 @@ export default function FolderAccessModal({children, folderId, folderName, folde
       </AnimatePresence>
 
       {/* Error alert */}
+      <AnimatePresence>
+        {isError && (
+          <motion.button initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
+          transition={{stiffness: 200, damping: 24, duration: 0.1}}
+          onClick={(e:any) => {e.target.style.marginTop = "-40px"; setTimeout(() => {
+            setIsError(false)
+          }, 100);}}
+          className="text-errorLight dark:text-errorDark rounded-2xl absolute
+          bg-backgroundLight dark:bg-backgroundDark p-2 min-w-xs w-full -ml-4 mt-6 -z-10
+          flex justify-center items-center font-medium transition-[margin]">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2">
+              <path d="M20 2H4c-1.103 0-2 .894-2 1.992v12.016C2 17.106 2.897 18 4 
+              18h3v4l6.351-4H20c1.103 0 2-.894 2-1.992V3.992A1.998 1.998 0 0 0 20 
+              2zm-7 13h-2v-2h2v2zm0-4h-2V5h2v6z" className="fill-errorLight dark:fill-errorDark"></path>
+            </svg>
+            <span className="pointer-events-none">Failes to copy new link</span>
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
