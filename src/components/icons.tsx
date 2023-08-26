@@ -1,16 +1,30 @@
 import { FunctionComponent } from "react";
 
+// Styles
 interface ColorProps {
   firstColor: string,
   secondColor: string,
+}
+interface FillProps {
+  fillClasses: string
 }
 interface SizeProps {
   width: string,
   height: string,
 }
+interface ClassesProps {
+  classes: string
+}
+// Custom
+interface TypeProps {
+  type: string
+}
 interface IsActiveProps {
   isActive: boolean
 }
+
+
+
 type IconTileStarProps = ColorProps & SizeProps & IsActiveProps
 const IconTileStar: FunctionComponent<IconTileStarProps> = ({firstColor, secondColor, width, height, isActive}:IconTileStarProps) => {
   return isActive ? ( 
@@ -28,12 +42,7 @@ const IconTileStar: FunctionComponent<IconTileStarProps> = ({firstColor, secondC
 }
 export default IconTileStar;
 
-interface ClassesProps {
-  classes: string
-}
-interface TypeProps {
-  type: string
-}
+
 type IconAlertsProps = ClassesProps & TypeProps
 export function IconAlerts({classes, type}:IconAlertsProps) {
   return type === "error" ? (
@@ -59,4 +68,19 @@ export function IconAlerts({classes, type}:IconAlertsProps) {
       3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"/>
     </svg>
   ))
+}
+
+type IconInfoProps = ClassesProps & FillProps
+export function IconInfo({classes, fillClasses}:IconInfoProps) {
+  return (
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
+    enableBackground="new 0 0 24 24" className={classes}><g>
+      <path d="M12 10c-.6 0-1 .4-1 1v5c0 .6.4 1 1 1s1-.4 1-1v-5c0-.6-.4-1-1-1z" 
+      className={fillClasses}></path>
+      <circle cx="12" cy="8" r="1" className={fillClasses}></circle>
+      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 
+      18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z" 
+      className={fillClasses}></path></g>
+    </svg>
+  )
 }

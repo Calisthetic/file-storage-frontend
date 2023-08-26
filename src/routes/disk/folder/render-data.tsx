@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import "../../../styles/focus-elems.css"
 import { primaryColors } from "../../../data/folder-colors"
 import FolderAccessModal from "./folder-access-modal";
-import IconTileStar from "../../../components/icons";
+import IconTileStar, { IconInfo } from "../../../components/icons";
 import { CutNumber, CutSize, GetCSSValue, BlurColor, cn, InvertColor, isDarkMode, IsNumeric } from "../../../lib/utils";
 // @ts-ignore
 import Hammer from 'hammerjs';
@@ -620,15 +620,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     {/* Info */}
                     <div className="w-6 sm:w-7 mg:w-8" data-token={item.token}>
                       <div className="w-6 sm:w-7 mg:w-8 hover-first-info">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
-                        enableBackground="new 0 0 24 24" className="h-6 w-6 pointer-events-none"><g id="Layer_2">
-                          <path d="M12 10c-.6 0-1 .4-1 1v5c0 .6.4 1 1 1s1-.4 1-1v-5c0-.6-.4-1-1-1z" 
-                          className="fill-textLight dark:fill-textDark"></path>
-                          <circle cx="12" cy="8" r="1" className="fill-textLight dark:fill-textDark"></circle>
-                          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 
-                          18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z" 
-                          className="fill-textLight dark:fill-textDark"></path></g>
-                        </svg>
+                        <IconInfo classes="h-6 w-6" fillClasses="fill-textLight dark:fill-textDark"></IconInfo>
                       </div>
                       <div className="hover-second-info px-1 overflow-hidden text-base whitespace-pre z-10
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded text-gray-700 dark:text-gray-400">
@@ -770,10 +762,6 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           </div>
           <div ref={visualizeFilesRef}
           className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all h-auto"
-          // className={cn("grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all", {
-          // "h-0 overflow-hidden -translate-y-4 opacity-0": !isFilesVisible,
-          // "translate-y-0": isFilesVisible
-          // })}
           >
             {files.sort((a, b) => {
               if (currentSortType === "name" ? a.name < b.name
@@ -814,15 +802,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     {/* Info */}
                     <div className="w-6 sm:w-7 mg:w-8">
                       <div className="w-6 sm:w-7 mg:w-8 hover-first-info">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
-                        enableBackground="new 0 0 24 24" className="h-6 w-6"><g id="Layer_2">
-                          <path d="M12 10c-.6 0-1 .4-1 1v5c0 .6.4 1 1 1s1-.4 1-1v-5c0-.6-.4-1-1-1z" 
-                          className="fill-textLight dark:fill-textDark"></path>
-                          <circle cx="12" cy="8" r="1" className="fill-textLight dark:fill-textDark"></circle>
-                          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 
-                          18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z" 
-                          className="fill-textLight dark:fill-textDark"></path></g>
-                        </svg>
+                        <IconInfo classes="h-6 w-6" fillClasses="fill-textLight dark:fill-textDark"></IconInfo>
                       </div>
                       <div className="hover-second-info px-1 overflow-hidden text-base whitespace-pre z-10
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded text-gray-700 dark:text-gray-400">
@@ -1097,14 +1077,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   {/* Info watches and downloads */}
                   <td>
                     <div className="hover-first-info">
-                      <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16"
-                      className="w-6 h-6 ml-0 sm:ml-0.5 md:ml-1">
-                        <path d="M8 2C4.69 2 2 4.69 2 8s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 11c-2.76 
-                        0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" className="fill-textLight dark:fill-textDark"></path>
-                        <path d="M8 6.85c-.28 0-.5.22-.5.5v3.4c0 .28.22.5.5.5s.5-.22.5-.5v-3.4c0-.27-.22-.5-.5-.5zM8.01 
-                        4.8c-.26-.02-.5.25-.51.52v.08c0 .27.21.47.49.48H8c.27 0 .49-.24.5-.5v-.11c0-.29-.21-.47-.49-.47z" 
-                        className="fill-textLight dark:fill-textDark"></path>
-                      </svg>
+                      <IconInfo classes="w-6 h-6 ml-0 sm:ml-0.5 md:ml-1" fillClasses="fill-textLight dark:fill-textDark"></IconInfo>
                     </div>
                     <div className="hover-second-info ml-4 bg-backgroundThirdLight dark:bg-backgroundThirdDark px-2 py-1 rounded z-10">
                       <div className="flex flex-row space-x-2 text-sm font-medium">
@@ -1257,14 +1230,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   {/* Info watches and downloads */}
                   <td>
                     <div className="hover-first-info">
-                      <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16"
-                      className="w-6 h-6 ml-0 sm:ml-0.5 md:ml-1">
-                        <path d="M8 2C4.69 2 2 4.69 2 8s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 11c-2.76 
-                        0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" className="fill-textLight dark:fill-textDark"></path>
-                        <path d="M8 6.85c-.28 0-.5.22-.5.5v3.4c0 .28.22.5.5.5s.5-.22.5-.5v-3.4c0-.27-.22-.5-.5-.5zM8.01 
-                        4.8c-.26-.02-.5.25-.51.52v.08c0 .27.21.47.49.48H8c.27 0 .49-.24.5-.5v-.11c0-.29-.21-.47-.49-.47z" 
-                        className="fill-textLight dark:fill-textDark"></path>
-                      </svg>
+                      <IconInfo classes="w-6 h-6 ml-0 sm:ml-0.5 md:ml-1" fillClasses="fill-textLight dark:fill-textDark"></IconInfo>
                     </div>
                     <div className="hover-second-info ml-4 bg-backgroundThirdLight dark:bg-backgroundThirdDark px-2 py-1 rounded z-10">
                       <div className="flex flex-row space-x-2 text-sm font-medium">
@@ -1478,15 +1444,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     <div data-id={item.id} data-type="folder" 
                     className="flex flex-row justify-between pt-2.5 px-0.5">
                       <div>
-                        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16"
-                        className="w-6 hover-first-info h-6 pointer-events-auto" data-id={item.id} data-type="folder">
-                          <path d="M8 2C4.69 2 2 4.69 2 8s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 11c-2.76 
-                          0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" 
-                          className="fill-textLight dark:fill-textDark"></path>
-                          <path d="M8 6.85c-.28 0-.5.22-.5.5v3.4c0 .28.22.5.5.5s.5-.22.5-.5v-3.4c0-.27-.22-.5-.5-.5zM8.01 
-                          4.8c-.26-.02-.5.25-.51.52v.08c0 .27.21.47.49.48H8c.27 0 .49-.24.5-.5v-.11c0-.29-.21-.47-.49-.47z" 
-                          className="fill-textLight dark:fill-textDark"></path>
-                        </svg>
+                        <IconInfo classes="w-6 h-6 hover-first-info pointer-events-auto" 
+                        fillClasses="fill-textLight dark:fill-textDark"></IconInfo>
                         <div className="hover-second-info ml-3 bg-backgroundThirdLight dark:bg-backgroundThirdDark 
                         px-2 py-1 rounded z-10">
                           <div className="flex flex-row space-x-2 text-sm font-medium">
