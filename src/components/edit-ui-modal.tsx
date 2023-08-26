@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from "framer-motion"
+import { IconAlerts } from './icons';
 
 export default function EditUIModal() {
   // Pages (colors/fonts) logic
@@ -12,7 +13,7 @@ export default function EditUIModal() {
   }
 
   // User's data
-  let isCustomizable:boolean = false 
+  let isCustomizable:boolean = true 
 
   // Live theme changing
   const [LastSaveTry, setLastSaveTry] = useState(Date.now())
@@ -466,13 +467,7 @@ export default function EditUIModal() {
           id="alert-1" className="absolute w-full items-center p-4 text-successLight dark:text-successDark 
           opacity-0 bg-backgroundSecondLight dark:bg-backgroundSecondDark dark:text-blue-400h 
           flex rounded-xl mt-2 -z-10" role="alert">
-            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 512 512" className="w-4 h-4">
-              <path className="fill-successLight dark:fill-successDark" d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 
-              387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 
-              0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 
-              104c6.249 6.249 16.379 6.249 22.628.001z"></path>
-            </svg>
+            <IconAlerts classes='w-4 h-4' type='success'></IconAlerts>
             <span className="sr-only">Info</span>
             <div className="ml-3 text-sm font-medium">
               Changes saved
@@ -529,11 +524,7 @@ export default function EditUIModal() {
           id="alert-1" className="absolute w-full items-center p-2 text-errorLight dark:text-errorDark 
           opacity-0 bg-backgroundSecondLight dark:bg-backgroundSecondDark dark:text-blue-400h 
           flex rounded-xl justify-between mt-2 -z-10" role="alert">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2">
-              <path d="M20 2H4c-1.103 0-2 .894-2 1.992v12.016C2 17.106 2.897 18 4 
-              18h3v4l6.351-4H20c1.103 0 2-.894 2-1.992V3.992A1.998 1.998 0 0 0 20 
-              2zm-7 13h-2v-2h2v2zm0-4h-2V5h2v6z" className=" fill-errorLight dark:fill-errorDark"></path>
-            </svg>
+            <IconAlerts classes="mr-2 h-5 w-5" type="error"></IconAlerts>
             <span className="sr-only">Info</span>
             <div className="ml-2 text-sm font-medium whitespace-pre-wrap">
               {currentErrorText}

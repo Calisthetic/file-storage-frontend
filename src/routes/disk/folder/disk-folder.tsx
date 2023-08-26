@@ -7,6 +7,7 @@ import Modal from '@mui/material/Modal';
 
 import "../../../styles/hover-elems.css"
 import RenderData from "./render-data";
+import { IconAlerts } from "../../../components/icons";
 
 export default function DiskFolder() {
   const inputFileButtonRef:any = useRef()
@@ -454,11 +455,7 @@ export default function DiskFolder() {
                 className="text-errorLight dark:text-errorDark rounded-2xl absolute
                 bg-backgroundLight dark:bg-backgroundDark p-2 min-w-xs w-full -ml-4 mt-6 -z-10
                 flex justify-center items-center font-medium transition-[margin]">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2">
-                    <path d="M20 2H4c-1.103 0-2 .894-2 1.992v12.016C2 17.106 2.897 18 4 
-                    18h3v4l6.351-4H20c1.103 0 2-.894 2-1.992V3.992A1.998 1.998 0 0 0 20 
-                    2zm-7 13h-2v-2h2v2zm0-4h-2V5h2v6z" className=" fill-errorLight dark:fill-errorDark"></path>
-                  </svg>
+                  <IconAlerts classes="mr-2 h-5 w-5" type="error"></IconAlerts>
                   <span className="pointer-events-none">{currentError}</span>
                 </motion.button>
               )}
