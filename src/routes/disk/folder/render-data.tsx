@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import "../../../styles/focus-elems.css"
 import { primaryColors } from "../../../data/folder-colors"
 import FolderAccessModal from "./folder-access-modal";
-import IconStar from "../../../components/icons";
+import IconTileStar from "../../../components/icons";
 import { CutNumber, CutSize, GetCSSValue, BlurColor, cn, InvertColor, isDarkMode, IsNumeric } from "../../../lib/utils";
 // @ts-ignore
 import Hammer from 'hammerjs';
@@ -1521,9 +1521,9 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     className="flex flex-row justify-between items-end px-1 pb-1.5">
                       <div className="">
                         <button data-id={item.id} data-type="folder" className="pointer-events-auto">
-                          <IconStar width="24px" height="24px" isActive={item.is_elected}
+                          <IconTileStar width="24px" height="24px" isActive={item.is_elected}
                           firstColor={GetCSSValue(item.is_elected ? "icon" : "text")} 
-                          secondColor={BlurColor(GetCSSValue("icon"), -48)}></IconStar>
+                          secondColor={BlurColor(GetCSSValue("icon"), -48)}></IconTileStar>
                         </button>
                       </div>
                       <div data-id={item.id} data-type="folder" 
