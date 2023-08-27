@@ -49,7 +49,7 @@ const ColorPicker: FunctionComponent<ColorPickerProps> = ({type, folderColor, fo
       <div className="font-semibold mb-1">
         <div>Folder's color</div>
       </div>
-      <div className="flex flex-col flex-wrap gap-[2px] max-h-[143px] min-h-[143px]">
+      <div className="flex flex-col flex-wrap max-h-[145px] min-h-[145px]">
         {extendedColors.map((extended_color, extended_color_index) => folderColor === extended_color ? (
           <button className="rounded h-4 w-4" style={{backgroundColor: "#" + extended_color}}
           key={extended_color_index} onClick={() => ChangeColor(extended_color)}>
@@ -61,7 +61,7 @@ const ColorPicker: FunctionComponent<ColorPickerProps> = ({type, folderColor, fo
             </svg>
           </button>
         ) : (
-          <button className="rounded h-4 w-4" style={{backgroundColor: "#" + extended_color}}
+          <button className="rounded h-4 w-4 m-[1px]" style={{backgroundColor: "#" + extended_color}}
           key={extended_color_index} onClick={() => ChangeColor(extended_color)}></button>
         ))}
       </div>
