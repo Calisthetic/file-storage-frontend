@@ -4,10 +4,9 @@ import Modal from '@mui/material/Modal';
 import { useNavigate } from 'react-router-dom';
 
 import "../../../styles/focus-elems.css"
-import { defaultColors } from "../../../data/folder-colors"
 import FolderAccessModal from "./folder-access-modal";
 import IconTileStar, { IconInfo } from "../../../components/icons";
-import { CutNumber, CutSize, GetCSSValue, BlurColor, cn, InvertColor, isDarkMode, IsNumeric } from "../../../lib/utils";
+import { CutNumber, CutSize, GetCSSValue, BlurColor, cn, isDarkMode, IsNumeric } from "../../../lib/utils";
 // @ts-ignore
 import Hammer from 'hammerjs';
 import ColorPicker from "./color-picker";
@@ -212,13 +211,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     width: "auto",
     bgcolor: 'none',
     boxShadow: 24,
-    //overflow: "hidden",
     borderRadius: "16px"
   };
-
-  
-  // Render colors
-  const colorsInRow:number = 5
 
 
   // Last moved item/folder data
@@ -584,9 +578,9 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       </svg>
                     </button>
                     {/* Color picker */}
-                    <div className="bg-backgroundLight dark:bg-backgroundThirdDark 
+                    <div className="bg-backgroundLight dark:bg-backgroundThirdDark w-max
                     focus-second-right rounded-lg text-base -mt-6 px-2 pb-2 pt-1 z-10">
-                      <ColorPicker type="pro" folderColor={item.color} folderId={item.id}></ColorPicker>
+                      <ColorPicker type="default" folderColor={item.color} folderId={item.id}></ColorPicker>
                     </div>
                     <div className="truncate pointer-events-none">{item.name}</div>
                   </div>
@@ -943,7 +937,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       </svg>
                     </button>
                     <div className="focus-second-right bg-backgroundLight dark:bg-backgroundThirdDark 
-                    rounded-lg text-base px-2 pb-2 pt-1 z-10" data-intable="true">
+                    rounded-lg text-base px-2 pb-2 pt-1 z-10 w-max" data-intable="true">
                       <ColorPicker type="default" folderColor={item.color} folderId={item.id}></ColorPicker>
                     </div>
                   </td>
@@ -1353,7 +1347,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     </svg>
                   </button>
                   {/* Color picker */}
-                  <div className="bg-backgroundLight dark:bg-backgroundThirdDark z-10
+                  <div className="bg-backgroundLight dark:bg-backgroundThirdDark z-10 w-max
                   focus-second-bottom rounded-lg text-base px-2 pb-2 pt-1 mt-[112px] -ml-[20px]">
                     <ColorPicker type="default" folderColor={item.color} folderId={item.id}></ColorPicker>
                   </div>
