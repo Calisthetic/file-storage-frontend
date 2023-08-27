@@ -4,12 +4,13 @@ import Modal from '@mui/material/Modal';
 import { useNavigate } from 'react-router-dom';
 
 import "../../../styles/focus-elems.css"
-import { primaryColors } from "../../../data/folder-colors"
+import { defaultColors } from "../../../data/folder-colors"
 import FolderAccessModal from "./folder-access-modal";
 import IconTileStar, { IconInfo } from "../../../components/icons";
 import { CutNumber, CutSize, GetCSSValue, BlurColor, cn, InvertColor, isDarkMode, IsNumeric } from "../../../lib/utils";
 // @ts-ignore
 import Hammer from 'hammerjs';
+import ColorPicker from "./color-picker";
 
 type Props = {
   currentSortType: string
@@ -135,7 +136,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       watches: 1212,
       downloads: 64646,
       is_elected: false,
-      color: "00ff00",
+      color: "881337",
       files_inside: 999,
     },
     {
@@ -585,34 +586,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     {/* Color picker */}
                     <div className="bg-backgroundLight dark:bg-backgroundThirdDark 
                     focus-second-right rounded-lg text-base -mt-6 px-2 pb-2 pt-1 z-10">
-                      <div className="flex flex-row justify-between font-semibold mb-1">
-                        <div>Folder's color</div>
-                      </div>
-                      <div className="flex flex-row gap-1 md:gap-1.5">
-                        {primaryColors.slice(primaryColors.length - (Math.floor(primaryColors.length / colorsInRow)))
-                        .map((temp_primary_color, temp_primary_color_index) => (
-                          <div key={temp_primary_color_index} className="flex flex-col gap-1 md:gap-1.5">
-                            {primaryColors.slice(temp_primary_color_index * colorsInRow, temp_primary_color_index * colorsInRow + colorsInRow)
-                            .map((primary_color, primary_color_index) => (
-                              <div key={primary_color_index} className="h-6 w-6">
-                                <button className="rounded-full h-6 w-6 transition-shadow
-                                hover:shadow-defaultLight hover:dark:shadow-defaultDark pointer-events-auto"
-                                style={{backgroundColor: "#" + primary_color.color}}
-                                title={primary_color.name} onClick={() => {alert("Clicked")}}>
-                                  {item.color?.toLowerCase() === primary_color.color.toLowerCase() && (
-                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
-                                    enableBackground="new 0 0 24 24" className="w-6 h-6">
-                                      <path d="M10 18c-.5 0-1-.2-1.4-.6l-4-4c-.8-.8-.8-2 0-2.8.8-.8 2.1-.8 
-                                      2.8 0l2.6 2.6 6.6-6.6c.8-.8 2-.8 2.8 0 .8.8.8 2 0 2.8l-8 8c-.4.4-.9.6-1.4.6z" 
-                                      fill={InvertColor("#" + primary_color.color)}></path>
-                                    </svg>
-                                  )}
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        ))}
-                      </div>
+                      <ColorPicker type="pro" folderColor={item.color} folderId={item.id}></ColorPicker>
                     </div>
                     <div className="truncate pointer-events-none">{item.name}</div>
                   </div>
@@ -970,34 +944,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     </button>
                     <div className="focus-second-right bg-backgroundLight dark:bg-backgroundThirdDark 
                     rounded-lg text-base px-2 pb-2 pt-1 z-10" data-intable="true">
-                      <div className="flex flex-row justify-between font-semibold mb-1">
-                        <div>Folder's color</div>
-                      </div>
-                      <div className="flex flex-row gap-1 md:gap-1.5">
-                        {primaryColors.slice(primaryColors.length - (Math.floor(primaryColors.length / colorsInRow)))
-                        .map((temp_primary_color, temp_primary_color_index) => (
-                          <div key={temp_primary_color_index} className="flex flex-col gap-1 md:gap-1.5">
-                            {primaryColors.slice(temp_primary_color_index * colorsInRow, temp_primary_color_index * colorsInRow + colorsInRow)
-                            .map((primary_color, primary_color_index) => (
-                              <div key={primary_color_index} className="h-6 w-6">
-                                <button className="rounded-full h-6 w-6 transition-shadow
-                                hover:shadow-defaultLight hover:dark:shadow-defaultDark"
-                                style={{backgroundColor: "#" + primary_color.color}}
-                                title={primary_color.name}>
-                                  {item.color?.toLowerCase() === primary_color.color.toLowerCase() && (
-                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
-                                    enableBackground="new 0 0 24 24" className="w-6 h-6">
-                                      <path d="M10 18c-.5 0-1-.2-1.4-.6l-4-4c-.8-.8-.8-2 0-2.8.8-.8 2.1-.8 
-                                      2.8 0l2.6 2.6 6.6-6.6c.8-.8 2-.8 2.8 0 .8.8.8 2 0 2.8l-8 8c-.4.4-.9.6-1.4.6z" 
-                                      fill={InvertColor("#" + primary_color.color)}></path>
-                                    </svg>
-                                  )}
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        ))}
-                      </div>
+                      <ColorPicker type="default" folderColor={item.color} folderId={item.id}></ColorPicker>
                     </div>
                   </td>
                   <td data-token={item.token}
@@ -1408,34 +1355,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   {/* Color picker */}
                   <div className="bg-backgroundLight dark:bg-backgroundThirdDark z-10
                   focus-second-bottom rounded-lg text-base px-2 pb-2 pt-1 mt-[112px] -ml-[20px]">
-                    <div className="flex flex-row justify-between font-semibold mb-1">
-                      <div>Folder's color</div>
-                    </div>
-                    <div className="flex flex-col gap-1 md:gap-1.5">
-                      {primaryColors.slice(primaryColors.length - (Math.floor(primaryColors.length / colorsInRow)))
-                      .map((temp_primary_color, temp_primary_color_index) => (
-                        <div key={temp_primary_color_index} className="flex flex-row gap-1 md:gap-1.5">
-                          {primaryColors.slice(temp_primary_color_index * colorsInRow, temp_primary_color_index * colorsInRow + colorsInRow)
-                          .map((primary_color, primary_color_index) => (
-                            <div key={primary_color_index} className="h-6 w-6">
-                              <button className="rounded-full h-6 w-6 transition-shadow
-                              hover:shadow-defaultLight hover:dark:shadow-defaultDark"
-                              style={{backgroundColor: "#" + primary_color.color}}
-                              title={primary_color.name}>
-                                {item.color?.toLowerCase() === primary_color.color.toLowerCase() && (
-                                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
-                                  enableBackground="new 0 0 24 24" className="w-6 h-6">
-                                    <path d="M10 18c-.5 0-1-.2-1.4-.6l-4-4c-.8-.8-.8-2 0-2.8.8-.8 2.1-.8 
-                                    2.8 0l2.6 2.6 6.6-6.6c.8-.8 2-.8 2.8 0 .8.8.8 2 0 2.8l-8 8c-.4.4-.9.6-1.4.6z" 
-                                    fill={InvertColor("#" + primary_color.color)}></path>
-                                  </svg>
-                                )}
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                      ))}
-                    </div>
+                    <ColorPicker type="default" folderColor={item.color} folderId={item.id}></ColorPicker>
                   </div>
                   {/* Folder info */}
                   <div className="absolute w-28 h-28 flex flex-col justify-between
