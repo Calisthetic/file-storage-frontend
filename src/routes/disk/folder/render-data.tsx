@@ -10,6 +10,7 @@ import { CutNumber, CutSize, GetCSSValue, BlurColor, cn, isDarkMode, IsNumeric }
 // @ts-ignore
 import Hammer from 'hammerjs';
 import ColorPicker from "./color-picker";
+import { modalWindowStyle } from "../../../data/modal-styles";
 
 type Props = {
   currentSortType: string
@@ -201,18 +202,6 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     }
   ]
 
-
-  // Modal windows styles
-  const modalWindowStyle = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: "auto",
-    bgcolor: 'none',
-    boxShadow: 24,
-    borderRadius: "16px"
-  };
 
 
   // Last moved item/folder data
