@@ -917,8 +917,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     <td data-id={item.id} data-type="folder" data-token={item.token} 
                     className="absolute h-full w-full z-20"></td>
                   )}
-                  <td draggable="false" 
-                  className="flex items-center justify-center h-8 flex-row">
+                  <td className="flex items-center justify-center h-8 flex-row">
                     <button data-id={item.id} data-type="folder" className="w-6 focus-first-right">
                       <svg viewBox="0 0 20 16" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 0H2C.9 0 0 .9 0 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2h-8L8 0Z" 
@@ -1105,18 +1104,18 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     <td data-id={item.id} data-type="file"
                     className="absolute h-full w-full z-20"></td>
                   )}
-                  <td data-id={item.id} draggable="false" className="flex items-center justify-center">
+                  <td data-id={item.id} className="flex items-center justify-center">
                     <img src={item.icon_link} alt=""></img>
                   </td>
-                  <td data-id={item.id} data-type="file" draggable="false" 
+                  <td data-id={item.id} data-type="file" 
                   className="font-medium text truncate max-w-[1px]">{item.name}</td>
-                  <td data-id={item.id} data-type="file" draggable="false">{CutSize(item.size * 10)}</td>
-                  <td data-id={item.id} data-type="file" draggable="false"
+                  <td data-id={item.id} data-type="file">{CutSize(item.size * 10)}</td>
+                  <td data-id={item.id} data-type="file"
                   className="hidden lg:table-cell">{item.created_at}</td>
                   {/* Links */}
-                  <td data-id={item.id} data-type="file" draggable="false"></td>
+                  <td data-id={item.id} data-type="file"></td>
                   {/* Edit */}
-                  <td data-id={item.id} data-type="file" draggable="false" 
+                  <td data-id={item.id} data-type="file" 
                   className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
                       <button data-id={item.id} data-name={item.name} data-type="file" onClick={modalRenameOpen} 
@@ -1138,8 +1137,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     </div>
                   </td>
                   {/* Delete */}
-                  <td data-id={item.id} data-type="file" draggable="false" 
-                  className="text-center">
+                  <td data-id={item.id} data-type="file" className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
                       <button data-id={item.id} data-type="file">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" 
@@ -1186,8 +1184,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     </div>
                   </td>
                   {/* Download */}
-                  <td data-id={item.id} data-type="file" draggable="false" 
-                  className="text-center">
+                  <td data-id={item.id} data-type="file" className="text-center">
                     <div className="flex justify-center items-center h-full">
                       <div data-id={item.id} data-type="file"className="cursor-pointer">
                         <svg className=" stroke-textLight dark:stroke-textDark w-5 h-5" fill="none" 
@@ -1199,8 +1196,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     </div>
                   </td>
                   {/* Star */}
-                  <td data-id={item.id} data-type="file" draggable="false" 
-                  className="text-center">
+                  <td data-id={item.id} data-type="file" className="text-center">
                     <div className="flex justify-center items-center h-full">
                       <div data-id={item.id} data-type="file"className="cursor-pointer">
                         {item.is_elected === true ? (
