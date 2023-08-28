@@ -58,6 +58,10 @@ path, svg {
   pointer-events: none;
 }
 
+div {
+  user-select: none;
+}
+
 
 /* Delete arrows from input type="number" */
 input::-webkit-outer-spin-button,
