@@ -228,7 +228,7 @@ export default function DiskFolder() {
                   <ul className="py-1.5 text-sm font-medium text-textLight dark:text-textDark">
                     {sortTypes.map((item, index) => (
                       <li key={index}>
-                        <button className="cursor-pointer transition-colors px-2 py-1.5 w-full
+                        <button className="transition-colors px-2 py-1.5 w-full
                         hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
                         flex flex-row justify-start items-center" data-drop="child"
                         data-name={item} onClick={() => {setCurrentSortType(item)}}>
@@ -255,7 +255,7 @@ export default function DiskFolder() {
                     </li>
                     {/* is order by ascending or descending */}
                     <li>
-                      <button className="cursor-pointer transition-colors px-2 py-1.5 
+                      <button className="transition-colors px-2 py-1.5 
                       hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark w-full
                       flex flex-row justify-start items-center" data-drop="child"
                       onClick={() => {setCurrentSortBy("ascending")}}>
@@ -276,7 +276,7 @@ export default function DiskFolder() {
                       </button>
                     </li>
                     <li>
-                      <button className="cursor-pointer transition-colors px-2 py-1.5 
+                      <button className="transition-colors px-2 py-1.5 
                       hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark w-full
                       flex flex-row justify-start items-center" data-drop="child"
                       onClick={() => {setCurrentSortBy("descending")}}>
