@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import "../../../styles/focus-elems.css"
 import FolderAccessModal from "./folder-access-modal";
-import IconTileStar, { IconInfo } from "../../../components/icons";
+import IconTileStar, { IconDelete, IconInfo } from "../../../components/icons";
 import { CutNumber, CutSize, GetCSSValue, BlurColor, cn, isDarkMode, IsNumeric } from "../../../lib/utils";
 // @ts-ignore
 import Hammer from 'hammerjs';
@@ -560,7 +560,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                 <div className="flex px-2 py-1 flex-row justify-between">
                   <div className="flex flex-row items-center space-x-2 max-w-[calc(100dvw-88px)] 
                   sm:max-w-[calc(100dvw-348px)] md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]">
-                    <button className="w-6 cursor-pointer focus-first-right flex flex-row">
+                    <button className="w-6 focus-first-right flex flex-row">
                       <svg viewBox="0 0 20 16" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 0H2C.9 0 0 .9 0 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2h-8L8 0Z" 
                         fillRule="evenodd" fill={item.color ? ("#" + item.color) : "#888"}></path>
@@ -616,7 +616,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
                         <button data-id={item.id} data-name={item.name}
                         data-access={item.access_type} data-token={item.token} onClick={modalAccessOpen}
-                        className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
+                        className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 pointer-events-none">
                             <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
                             29.47 17.58 41.91 30.02 3.146 3.146 5.898 6.518 8.742 9.838l37.96-37.96C458.5 72.05 477.1 64 498.6 
@@ -637,7 +637,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                         </button>
                         <button data-id={item.id} data-name={item.name} data-token={item.token} 
                         data-type="folder" onClick={modalRenameOpen}
-                        className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
+                        className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
                           className="w-5 h-5 pointer-events-none"><g>
                             <path d="M2 29a1 1 0 0 1-1-1.11l.77-7a1 1 0 0 1 .29-.59L18.42 3.94a3.2 
@@ -652,7 +652,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                             className="fill-textLight dark:fill-textDark"></path></g>
                           </svg>
                         </button>
-                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           {item.is_elected === true ? (
                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                             className="w-5 h-5">
@@ -675,25 +675,15 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                             </svg>
                           )}
                         </button>
-                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           <svg className=" stroke-textLight dark:stroke-textDark h-5 w-5" fill="none" 
                           strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                           viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
                           </svg>
                         </button>
-                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
-                          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" className="h-5 w-5" viewBox="0,0,256,256">
-                            <g className="fill-textLight dark:fill-textDark" fillRule="nonzero" stroke="none" 
-                            strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDashoffset="0" 
-                            fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
-                            <g transform="scale(10.66667,10.66667)">
-                              <path d="M10,2l-1,1h-4c-0.6,0 -1,0.4 -1,1c0,0.6 0.4,1 1,1h2h10h2c0.6,0 1,-0.4 1,-1c0,-0.6 
-                              -0.4,-1 -1,-1h-4l-1,-1zM5,7v13c0,1.1 0.9,2 2,2h10c1.1,0 2,-0.9 2,-2v-13zM9,9c0.6,0 
-                              1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1zM15,9c0.6,0 
-                              1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1z"></path>
-                            </g></g>
-                          </svg>
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
+                          <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
                         </button>
                       </div>
                     </div>
@@ -798,7 +788,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       <div className="hover-second ml-3.5 w-8 z-10
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
                         <button data-id={item.id} data-name={item.name} data-type="file" onClick={modalRenameOpen}
-                        className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
+                        className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
                           className="w-5 h-5"><g>
                             <path d="M2 29a1 1 0 0 1-1-1.11l.77-7a1 1 0 0 1 .29-.59L18.42 3.94a3.2 
@@ -813,7 +803,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                             className="fill-textLight dark:fill-textDark"></path></g>
                           </svg>
                         </button>
-                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           {item.is_elected === true ? (
                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                             className="w-5 h-5">
@@ -836,25 +826,15 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                             </svg>
                           )}
                         </button>
-                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           <svg className=" stroke-textLight dark:stroke-textDark h-5 w-5" fill="none" 
                           strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                           viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
                           </svg>
                         </button>
-                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
-                          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" className="h-5 w-5" viewBox="0,0,256,256">
-                            <g className="fill-textLight dark:fill-textDark" fillRule="nonzero" stroke="none" 
-                            strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDashoffset="0" 
-                            fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
-                            <g transform="scale(10.66667,10.66667)">
-                              <path d="M10,2l-1,1h-4c-0.6,0 -1,0.4 -1,1c0,0.6 0.4,1 1,1h2h10h2c0.6,0 1,-0.4 1,-1c0,-0.6 
-                              -0.4,-1 -1,-1h-4l-1,-1zM5,7v13c0,1.1 0.9,2 2,2h10c1.1,0 2,-0.9 2,-2v-13zM9,9c0.6,0 
-                              1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1zM15,9c0.6,0 
-                              1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1z"></path>
-                            </g></g>
-                          </svg>
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
+                          <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
                         </button>
                       </div>
                     </div>
@@ -964,8 +944,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   {/* Edit */}
                   <td className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
-                      <button data-id={item.id} data-name={item.name} data-type="folder" onClick={modalRenameOpen} 
-                      className="cursor-pointer">
+                      <button data-id={item.id} data-name={item.name} data-type="folder" onClick={modalRenameOpen}>
                         <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
                         className="w-5 h-5"><g>
                           <path d="M2 29a1 1 0 0 1-1-1.11l.77-7a1 1 0 0 1 .29-.59L18.42 3.94a3.2 
@@ -987,19 +966,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   className="text-center">
                     <div data-id={item.id} data-type="folder" 
                     className="flex hover-child justify-center items-center h-full">
-                      <button data-id={item.id} data-type="folder" className="cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" 
-                        className="h-5 w-5" viewBox="0,0,256,256">
-                          <g className="fill-textLight dark:fill-textDark" fillRule="nonzero" stroke="none" 
-                          strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDashoffset="0" 
-                          fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
-                          <g transform="scale(10.66667,10.66667)">
-                            <path d="M10,2l-1,1h-4c-0.6,0 -1,0.4 -1,1c0,0.6 0.4,1 1,1h2h10h2c0.6,0 1,-0.4 1,-1c0,-0.6 
-                            -0.4,-1 -1,-1h-4l-1,-1zM5,7v13c0,1.1 0.9,2 2,2h10c1.1,0 2,-0.9 2,-2v-13zM9,9c0.6,0 
-                            1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1zM15,9c0.6,0 
-                            1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1z"></path>
-                          </g></g>
-                        </svg>
+                      <button data-id={item.id} data-type="folder">
+                        <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
                       </button>
                     </div>
                   </td>
@@ -1035,7 +1003,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td 
                   className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <button data-id={item.id} data-type="folder" className="cursor-pointer">
+                      <button data-id={item.id} data-type="folder">
                         <svg className=" stroke-textLight dark:stroke-textDark w-5 h-5" fill="none" 
                         strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1118,8 +1086,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td data-id={item.id} data-type="file" 
                   className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
-                      <button data-id={item.id} data-name={item.name} data-type="file" onClick={modalRenameOpen} 
-                      className="cursor-pointer">
+                      <button data-id={item.id} data-name={item.name} data-type="file" onClick={modalRenameOpen}>
                         <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
                         className="w-5 h-5"><g>
                           <path d="M2 29a1 1 0 0 1-1-1.11l.77-7a1 1 0 0 1 .29-.59L18.42 3.94a3.2 
@@ -1140,18 +1107,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td data-id={item.id} data-type="file" className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
                       <button data-id={item.id} data-type="file">
-                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" 
-                        className="h-5 w-5" viewBox="0,0,256,256">
-                          <g className="fill-textLight dark:fill-textDark" fillRule="nonzero" stroke="none" 
-                          strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDashoffset="0" 
-                          fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
-                          <g transform="scale(10.66667,10.66667)">
-                            <path d="M10,2l-1,1h-4c-0.6,0 -1,0.4 -1,1c0,0.6 0.4,1 1,1h2h10h2c0.6,0 1,-0.4 1,-1c0,-0.6 
-                            -0.4,-1 -1,-1h-4l-1,-1zM5,7v13c0,1.1 0.9,2 2,2h10c1.1,0 2,-0.9 2,-2v-13zM9,9c0.6,0 
-                            1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1zM15,9c0.6,0 
-                            1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1z"></path>
-                          </g></g>
-                        </svg>
+                        <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
                       </button>
                     </div>
                   </td>
@@ -1186,7 +1142,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   {/* Download */}
                   <td data-id={item.id} data-type="file" className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <div data-id={item.id} data-type="file"className="cursor-pointer">
+                      <div data-id={item.id} data-type="file">
                         <svg className=" stroke-textLight dark:stroke-textDark w-5 h-5" fill="none" 
                         strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1198,7 +1154,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   {/* Star */}
                   <td data-id={item.id} data-type="file" className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <div data-id={item.id} data-type="file"className="cursor-pointer">
+                      <div data-id={item.id} data-type="file">
                         {item.is_elected === true ? (
                           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                           className="w-5 h-5">
@@ -1271,7 +1227,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <div data-id={item.id} data-type="folder" className="hover-child">
                     <button data-id={item.id} data-name={item.name} data-type="folder"
                     data-access={item.access_type} data-token={item.token} onClick={modalAccessOpen}
-                    className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer p-0.5">
+                    className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
                       <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
                         <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
                         29.47 17.58 41.91 30.02 3.146 3.146 5.898 6.518 8.742 9.838l37.96-37.96C458.5 72.05 477.1 64 498.6 
@@ -1291,7 +1247,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       </svg>
                     </button>
                     <button data-id={item.id} data-type="folder"
-                    className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer p-0.5">
+                    className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
                       <svg className=" stroke-textLight dark:stroke-textDark h-5 w-5" fill="none" 
                       strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                       viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1299,19 +1255,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       </svg>
                     </button>
                     <button data-id={item.id} data-type="folder"
-                    className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer p-0.5">
-                      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" 
-                      className="h-5 w-5" viewBox="0,0,256,256">
-                        <g className="fill-textLight dark:fill-textDark" fillRule="nonzero" stroke="none" 
-                        strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDashoffset="0" 
-                        fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
-                        <g transform="scale(10.66667,10.66667)">
-                          <path d="M10,2l-1,1h-4c-0.6,0 -1,0.4 -1,1c0,0.6 0.4,1 1,1h2h10h2c0.6,0 1,-0.4 1,-1c0,-0.6 
-                          -0.4,-1 -1,-1h-4l-1,-1zM5,7v13c0,1.1 0.9,2 2,2h10c1.1,0 2,-0.9 2,-2v-13zM9,9c0.6,0 
-                          1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1zM15,9c0.6,0 
-                          1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1z"></path>
-                        </g></g>
-                      </svg>
+                    className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
+                      <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
                     </button>
                   </div>
                 </div>
@@ -1495,7 +1440,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     <div className="hover-second ml-3.5 w-8
                     bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
                       <button data-id={item.id} data-name={item.name} data-type="file" onClick={modalRenameOpen}
-                      className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
+                      className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                         <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
                         className="w-5 h-5"><g>
                           <path d="M2 29a1 1 0 0 1-1-1.11l.77-7a1 1 0 0 1 .29-.59L18.42 3.94a3.2 
@@ -1510,7 +1455,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                           className="fill-textLight dark:fill-textDark"></path></g>
                         </svg>
                       </button>
-                      <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
+                      <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                         {item.is_elected === true ? (
                           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                           className="w-5 h-5">
@@ -1533,14 +1478,14 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                           </svg>
                         )}
                       </button>
-                      <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
+                      <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                         <svg className=" stroke-textLight dark:stroke-textDark h-5 w-5" fill="none" 
                         strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
                         </svg>
                       </button>
-                      <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark cursor-pointer py-1 px-1.5">
+                      <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" className="h-5 w-5" viewBox="0,0,256,256">
                           <g className="fill-textLight dark:fill-textDark" fillRule="nonzero" stroke="none" 
                           strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDashoffset="0" 

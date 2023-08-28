@@ -43,8 +43,7 @@ const IconTileStar: FunctionComponent<IconTileStarProps> = ({firstColor, secondC
 export default IconTileStar;
 
 
-type IconAlertsProps = ClassesProps & TypeProps
-export function IconAlerts({classes, type}:IconAlertsProps) {
+export function IconAlerts({classes, type}:ClassesProps & TypeProps) {
   return type === "error" ? (
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className={classes}>
       <path d="M20 2H4c-1.103 0-2 .894-2 1.992v12.016C2 17.106 2.897 18 4 
@@ -70,8 +69,7 @@ export function IconAlerts({classes, type}:IconAlertsProps) {
   ))
 }
 
-type IconInfoProps = ClassesProps & FillProps
-export function IconInfo({classes, fillClasses}:IconInfoProps) {
+export function IconInfo({classes, fillClasses}:ClassesProps & FillProps) {
   return (
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
     enableBackground="new 0 0 24 24" className={classes}><g>
@@ -81,6 +79,23 @@ export function IconInfo({classes, fillClasses}:IconInfoProps) {
       <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 
       18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z" 
       className={fillClasses}></path></g>
+    </svg>
+  )
+}
+
+export function IconDelete({classes, fillClasses}:ClassesProps & FillProps) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" 
+    className={classes} viewBox="0,0,256,256">
+      <g className={fillClasses} fillRule="nonzero" stroke="none" 
+      strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDashoffset="0" 
+      fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
+      <g transform="scale(10.66667,10.66667)">
+        <path d="M10,2l-1,1h-4c-0.6,0 -1,0.4 -1,1c0,0.6 0.4,1 1,1h2h10h2c0.6,0 1,-0.4 1,-1c0,-0.6 
+        -0.4,-1 -1,-1h-4l-1,-1zM5,7v13c0,1.1 0.9,2 2,2h10c1.1,0 2,-0.9 2,-2v-13zM9,9c0.6,0 
+        1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1zM15,9c0.6,0 
+        1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1z"></path>
+      </g></g>
     </svg>
   )
 }
