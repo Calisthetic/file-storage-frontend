@@ -8,24 +8,15 @@ import { AnimatePresence, motion } from "framer-motion"
 import DiskFavorites from "./favorites/disk-favorites";
 import DiskRecycleBin from "./recycle-bin/disk-recycle-bin";
 import DiskFiles from "./files/disk-files";
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import EditUIModal from "../../components/edit-ui-modal";
 import DiskSideBar from "./disk-sidebar";
 import Redirect from "../../components/redirect";
 // @ts-ignore
 import Hammer from 'hammerjs';
 import { cn } from "../../lib/utils";
+import UserProfileDropdown from "../../components/user-profile-dropdown";
 
 export default function Disk() {
-  const [isUserDropMenuOpen, setIsUserDropMenuOpen] = useState(false)
   const [isSideBarOpen, setIsSideBarOpen] = useState(window.innerWidth > 640 ? true : false)
-
-  
-  // Modal customize
-  const [open, setOpen] = useState(false);
-  const modalCustomizeOpen = () => setOpen(true);
-  const modalCustomizeClose = () => setOpen(false);
 
   /* eslint-disable global-require */
 
@@ -40,13 +31,6 @@ export default function Disk() {
 
   /* eslint-enable global-require */
   
-
-  // Funcs
-  function CloseDropDowns(e:any) {
-    if (e.target.dataset.drop !== "userMenu" && e.target.dataset.drop !== "child") {
-      setIsUserDropMenuOpen(false)
-    }
-  }
 
   // Sidebar
   function ChangeSideBar() {
@@ -64,17 +48,6 @@ export default function Disk() {
     }
   }, [])
 
-  const modalWindowStyle = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: "auto",
-    bgcolor: 'none',
-    boxShadow: 24,
-    //overflow: "hidden",
-    borderRadius: "16px"
-  };
 
   // Swipe sidebar
   const sidebar = document.getElementById("main-sidebar")
@@ -101,8 +74,7 @@ export default function Disk() {
   
 
   return (
-    <div className="bg-backgroundLight h-full dark:bg-backgroundDark"
-    onClick={CloseDropDowns}>
+    <div className="bg-backgroundLight h-full dark:bg-backgroundDark">
       <nav className="fixed top-0 z-40 w-full bg-backgroundLight dark:bg-backgroundDark">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
@@ -144,55 +116,7 @@ export default function Disk() {
               </Link>
             </div>
             {/* User profile */}
-            <div className="flex items-center">
-              <div className="flex items-center ml-3">
-                <button onClick={() => {setIsUserDropMenuOpen(!isUserDropMenuOpen)}} 
-                data-drop="userMenu" className="flex text-sm bg-gray-800 rounded-full">
-                  <img className="w-8 h-8 rounded-full pointer-events-none" alt="user" draggable="false"
-                  src="" />
-                </button>
-                <AnimatePresence>
-                  {isUserDropMenuOpen && (
-                    <motion.div initial={{opacity: 0, y: 44, scaleY: 0.2, x: "calc(-100% + 32px)"}} 
-                    animate={{opacity: 1, y: "calc(50% + 18px)", scaleY: 1}}
-                    exit={{opacity: 0, y: 44, scaleY: 0.2}}
-                    transition={{stiffness: 200, damping: 24, duration: 0.16}}
-                    className="absolute z-50 my-4 text-base list-none bg-backgroundThirdLight 
-                    dark:bg-backgroundThirdDark dark:divide-borderDark text-textLight dark:text-textDark
-                    shadow-sm shadow-shadowDark dark:shadow-shadowLight rounded mb-2">
-                      <div className="px-4 py-3">
-                        <p className="">
-                          Neil Sims
-                        </p>
-                        <p className="font-medium">
-                          neil.sims@flowbite.com
-                        </p>
-                      </div>
-                      <div className="py-1">
-                        <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
-                          dark:hover:bg-backgroundHoverDark" role="menuitem">Statistic
-                        </button>
-                        <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
-                          dark:hover:bg-backgroundHoverDark" role="menuitem">Statistic
-                        </button>
-                        <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
-                          dark:hover:bg-backgroundHoverDark" role="menuitem" onClick={modalCustomizeOpen}>Customize
-                        </button>
-                        <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
-                          dark:hover:bg-backgroundHoverDark" role="menuitem">Settings
-                        </button>
-                        <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
-                          dark:hover:bg-backgroundHoverDark" role="menuitem">Documentation
-                        </button>
-                        <Link to="/auth" className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
-                          dark:hover:bg-backgroundHoverDark" role="menuitem">Sign out
-                        </Link>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </div>
+            <UserProfileDropdown></UserProfileDropdown>
           </div>
         </div>
       </nav>
@@ -203,18 +127,6 @@ export default function Disk() {
       })} aria-label="Sidebar">
         <DiskSideBar></DiskSideBar>
       </aside>
-      
-      {/* Customize modal */}
-      <Modal
-        open={open}
-        onClose={modalCustomizeClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={modalWindowStyle}>
-          <EditUIModal></EditUIModal>
-        </Box>
-      </Modal>
 
       <div className="pt-14 transition-transform sm:ml-64">
         <div className="bg-backgroundSecondLight overflow-x-hidden dark:bg-backgroundSecondDark min-h-fullWithHeader sm:rounded-tl-2xl ">
