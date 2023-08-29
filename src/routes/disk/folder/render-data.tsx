@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import "../../../styles/focus-elems.css"
 import FolderAccessModal from "./folder-access-modal";
-import IconTileStar, { IconDelete, IconInfo, IconLink } from "../../../components/icons";
+import IconTileStar, { IconDelete, IconDownload, IconEdit, IconInfo, IconLink, IconWatch } from "../../../components/icons";
 import { CutNumber, CutSize, GetCSSValue, BlurColor, cn, isDarkMode, IsNumeric } from "../../../lib/utils";
 // @ts-ignore
 import Hammer from 'hammerjs';
@@ -463,19 +463,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                         <button data-id={item.id} data-name={item.name} data-token={item.token} 
                         data-type="folder" onClick={modalRenameOpen}
                         className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
-                          <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
-                          className="w-5 h-5 pointer-events-none"><g>
-                            <path d="M2 29a1 1 0 0 1-1-1.11l.77-7a1 1 0 0 1 .29-.59L18.42 3.94a3.2 
-                            3.2 0 0 1 4.53 0l3.11 3.11a3.2 3.2 0 0 1 0 4.53L9.71 27.93a1 1 0 0 1-.59.29l-7 
-                            .77Zm7-1.78Zm-5.27-5.77-.6 5.42 5.42-.6 16.1-16.1a1.2 1.2 0 0 0 0-1.7l-3.12-3.12a1.2 
-                            1.2 0 0 0-1.7 0Z" className="fill-textLight dark:fill-textDark"></path>
-                            <path d="M23 14.21a1 1 0 0 1-.71-.29l-6.21-6.23a1 1 0 0 1 1.42-1.42l6.23 6.23a1 1 0 
-                            0 1 0 1.42 1 1 0 0 1-.73.29Z" className="fill-textLight dark:fill-textDark"></path>
-                            <path transform="rotate(-45 12.901 17.096)" d="M7.39 16.1H18.4v2H7.39z" 
-                            className="fill-textLight dark:fill-textDark"></path>
-                            <path d="M30 29H14a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2Z" 
-                            className="fill-textLight dark:fill-textDark"></path></g>
-                          </svg>
+                          <IconEdit classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconEdit>
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           {item.is_elected === true ? (
@@ -501,11 +489,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                           )}
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
-                          <svg className=" stroke-textLight dark:stroke-textDark h-5 w-5" fill="none" 
-                          strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
-                          </svg>
+                          <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
@@ -614,19 +598,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
                         <button data-id={item.id} data-name={item.name} data-type="file" onClick={modalRenameOpen}
                         className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
-                          <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
-                          className="w-5 h-5"><g>
-                            <path d="M2 29a1 1 0 0 1-1-1.11l.77-7a1 1 0 0 1 .29-.59L18.42 3.94a3.2 
-                            3.2 0 0 1 4.53 0l3.11 3.11a3.2 3.2 0 0 1 0 4.53L9.71 27.93a1 1 0 0 1-.59.29l-7 
-                            .77Zm7-1.78Zm-5.27-5.77-.6 5.42 5.42-.6 16.1-16.1a1.2 1.2 0 0 0 0-1.7l-3.12-3.12a1.2 
-                            1.2 0 0 0-1.7 0Z" className="fill-textLight dark:fill-textDark"></path>
-                            <path d="M23 14.21a1 1 0 0 1-.71-.29l-6.21-6.23a1 1 0 0 1 1.42-1.42l6.23 6.23a1 1 0 
-                            0 1 0 1.42 1 1 0 0 1-.73.29Z" className="fill-textLight dark:fill-textDark"></path>
-                            <path transform="rotate(-45 12.901 17.096)" d="M7.39 16.1H18.4v2H7.39z" 
-                            className="fill-textLight dark:fill-textDark"></path>
-                            <path d="M30 29H14a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2Z" 
-                            className="fill-textLight dark:fill-textDark"></path></g>
-                          </svg>
+                          <IconEdit classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconEdit>
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           {item.is_elected === true ? (
@@ -652,11 +624,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                           )}
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
-                          <svg className=" stroke-textLight dark:stroke-textDark h-5 w-5" fill="none" 
-                          strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
-                          </svg>
+                          <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
@@ -753,19 +721,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
                       <button data-id={item.id} data-name={item.name} data-type="folder" onClick={modalRenameOpen}>
-                        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
-                        className="w-5 h-5"><g>
-                          <path d="M2 29a1 1 0 0 1-1-1.11l.77-7a1 1 0 0 1 .29-.59L18.42 3.94a3.2 
-                          3.2 0 0 1 4.53 0l3.11 3.11a3.2 3.2 0 0 1 0 4.53L9.71 27.93a1 1 0 0 1-.59.29l-7 
-                          .77Zm7-1.78Zm-5.27-5.77-.6 5.42 5.42-.6 16.1-16.1a1.2 1.2 0 0 0 0-1.7l-3.12-3.12a1.2 
-                          1.2 0 0 0-1.7 0Z" className="fill-textLight dark:fill-textDark"></path>
-                          <path d="M23 14.21a1 1 0 0 1-.71-.29l-6.21-6.23a1 1 0 0 1 1.42-1.42l6.23 6.23a1 1 0 
-                          0 1 0 1.42 1 1 0 0 1-.73.29Z" className="fill-textLight dark:fill-textDark"></path>
-                          <path transform="rotate(-45 12.901 17.096)" d="M7.39 16.1H18.4v2H7.39z" 
-                          className="fill-textLight dark:fill-textDark"></path>
-                          <path d="M30 29H14a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2Z" 
-                          className="fill-textLight dark:fill-textDark"></path></g>
-                        </svg>
+                        <IconEdit classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconEdit>
                       </button>
                     </div>
                   </td>
@@ -786,23 +742,11 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     </div>
                     <div className="hover-second-info ml-4 bg-backgroundThirdLight dark:bg-backgroundThirdDark px-2 py-1 rounded z-10">
                       <div className="flex flex-row space-x-2 text-sm font-medium">
-                        <svg className="w-5 h-5"
-                        viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 512 512">
-                          <path d="M256 128c-81.9 0-145.7 48.8-224 128 67.4 67.7 124 128 224 128 99.9 0 173.4-76.4 
-                          224-126.6C428.2 198.6 354.8 128 256 128zm0 219.3c-49.4 0-89.6-41-89.6-91.3 0-50.4 40.2-91.3 
-                          89.6-91.3s89.6 41 89.6 91.3c0 50.4-40.2 91.3-89.6 91.3z" className="fill-textLight dark:fill-textDark"></path>
-                          <path d="M256 224c0-7.9 2.9-15.1 7.6-20.7-2.5-.4-5-.6-7.6-.6-28.8 0-52.3 23.9-52.3 53.3s23.5 
-                          53.3 52.3 53.3 52.3-23.9 52.3-53.3c0-2.3-.2-4.6-.4-6.9-5.5 4.3-12.3 6.9-19.8 6.9-17.8 
-                          0-32.1-14.3-32.1-32z" className="fill-textLight dark:fill-textDark"></path>
-                        </svg>
+                        <IconWatch classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconWatch>
                         <p>{item.watches === null ? 0 : CutNumber(item.watches)}</p>
                       </div>
                       <div className="flex flex-row space-x-2 text-base font-medium">
-                        <svg  fill="none" className="w-5 h-5 stroke-textLight dark:stroke-textDark"
-                        strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
-                        </svg>
+                        <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         <p>{item.downloads === null ? 0 : CutNumber(item.downloads)}</p>
                       </div>
                     </div>
@@ -812,11 +756,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   className="text-center">
                     <div className="flex justify-center items-center h-full">
                       <button data-id={item.id} data-type="folder">
-                        <svg className=" stroke-textLight dark:stroke-textDark w-5 h-5" fill="none" 
-                        strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
-                        </svg>
+                        <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                       </button>
                     </div>
                   </td>
@@ -895,19 +835,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
                       <button data-id={item.id} data-name={item.name} data-type="file" onClick={modalRenameOpen}>
-                        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
-                        className="w-5 h-5"><g>
-                          <path d="M2 29a1 1 0 0 1-1-1.11l.77-7a1 1 0 0 1 .29-.59L18.42 3.94a3.2 
-                          3.2 0 0 1 4.53 0l3.11 3.11a3.2 3.2 0 0 1 0 4.53L9.71 27.93a1 1 0 0 1-.59.29l-7 
-                          .77Zm7-1.78Zm-5.27-5.77-.6 5.42 5.42-.6 16.1-16.1a1.2 1.2 0 0 0 0-1.7l-3.12-3.12a1.2 
-                          1.2 0 0 0-1.7 0Z" className="fill-textLight dark:fill-textDark"></path>
-                          <path d="M23 14.21a1 1 0 0 1-.71-.29l-6.21-6.23a1 1 0 0 1 1.42-1.42l6.23 6.23a1 1 0 
-                          0 1 0 1.42 1 1 0 0 1-.73.29Z" className="fill-textLight dark:fill-textDark"></path>
-                          <path transform="rotate(-45 12.901 17.096)" d="M7.39 16.1H18.4v2H7.39z" 
-                          className="fill-textLight dark:fill-textDark"></path>
-                          <path d="M30 29H14a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2Z" 
-                          className="fill-textLight dark:fill-textDark"></path></g>
-                        </svg>
+                        <IconEdit classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconEdit>
                       </button>
                     </div>
                   </td>
@@ -926,23 +854,11 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     </div>
                     <div className="hover-second-info ml-4 bg-backgroundThirdLight dark:bg-backgroundThirdDark px-2 py-1 rounded z-10">
                       <div className="flex flex-row space-x-2 text-sm font-medium">
-                        <svg className="w-5 h-5"
-                        viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 512 512">
-                          <path d="M256 128c-81.9 0-145.7 48.8-224 128 67.4 67.7 124 128 224 128 99.9 0 173.4-76.4 
-                          224-126.6C428.2 198.6 354.8 128 256 128zm0 219.3c-49.4 0-89.6-41-89.6-91.3 0-50.4 40.2-91.3 
-                          89.6-91.3s89.6 41 89.6 91.3c0 50.4-40.2 91.3-89.6 91.3z" className="fill-textLight dark:fill-textDark"></path>
-                          <path d="M256 224c0-7.9 2.9-15.1 7.6-20.7-2.5-.4-5-.6-7.6-.6-28.8 0-52.3 23.9-52.3 53.3s23.5 
-                          53.3 52.3 53.3 52.3-23.9 52.3-53.3c0-2.3-.2-4.6-.4-6.9-5.5 4.3-12.3 6.9-19.8 6.9-17.8 
-                          0-32.1-14.3-32.1-32z" className="fill-textLight dark:fill-textDark"></path>
-                        </svg>
+                        <IconWatch classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconWatch>
                         <p>{item.watches === null ? 0 : CutNumber(item.watches)}</p>
                       </div>
                       <div className="flex flex-row space-x-2 text-base font-medium">
-                        <svg  fill="none" className="w-5 h-5 stroke-textLight dark:stroke-textDark"
-                        strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
-                        </svg>
+                        <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         <p>{item.downloads === null ? 0 : CutNumber(item.downloads)}</p>
                       </div>
                     </div>
@@ -951,11 +867,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td data-id={item.id} data-type="file" className="text-center">
                     <div className="flex justify-center items-center h-full">
                       <div data-id={item.id} data-type="file">
-                        <svg className=" stroke-textLight dark:stroke-textDark w-5 h-5" fill="none" 
-                        strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
-                        </svg>
+                        <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                       </div>
                     </div>
                   </td>
@@ -1040,11 +952,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     </button>
                     <button data-id={item.id} data-type="folder"
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
-                      <svg className=" stroke-textLight dark:stroke-textDark h-5 w-5" fill="none" 
-                      strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
-                      </svg>
+                      <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                     </button>
                     <button data-id={item.id} data-type="folder"
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
@@ -1085,23 +993,11 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                         <div className="hover-second-info ml-3 bg-backgroundThirdLight dark:bg-backgroundThirdDark 
                         px-2 py-1 rounded z-10">
                           <div className="flex flex-row space-x-2 text-sm font-medium">
-                            <svg className="w-5 h-5"
-                            viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 512 512">
-                              <path d="M256 128c-81.9 0-145.7 48.8-224 128 67.4 67.7 124 128 224 128 99.9 0 173.4-76.4 
-                              224-126.6C428.2 198.6 354.8 128 256 128zm0 219.3c-49.4 0-89.6-41-89.6-91.3 0-50.4 40.2-91.3 
-                              89.6-91.3s89.6 41 89.6 91.3c0 50.4-40.2 91.3-89.6 91.3z" className="fill-textLight dark:fill-textDark"></path>
-                              <path d="M256 224c0-7.9 2.9-15.1 7.6-20.7-2.5-.4-5-.6-7.6-.6-28.8 0-52.3 23.9-52.3 53.3s23.5 
-                              53.3 52.3 53.3 52.3-23.9 52.3-53.3c0-2.3-.2-4.6-.4-6.9-5.5 4.3-12.3 6.9-19.8 6.9-17.8 
-                              0-32.1-14.3-32.1-32z" className="fill-textLight dark:fill-textDark"></path>
-                            </svg>
+                            <IconWatch classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconWatch>
                             <p>{item.watches === null ? 0 : CutNumber(item.watches)}</p>
                           </div>
                           <div className="flex flex-row space-x-2 text-base font-medium">
-                            <svg  fill="none" className="w-5 h-5 stroke-textLight dark:stroke-textDark"
-                            strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
-                            </svg>
+                            <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                             <p>{item.downloads === null ? 0 : CutNumber(item.downloads)}</p>
                           </div>
                         </div>
