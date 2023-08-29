@@ -1,8 +1,9 @@
 import { Routes, Route, } from "react-router-dom";
 import Layout from './layout';
+import Redirect from "./components/redirect";
 import Disk from './routes/disk/disk';
 import AuthPage from './routes/auth/auth';
-import Redirect from "./components/redirect";
+import UserMain from "./routes/user/user";
 
 function App() {
   interface StyleObject {
@@ -36,6 +37,7 @@ function App() {
         <Route path='auth/*' element={<AuthPage></AuthPage>}></Route>
         <Route path='*' element={<Redirect location="/"></Redirect>}></Route>
         <Route path='disk/*' element={<Disk></Disk>}></Route>
+        <Route path='user/*' element={<UserMain></UserMain>}></Route>
       </Routes>
     </div>
   );
