@@ -1,7 +1,15 @@
 import { motion } from "framer-motion"
+import { useRef, useState } from "react";
 import { Link } from 'react-router-dom';
 
 export default function SignUp() {
+  const firstNameRef:any = useRef()
+  const lastNameRef:any = useRef()
+  const emailRef:any = useRef()
+  const passwordRef:any = useRef()
+  const repeatPasswordRef:any = useRef()
+  const aboutRef:any = useRef()
+
   // Logos
   let mainLogo: string | undefined = undefined;
 
@@ -10,11 +18,17 @@ export default function SignUp() {
   } catch (error) {
     console.log(error)
   }
+
+  const [errorText, setErrorText] = useState()
+
+  function SendRequest() {
+
+  }
   
   return (
     <div className=" min-h-fulldvh sm:flex justify-center items-center">
       <form className='py-6 flex flex-col justify-center min-h-fulldvh sm:h-auto bg-backgroundLight dark:bg-backgroundDark 
-      sm:rounded-xl w-[100cvw] sm:w-auto px-10' action={void(0)}>
+      sm:rounded-xl w-[100cvw] sm:w-auto px-10' onSubmit={(e:any) => {e.preventDefault()}}>
         <div className="w-full flex justify-center">
           <motion.img initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.00, damping: 24, stiffness: 300}} src={mainLogo}
           className="w-12 pb-2 text-center font-semibold leading-6 text-textLight dark:text-textDark"></motion.img>
@@ -32,7 +46,7 @@ export default function SignUp() {
               </motion.label>
               <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.06, damping: 24, stiffness: 300}}
               className="pt-2">
-                <input type="text" name="first-name" id="first-name" autoComplete="given-name" required
+                <input type="text" name="first-name" id="first-name" autoComplete="given-name" required ref={firstNameRef}
                 className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
                 ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
                 focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
@@ -48,7 +62,7 @@ export default function SignUp() {
               </motion.label>
               <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.1, damping: 24, stiffness: 300}}
               className="pt-2">
-                <input type="text" name="last-name" id="last-name" autoComplete="family-name" required
+                <input type="text" name="last-name" id="last-name" autoComplete="family-name" required ref={lastNameRef}
                 className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
                 ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
                 focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
@@ -64,7 +78,7 @@ export default function SignUp() {
               </motion.label>
               <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.14, damping: 24, stiffness: 300}}
               className="pt-2">
-                <input id="email" name="email" type="email" autoComplete="email" required
+                <input id="email" name="email" type="email" autoComplete="email" required ref={emailRef}
                 className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
                 ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
                 focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
@@ -82,7 +96,7 @@ export default function SignUp() {
               </motion.label>
               <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.2, damping: 24, stiffness: 300}} 
               className="pt-2">
-                <input id="password" name="password" type="password" autoComplete="password" required
+                <input id="password" name="password" type="password" autoComplete="password" required ref={passwordRef}
                 className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
                 ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
                 focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
@@ -93,7 +107,7 @@ export default function SignUp() {
               className="pt-1 text-sm leading-6 text-textLight dark:text-textDark">Repeat password</motion.p>
               <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.24, damping: 24, stiffness: 300}} 
               className="pt-2">
-                <input id="password2" name="password" type="password" autoComplete="password" required
+                <input id="password2" name="password" type="password" autoComplete="password" required ref={repeatPasswordRef}
                 className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
                 ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
                 focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
@@ -107,7 +121,7 @@ export default function SignUp() {
               className="block text-base font-medium leading-4 text-textLight dark:text-textDark">About</motion.label>
               <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.28, damping: 24, stiffness: 300}}
               className="pt-2">
-                <textarea id="about" name="about" rows={3} 
+                <textarea id="about" name="about" rows={3} ref={aboutRef}
                 className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
                 ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
                 focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white

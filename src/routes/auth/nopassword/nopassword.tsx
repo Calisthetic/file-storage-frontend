@@ -15,7 +15,8 @@ export default function NoPassword() {
     console.log(error)
   }
 
-  async function SendEmail() {
+  async function SendEmail(e:any) {
+    e.preventDefault()
     if (lastUsage + cooldown > Date.now()) {
       setCheckEmailText("Email has already been sent. Try again in a minute")
     } else {
@@ -36,7 +37,7 @@ export default function NoPassword() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-4" action={void(0)} onSubmit={SendEmail}>
+          <form className="space-y-4" onSubmit={SendEmail}>
             <div>
               <motion.label initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.04, damping: 24, stiffness: 300}}
               className="block text-sm font-medium leading-6 text-textLight dark:text-textDark">Email address</motion.label>

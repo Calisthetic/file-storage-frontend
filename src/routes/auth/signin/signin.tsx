@@ -22,7 +22,7 @@ export default function SignIn() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action={void(0)}>
+          <form className="space-y-6" onSubmit={(e:any) => {e.preventDefault()}}>
             <div>
               <motion.label initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.04, damping: 24, stiffness: 300}}
               className="block text-sm font-medium leading-6 text-textLight dark:text-textDark">Email address</motion.label>
