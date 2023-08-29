@@ -1,6 +1,8 @@
 import { motion } from "framer-motion"
 import { useRef, useState } from "react";
 import { Link } from 'react-router-dom';
+import AlertButton from "../../../components/alert-button";
+import { z } from "zod";
 
 export default function SignUp() {
   const firstNameRef:any = useRef()
@@ -19,10 +21,55 @@ export default function SignUp() {
     console.log(error)
   }
 
-  const [errorText, setErrorText] = useState()
+  const [alertText, setAlertText] = useState("Something went wrong")
+  const [alertTitle, setAlertTitle] = useState("Error!")
+  const [isAlertOpen, setIsAlertOpen] = useState(false)
+  const [alertType, setAlertType] = useState("error")
 
   function SendRequest() {
+    if (CheckData() === false) {
+      setIsAlertOpen(false)
+      setTimeout(() => {
+        setIsAlertOpen(true)
+      }, 250);
+      return
+    }
+    
+  }
 
+  const UserSchema = z.object({
+    "First name": z.string().min(3).max(20),
+    "Last name": z.string().min(3).max(20),
+    Email: z.string().email(),
+    Password: z.string().min(7).max(32),
+    "Repeated password": z.string().min(7).max(32),
+    About: z.string().max(256).nullable(),
+  })
+
+  function CheckData():boolean {
+    try {
+      UserSchema.parse({
+        "First name": firstNameRef.current.value,
+        "Last name": lastNameRef.current.value,
+        Email: emailRef.current.value,
+        Password: passwordRef.current.value,
+        "Repeated password": repeatPasswordRef.current.value,
+        About: aboutRef.current.value.length === 0 ? null : aboutRef.current.value,
+      })
+    } catch (e:any) {
+      setAlertText(JSON.parse(e)[0].message.toString())
+      setAlertTitle(JSON.parse(e)[0].path[0].toString())
+      return false
+    }
+
+    if (passwordRef.current.value !== repeatPasswordRef.current.value) {
+      setAlertText("Password mismatch")
+      setAlertTitle("Repeated password")
+      return false
+    }
+
+
+    return true
   }
   
   return (
@@ -138,10 +185,11 @@ export default function SignUp() {
         className="pt-4 flex items-center text-base justify-between gap-x-6">
           <Link to="../signin" className="text-sm font-semibold leading-6 text-textLight dark:text-textDark
           hover:text-buttonHoverLight dark:hover:text-buttonHoverDark transition-colors">Already have an account?</Link>
-          <button type="submit" className="rounded-md dark:bg-buttonDark bg-buttonLight px-3 py-2 text-sm font-semibold 
+          <button type="submit" onClick={SendRequest} className="rounded-md dark:bg-buttonDark bg-buttonLight px-3 py-2 text-sm font-semibold 
           text-textLight dark:text-textDark shadow-sm hover:bg-buttonHoverLight dark:hover:to-buttonHoverDark transition-colors">Send</button>
         </motion.div>
       </form>
+      <AlertButton open={isAlertOpen} text={alertText} title={alertTitle} type={alertType} close={() => setIsAlertOpen(false)}></AlertButton>
     </div>
   )
 }

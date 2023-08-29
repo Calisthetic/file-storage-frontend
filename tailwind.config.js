@@ -44,7 +44,9 @@ module.exports = {
         dropFiles: "opacity 1s ease-in-out !important",
       },
       spacing: {
-        withHeader: "72px 16px 16px 16px"
+        withHeader: "72px 16px 16px 16px",
+        alertTop: "calc(100dvh)",
+        alertLeft: "calc(100vw - 320px)",
       },
       minHeight: {
         fullWithHeader: "calc(100dvh - 56px)",
@@ -86,6 +88,9 @@ module.exports = {
       borderWidth: {
         imp0: "0px !important",
       },
+      top: {
+        help: "10px"
+      }
     },
   },
   plugins: [
