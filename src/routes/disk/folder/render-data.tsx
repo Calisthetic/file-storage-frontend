@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { useNavigate } from 'react-router-dom';
 
 import "../../../styles/focus-elems.css"
 import FolderAccessModal from "./folder-access-modal";
-import IconTileStar, { IconDelete, IconInfo } from "../../../components/icons";
+import IconTileStar, { IconDelete, IconInfo, IconLink } from "../../../components/icons";
 import { CutNumber, CutSize, GetCSSValue, BlurColor, cn, isDarkMode, IsNumeric } from "../../../lib/utils";
 // @ts-ignore
 import Hammer from 'hammerjs';
@@ -220,299 +220,140 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
 
   // Mask to detect id and type of hover element
   const [isMaskActive, setIsMaskActive] = useState(false)
+  const rootElem = document.getElementById("root")
   const navigate = useNavigate();
-  // Folder's drag/drop and double click
-  useEffect(() => {
-    const folderElems:any = document.getElementsByClassName("rendered-folder")
-    const fileElems:any = document.getElementsByClassName("rendered-file")
-    let rootElem = document.getElementById("root")
-    if (folderElems && fileElems) {
-      for (let i = 0; i < folderElems.length; i++) {
-        var hammer_folders = new Hammer(folderElems[i]);
-        hammer_folders.on('doubletap', function(e:any) {
-          if (e.target.dataset.token !== undefined) {
-            navigate('./../' + e.target.dataset.token)
-            return
-          }
-          if (e.target.parentElement.dataset.token !== undefined) {
-            navigate('./../' + e.target.parentElement.dataset.token)
-            return
-          }
-          if (e.target.parentElement.parentElement.dataset.token !== undefined) {
-            navigate('./../' + e.target.parentElement.parentElement.dataset.token)
-            return
-          }
-        });
 
-        hammer_folders.on('pan', function(event:any) {
-          folderElems[i].style["transform"] = "translate(" + event.deltaX + "px, " + event.deltaY + "px)"
-          if (event.isFinal) {
-            folderElems[i].style["transform"] = "translate(0px, 0px)"
-          }
-        });
-
-        hammer_folders.on('panstart', function(event:any) {
-          // Animations
-          folderElems[i].style["transition-property"] = "initial"
-          folderElems[i].style["transition"] = "initial"
-          folderElems[i].style["z-index"] = "16"
-          folderElems[i].style["box-shadow"] = "0px 0px 5px -2px var(--shadow" + (isDarkMode ? "Dark" : "Light") + ")"
-          // Mask && cursor
-          setIsMaskActive(true)
-          if (rootElem) {
-            rootElem.style["cursor"] = "grabbing"
-          }
-        });
-
-        hammer_folders.on('panend', function(event:any) {
-          // Animations
-          folderElems[i].style["transition-property"] = "transform"
-          folderElems[i].style["transition"] = "0.2s ease"
-          setTimeout(() => {
-            folderElems[i].style["transform"] = "initial"
-            folderElems[i].style["box-shadow"] = "initial"
-            setTimeout(() => {
-              folderElems[i].style["z-index"] = "initial"
-              // Main moving action ! only PC works
-              if (event.target.dataset.id && event.srcEvent.target.dataset.id && 
-                event.srcEvent.target.dataset.type && event.target.dataset.type) {
-                MoveItems({
-                  target_id: event.srcEvent.target.dataset.id,
-                  dragged_id: event.target.dataset.id,
-                  target_type: event.srcEvent.target.dataset.type,
-                  dragged_type: event.target.dataset.type,
-                })
-              }
-            }, 200);
-            // Mobile + PC version detect
-            let targetElem = document.elementFromPoint(event.center.x, event.center.y) as HTMLElement
-            if (targetElem) {
-              MoveItems({
-                target_id: targetElem.dataset.id,
-                dragged_id: folderElems[i].dataset.id,
-                target_type: targetElem.dataset.type,
-                dragged_type: folderElems[i].dataset.type,
-              })
-            }
-            // Mask && cursor
-            setIsMaskActive(false)
-            if (rootElem) {
-              rootElem.style["cursor"] = "auto"
-            }
-          }, 10);
-        });
-      }
-
-      for (let i = 0; i < fileElems.length; i++) {
-        var hammer_files = new Hammer(fileElems[i]);
-        hammer_files.on('pan', function(event:any) {
-          fileElems[i].style["transform"] = "translate(" + event.deltaX + "px, " + event.deltaY + "px)"
-        });
-
-        hammer_files.on('panstart', function(event:any) {
-          // Animations
-          fileElems[i].style["transition-property"] = "initial"
-          fileElems[i].style["transition"] = "initial"
-          fileElems[i].style["z-index"] = "16"
-          fileElems[i].style["box-shadow"] = "0px 0px 5px -2px var(--shadow" + (isDarkMode ? "Dark" : "Light") + ")"
-          // Mask && cursor
-          setIsMaskActive(true)
-          if (rootElem) {
-            rootElem.style["cursor"] = "grabbing"
-          }
-        });
-
-        hammer_files.on('panend', function(event:any) {
-          // Animations
-          fileElems[i].style["transition-property"] = "transform"
-          fileElems[i].style["transition"] = "0.2s ease"
-          setTimeout(() => {
-            fileElems[i].style["transform"] = "initial"
-            fileElems[i].style["box-shadow"] = "initial"
-            setTimeout(() => {
-              fileElems[i].style["z-index"] = "initial"
-            }, 200);
-            // Mobile + PC version detect
-            let targetElem = document.elementFromPoint(event.center.x, event.center.y) as HTMLElement
-            if (targetElem) {
-              MoveItems({
-                target_id: targetElem.dataset.id,
-                dragged_id: fileElems[i].dataset.id,
-                target_type: targetElem.dataset.type,
-                dragged_type: fileElems[i].dataset.type,
-              })
-            }
-            // Mask && cursor
-            setIsMaskActive(false)
-            if (rootElem) {
-              rootElem.style["cursor"] = "auto"
-            }
-          }, 10);
-        });
-      }
+  // Move files/folders to folders
+  const MoveItems = useCallback(({
+    dragged_id, target_id,
+    dragged_type, target_type,
+  }:MoveItemsProps) => {
+    if (!IsNumeric(target_id) || !IsNumeric(dragged_id)) {
+      return false
     }
+    if (target_type !== "folder" || dragged_type === undefined
+    || target_id === undefined || dragged_id === undefined) {
+      return false
+    }
+    if (target_id === dragged_id && target_type === dragged_type) {
+      return false
+    }
+    if (lastMovedData.current.dragged_id === dragged_id
+    && lastMovedData.current.target_id === target_id
+    && lastMovedData.current.dragged_type === dragged_type
+    && lastMovedData.current.target_type === target_type) {
+      return false
+    }
+    console.log("Target: " + target_type + ", id: " + target_id)
+    console.log("Dragged: " + dragged_type + ", id: " + dragged_id)
 
-    // Move files/folders to folders
-    const MoveItems = ({
-      dragged_id, target_id,
-      dragged_type, target_type,
-    }:MoveItemsProps) => {
-      if (!IsNumeric(target_id) || !IsNumeric(dragged_id)) {
-        return false
-      }
-      if (target_type !== "folder" || dragged_type === undefined
-      || target_id === undefined || dragged_id === undefined) {
-        return false
-      }
-      if (target_id === dragged_id && target_type === dragged_type) {
-        return false
-      }
-      if (lastMovedData.current.dragged_id === dragged_id
-      && lastMovedData.current.target_id === target_id
-      && lastMovedData.current.dragged_type === dragged_type
-      && lastMovedData.current.target_type === target_type) {
-        return false
-      }
-      console.log("Target: " + target_type + ", id: " + target_id)
-      console.log("Dragged: " + dragged_type + ", id: " + dragged_id)
+    lastMovedData.current = {
+      dragged_id: dragged_id,
+      target_id: target_id,
+      dragged_type: dragged_type,
+      target_type: target_type,
+    }
+  }, [])
   
-      lastMovedData.current = {
-        dragged_id: dragged_id,
-        target_id: target_id,
-        dragged_type: dragged_type,
-        target_type: target_type,
+  const DoubleTapEvent = useCallback((event:any) => {
+    if (event.target.dataset.token !== undefined) {
+      navigate('./../' + event.target.dataset.token)
+      return
+    }
+    if (event.target.parentElement.dataset.token !== undefined) {
+      navigate('./../' + event.target.parentElement.dataset.token)
+      return
+    }
+    if (event.target.parentElement.parentElement.dataset.token !== undefined) {
+      navigate('./../' + event.target.parentElement.parentElement.dataset.token)
+      return
+    }
+  }, [navigate])
+  const PanEvent = useCallback((elem:HTMLElement, event:any) => {
+    elem.style.transform = "translate(" + event.deltaX + "px, " + event.deltaY + "px)"
+    if (event.isFinal) {
+      elem.style.transform = "translate(0px, 0px)"
+    }
+  }, [])
+  const PanStartEvent = useCallback((elem:HTMLElement) => {
+    // Animations
+    elem.style.transitionProperty = "initial"
+    elem.style.transition = "initial"
+    elem.style.zIndex = "16"
+    elem.style.boxShadow = "0px 0px 5px -2px var(--shadow" + (isDarkMode ? "Dark" : "Light") + ")"
+    // Mask && cursor
+    setIsMaskActive(true)
+    if (rootElem) {
+      rootElem.style.cursor = "grabbing"
+    }
+  }, [rootElem])
+  const PanEndEvent = useCallback((elem: HTMLElement, event:any) => {
+    // Animations
+    elem.style.transitionProperty = "transform"
+    elem.style.transition = "0.2s ease"
+    setTimeout(() => {
+      elem.style.transform = "initial"
+      elem.style.boxShadow = "initial"
+      setTimeout(() => {
+        elem.style.zIndex = "initial"
+        // Main moving action ! only PC works
+        if (event.target.dataset.id && event.srcEvent.target.dataset.id && 
+          event.srcEvent.target.dataset.type && event.target.dataset.type) {
+          MoveItems({
+            target_id: event.srcEvent.target.dataset.id,
+            dragged_id: event.target.dataset.id,
+            target_type: event.srcEvent.target.dataset.type,
+            dragged_type: event.target.dataset.type,
+          })
+        }
+      }, 200);
+      // Mobile + PC version detect
+      let targetElem = document.elementFromPoint(event.center.x, event.center.y) as HTMLElement
+      if (targetElem) {
+        MoveItems({
+          target_id: targetElem.dataset.id,
+          dragged_id: elem.dataset.id,
+          target_type: targetElem.dataset.type,
+          dragged_type: elem.dataset.type,
+        })
+      }
+      // Mask && cursor
+      setIsMaskActive(false)
+      if (rootElem) {
+        rootElem.style["cursor"] = "auto"
+      }
+    }, 10);
+  }, [MoveItems, rootElem])
+
+  // Folder/files events
+  useEffect(() => {
+    const targetElems:any = [...Array.from(document.getElementsByClassName("rendered-folder")),
+    ...Array.from(document.getElementsByClassName("rendered-file"))]
+
+    if (targetElems) {
+      for (let i = 0; i < targetElems.length; i++) {
+        var hammer_folders = new Hammer(targetElems[i]);
+        hammer_folders.on('doubletap', (event:any) => DoubleTapEvent(event));
+        hammer_folders.on('pan', (event:any) => PanEvent(targetElems[i], event));
+        hammer_folders.on('panstart', () => PanStartEvent(targetElems[i]));
+        hammer_folders.on('panend', (event:any) => PanEndEvent(targetElems[i], event));
       }
     }
 
     // Swith "on" => "off"
     return () => {
-      if (folderElems && fileElems) {
-        for (let i = 0; i < folderElems.length; i++) {
-          var hammer_folders = new Hammer(folderElems[i]);
-          hammer_folders.on('doubletap', function(e:any) {
-            if (e.target.dataset.token !== undefined) {
-              navigate('./../' + e.target.dataset.token)
-              return
-            }
-            if (e.target.parentElement.dataset.token !== undefined) {
-              navigate('./../' + e.target.parentElement.dataset.token)
-              return
-            }
-            if (e.target.parentElement.parentElement.dataset.token !== undefined) {
-              navigate('./../' + e.target.parentElement.parentElement.dataset.token)
-              return
-            }
-          });
-  
-          hammer_folders.on('pan', function(event:any) {
-            folderElems[i].style["transform"] = "translate(" + event.deltaX + "px, " + event.deltaY + "px)"
-            if (event.isFinal) {
-              folderElems[i].style["transform"] = "translate(0px, 0px)"
-            }
-          });
-  
-          hammer_folders.on('panstart', function(event:any) {
-            // Animations
-            folderElems[i].style["transition-property"] = "initial"
-            folderElems[i].style["transition"] = "initial"
-            folderElems[i].style["z-index"] = "16"
-            folderElems[i].style["box-shadow"] = "0px 0px 5px -2px var(--shadow" + (isDarkMode ? "Dark" : "Light") + ")"
-            // Mask && cursor
-            setIsMaskActive(true)
-            if (rootElem) {
-              rootElem.style["cursor"] = "grabbing"
-            }
-          });
-  
-          hammer_folders.on('panend', function(event:any) {
-            // Animations
-            folderElems[i].style["transition-property"] = "transform"
-            folderElems[i].style["transition"] = "0.2s ease"
-            setTimeout(() => {
-              folderElems[i].style["transform"] = "initial"
-              folderElems[i].style["box-shadow"] = "initial"
-              setTimeout(() => {
-                folderElems[i].style["z-index"] = "initial"
-                // Main moving action ! only PC works
-                if (event.target.dataset.id && event.srcEvent.target.dataset.id && 
-                  event.srcEvent.target.dataset.type && event.target.dataset.type) {
-                  MoveItems({
-                    target_id: event.srcEvent.target.dataset.id,
-                    dragged_id: event.target.dataset.id,
-                    target_type: event.srcEvent.target.dataset.type,
-                    dragged_type: event.target.dataset.type,
-                  })
-                }
-              }, 200);
-              // Mobile + PC version detect
-              let targetElem = document.elementFromPoint(event.center.x, event.center.y) as HTMLElement
-              if (targetElem) {
-                MoveItems({
-                  target_id: targetElem.dataset.id,
-                  dragged_id: folderElems[i].dataset.id,
-                  target_type: targetElem.dataset.type,
-                  dragged_type: folderElems[i].dataset.type,
-                })
-              }
-              // Mask && cursor
-              setIsMaskActive(false)
-              if (rootElem) {
-                rootElem.style["cursor"] = "auto"
-              }
-            }, 10);
-          });
-        }
-  
-        for (let i = 0; i < fileElems.length; i++) {
-          var hammer_files = new Hammer(fileElems[i]);
-          hammer_files.on('pan', function(event:any) {
-            fileElems[i].style["transform"] = "translate(" + event.deltaX + "px, " + event.deltaY + "px)"
-          });
-  
-          hammer_files.on('panstart', function(event:any) {
-            // Animations
-            fileElems[i].style["transition-property"] = "initial"
-            fileElems[i].style["transition"] = "initial"
-            fileElems[i].style["z-index"] = "16"
-            fileElems[i].style["box-shadow"] = "0px 0px 5px -2px var(--shadow" + (isDarkMode ? "Dark" : "Light") + ")"
-            // Mask && cursor
-            setIsMaskActive(true)
-            if (rootElem) {
-              rootElem.style["cursor"] = "grabbing"
-            }
-          });
-  
-          hammer_files.on('panend', function(event:any) {
-            // Animations
-            fileElems[i].style["transition-property"] = "transform"
-            fileElems[i].style["transition"] = "0.2s ease"
-            setTimeout(() => {
-              fileElems[i].style["transform"] = "initial"
-              fileElems[i].style["box-shadow"] = "initial"
-              setTimeout(() => {
-                fileElems[i].style["z-index"] = "initial"
-              }, 200);
-              // Mobile + PC version detect
-              let targetElem = document.elementFromPoint(event.center.x, event.center.y) as HTMLElement
-              if (targetElem) {
-                MoveItems({
-                  target_id: targetElem.dataset.id,
-                  dragged_id: fileElems[i].dataset.id,
-                  target_type: targetElem.dataset.type,
-                  dragged_type: fileElems[i].dataset.type,
-                })
-              }
-              // Mask && cursor
-              setIsMaskActive(false)
-              if (rootElem) {
-                rootElem.style["cursor"] = "auto"
-              }
-            }, 10);
-          });
+      if (targetElems) {
+        for (let i = 0; i < targetElems.length; i++) {
+          var hammer_folders = new Hammer(targetElems[i]);
+          hammer_folders.off('doubletap', (event:any) => DoubleTapEvent(event));
+          hammer_folders.off('pan', (event:any) => PanEvent(targetElems[i], event));
+          hammer_folders.off('panstart', () => PanStartEvent(targetElems[i]));
+          hammer_folders.off('panend', (event:any) => PanEndEvent(targetElems[i], event));
         }
       }
     }
-  }, [currentSortType, currentSortBy, currentRenderType, navigate, lastMovedData])
+  }, [currentSortType, currentSortBy, currentRenderType, navigate, 
+  DoubleTapEvent, PanEvent, PanStartEvent, PanEndEvent, MoveItems])
 
 
 
@@ -602,38 +443,22 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     {/* Actions */}
                     <div className="w-6 sm:w-7 mg:w-8" data-token={item.token}>
                       <div className="h-full flex items-center justify-center hover-first">
-                          <svg viewBox="0 0 256 256"  xmlns="http://www.w3.org/2000/svg"
-                          className="w-6 h-6 pointer-events-none">
-                            <path fill="none" d="M0 0h256v256H0z"></path>
-                            <circle cx="128" cy="128" r="96" className="stroke-textLight dark:stroke-textDark" 
-                            strokeMiterlimit="10" strokeWidth="16" fill="none"></circle>
-                            <circle cx="128" cy="128" r="12" className="fill-textLight dark:fill-textDark"></circle>
-                            <circle cx="128" cy="80" r="12" className="fill-textLight dark:fill-textDark"></circle>
-                            <circle cx="128" cy="176" r="12" className="fill-textLight dark:fill-textDark"></circle>
-                          </svg>
+                        <svg viewBox="0 0 256 256"  xmlns="http://www.w3.org/2000/svg"
+                        className="w-6 h-6 pointer-events-none">
+                          <path fill="none" d="M0 0h256v256H0z"></path>
+                          <circle cx="128" cy="128" r="96" className="stroke-textLight dark:stroke-textDark" 
+                          strokeMiterlimit="10" strokeWidth="16" fill="none"></circle>
+                          <circle cx="128" cy="128" r="12" className="fill-textLight dark:fill-textDark"></circle>
+                          <circle cx="128" cy="80" r="12" className="fill-textLight dark:fill-textDark"></circle>
+                          <circle cx="128" cy="176" r="12" className="fill-textLight dark:fill-textDark"></circle>
+                        </svg>
                       </div>
                       <div className="hover-second ml-3.5 w-8 z-10
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
                         <button data-id={item.id} data-name={item.name}
                         data-access={item.access_type} data-token={item.token} onClick={modalAccessOpen}
                         className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
-                          <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 pointer-events-none">
-                            <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
-                            29.47 17.58 41.91 30.02 3.146 3.146 5.898 6.518 8.742 9.838l37.96-37.96C458.5 72.05 477.1 64 498.6 
-                            64c20.67 0 40.1 8.047 54.71 22.66 14.61 14.61 22.66 34.04 22.66 54.71s-8.049 40.1-22.66 54.71l-133.3 
-                            133.3C405.5 343.1 386 352 365.4 352s-40.1-8.048-54.71-22.66C296 314.7 287.1 295.3 287.1 274.6s8.047-40.1 
-                            22.66-54.71l4.44-3.49c-2.1-3.9-4.3-7.9-7.5-11.1-8.6-8.6-19.9-13.3-32.1-13.3-11.93 0-23.1 4.664-31.61 
-                            12.97-30.71 53.96-23.63 123.6 22.39 169.6C293 402.2 329.2 416 365.4 416c36.18 0 72.36-13.8 99.96-41.41L598.6 
-                            241.3c28.45-28.45 42.24-66.01 41.37-103.3-.87-35.9-14.57-69.84-41.37-96.59zM234 387.4l-37.9 37.9C181.5 
-                            439.1 162 448 141.4 448c-20.67 0-40.1-8.047-54.71-22.66-14.61-14.61-22.66-34.04-22.66-54.71s8.049-40.1 
-                            22.66-54.71l133.3-133.3C234.5 168 253.1 160 274.6 160s40.1 8.048 54.71 22.66c14.62 14.61 22.66 34.04 
-                            22.66 54.71s-8.047 40.1-22.66 54.71l-3.51 3.52c2.094 3.939 4.219 7.895 7.465 11.15C341.9 315.3 353.3 
-                            320 365.4 320c11.93 0 23.1-4.664 31.61-12.97 30.71-53.96 23.63-123.6-22.39-169.6C346.1 109.8 310.8 96 
-                            274.6 96c-36.2 0-72.3 13.8-99.9 41.4L41.41 270.7C13.81 298.3 0 334.48 0 370.66c0 36.18 13.8 72.36 41.41 
-                            99.97C69.01 498.2 105.2 512 141.4 512c36.18 0 
-                            72.36-13.8 99.96-41.41l43.36-43.36c-15.11-8.012-29.47-17.58-41.91-30.02-3.21-3.11-5.91-6.51-8.81-9.81z" 
-                            className=" fill-textLight dark:fill-textDark"></path>
-                          </svg>
+                          <IconLink classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconLink>
                         </button>
                         <button data-id={item.id} data-name={item.name} data-token={item.token} 
                         data-type="folder" onClick={modalRenameOpen}
@@ -920,24 +745,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     <div className="flex hover-child justify-center items-center h-full">
                       <button data-id={item.id} data-name={item.name}
                       data-access={item.access_type} data-token={item.token} onClick={modalAccessOpen}>
-                        <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" 
-                        className="w-5 h-5">
-                          <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
-                          29.47 17.58 41.91 30.02 3.146 3.146 5.898 6.518 8.742 9.838l37.96-37.96C458.5 72.05 477.1 64 498.6 
-                          64c20.67 0 40.1 8.047 54.71 22.66 14.61 14.61 22.66 34.04 22.66 54.71s-8.049 40.1-22.66 54.71l-133.3 
-                          133.3C405.5 343.1 386 352 365.4 352s-40.1-8.048-54.71-22.66C296 314.7 287.1 295.3 287.1 274.6s8.047-40.1 
-                          22.66-54.71l4.44-3.49c-2.1-3.9-4.3-7.9-7.5-11.1-8.6-8.6-19.9-13.3-32.1-13.3-11.93 0-23.1 4.664-31.61 
-                          12.97-30.71 53.96-23.63 123.6 22.39 169.6C293 402.2 329.2 416 365.4 416c36.18 0 72.36-13.8 99.96-41.41L598.6 
-                          241.3c28.45-28.45 42.24-66.01 41.37-103.3-.87-35.9-14.57-69.84-41.37-96.59zM234 387.4l-37.9 37.9C181.5 
-                          439.1 162 448 141.4 448c-20.67 0-40.1-8.047-54.71-22.66-14.61-14.61-22.66-34.04-22.66-54.71s8.049-40.1 
-                          22.66-54.71l133.3-133.3C234.5 168 253.1 160 274.6 160s40.1 8.048 54.71 22.66c14.62 14.61 22.66 34.04 
-                          22.66 54.71s-8.047 40.1-22.66 54.71l-3.51 3.52c2.094 3.939 4.219 7.895 7.465 11.15C341.9 315.3 353.3 
-                          320 365.4 320c11.93 0 23.1-4.664 31.61-12.97 30.71-53.96 23.63-123.6-22.39-169.6C346.1 109.8 310.8 96 
-                          274.6 96c-36.2 0-72.3 13.8-99.9 41.4L41.41 270.7C13.81 298.3 0 334.48 0 370.66c0 36.18 13.8 72.36 41.41 
-                          99.97C69.01 498.2 105.2 512 141.4 512c36.18 0 
-                          72.36-13.8 99.96-41.41l43.36-43.36c-15.11-8.012-29.47-17.58-41.91-30.02-3.21-3.11-5.91-6.51-8.81-9.81z" 
-                          className=" fill-textLight dark:fill-textDark"></path>
-                        </svg>
+                        <IconLink classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconLink>
                       </button>
                     </div>
                   </td>
@@ -1228,23 +1036,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     <button data-id={item.id} data-name={item.name} data-type="folder"
                     data-access={item.access_type} data-token={item.token} onClick={modalAccessOpen}
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
-                      <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
-                        <path d="M598.6 41.41C570.1 13.8 534.8 0 498.6 0s-72.36 13.8-99.96 41.41l-43.36 43.36c15.11 8.012 
-                        29.47 17.58 41.91 30.02 3.146 3.146 5.898 6.518 8.742 9.838l37.96-37.96C458.5 72.05 477.1 64 498.6 
-                        64c20.67 0 40.1 8.047 54.71 22.66 14.61 14.61 22.66 34.04 22.66 54.71s-8.049 40.1-22.66 54.71l-133.3 
-                        133.3C405.5 343.1 386 352 365.4 352s-40.1-8.048-54.71-22.66C296 314.7 287.1 295.3 287.1 274.6s8.047-40.1 
-                        22.66-54.71l4.44-3.49c-2.1-3.9-4.3-7.9-7.5-11.1-8.6-8.6-19.9-13.3-32.1-13.3-11.93 0-23.1 4.664-31.61 
-                        12.97-30.71 53.96-23.63 123.6 22.39 169.6C293 402.2 329.2 416 365.4 416c36.18 0 72.36-13.8 99.96-41.41L598.6 
-                        241.3c28.45-28.45 42.24-66.01 41.37-103.3-.87-35.9-14.57-69.84-41.37-96.59zM234 387.4l-37.9 37.9C181.5 
-                        439.1 162 448 141.4 448c-20.67 0-40.1-8.047-54.71-22.66-14.61-14.61-22.66-34.04-22.66-54.71s8.049-40.1 
-                        22.66-54.71l133.3-133.3C234.5 168 253.1 160 274.6 160s40.1 8.048 54.71 22.66c14.62 14.61 22.66 34.04 
-                        22.66 54.71s-8.047 40.1-22.66 54.71l-3.51 3.52c2.094 3.939 4.219 7.895 7.465 11.15C341.9 315.3 353.3 
-                        320 365.4 320c11.93 0 23.1-4.664 31.61-12.97 30.71-53.96 23.63-123.6-22.39-169.6C346.1 109.8 310.8 96 
-                        274.6 96c-36.2 0-72.3 13.8-99.9 41.4L41.41 270.7C13.81 298.3 0 334.48 0 370.66c0 36.18 13.8 72.36 41.41 
-                        99.97C69.01 498.2 105.2 512 141.4 512c36.18 0 
-                        72.36-13.8 99.96-41.41l43.36-43.36c-15.11-8.012-29.47-17.58-41.91-30.02-3.21-3.11-5.91-6.51-8.81-9.81z" 
-                        className=" fill-textLight dark:fill-textDark"></path>
-                      </svg>
+                      <IconLink classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconLink>
                     </button>
                     <button data-id={item.id} data-type="folder"
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
