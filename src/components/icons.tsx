@@ -8,6 +8,9 @@ interface ColorProps {
 interface FillProps {
   fillClasses: string
 }
+interface StrokeProps {
+  strokeClasses: string
+}
 interface SizeProps {
   width: string,
   height: string,
@@ -160,6 +163,15 @@ export function IconDownload({classes}:ClassesProps) {
     strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
+    </svg>
+  )
+}
+
+export function IconClose({classes, strokeClasses}:ClassesProps & StrokeProps) {
+  return (
+    <svg className={classes} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+      <path className={strokeClasses} strokeLinecap="round" 
+      strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
     </svg>
   )
 }
