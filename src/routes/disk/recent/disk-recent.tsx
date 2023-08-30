@@ -1,7 +1,13 @@
-import { Component} from 'react';
+import { FunctionComponent } from "react";
 
-export default function DiskRecent() {
+interface DiskRecentProps {
+  
+}
+ 
+const DiskRecent: FunctionComponent<DiskRecentProps> = () => {
   return (
     <div>recent</div>
-  )
+  );
 }
+ 
+export default DiskRecent;

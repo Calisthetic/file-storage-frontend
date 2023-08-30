@@ -1,7 +1,13 @@
-import { Component} from 'react';
+import { FunctionComponent} from 'react';
 
-export default function DiskShared() {
+interface DiskSharedProps {
+  
+}
+ 
+const DiskShared: FunctionComponent<DiskSharedProps> = () => {
   return (
     <div>shared</div>
-  )
+  );
 }
+ 
+export default DiskShared;

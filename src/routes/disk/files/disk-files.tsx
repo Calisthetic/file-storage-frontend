@@ -1,7 +1,13 @@
-import { Component} from 'react';
+import { FunctionComponent } from "react";
 
-export default function DiskFiles() {
+interface DiskFilesProps {
+  
+}
+ 
+const DiskFiles: FunctionComponent<DiskFilesProps> = () => {
   return (
     <div>files</div>
-  )
+  );
 }
+ 
+export default DiskFiles;

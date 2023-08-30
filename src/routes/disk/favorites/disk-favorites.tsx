@@ -1,9 +1,13 @@
-import { Component} from 'react';
+import { FunctionComponent } from "react";
 
-export default function DiskFavorites() {
-  return (
-    <div className="w-full h-full">
-      fav
-    </div>
-  )
+interface DiskFavoritesProps {
+  
 }
+ 
+const DiskFavorites: FunctionComponent<DiskFavoritesProps> = () => {
+  return (
+    <div>fav</div>
+  );
+}
+ 
+export default DiskFavorites;

@@ -1,7 +1,13 @@
-import { Component} from 'react';
+import { FunctionComponent } from "react";
 
-export default function DiskRecycleBin() {
+interface DiskRecycleBinProps {
+  
+}
+ 
+const DiskRecycleBin: FunctionComponent<DiskRecycleBinProps> = () => {
   return (
     <div>trash</div>
-  )
+  );
 }
+ 
+export default DiskRecycleBin;
