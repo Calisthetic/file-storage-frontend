@@ -138,7 +138,7 @@ export default function DiskMain() {
               <Route path='upgrade' element={<DiskUpgrade></DiskUpgrade>}></Route>
               <Route path='favorites' element={<DiskFavorites></DiskFavorites>}></Route>
               <Route path='files' element={<DiskFiles></DiskFiles>}></Route>
-              <Route path='trash' element={<DiskRecycleBin></DiskRecycleBin>}></Route>
+              <Route path='bin' element={<DiskRecycleBin></DiskRecycleBin>}></Route>
               <Route path='folder/:id' element={<DiskFolder></DiskFolder>}></Route>
               <Route path='folder' element={<Redirect location="/disk/folder/main"></Redirect>}></Route>
               <Route path='folder/' element={<Redirect location="/disk/folder/main"></Redirect>}></Route>

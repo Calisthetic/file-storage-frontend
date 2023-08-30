@@ -61,7 +61,7 @@ export default function DiskSideBar() {
           </Link>
         </li>
         <li>
-          <Link to="trash" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
+          <Link to="bin" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <IconDelete classes="w-5 h-5 sm:w-6 sm:h-6" fillClasses="fill-iconLight dark:fill-iconDark"></IconDelete>
             <span className="ml-3">Recycle bin</span>
