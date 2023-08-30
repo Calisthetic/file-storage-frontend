@@ -1,20 +1,23 @@
+import { Suspense, lazy } from "react";
 import { Routes, Route, } from "react-router-dom";
-import SignIn from "./signin/signin";
-import SignUp from "./signup/signup";
-import Redirect from "../../components/redirect";
-import NoPassword from "./nopassword/nopassword";
+const SignIn = lazy(() => import("./signin/signin"));
+const SignUp = lazy(() => import("./signup/signup"));
+const Redirect = lazy(() => import("../../components/redirect"));
+const NoPassword = lazy(() => import("./nopassword/nopassword"));
 
-export default function AuthPage() {
+export default function AuthMain() {
 
   return (
     <div className="bg-backgroundLight min-h-fulldvh dark:bg-backgroundDark">
-      <Routes>
-        <Route path="*" element={<Redirect location="/auth/signin"></Redirect>}></Route>
-        <Route path="/" element={<Redirect location="/auth/signin"></Redirect>}></Route>
-        <Route path="signin" element={<SignIn></SignIn>}></Route>
-        <Route path="signup" element={<SignUp></SignUp>}></Route>
-        <Route path="nopassword" element={<NoPassword></NoPassword>}></Route>
-      </Routes>
+      <Suspense fallback={<div>Loading</div>}>
+        <Routes>
+          <Route path="*" element={<Redirect location="/auth/signin"></Redirect>}></Route>
+          <Route path="/" element={<Redirect location="/auth/signin"></Redirect>}></Route>
+          <Route path="signin" element={<SignIn></SignIn>}></Route>
+          <Route path="signup" element={<SignUp></SignUp>}></Route>
+          <Route path="nopassword" element={<NoPassword></NoPassword>}></Route>
+        </Routes>
+      </Suspense>
     </div>
   )
 }
