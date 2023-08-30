@@ -41,11 +41,11 @@ const AlertButton: FunctionComponent<AlertButtonProps> = (props:AlertButtonProps
           "top-[calc(100%)] left-[calc(100%)]": props.position === 2 || props.position === undefined,
           "top-[calc(100%)] left-0": props.position === 3,
         })}>
-          <div className="flex flex-row items-center gap-x-1">
+          <div className="flex flex-row items-center gap-x-1 sm:gap-x-2">
             <IconAlerts classes="h-6 w-6" type={props.type}></IconAlerts>
             <div className="text-textLight dark:text-textDark">
               <div className="font-medium">{props.title}</div>
-              <div>{props.text}</div>
+              <div className="whitespace-pre-wrap">{props.text}</div>
             </div>
           </div>
           <button className="ml-2" onClick={props.close}>
