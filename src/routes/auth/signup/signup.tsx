@@ -24,31 +24,35 @@ export default function SignUp() {
   const [alertText, setAlertText] = useState("Something went wrong")
   const [alertTitle, setAlertTitle] = useState("Error!")
   const [isAlertOpen, setIsAlertOpen] = useState(false)
-  const [alertType, setAlertType] = useState("error")
 
   function SendRequest() {
+    // Show error
+    setIsAlertOpen(false)
     if (CheckData() === false) {
-      setIsAlertOpen(false)
       setTimeout(() => {
         setIsAlertOpen(true)
       }, 250);
       return
     }
     
+    // Api request
   }
 
-  const UserSchema = z.object({
+  const SignUpSchema = z.object({
     "First name": z.string().min(3).max(20),
     "Last name": z.string().min(3).max(20),
     Email: z.string().email(),
     Password: z.string().min(7).max(32),
     "Repeated password": z.string().min(7).max(32),
     About: z.string().max(256).nullable(),
+  }).refine((data) => data.Password === data["Repeated password"], {
+    message: "Passwords do not match",
+    path: ["Repeat password"]
   })
 
   function CheckData():boolean {
     try {
-      UserSchema.parse({
+      SignUpSchema.parse({
         "First name": firstNameRef.current.value,
         "Last name": lastNameRef.current.value,
         Email: emailRef.current.value,
@@ -62,20 +66,20 @@ export default function SignUp() {
       return false
     }
 
-    if (passwordRef.current.value !== repeatPasswordRef.current.value) {
-      setAlertText("Password mismatch")
-      setAlertTitle("Repeated password")
-      return false
-    }
+    // if (passwordRef.current.value !== repeatPasswordRef.current.value) {
+    //   setAlertText("Password mismatch")
+    //   setAlertTitle("Repeated password")
+    //   return false
+    // }
 
 
     return true
   }
   
   return (
-    <div className=" min-h-fulldvh sm:flex justify-center items-center">
-      <form className='py-6 flex flex-col justify-center min-h-fulldvh sm:h-auto bg-backgroundLight dark:bg-backgroundDark 
-      sm:rounded-xl w-[100cvw] sm:w-auto px-10' onSubmit={(e:any) => {e.preventDefault()}}>
+    <div className="min-h-fulldvh sm:flex justify-center items-center relative overflow-y-hidden">
+      <div className='py-6 flex flex-col justify-center min-h-fulldvh sm:h-auto bg-backgroundLight dark:bg-backgroundDark 
+      sm:rounded-xl w-[100cvw] sm:w-auto px-10'>
         <div className="w-full flex justify-center">
           <motion.img initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.00, damping: 24, stiffness: 300}} src={mainLogo}
           className="w-12 pb-2 text-center font-semibold leading-6 text-textLight dark:text-textDark"></motion.img>
@@ -188,8 +192,9 @@ export default function SignUp() {
           <button type="submit" onClick={SendRequest} className="rounded-md dark:bg-buttonDark bg-buttonLight px-3 py-2 text-sm font-semibold 
           text-textLight dark:text-textDark shadow-sm hover:bg-buttonHoverLight dark:hover:to-buttonHoverDark transition-colors">Send</button>
         </motion.div>
-      </form>
-      <AlertButton open={isAlertOpen} text={alertText} title={alertTitle} type={alertType} close={() => setIsAlertOpen(false)}></AlertButton>
+      </div>
+      <AlertButton open={isAlertOpen} text={alertText} title={alertTitle}
+      type="error" close={() => setIsAlertOpen(false)}></AlertButton>
     </div>
   )
 }
