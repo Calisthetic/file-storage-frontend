@@ -27,11 +27,7 @@ export default function SignUp() {
 
   function SendRequest() {
     // Show error
-    setIsAlertOpen(false)
     if (CheckData() === false) {
-      setTimeout(() => {
-        setIsAlertOpen(true)
-      }, 250);
       return
     }
     
@@ -42,8 +38,8 @@ export default function SignUp() {
     "First name": z.string().min(3).max(20),
     "Last name": z.string().min(3).max(20),
     Email: z.string().email(),
-    Password: z.string().min(7).max(32),
-    "Repeated password": z.string().min(7).max(32),
+    Password: z.string().min(8).max(32),
+    "Repeated password": z.string().min(8).max(32),
     About: z.string().max(256).nullable(),
   }).refine((data) => data.Password === data["Repeated password"], {
     message: "Passwords do not match",
@@ -51,6 +47,7 @@ export default function SignUp() {
   })
 
   function CheckData():boolean {
+    setIsAlertOpen(false)
     try {
       SignUpSchema.parse({
         "First name": firstNameRef.current.value,
@@ -63,6 +60,9 @@ export default function SignUp() {
     } catch (e:any) {
       setAlertText(JSON.parse(e)[0].message.toString())
       setAlertTitle(JSON.parse(e)[0].path[0].toString())
+      setTimeout(() => {
+        setIsAlertOpen(true)
+      }, 250);
       return false
     }
 
@@ -187,6 +187,7 @@ export default function SignUp() {
           text-textLight dark:text-textDark shadow-sm hover:bg-buttonHoverLight dark:hover:to-buttonHoverDark transition-colors">Send</button>
         </motion.div>
       </div>
+
       <Suspense fallback={<div>Loading</div>}>
         <AlertButton open={isAlertOpen} text={alertText} title={alertTitle}
         type="error" close={() => setIsAlertOpen(false)}></AlertButton>
