@@ -28,6 +28,7 @@ const ColorPicker: FunctionComponent<ColorPickerProps> = ({type, folderColor, fo
                 <button className="rounded-full h-6 w-6 transition-shadow
                 hover:shadow-defaultLight hover:dark:shadow-defaultDark pointer-events-auto"
                 style={{backgroundColor: "#" + default_color.color}}
+                id={"select-color-" + (temp_default_color_index * 4 + default_color_index).toString()} aria-label="Select color"
                 title={default_color.name} onClick={() => ChangeColor(default_color.color)}>
                   {folderColor?.toLowerCase() === default_color.color.toLowerCase() && (
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
@@ -52,7 +53,8 @@ const ColorPicker: FunctionComponent<ColorPickerProps> = ({type, folderColor, fo
       <div className="flex flex-col flex-wrap max-h-[145px] min-h-[145px]">
         {extendedColors.map((extended_color, extended_color_index) => folderColor === extended_color ? (
           <button className="rounded h-4 w-4" style={{backgroundColor: "#" + extended_color}}
-          key={extended_color_index} onClick={() => ChangeColor(extended_color)}>
+          key={extended_color_index} onClick={() => ChangeColor(extended_color)}
+          id={"select-color-" + extended_color_index.toString()} aria-label="Select color">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
             enableBackground="new 0 0 24 24" className="w-4 h-4">
               <path d="M10 18c-.5 0-1-.2-1.4-.6l-4-4c-.8-.8-.8-2 0-2.8.8-.8 2.1-.8 

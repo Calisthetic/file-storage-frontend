@@ -401,7 +401,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                 <div className="flex px-2 py-1 flex-row justify-between">
                   <div className="flex flex-row items-center space-x-2 max-w-[calc(100dvw-88px)] 
                   sm:max-w-[calc(100dvw-348px)] md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]">
-                    <button className="w-6 focus-first-right flex flex-row">
+                    <button id={"open-folder-colors-" + item.id} aria-label="Folder colors"
+                    className="w-6 focus-first-right flex flex-row">
                       <svg viewBox="0 0 20 16" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 0H2C.9 0 0 .9 0 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2h-8L8 0Z" 
                         fillRule="evenodd" fill={item.color ? ("#" + item.color) : "#888"}></path>

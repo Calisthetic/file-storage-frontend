@@ -151,7 +151,7 @@ export default function DiskFolder() {
       <header className="w-full px-1 sm:px-0 pt-1 flex flex-row justify-between">
         {/* All actions drop */}
         <div>
-          <button onClick={() => {setIsAddDrop(!isAddDrop)}} data-drop="add"
+          <button onClick={() => {setIsAddDrop(!isAddDrop)}} id="drop-actions" aria-label="Actions" data-drop="add"
           className=" text-textLight dark:text-textDark hover:bg-backgroundHoverLight 
           dark:hover:bg-backgroundHoverDark first-letter:uppercase
           font-medium rounded-full text-base sm:text-lg px-4 py-2 text-center
@@ -206,7 +206,7 @@ export default function DiskFolder() {
         <div className="flex flex-row items-center space-x-1">
           {/* Sorting */}
           <div className="">
-            <button onClick={() => {setIsSortDrop(!isSortDrop)}} data-drop="sort"
+            <button onClick={() => {setIsSortDrop(!isSortDrop)}} id="drop-sort" aria-label="Sort" data-drop="sort"
             className=" dark:text-textDark hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark
             font-medium rounded-full text-base sm:text-lg w-10 h-10 sm:w-11 sm:h-11 text-textLight 
             text-center justify-center inline-flex items-center
@@ -304,7 +304,7 @@ export default function DiskFolder() {
 
           {/* Cell types drop */}
           <div>
-            <button data-drop="cellType" 
+            <button data-drop="cellType" id="drop-cell-type" aria-label="Cell type"
             onClick={() => {setIsCellTypeDrop(!isCellTypeDrop)}}
             className="text-white hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark
             font-medium rounded-full text-center h-10 w-10 inline-flex items-center first-letter:uppercase
@@ -319,7 +319,6 @@ export default function DiskFolder() {
                     0v2h14V0H4Z" fillRule="evenodd" className="fill-iconLight dark:fill-iconDark"></path>
                   </svg>
                 </motion.p>
-                
               ) : (currentRenderType === "table" ? (
                 <motion.section initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
                 transition={{damping: 24, duration: 0.25, stiffness: 300}}

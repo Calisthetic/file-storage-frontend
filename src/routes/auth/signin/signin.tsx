@@ -16,7 +16,7 @@ export default function SignIn() {
       <div className="flex w-80 sm:w-auto min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <motion.img initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.0, damping: 24, stiffness: 300}}
-          className="mx-auto h-12 w-auto" src={mainLogo} alt="Logo" />
+          className="mx-auto h-12 w-auto aspect-square" src={mainLogo} alt="Logo" width="48" height="48" />
           <motion.h2 initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.02, damping: 24, stiffness: 300}}
           className="mt-2 text-center text-xl font-bold leading-9 tracking-tight text-textLight dark:text-textDark">Sign in to your account</motion.h2>
         </div>

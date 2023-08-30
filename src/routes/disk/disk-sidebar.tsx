@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { useRef, useState } from "react";
 import {Link,} from "react-router-dom";
-import { IconDelete } from "../../components/icons";
+import { IconClose, IconDelete } from "../../components/icons";
 
 export default function DiskSideBar() {
   const adRef:any = useRef()
@@ -172,13 +172,11 @@ export default function DiskSideBar() {
             <div className="flex items-center mb-3 justify-between">
               <span className=" bg-backgroundAccentLight text-textLight font-semibold mr-2 px-2.5 py-0.5 rounded 
               dark:bg-backgroundAccentDark dark:text-textDark">Beta</span>
-              <button onClick={() => {setIsAdOpen(false)}} type="button" className="ml-auto sm:-mx-1.5 -my-1.5 bg-backgroundThirdLight 
+              <button onClick={() => {setIsAdOpen(false)}} type="button" id="cloase-ad" aria-label="Close ad"
+              className="ml-auto sm:-mx-1.5 -my-1.5 bg-backgroundThirdLight 
               justify-center items-center w-6 h-6 text-textLight rounded-lg transition-all p-1 inline-flex
               hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark dark:bg-backgroundThirdDark dark:text-textDark">
-                <svg className="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                  <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" strokeLinejoin="round" 
-                  strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                </svg>
+                <IconClose classes="w-2.5 h-2.5" strokeClasses="stroke-textLight dark:stroke-textDark"></IconClose>
               </button>
             </div>
             <p className="mb-2 sm:mb-3">

@@ -1,21 +1,21 @@
 import { Routes, Route, Link, } from "react-router-dom";
-import DiskRecent from './recent/disk-recent';
-import DiskShared from "./shared/disk-shared";
-import DiskUpgrade from "./upgrade/disk-upgrade";
-import DiskFolder from "./folder/disk-folder";
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion"
-import DiskFavorites from "./favorites/disk-favorites";
-import DiskRecycleBin from "./recycle-bin/disk-recycle-bin";
-import DiskFiles from "./files/disk-files";
-import DiskSideBar from "./disk-sidebar";
-import Redirect from "../../components/redirect";
 // @ts-ignore
 import Hammer from 'hammerjs';
 import { cn } from "../../lib/utils";
-import UserProfileDropdown from "../../components/user-profile-dropdown";
+import UserProfileDropdown from"../../components/user-profile-dropdown";
+const Redirect = lazy(() => import("../../components/redirect"));
+const DiskSideBar = lazy(() => import("./disk-sidebar"));
+const DiskRecent = lazy(() => import('./recent/disk-recent'));
+const DiskShared = lazy(() => import("./shared/disk-shared"));
+const DiskUpgrade = lazy(() => import("./upgrade/disk-upgrade"));
+const DiskFolder = lazy(() => import("./folder/disk-folder"));
+const DiskFavorites = lazy(() => import("./favorites/disk-favorites"));
+const DiskRecycleBin = lazy(() => import("./recycle-bin/disk-recycle-bin"));
+const DiskFiles = lazy(() => import("./files/disk-files"));
 
-export default function Disk() {
+export default function DiskMain() {
   const [isSideBarOpen, setIsSideBarOpen] = useState(window.innerWidth > 640 ? true : false)
 
   /* eslint-disable global-require */
@@ -130,18 +130,20 @@ export default function Disk() {
 
       <div className="pt-14 transition-transform sm:ml-64">
         <div className="bg-backgroundSecondLight overflow-x-hidden dark:bg-backgroundSecondDark min-h-fullWithHeader sm:rounded-tl-2xl ">
-          <Routes>
-            <Route path='*' element={<Redirect location="/disk/folder/main"></Redirect>}></Route>
-            <Route path='recent' element={<DiskRecent></DiskRecent>}></Route>
-            <Route path='shared' element={<DiskShared></DiskShared>}></Route>
-            <Route path='upgrade' element={<DiskUpgrade></DiskUpgrade>}></Route>
-            <Route path='favorites' element={<DiskFavorites></DiskFavorites>}></Route>
-            <Route path='files' element={<DiskFiles></DiskFiles>}></Route>
-            <Route path='trash' element={<DiskRecycleBin></DiskRecycleBin>}></Route>
-            <Route path='folder/:id' element={<DiskFolder></DiskFolder>}></Route>
-            <Route path='folder' element={<Redirect location="/disk/folder/main"></Redirect>}></Route>
-            <Route path='folder/' element={<Redirect location="/disk/folder/main"></Redirect>}></Route>
-          </Routes>
+          <Suspense fallback={<div>Loading</div>}>
+            <Routes>
+              <Route path='*' element={<Redirect location="/disk/folder/main"></Redirect>}></Route>
+              <Route path='recent' element={<DiskRecent></DiskRecent>}></Route>
+              <Route path='shared' element={<DiskShared></DiskShared>}></Route>
+              <Route path='upgrade' element={<DiskUpgrade></DiskUpgrade>}></Route>
+              <Route path='favorites' element={<DiskFavorites></DiskFavorites>}></Route>
+              <Route path='files' element={<DiskFiles></DiskFiles>}></Route>
+              <Route path='trash' element={<DiskRecycleBin></DiskRecycleBin>}></Route>
+              <Route path='folder/:id' element={<DiskFolder></DiskFolder>}></Route>
+              <Route path='folder' element={<Redirect location="/disk/folder/main"></Redirect>}></Route>
+              <Route path='folder/' element={<Redirect location="/disk/folder/main"></Redirect>}></Route>
+            </Routes>
+          </Suspense>
         </div>
       </div>
     </div>

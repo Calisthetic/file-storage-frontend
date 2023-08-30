@@ -1,8 +1,8 @@
 import { Suspense, lazy } from "react";
 import { Routes, Route, } from "react-router-dom";
+import Redirect from "../../components/redirect";
 const SignIn = lazy(() => import("./signin/signin"));
 const SignUp = lazy(() => import("./signup/signup"));
-const Redirect = lazy(() => import("../../components/redirect"));
 const NoPassword = lazy(() => import("./nopassword/nopassword"));
 
 export default function AuthMain() {

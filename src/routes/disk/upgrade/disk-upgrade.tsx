@@ -1,16 +1,12 @@
 import { motion } from "framer-motion"
-import PricingDescription from './pricing-description';
+import PricingDescription from "./pricing-description";
+
 
 export default function DiskUpgrade() {
   let currentTariff: number = 0
   let firstPriceId: number = 0
   let secondPriceId: number = 1
   let thirdPriceId: number = 2
-
-  // let isDarkMode:boolean = false;
-  // if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  //   isDarkMode = true
-  // }
 
   return (
     <div className="min-h-fullWithHeader bg-backgroundSecondLight w-full 
@@ -20,11 +16,7 @@ export default function DiskUpgrade() {
         <motion.div initial={{y: -100, opacity: 0}} animate={{y: 0, opacity: 1}} 
         transition={{delay: 0, stiffness: 300, damping: 24}} 
         className="w-full h-full max-w-sm p-4 xl:p-8 bg-backgroundLight dark:bg-backgroundThirdDark rounded-xl
-        dark:border-backgroundThirdDark border-backgroundThirdLight border-2 flex flex-col justify-between" 
-        // style={{boxShadow: currentTariff === 0 ? "0px 0px 8px 0px " + getComputedStyle(document.body).getPropertyValue("--shadow" + (
-        //   isDarkMode === true ? "Dark" : "Light"
-        // )) : "none"}}
-        >
+        dark:border-backgroundThirdDark border-backgroundThirdLight border-2 flex flex-col justify-between">
           <div>
             <p className="w-min mb-4 text-xl font-medium text-textLight dark:text-textDark opacity-60">Standard</p>
             <div className="w-min flex items-baseline text-textLight dark:text-textDark">
@@ -41,7 +33,8 @@ export default function DiskUpgrade() {
               <PricingDescription active={false} text="Integration help"></PricingDescription>
             </ul>
           </div>
-          <button type="button" className="text-textLight dark:text-textDark bg-buttonLight dark:bg-buttonDark 
+          <button type="button" id="card-action-0" aria-label="Select card"
+          className="text-textLight dark:text-textDark bg-buttonLight dark:bg-buttonDark 
           hover:bg-buttonHoverLight dark:hover:bg-buttonHoverDark font-medium rounded-lg text-sm px-5 py-2.5 
           inline-flex justify-center w-full text-center h-min transition-colors" 
           style={{cursor: currentTariff === firstPriceId ? "default" : "pointer"}} 
@@ -60,11 +53,7 @@ export default function DiskUpgrade() {
         </motion.div>
         <motion.div initial={{y: -100, opacity: 0}} animate={{y: 0, opacity: 1}} 
         transition={{delay: 0.04, stiffness: 300, damping: 24}}
-        className="rounded-xl h-full w-full max-w-sm p-1 bg-gradient-to-tr from-[#3575db] via-[#9333EA] to-[#e22a3c]"
-        // style={{boxShadow: currentTariff === 1 ? "0px 0px 8px 0px " + getComputedStyle(document.body).getPropertyValue("--shadow" + (
-        //   isDarkMode === true ? "Dark" : "Light"
-        // )) : "none"}}
-        >
+        className="rounded-xl h-full w-full max-w-sm p-1 bg-gradient-to-tr from-[#3575db] via-[#9333EA] to-[#e22a3c]">
           <div className="py-3 xl:py-7 pr-3 xl:pr-7 h-full pl-4 xl:pl-8 bg-backgroundLight dark:bg-backgroundThirdDark rounded-lg
           dark:border-backgroundThirdDark border-backgroundThirdLight transition-all flex flex-col justify-between">
             <div>
@@ -83,33 +72,30 @@ export default function DiskUpgrade() {
               <PricingDescription active={false} text="Integration help"></PricingDescription>
               </ul>
             </div>
-            <button type="button" className="text-textLight dark:text-textDark bg-buttonLight dark:bg-buttonDark 
+            <button type="button" id="card-action-1" aria-label="Select card"
+            className="text-textLight dark:text-textDark bg-buttonLight dark:bg-buttonDark 
             hover:bg-buttonHoverLight dark:hover:bg-buttonHoverDark font-medium rounded-lg text-sm px-5 py-2.5 
             inline-flex justify-center w-full text-center h-min transition-colors"
             style={{cursor: currentTariff === secondPriceId ? "default" : "pointer"}} 
             onClick={() => {if (currentTariff !== secondPriceId) {console.log("change")}}}>
-                {currentTariff === secondPriceId ? (
-                  <div className="flex items-baseline text-textLight dark:text-textDark text-2xl font-semibold tracking-tight">
-                    <span>Current</span>
-                  </div>
-                ) : (
-                  <div className="flex items-baseline text-textLight dark:text-textDark">
-                    <span className="text-xl font-semibold">$</span>
-                    <span className="text-2xl font-extrabold tracking-tight">{5}</span>
-                    <span className="ml-1 text-lg font-normal text-textLight dark:text-textDark opacity-90">/month</span>
-                  </div>
-                )}
+              {currentTariff === secondPriceId ? (
+                <div className="flex items-baseline text-textLight dark:text-textDark text-2xl font-semibold tracking-tight">
+                  <span>Current</span>
+                </div>
+              ) : (
+                <div className="flex items-baseline text-textLight dark:text-textDark">
+                  <span className="text-xl font-semibold">$</span>
+                  <span className="text-2xl font-extrabold tracking-tight">{5}</span>
+                  <span className="ml-1 text-lg font-normal text-textLight dark:text-textDark opacity-90">/month</span>
+                </div>
+              )}
             </button>
           </div>
         </motion.div>
         <motion.div initial={{y: -100, opacity: 0}} animate={{y: 0, opacity: 1}} 
         transition={{delay: 0.08, stiffness: 300, damping: 24}}
         className="w-full h-full max-w-sm p-4 xl:p-8 bg-backgroundLight dark:bg-backgroundThirdDark rounded-xl
-        dark:border-backgroundThirdDark border-backgroundThirdLight border-2 flex flex-col justify-between"
-        // style={{boxShadow: currentTariff === 2 ? "0px 0px 8px 0px " + getComputedStyle(document.body).getPropertyValue("--shadow" + (
-        //   isDarkMode === true ? "Dark" : "Light"
-        // )) : "none"}}
-        >
+        dark:border-backgroundThirdDark border-backgroundThirdLight border-2 flex flex-col justify-between">
           <div>
             <p className="w-min mb-4 text-xl font-medium text-textLight dark:text-textDark opacity-60">Premium</p>
             <div className="w-min flex items-baseline text-textLight dark:text-textDark">
@@ -126,7 +112,8 @@ export default function DiskUpgrade() {
               <PricingDescription active={true} text="Integration help"></PricingDescription>
             </ul>
           </div>
-          <button type="button" className="text-textLight dark:text-textDark bg-buttonLight dark:bg-buttonDark 
+          <button type="button" id="card-action-2" aria-label="Select card"
+          className="text-textLight dark:text-textDark bg-buttonLight dark:bg-buttonDark 
           hover:bg-buttonHoverLight dark:hover:bg-buttonHoverDark font-medium rounded-lg text-sm px-5 py-2.5 
           inline-flex justify-center w-full text-center h-min transition-colors"
           style={{cursor: currentTariff === thirdPriceId ? "default" : "pointer"}} 

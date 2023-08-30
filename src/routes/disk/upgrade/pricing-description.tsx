@@ -1,4 +1,11 @@
-const PricingDescription = (props: any) => {
+import { FunctionComponent } from "react";
+
+interface PricingDescriptionProps {
+  active:boolean,
+  text:string
+}
+
+const PricingDescription: FunctionComponent<PricingDescriptionProps> = (props:PricingDescriptionProps) => {
   return ( 
     props.active === true ? (
       <li className="flex space-x-3 items-center">
