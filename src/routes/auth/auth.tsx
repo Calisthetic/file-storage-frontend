@@ -5,13 +5,6 @@ import Redirect from "../../components/redirect";
 import NoPassword from "./nopassword/nopassword";
 
 export default function AuthPage() {
-  let mainLogo: string | undefined = undefined;
-
-  try {
-    mainLogo = require("./../../icons/logo.png") as string;
-  } catch (error) {
-    console.log(error)
-  }
 
   return (
     <div className="bg-backgroundLight min-h-fulldvh dark:bg-backgroundDark">
