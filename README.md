@@ -3,6 +3,31 @@
 
 ## Dev
 
+### Useful links
+
+[Database diagram](https://dbdiagram.io/d/64bd4ad502bd1c4a5e8bf005)
+
+<details>
+<summary><h4>UI components<h4></summary>
+
+- [MerakiUI](https://merakiui.com/components)
+- [HyperUI](https://www.hyperui.dev/)
+- [TailwindUI](https://tailwindui.com/)
+- [TailwindComponents](https://tailwindcomponents.com/)
+- [Flowbitr](https://flowbite.com/#components)
+
+</details>
+
+<details>
+<summary><h4>UI libs<h4></summary>
+
+- [Radix UI](https://www.radix-ui.com/primitives/docs/overview/getting-started)
+- [shadcn](https://ui.shadcn.com/)
+- [daisyUI](https://daisyui.com/components/)
+- [Nivo examples](https://nivo.rocks/storybook/?path=/docs/pie--docs)
+
+</details>
+
 ### Tasks
 
 ### Dependencies
