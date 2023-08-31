@@ -32,7 +32,7 @@ const AlertButton: FunctionComponent<AlertButtonProps> = (props:AlertButtonProps
           opacity: 0
         }}
         transition={{stiffness: 200, damping: 24, duration: 0.1}} 
-        className={cn("absolute min-w-[300px] max-w-[300px] sm:max-w-sm"
+        className={cn("absolute min-w-[300px] max-w-[300px] sm:max-w-lg"
         + " flex flex-row justify-between items-center py-1 px-2" 
         + " rounded-md bg-backgroundThirdLight dark:bg-backgroundThirdDark", {
           // Corners from top left
@@ -41,7 +41,7 @@ const AlertButton: FunctionComponent<AlertButtonProps> = (props:AlertButtonProps
           "top-[calc(100%)] left-[calc(100%)]": props.position === 2 || props.position === undefined,
           "top-[calc(100%)] left-0": props.position === 3,
         })}>
-          <div className="flex flex-row items-center gap-x-1 sm:gap-x-2">
+          <div className="grid grid-cols-alerts items-center gap-x-1 sm:gap-x-2">
             <IconAlerts classes="h-6 w-6" type={props.type}></IconAlerts>
             <div className="text-textLight dark:text-textDark">
               <div className="font-medium">{props.title}</div>

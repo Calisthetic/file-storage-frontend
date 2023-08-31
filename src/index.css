@@ -64,7 +64,7 @@ code {
     monospace;
 }
 
-path, svg {
+button svg, button path {
   pointer-events: none;
 }
 
