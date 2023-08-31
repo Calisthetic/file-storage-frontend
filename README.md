@@ -73,6 +73,18 @@ npm i clsx
 npm i @nivo/line
 ```
 
+[nivo pie](https://nivo.rocks/pie/)
+
+```bash
+npm i @nivo/pie
+```
+
+[nivo calendar](https://nivo.rocks/calendar/)
+
+```bash
+npm i @nivo/calendar
+```
+
 ### Also used in project
 
 - [Google Fonts API](https://developers.google.com/fonts/docs/developer_api?hl=ru#APIKey)
