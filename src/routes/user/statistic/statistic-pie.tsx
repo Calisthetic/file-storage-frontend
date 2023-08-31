@@ -47,7 +47,7 @@ const StatisticPie:FunctionComponent<StatisticPieProps> = ({data}:StatisticPiePr
     <div className="grid grid-rows-[36px,minmax(0,1fr)] rounded
     border border-borderLight dark:border-borderDark">
       <div className="flex flex-row justify-between items-center w-full
-      border-b border-borderLight dark:border-borderDark p-1">
+      border-b border-borderLight dark:border-borderDark p-1 rounded-t">
         <div className="flex flex-row">
           <button title="Zoom in" id="zoom-in-btn" aria-label="Zoom in"
           onClick={() => CalculateFileStatScale("+")} className="rounded p-1 transition-colors
@@ -79,15 +79,16 @@ const StatisticPie:FunctionComponent<StatisticPieProps> = ({data}:StatisticPiePr
             </svg>
           </button>
         </div>
-        <div className="flex flex-row font-semibold">
+        <div className="flex flex-row font-semibold text-textLight dark:text-textDark">
+          <span className="mr-2 hidden sm:block">Number of file types: </span>
+          <span className="mr-2 sm:hidden">Amount: </span>
           <button id="subtract-file-stat-count-btn" aria-label="Subtract file stat count" 
           className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
           hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
           text-lg border-r border-borderLight dark:border-borderDark"
           onClick={() => CalculateFileStatCount("-")}>-</button>
           <input disabled aria-label="File stat count" className="w-9 text-sm block focus:outline-none
-          bg-backgroundThirdLight dark:bg-backgroundThirdDark
-          dark:text-textDark text-textLight py-1 text-center"
+          bg-backgroundThirdLight dark:bg-backgroundThirdDark py-1 text-center"
           type="number" placeholder="0" max="10" min="2" maxLength={2} value={fileStatCount}/>
           <button id="add-file-stat-count-btn" aria-label="Add file stat count"
           className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
