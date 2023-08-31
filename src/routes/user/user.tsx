@@ -48,14 +48,12 @@ const UserMain: FunctionComponent<UserMainProps> = () => {
         </div>
       </nav>
 
-      <div className="pt-14 transition-transform">
-        <div className="bg-backgroundSecondLight overflow-x-hidden dark:bg-backgroundSecondDark min-h-fullWithHeader">
-          <Routes>
-            <Route path="profile" element={<UserProfile></UserProfile>}></Route>
-            <Route path="statistic" element={<UserStatistic></UserStatistic>}></Route>
-            <Route path="*" element={<Redirect location="/user/profile"></Redirect>}></Route>
-          </Routes>
-        </div>
+      <div className="pt-14 transition-transform bg-backgroundSecondLight overflow-x-hidden dark:bg-backgroundSecondDark">
+        <Routes>
+          <Route path="profile" element={<UserProfile></UserProfile>}></Route>
+          <Route path="statistic" element={<UserStatistic></UserStatistic>}></Route>
+          <Route path="*" element={<Redirect location="/user/profile"></Redirect>}></Route>
+        </Routes>
       </div>
     </div>
    );
