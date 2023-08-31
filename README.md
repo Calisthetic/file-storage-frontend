@@ -67,6 +67,12 @@ npm i tailwind-merge
 npm i clsx
 ```
 
+[nivo](https://nivo.rocks/)
+
+```bash
+npm i @nivo/line
+```
+
 ### Also used in project
 
 - [Google Fonts API](https://developers.google.com/fonts/docs/developer_api?hl=ru#APIKey)
