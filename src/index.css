@@ -44,6 +44,16 @@ body,html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--backgroundDark);
+  }
+}
+@media (prefers-color-scheme: light) {
+  body {
+    background-color: var(--backgroundLight);
+  }
+}
 
 #root {
   min-height: 100dvh;

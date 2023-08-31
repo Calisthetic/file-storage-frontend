@@ -167,7 +167,7 @@ export default function NoPassword() {
         </div>
       </div>
 
-      <Suspense fallback={<div>Loading</div>}>
+      <Suspense fallback={<div></div>}>
         <AlertButton open={isAlertOpen} text={alertText} title={alertTitle}
         type={alertType} close={() => setIsAlertOpen(false)}></AlertButton>
       </Suspense>

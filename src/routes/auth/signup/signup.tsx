@@ -188,7 +188,7 @@ export default function SignUp() {
         </motion.div>
       </div>
 
-      <Suspense fallback={<div>Loading</div>}>
+      <Suspense fallback={<div></div>}>
         <AlertButton open={isAlertOpen} text={alertText} title={alertTitle}
         type="error" close={() => setIsAlertOpen(false)}></AlertButton>
       </Suspense>

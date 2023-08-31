@@ -1,5 +1,6 @@
 import { Routes, Route, } from "react-router-dom";
 import { Suspense, lazy } from "react";
+import Loading from "./components/loading";
 const Layout = lazy(() => import('./layout'));
 const Redirect = lazy(() => import("./components/redirect"));
 const DiskMain = lazy(() => import('./routes/disk/disk'));
@@ -33,7 +34,7 @@ function App() {
 
   return (
     <div id="custom-root" style={{fontFamily: localStorage.getItem("font")?.toString()}}>
-      <Suspense fallback={<div>Loading</div>}>
+      <Suspense fallback={<Loading></Loading>}>
         <Routes>
           <Route path='/' element={<Layout></Layout>}></Route>
           <Route path='auth/*' element={<AuthMain></AuthMain>}></Route>
