@@ -66,6 +66,31 @@ export function BlurColor(hex:string, value: number) {
   return '#' + padZero(r) + padZero(g) + padZero(b);
 }
 
+export function GetColorGradient(hex:string, count:number):string[] {
+  if (hex.indexOf('#') === 0) {
+    hex = hex.slice(1);
+  }
+  if (hex.length === 3) {
+    hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+  }
+  if (hex.length !== 6) {
+    throw new Error('Invalid HEX color.');
+  }
+  var r = parseInt(hex.slice(0, 2), 16),
+    g = parseInt(hex.slice(2, 4), 16),
+    b = parseInt(hex.slice(4, 6), 16);
+  var rindex = Math.floor(r / count),
+    gindex = Math.floor(g / count),
+    bindex = Math.floor(b / count);
+  
+  let result:string[] = []
+  for (let i = 0; i < count; i++) {
+    result.push('#' + padZero((r - rindex * i).toString(16)) 
+      + padZero((g - gindex * i).toString(16)) + padZero((b - bindex * i).toString(16)))
+  }
+  return result
+}
+
 function padZero(str:string) {
   let len:number = 2;
   var zeros = new Array(len).join('0');
