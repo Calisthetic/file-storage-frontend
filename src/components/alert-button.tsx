@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { IconAlerts, IconClose } from "./icons";
+import { IconAlerts } from "./icons";
 import { cn } from "../lib/utils";
 
 interface AlertButtonProps {
@@ -8,7 +8,7 @@ interface AlertButtonProps {
   close: () => void
   type:string
   text:string
-  title:string
+  title?:string
   position?:number
 }
 
@@ -17,7 +17,7 @@ const AlertButton: FunctionComponent<AlertButtonProps> = (props:AlertButtonProps
   return (
     <AnimatePresence>
       {props.open && (
-        <motion.div initial={{
+        <motion.button initial={{
           y: "-50%",
           x: (props.position === undefined || props.position === 1 || props.position === 2) ? 
             "calc(-100% - " + cornerMargin + ")" : cornerMargin,
@@ -30,10 +30,10 @@ const AlertButton: FunctionComponent<AlertButtonProps> = (props:AlertButtonProps
         exit={{
           y: (props.position === undefined || props.position > 1) ? "-150%" : "50%", 
           opacity: 0
-        }}
+        }} onClick={props.close}
         transition={{stiffness: 200, damping: 24, duration: 0.1}} 
         className={cn("absolute min-w-[300px] max-w-[300px] sm:max-w-lg"
-        + " flex flex-row justify-between items-center py-1 px-2" 
+        + " grid grid-cols-alerts items-center gap-x-1 sm:gap-x-3 text-left"
         + " rounded-md bg-backgroundThirdLight dark:bg-backgroundThirdDark", {
           // Corners from top left
           "top-0 left-0": props.position === 0,
@@ -41,17 +41,18 @@ const AlertButton: FunctionComponent<AlertButtonProps> = (props:AlertButtonProps
           "top-[calc(100%)] left-[calc(100%)]": props.position === 2 || props.position === undefined,
           "top-[calc(100%)] left-0": props.position === 3,
         })}>
-          <div className="grid grid-cols-alerts items-center gap-x-1 sm:gap-x-2">
-            <IconAlerts classes="h-6 w-6" type={props.type}></IconAlerts>
-            <div className="text-textLight dark:text-textDark">
-              <div className="font-medium">{props.title}</div>
-              <div className="whitespace-pre-wrap">{props.text}</div>
+            <div className={cn("h-full flex items-center rounded-s px-1 w-8", {
+              "bg-successLight dark:bg-successDark bg-yellow-400" : props.type === "success",
+              "bg-errorLight dark:bg-errorDark" : props.type === "error",
+              "bg-warningLight dark:bg-warningDark" : props.type === "warning",
+            })}>
+              <IconAlerts classes="h-6 w-6" type={props.type} fillClasses="fill-white"></IconAlerts>
             </div>
-          </div>
-          <button className="ml-2" onClick={props.close}>
-            <IconClose classes="w-3.5 h-3.5" strokeClasses={"stroke-" + props.type + "Light dark:stroke-" + props.type + "Dark"}></IconClose>
-          </button>
-        </motion.div>
+            <div className="text-textLight dark:text-textDark">
+              <div className="font-medium first-letter:uppercase">{props.title ? props.title : props.type}</div>
+              <div className="whitespace-pre-wrap first-letter:uppercase">{props.text}</div>
+            </div>
+        </motion.button>
       )}
     </AnimatePresence>
   );

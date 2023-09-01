@@ -37,7 +37,7 @@ module.exports = {
         errorLight: "var(--errorLight)",
       },
       gridTemplateColumns: {
-        alerts: "minmax(24px, 28px) minmax(0, 1fr)"
+        alerts: "minmax(24px, 32px) minmax(0, 1fr)"
       },
       transitionProperty: {
         inputs: "border, outline, background-color",
