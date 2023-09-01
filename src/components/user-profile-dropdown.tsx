@@ -62,7 +62,7 @@ const UserProfileDropdown: FunctionComponent<UserProfileDropdownProps> = () => {
             transition={{stiffness: 200, damping: 24, duration: 0.16}}
             className="absolute z-50 my-4 text-base list-none bg-backgroundThirdLight 
             dark:bg-backgroundThirdDark dark:divide-borderDark text-textLight dark:text-textDark
-            shadow-sm shadow-shadowDark dark:shadow-shadowLight rounded mb-2">
+            shadow-lightLight dark:shadow-lightDark rounded mb-2">
               <div className="px-4 py-3">
                 <p className="">
                   Neil Sims

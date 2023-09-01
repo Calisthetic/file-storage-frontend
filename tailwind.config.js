@@ -75,7 +75,9 @@ module.exports = {
       },
       boxShadow: {
         defaultDark: "0px 0px 4px 0px var(--shadowDark)",
-        defaultLight: "0px 0px 4px 0px var(--shadowLight)"
+        defaultLight: "0px 0px 4px 0px var(--shadowLight)",
+        lightDark: "0px 0px 3px -1px var(--shadowDark)",
+        lightLight: "0px 0px 3px -1px var(--shadowLight)"
       },
       padding: {
         dfUploadFiles: "0% 20% !important",
