@@ -92,7 +92,11 @@ module.exports = {
       },
       top: {
         help: "10px"
-      }
+      },
+
+      screens: {
+        'px800': '800px'
+      },
     },
   },
   plugins: [
