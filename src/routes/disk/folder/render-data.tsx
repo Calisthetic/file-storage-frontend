@@ -6,7 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import "../../../styles/focus-elems.css"
 import FolderAccessModal from "./folder-access-modal";
 import IconTileStar, { IconDelete, IconDownload, IconEdit, IconInfo, IconLink, IconWatch } from "../../../components/icons";
-import { CutNumber, CutSize, GetCSSValue, BlurColor, cn, isDarkMode, IsNumeric } from "../../../lib/utils";
+import { CutNumber, CutSize, IsNumeric } from "../../../lib/utils";
+import { GetCSSValue, BlurColor, cn, isDarkMode} from "../../../lib/color-utils";
 // @ts-ignore
 import Hammer from 'hammerjs';
 import ColorPicker from "./color-picker";

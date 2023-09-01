@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import { defaultColors, extendedColors } from "../../../data/folder-colors";
-import { InvertColor } from "../../../lib/utils";
+import { InvertColor } from "../../../lib/color-utils";
 
 interface ColorPickerProps {
   type:string

@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconAlerts } from "./icons";
-import { cn } from "../lib/utils";
+import { cn } from "../lib/color-utils";
 
 interface AlertButtonProps {
   open:boolean

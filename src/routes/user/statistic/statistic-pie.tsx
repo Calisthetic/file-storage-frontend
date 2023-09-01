@@ -1,7 +1,7 @@
 import { ResponsivePie } from '@nivo/pie'
 import { FunctionComponent, useEffect, useState } from 'react'
 import { IFileStat } from './user-statistic'
-import { GetCSSValue } from '../../../lib/utils'
+import { GetCSSValue } from '../../../lib/color-utils'
 
 interface StatisticPieProps {
   data: IFileStat[],
@@ -23,6 +23,7 @@ const StatisticPie:FunctionComponent<StatisticPieProps> = ({data}:StatisticPiePr
   }
   useEffect(() => {
     console.log(fileStatCount)
+    // change later
   }, [fileStatCount])
 
   const [fileStatScale, setFileStatScale] = useState<number>(10)

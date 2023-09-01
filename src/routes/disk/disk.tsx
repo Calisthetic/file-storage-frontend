@@ -3,7 +3,7 @@ import { Suspense, lazy, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion"
 // @ts-ignore
 import Hammer from 'hammerjs';
-import { cn } from "../../lib/utils";
+import { cn } from "../../lib/color-utils";
 import UserProfileDropdown from"../../components/user-profile-dropdown";
 import Loading from "../../components/loading";
 const Redirect = lazy(() => import("../../components/redirect"));
