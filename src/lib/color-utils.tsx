@@ -62,6 +62,11 @@ export function GetColorGradient(hex:string, count:number):string[] {
   var r = parseInt(hex.slice(0, 2), 16),
     g = parseInt(hex.slice(2, 4), 16),
     b = parseInt(hex.slice(4, 6), 16);
+  if (r < 64 && g < 64 && b < 64) {
+    r+=64
+    g+=64
+    b+=64
+  }
   var rindex = Math.floor(r / count),
     gindex = Math.floor(g / count),
     bindex = Math.floor(b / count);
