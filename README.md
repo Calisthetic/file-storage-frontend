@@ -14,7 +14,7 @@
 - [HyperUI](https://www.hyperui.dev/)
 - [TailwindUI](https://tailwindui.com/)
 - [TailwindComponents](https://tailwindcomponents.com/)
-- [Flowbitr](https://flowbite.com/#components)
+- [Flowbite](https://flowbite.com/#components)
 
 </details>
 
@@ -108,6 +108,12 @@ npm i @nivo/pie
 
 ```bash
 npm i @nivo/calendar
+```
+
+[nivo network](https://nivo.rocks/network/)
+
+```bash
+npm i @nivo/network
 ```
 
 ### Also used in project
