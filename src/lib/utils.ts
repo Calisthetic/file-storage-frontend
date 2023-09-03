@@ -24,6 +24,10 @@ export function GetCurrentYear():number {
   return currentTime.getFullYear()
 }
 export function GetCurrentDate():string {
-  var currentTime = new Date()
-  return currentTime.getFullYear() + "-" + currentTime.getMonth() + "-" + currentTime.getDay()
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var yyyy = today.getFullYear();
+  
+  return yyyy + '-' + mm + '-' + dd;
 }

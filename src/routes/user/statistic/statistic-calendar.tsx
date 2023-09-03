@@ -1,5 +1,5 @@
 import { ResponsiveCalendar } from '@nivo/calendar'
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import { FunctionComponent, useEffect, useState } from 'react'
 import { GetColorGradient, GetCSSValue } from '../../../lib/color-utils'
 import { GetCurrentDate, GetCurrentYear } from '../../../lib/utils'
@@ -526,7 +526,7 @@ const DailyStatistic: FunctionComponent<DailyStatisticProps> = (props:DailyStati
           border border-backgroundSecondLight dark:border-backgroundSecondDark"></div>
           <time className="mb-1 text-sm font-medium leading-none">
             <span>{monthNames[parseInt(props.date.slice(props.date.indexOf("-") + 1, props.date.lastIndexOf("-")))-1]}</span>
-            <span className="mx-1">{props.date.slice(props.date.lastIndexOf("-") + 1) + ","}</span>
+            <span className="mx-1">{props.date.slice(props.date.lastIndexOf("-") - props.date.length + 1) + ","}</span>
             <span className="opacity-80 font-normal">{props.date.slice(0, props.date.indexOf("-"))}</span>
           </time>
           <div>
