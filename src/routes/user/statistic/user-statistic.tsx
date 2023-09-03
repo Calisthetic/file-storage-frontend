@@ -60,61 +60,79 @@ const UserStatistic: FunctionComponent = () => {
         id: "main",
         height: 1,
         size: 24,
-        color: "#ff0000"
+        color: "var(--treeMain)"
       },
       {
         id: "folder1",
         height: 1,
         size: 18,
-        color: "#ff0000"
+        color: "var(--treeFolder)"
       },
       {
         id: "folder2",
         height: 1,
         size: 18,
-        color: "#ff0000"
+        color: "var(--treeFolder)"
       },
       {
         id: "folder11",
         height: 1,
         size: 12,
-        color: "#ff0000"
+        color: "var(--treeFolder)"
       },
       {
         id: "folder12",
         height: 1,
         size: 12,
-        color: "#ff0000"
+        color: "var(--treeFolder)"
       },
       {
         id: "folder13",
         height: 1,
         size: 12,
-        color: "#ff0000"
+        color: "var(--treeFolder)"
       },
       {
         id: "folder21",
         height: 1,
         size: 12,
-        color: "#ff0000"
+        color: "var(--treeFolder)"
       },
       {
         id: "folder22",
         height: 1,
         size: 12,
-        color: "#ff0000"
+        color: "var(--treeFolder)"
       },
       {
         id: "folder23",
         height: 1,
         size: 12,
-        color: "#ff0000"
+        color: "var(--treeFolder)"
       },
       {
         id: "folder24",
         height: 1,
         size: 12,
-        color: "#ff0000"
+        color: "var(--treeFolder)"
+      },
+      {
+        id: "file1",
+        height: 1,
+        size: 12,
+        color: "var(--treeFile)"
+      },
+      {
+        id: "file2",
+        height: 1,
+        size: 12,
+        color: "var(--treeFile)"
+      },
+      {
+        id: "file3",
+        height: 1,
+        size: 12,
+        color: "var(--treeFile)"
       }
     ],
     links: [
@@ -163,6 +181,21 @@ const UserStatistic: FunctionComponent = () => {
         target: "folder24",
         distance: 30
       },
+      {
+        source: "folder11",
+        target: "file1",
+        distance: 30
+      },
+      {
+        source: "folder11",
+        target: "file2",
+        distance: 30
+      },
+      {
+        source: "folder11",
+        target: "file3",
+        distance: 30
+      }
     ]
   }
   

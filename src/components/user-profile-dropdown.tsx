@@ -46,6 +46,17 @@ const UserProfileDropdown: FunctionComponent<UserProfileDropdownProps> = () => {
   const userImage:string | undefined = temp === null ? undefined : temp
 
 
+  // Theming
+  function SwitchTheme() {
+    if (localStorage.theme !== 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+      document.documentElement.classList.add('dark')
+      localStorage.setItem("theme", "dark")
+    } else {
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem("theme", "light")
+    }
+  }
+
   return (
     <div className="flex items-center">
       <div className="flex items-center ml-3">
@@ -93,6 +104,9 @@ const UserProfileDropdown: FunctionComponent<UserProfileDropdownProps> = () => {
                 <Link to="/auth" className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
                   dark:hover:bg-backgroundHoverDark" role="menuitem">Sign out
                 </Link>
+                <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
+                  dark:hover:bg-backgroundHoverDark" role="menuitem" onClick={SwitchTheme}>Switch theme
+                </button>
               </div>
             </motion.div>
           )}
