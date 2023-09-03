@@ -1,12 +1,28 @@
 import { FunctionComponent, useState } from "react";
 import StatisticPie from "./statistic-pie";
 import StatisticCalendar from "./statistic-calendar";
+import StatisticTree from "./statistic-tree";
  
 export interface IFileStat {
   id:string,
   label:string,
   value:number,
   color?:string
+}
+interface IFoldersTree {
+  nodes:ITreeNode[]
+  links:ITreeLink[]
+}
+interface ITreeNode { 
+  id:string
+  height:number
+  size:number
+  color:string
+}
+interface ITreeLink { 
+  source:string
+  target:string
+  distance:number
 }
 
 const UserStatistic: FunctionComponent = () => {
@@ -37,6 +53,118 @@ const UserStatistic: FunctionComponent = () => {
   }]
 
   const [fileStat, setFileStat] = useState<IFileStat[]>(fileStatTempData)
+
+  const data:IFoldersTree = {
+    nodes: [
+      {
+        id: "main",
+        height: 1,
+        size: 24,
+        color: "#ff0000"
+      },
+      {
+        id: "folder1",
+        height: 1,
+        size: 18,
+        color: "#ff0000"
+      },
+      {
+        id: "folder2",
+        height: 1,
+        size: 18,
+        color: "#ff0000"
+      },
+      {
+        id: "folder11",
+        height: 1,
+        size: 12,
+        color: "#ff0000"
+      },
+      {
+        id: "folder12",
+        height: 1,
+        size: 12,
+        color: "#ff0000"
+      },
+      {
+        id: "folder13",
+        height: 1,
+        size: 12,
+        color: "#ff0000"
+      },
+      {
+        id: "folder21",
+        height: 1,
+        size: 12,
+        color: "#ff0000"
+      },
+      {
+        id: "folder22",
+        height: 1,
+        size: 12,
+        color: "#ff0000"
+      },
+      {
+        id: "folder23",
+        height: 1,
+        size: 12,
+        color: "#ff0000"
+      },
+      {
+        id: "folder24",
+        height: 1,
+        size: 12,
+        color: "#ff0000"
+      }
+    ],
+    links: [
+      {
+        source: "main",
+        target: "folder1",
+        distance: 50
+      },
+      {
+        source: "main",
+        target: "folder2",
+        distance: 50
+      },
+      {
+        source: "folder1",
+        target: "folder11",
+        distance: 30
+      },
+      {
+        source: "folder1",
+        target: "folder12",
+        distance: 30
+      },
+      {
+        source: "folder1",
+        target: "folder13",
+        distance: 30
+      },
+      {
+        source: "folder2",
+        target: "folder21",
+        distance: 30
+      },
+      {
+        source: "folder2",
+        target: "folder22",
+        distance: 30
+      },
+      {
+        source: "folder2",
+        target: "folder23",
+        distance: 30
+      },
+      {
+        source: "folder2",
+        target: "folder24",
+        distance: 30
+      },
+    ]
+  }
   
   return (
     <div className="min-h-fullWithHeader flex flex-col items-center">
@@ -45,6 +173,9 @@ const UserStatistic: FunctionComponent = () => {
       </div>
       <div className="w-[calc(100%-24px)] lg:max-w-5xl lg:w-[1024px] mt-3">
         <StatisticCalendar></StatisticCalendar>
+      </div>
+      <div className="w-[calc(100%-24px)] lg:max-w-5xl lg:w-[1024px] mt-3">
+        <StatisticTree data={data}></StatisticTree>
       </div>
     </div>
   );

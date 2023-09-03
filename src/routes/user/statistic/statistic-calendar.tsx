@@ -1,4 +1,5 @@
 import { ResponsiveCalendar } from '@nivo/calendar'
+import { motion } from "framer-motion"
 import { FunctionComponent, useEffect, useState } from 'react'
 import { GetColorGradient, GetCSSValue } from '../../../lib/color-utils'
 import { GetCurrentDate, GetCurrentYear } from '../../../lib/utils'
@@ -11,8 +12,8 @@ interface IActivityStat {
 interface IDayActivityStat {
   binValue?:number,
   deletedValue?:number,
-  createdFiles?:number,
-  createdLinks?:number,
+  addedFiles?:number,
+  generatedLinks?:number,
 }
 
 const StatisticCalendar:FunctionComponent = () => {
@@ -37,7 +38,7 @@ const StatisticCalendar:FunctionComponent = () => {
 
   // Current calendar colors
   const [calendarColors, setCalendarColors] = useState<string[]>(GetColorGradient(GetCSSValue("icon"), 4))
-  // Check css variable changed
+  // Check css variable changed event
   var observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation:any) => {
       if (mutation.type === "attributes") {
@@ -389,10 +390,10 @@ const StatisticCalendar:FunctionComponent = () => {
   // Current day data
   const [selectedDay, setSelectedDay] = useState<string>(currentDate)
   const selectedDayStatTemp:IDayActivityStat = {
-    binValue:11,
-    deletedValue:12,
-    createdFiles:13,
-    createdLinks:14,
+    binValue:23,
+    deletedValue:50,
+    addedFiles:13,
+    generatedLinks:14,
   }
   const [selectedDayStat, setSelectedDayStat] = useState<IDayActivityStat>(selectedDayStatTemp)
 
@@ -404,61 +405,64 @@ const StatisticCalendar:FunctionComponent = () => {
   return (
     <div className="rounded border border-borderLight dark:border-borderDark">
       <div className="flex flex-col lg:flex-row lg:justify-center">
-        <div className="overflow-x-auto px800:overflow-x-visible py-2 px800:flex flex-col items-center">
-          {/* Calendar */}
-          <div className="h-[140px] w-[766px]">
-            <ResponsiveCalendar
-              data={activityStat}
-              from={GetCurrentYear().toString() + "-01-01"}
-              to={GetCurrentYear().toString() + "-12-31"}
-              emptyColor={GetCSSValue("backgroundThird")}
-              colors={calendarColors}
-              margin={{ top: 20, right: 0, bottom: 0, left: 30 }}
-              yearSpacing={40}
-              monthBorderColor={GetCSSValue("backgroundSecond")}
-              dayBorderWidth={3}
-              dayBorderColor={GetCSSValue("backgroundSecond")}
-              legends={[
-                {
-                  anchor: 'bottom-right',
-                  direction: 'row',
-                  translateY: 36,
-                  itemCount: 4,
-                  itemWidth: 42,
-                  itemHeight: 36,
-                  itemsSpacing: 14,
-                  itemDirection: 'right-to-left'
-                }
-              ]}
-              onClick={(e:any) => setSelectedDay(e.data.day)}
-            />
-          </div>
-          {/* Bottom section */}
-          <div className="w-[766px] h-4 px-10 -mt-2 text-xs flex flex-row justify-between">
-            <button className="hover:text-buttonHoverLight hover:dark:text-buttonHoverDark">
-              How we count your actions?
-            </button>
-            <div className="flex flex-row items-center gap-x-1">
-              <span>Less</span>
-              <div className="gap-x-0.5 flex flex-row pt-0.5">
-                <div style={{backgroundColor: GetCSSValue("backgroundThird")}}
-                className="h-2.5 w-2.5 rounded-sm"></div>
-                {calendarColors.reverse().map((item, index) => (
-                  <div key={index} style={{backgroundColor: item}}
+        <div>
+          <div className="overflow-x-auto px800:overflow-x-visible py-2 px800:flex flex-col items-center">
+            {/* Calendar */}
+            <div className="h-[140px] w-[766px]">
+              <ResponsiveCalendar
+                data={activityStat}
+                from={GetCurrentYear().toString() + "-01-01"}
+                to={GetCurrentYear().toString() + "-12-31"}
+                emptyColor={GetCSSValue("backgroundThird")}
+                colors={calendarColors}
+                margin={{ top: 20, right: 0, bottom: 0, left: 30 }}
+                yearSpacing={40}
+                monthBorderColor={GetCSSValue("backgroundSecond")}
+                dayBorderWidth={3}
+                dayBorderColor={GetCSSValue("backgroundSecond")}
+                legends={[
+                  {
+                    anchor: 'bottom-right',
+                    direction: 'row',
+                    translateY: 36,
+                    itemCount: 4,
+                    itemWidth: 42,
+                    itemHeight: 36,
+                    itemsSpacing: 14,
+                    itemDirection: 'right-to-left'
+                  }
+                ]}
+                onClick={(e:any) => setSelectedDay(e.data.day)}
+              />
+            </div>
+            {/* Bottom section */}
+            <div className="w-[766px] h-4 px-10 -mt-2 text-xs flex flex-row justify-between">
+              <button className="hover:text-buttonHoverLight hover:dark:text-buttonHoverDark">
+                How we count your actions?
+              </button>
+              <div className="flex flex-row items-center gap-x-1">
+                <span>Less</span>
+                <div className="gap-x-0.5 flex flex-row pt-0.5">
+                  <div style={{backgroundColor: GetCSSValue("backgroundThird")}}
                   className="h-2.5 w-2.5 rounded-sm"></div>
-                ))}
+                  {calendarColors.reverse().map((item, index) => (
+                    <div key={index} style={{backgroundColor: item}}
+                    className="h-2.5 w-2.5 rounded-sm"></div>
+                  ))}
+                </div>
+                <span>More</span>
               </div>
-              <span>More</span>
             </div>
           </div>
+          <DailyStatistic data={selectedDayStat} date={selectedDay} classes='hidden lg:flex'></DailyStatistic>
         </div>
         {/* Years list right */}
         <YearSelectList select={(e:any) => setSelectedYear(parseInt(e.target.dataset.year))}
         data={availableYears} selected={selectedYear} classes="hidden lg:flex"></YearSelectList>
       </div>
-      <div className="flex flex-row justify-center">
-        <div className="flex flex-row justify-between px800:w-[766px]">
-          <div>daily stat</div>
+      <div className="flex flex-row px800:justify-center">
+        <div className="flex flex-row justify-between w-full px800:w-[766px]">
+          <DailyStatistic data={selectedDayStat} date={selectedDay} classes='flex lg:hidden'></DailyStatistic>
           {/* Years list bottom */}
           <YearSelectList select={(e:any) => setSelectedYear(parseInt(e.target.dataset.year))}
           data={availableYears} selected={selectedYear} classes="lg:hidden flex"></YearSelectList>
@@ -469,31 +473,113 @@ const StatisticCalendar:FunctionComponent = () => {
 }
 export default StatisticCalendar
 
+
 interface YearSelectListProps {
   select: (e:any) => void
   data: number[]
   selected: number
   classes: string
 }
- 
 const YearSelectList: FunctionComponent<YearSelectListProps> = (props:YearSelectListProps) => {
   return (
-    <div className={twMerge("flex-col gap-y-1.5 px-4 my-4 lg:hidden flex", 
+    <div className={twMerge("flex-col sm:gap-y-1.5 px-2 sm:px-4 my-4 lg:hidden flex", 
     "border-l border-borderLight dark:border-borderDark", props.classes)}>
       {props.data.sort((a,b) => (b-a)).map((item, index) => props.selected === item ? (
         <button key={index} id={"select-year" + item + "-btn"} aria-label="Select year"
-        className="text-textLight dark:text-textDark w-32 py-1.5 px-4 text-left
+        className="text-textLight dark:text-textDark sm:w-32 py-1 sm:py-1.5 px-3 sm:px-4 text-left
         bg-buttonLight dark:bg-buttonDark rounded-lg transition-colors" disabled>
           <span className="opacity-90 text-sm font-medium pointer-events-none">{item}</span>
         </button>
       ) : (
         <button key={index} id={"select-year" + item + "-btn"} aria-label="Select year"
-        className="text-textLight dark:text-textDark w-32 py-1.5 px-4 text-left transition-colors
+        className="text-textLight dark:text-textDark sm:w-32 py-1 sm:py-1.5 px-3 sm:px-4 text-left transition-colors
         hover:bg-backgroundThirdLight hover:dark:bg-backgroundThirdDark rounded-lg"
         onClick={props.select} data-year={item}>
           <span className="opacity-90 text-sm font-medium pointer-events-none">{item}</span>
         </button>
       ))}
+    </div>
+  );
+}
+
+
+interface DailyStatisticProps {
+  data: IDayActivityStat
+  classes: string
+  date:string
+}
+const DailyStatistic: FunctionComponent<DailyStatisticProps> = (props:DailyStatisticProps) => {
+  const maxValue = Math.max((props.data.binValue ? props.data.binValue : 0),
+  (props.data.addedFiles ? props.data.addedFiles : 0),
+  (props.data.generatedLinks ? props.data.generatedLinks : 0),
+  (props.data.deletedValue ? props.data.deletedValue : 0))
+  
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  return (
+    <div className={twMerge("flex-col w-full p-4 text-textLight dark:text-textDark", props.classes)}>
+      <ol className="relative h-full sm:h-auto border-l border-borderLight dark:border-borderDark">
+        <li className="mb-4 ml-4">
+          <div className="absolute w-3 h-3 rounded-full mt-1.5 -left-1.5 
+          bg-borderLight dark:bg-borderDark text-textLight dark:text-textDark
+          border border-backgroundSecondLight dark:border-backgroundSecondDark"></div>
+          <time className="mb-1 text-sm font-medium leading-none">
+            <span>{monthNames[parseInt(props.date.slice(props.date.indexOf("-") + 1, props.date.lastIndexOf("-")))-1]}</span>
+            <span className="mx-1">{props.date.slice(props.date.lastIndexOf("-") + 1) + ","}</span>
+            <span className="opacity-80 font-normal">{props.date.slice(0, props.date.indexOf("-"))}</span>
+          </time>
+          <div>
+            {props.data.binValue && (
+              <div className="mt-2 sm:grid grid-cols-2 items-center">
+                <p>Moved files to trash</p>
+                <div className="w-full bg-backgroundThirdLight mt-1 rounded-full h-3 dark:bg-backgroundThirdDark">
+                  <motion.div initial={{width: 0}} animate={{width: (props.data.binValue / maxValue * 100) + "%"}}
+                  className="bg-iconLight dark:bg-iconDark h-3 rounded-full items-center justify-center flex">
+                    <span className="opacity-90 font-medium text-xs">{props.data.binValue}</span>
+                  </motion.div>
+                </div>
+              </div>
+            )}
+            {props.data.deletedValue && (
+              <div className="mt-2 sm:grid grid-cols-2 items-center">
+                <p>Permanently deleted files</p>
+                <div className="w-full bg-backgroundThirdLight mt-1 rounded-full h-3 dark:bg-backgroundThirdDark">
+                  <motion.div initial={{width: 0}} animate={{width: (props.data.deletedValue * 100 / maxValue) + "%"}}
+                  className=" bg-iconLight dark:bg-iconDark h-3 rounded-full items-center justify-center
+                  text-sm flex">
+                    <span className="opacity-90 font-medium text-xs">{props.data.deletedValue}</span>
+                  </motion.div>
+                </div>
+              </div>
+            )}
+            {props.data.addedFiles && (
+              <div className="mt-2 sm:grid grid-cols-2 items-center">
+                <p>Added files</p>
+                <div className="w-full bg-backgroundThirdLight mt-1 rounded-full h-3 dark:bg-backgroundThirdDark">
+                  <motion.div initial={{width: 0}} animate={{width: (props.data.addedFiles / maxValue * 100) + "%"}}
+                  className=" bg-iconLight dark:bg-iconDark h-3 rounded-full items-center justify-center
+                  text-sm flex">
+                    <span className="opacity-90 font-medium text-xs">{props.data.addedFiles}</span>
+                  </motion.div>
+                </div>
+              </div>
+            )}
+            {props.data.generatedLinks && (
+              <div className="mt-2 sm:grid grid-cols-2 items-center">
+                <p>Moved files to trash</p>
+                <div className="w-full bg-backgroundThirdLight mt-1 rounded-full h-3 dark:bg-backgroundThirdDark">
+                  <motion.div initial={{width: 0}} animate={{width: (props.data.generatedLinks / maxValue * 100) + "%"}}
+                  className=" bg-iconLight dark:bg-iconDark h-3 rounded-full items-center justify-center
+                  text-sm flex">
+                    <span className="opacity-90 font-medium text-xs">{props.data.generatedLinks}</span>
+                  </motion.div>
+                </div>
+              </div>
+            )}
+          </div>
+        </li>
+      </ol>
     </div>
   );
 }
