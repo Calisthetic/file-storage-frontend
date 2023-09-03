@@ -116,6 +116,14 @@ npm i @nivo/calendar
 npm i @nivo/network
 ```
 
+#### Optimization
+
+[TailwindCSS optimization](https://tailwindcss.com/docs/optimizing-for-production)
+
+```bash
+npm i postcss autoprefixer
+```
+
 ### Also used in project
 
 - [Google Fonts API](https://developers.google.com/fonts/docs/developer_api?hl=ru#APIKey)
