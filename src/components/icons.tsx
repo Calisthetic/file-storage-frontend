@@ -76,21 +76,21 @@ export function IconAlerts(props:ClassesProps & TypeProps & OptionalFillProps) {
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className={props.classes}>
       <path d="M20 2H4c-1.103 0-2 .894-2 1.992v12.016C2 17.106 2.897 18 4 
       18h3v4l6.351-4H20c1.103 0 2-.894 2-1.992V3.992A1.998 1.998 0 0 0 20 
-      2zm-7 13h-2v-2h2v2zm0-4h-2V5h2v6z" className="fill-errorLight dark:fill-errorDark"></path>
+      2zm-7 13h-2v-2h2v2zm0-4h-2V5h2v6z" className="fill-error"></path>
     </svg>
   ) : props.type === "success" ? (
     <svg viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"
     className={props.classes}>
       <path d="M58.395 32.156 42.995 50.625l-5.39-6.463a5.995 5.995 0 1 0-9.212 
       7.676l9.997 12a5.991 5.991 0 0 0 9.21.006l20.005-24a5.999 5.999 0 1 0-9.211-7.688Z" 
-      className="fill-successLight dark:fill-successDark"></path>
+      className="fill-success"></path>
       <path d="M48 0a48 48 0 1 0 48 48A48.051 48.051 0 0 0 48 0Zm0 84a36 
       36 0 1 1 36-36 36.04 36.04 0 0 1-36 36Z" 
-      className="fill-successLight dark:fill-successDark"></path>
+      className="fill-success"></path>
     </svg>
   ) : ( // warning
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={props.classes}>
-      <path className="fill-warningLight dark:fill-warningDark" fillRule="evenodd" clipRule="evenodd" 
+      <path className="fill-warning" fillRule="evenodd" clipRule="evenodd" 
       d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 
       3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"/>
     </svg>

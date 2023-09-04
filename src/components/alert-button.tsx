@@ -42,9 +42,9 @@ const AlertButton: FunctionComponent<AlertButtonProps> = (props:AlertButtonProps
           "top-[calc(100%)] left-0": props.position === 3,
         })}>
             <div className={cn("h-full flex items-center rounded-s px-1 w-8", {
-              "bg-successLight dark:bg-successDark bg-yellow-400" : props.type === "success",
-              "bg-errorLight dark:bg-errorDark" : props.type === "error",
-              "bg-warningLight dark:bg-warningDark" : props.type === "warning",
+              "bg-success" : props.type === "success",
+              "bg-error" : props.type === "error",
+              "bg-warning" : props.type === "warning",
             })}>
               <IconAlerts classes="h-6 w-6" type={props.type} fillClasses="fill-white"></IconAlerts>
             </div>

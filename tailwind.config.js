@@ -30,12 +30,9 @@ module.exports = {
         iconLight: "var(--iconLight)",
         shadowDark: "var(--shadowDark)",
         shadowLight: "var(--shadowLight)",
-        successDark: "var(--successDark)",
-        successLight: "var(--successLight)",
-        warningDark: "var(--warningDark)",
-        warningLight: "var(--warningLight)",
-        errorDark: "var(--errorDark)",
-        errorLight: "var(--errorLight)",
+        success: "var(--success)",
+        warning: "var(--warning)",
+        error: "var(--error)",
       },
       gridTemplateColumns: {
         alerts: "minmax(24px, 32px) minmax(0, 1fr)"

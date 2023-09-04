@@ -456,7 +456,7 @@ export default function EditUIModal() {
         {isAlertSuccessOpen === true && (
           <motion.div initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
           transition={{stiffness: 200, damping: 24, duration: 0.1}} exit={{opacity: 0, y: -40}}
-          id="alert-1" className="absolute w-full items-center p-4 text-successLight dark:text-successDark 
+          id="alert-1" className="absolute w-full items-center p-4 text-success 
           opacity-0 bg-backgroundSecondLight dark:bg-backgroundSecondDark dark:text-blue-400h 
           flex rounded-xl mt-2 -z-10" role="alert">
             <IconAlerts classes='w-4 h-4' type='success'></IconAlerts>
@@ -468,7 +468,7 @@ export default function EditUIModal() {
             className="bg-backgroundSecondLight dark:bg-backgroundSecondDark 
             rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 ml-auto -mx-1.5 -my-1.5
             hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark">
-              <IconClose classes='h-3 w-3' strokeClasses='stroke-successLight dark:stroke-successDark'></IconClose>
+              <IconClose classes='h-3 w-3' strokeClasses='stroke-success'></IconClose>
             </button>
           </motion.div>
         )}
@@ -479,11 +479,11 @@ export default function EditUIModal() {
         {isAlertWarningOpen === true && (
           <motion.div initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
           transition={{stiffness: 200, damping: 24, duration: 0.1}} exit={{opacity: 0, y: -40}}
-          id="alert-1" className="absolute w-full items-center p-2 text-warningLight dark:text-warningDark 
+          id="alert-1" className="absolute w-full items-center p-2 text-warning 
           opacity-0 bg-backgroundSecondLight dark:bg-backgroundSecondDark dark:text-blue-400h 
           flex rounded-xl justify-between mt-2 -z-10" role="alert">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-              <path className="fill-warningLight dark:fill-warningDark" fillRule="evenodd" clipRule="evenodd" 
+              <path className="fill-warning" fillRule="evenodd" clipRule="evenodd" 
               d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 
               3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"/>
             </svg>
@@ -496,7 +496,7 @@ export default function EditUIModal() {
             className="bg-backgroundSecondLight dark:bg-backgroundSecondDark 
             rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 -my-1.5
             hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark">
-              <IconClose classes='h-3 w-3' strokeClasses='stroke-warningLight dark:stroke-warningDark'></IconClose>
+              <IconClose classes='h-3 w-3' strokeClasses='stroke-warning'></IconClose>
             </button>
           </motion.div>
         )}
@@ -507,7 +507,7 @@ export default function EditUIModal() {
         {isAlertErrorOpen === true && (
           <motion.div initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
           transition={{stiffness: 200, damping: 24, duration: 0.1}} exit={{opacity: 0, y: -40}}
-          id="alert-1" className="absolute w-full items-center p-2 text-errorLight dark:text-errorDark 
+          id="alert-1" className="absolute w-full items-center p-2 text-error dark:text-error
           opacity-0 bg-backgroundSecondLight dark:bg-backgroundSecondDark dark:text-blue-400h 
           flex rounded-xl justify-between mt-2 -z-10" role="alert">
             <IconAlerts classes="mr-2 h-5 w-5" type="error"></IconAlerts>
@@ -519,7 +519,7 @@ export default function EditUIModal() {
             className="bg-backgroundSecondLight dark:bg-backgroundSecondDark 
             rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 -my-1.5
             hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark">
-              <IconClose classes='h-3 w-3' strokeClasses='stroke-errorLight dark:stroke-errorDark'></IconClose>
+              <IconClose classes='h-3 w-3' strokeClasses='stroke-error'></IconClose>
             </button>
           </motion.div>
         )}

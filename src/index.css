@@ -25,12 +25,9 @@
   --iconLight: #ff0000;
   --shadowDark: #eeeeee;
   --shadowLight: #60636c;
-  --successDark: #00ff00;
-  --successLight: #00ff00;
-  --warningDark: #ff8800;
-  --warningLight: #ff8800;
-  --errorDark: #bb0d0d;
-  --errorLight: #ff1639;
+  --success: #00ff00;
+  --warning: #ff8800;
+  --error: #bb0d0d;
 
   --treeMain: #ff4d00;
   --treeFolder: #ffbb00;

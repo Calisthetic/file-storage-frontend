@@ -451,7 +451,7 @@ export default function DiskFolder() {
                   setTimeout(() => {
                     setIsErrorAlert(false)
                   }, 250);}}
-                className="text-errorLight dark:text-errorDark rounded-2xl absolute
+                className="text-error rounded-2xl absolute
                 bg-backgroundLight dark:bg-backgroundDark p-2 min-w-xs w-full -ml-4 mt-6 -z-10
                 flex justify-center items-center font-medium transition-[margin]">
                   <IconAlerts classes="mr-2 h-5 w-5" type="error"></IconAlerts>

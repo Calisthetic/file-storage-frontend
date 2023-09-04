@@ -148,7 +148,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
   }
 
   return (
-    <div className="text-textLight dark:text-textDark rounded-2xl max-h-fulldvh
+    <div className="text-textLight dark:text-textDark rounded-2xl max-h-fulldvh overflow-x-hidden
     bg-backgroundLight dark:bg-backgroundDark p-4 min-w-xs max-w-3xl xl:w-[728px] overflow-y-auto"
     onClick={(e:any) => {if (e.target.dataset.name === undefined) {setIsRolesMenuOpen(false)}}}>
       <div className="font-medium text-center text-xl md:col-span-2">{"Share - " + folderName}</div>
@@ -160,7 +160,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
           className="h-7 w-7">
             <path d="M17 9a8 8 0 1 0-6.278 7.814 5.932 5.932 0 0 1-.388-.94 7 7 0 1 1 
             5.64-7.474l.032.03c.2.209.399.387.597.537.131.1.263.186.394.263.002-.077.003-.153.003-.23Z" 
-            className="fill-warningLight dark:fill-warningDark"></path>
+            className="fill-warning"></path>
             <path d="M9.049 5a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5ZM9 7.5a.5.5 0 0 1 
             .492.41L9.5 8v4.502a.5.5 0 0 1-.992.09l-.008-.09V8a.5.5 0 0 1 .5-.5ZM17 
             10.347a4.632 4.632 0 0 1-1-.583 6.055 6.055 0 0 1-.716-.642.389.389 0 0 
@@ -168,7 +168,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
             0-.4.186-.4.416v2.501l.004.266c.027.797.174 1.514.44 2.15A4.813 4.813 0 0 0 13 
             18c.524.4 1.15.727 1.874.979.083.028.171.028.254 0 2.56-.89 3.873-2.713 
             3.873-5.395v-2.5l-.008-.085a.405.405 0 0 0-.392-.332 4.057 4.057 0 0 1-1.6-.32Z" 
-            className="fill-warningLight dark:fill-warningDark"></path>
+            className="fill-warning"></path>
           </svg>
           <div>
             {currentPage === "default" ? (
@@ -213,11 +213,11 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                       164.611-165.106v-766.42c0-36.49-29.015-65.473-65.505-65.473zM1130 
                       1545.151c0 18.218-14.395 33.106-32.611 33.106H165.792c-18.216 
                       0-33.792-14.889-33.792-33.106V845.258h998v699.893z" 
-                      className="fill-successLight dark:fill-successDark"></path>
+                      className="fill-success"></path>
                       <path d="M631 1409.707c36.491 0 
                       66-29.58 66-66.071v-237.854c0-36.49-29.51-66.07-66-66.07-36.49 
                       0-66 29.58-66 66.07v237.854c0 36.491 29.509 66.071 66 66.071z" 
-                      className="fill-successLight dark:fill-successDark"></path>
+                      className="fill-success"></path>
                     </svg>
                   </motion.div>
                 </button>
@@ -351,11 +351,11 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                       459.892c0-180.588 146.664-327.508 326.999-327.508C811.335 132.384 958 279.168 
                       958 459.592v253.666H304V459.892zm826 1085.259c0 18.218-14.395 33.106-32.611 
                       33.106H165.792c-18.216 0-33.792-14.889-33.792-33.106V845.258h998v699.893z" 
-                      className="fill-errorLight dark:fill-errorDark"></path>
+                      className="fill-error"></path>
                       <path d="M631 1409.707c36.491 0 66-29.58 
                       66-66.071v-237.854c0-36.49-29.51-66.07-66-66.07-36.49 0-66 29.58-66 
                       66.07v237.854c0 36.491 29.509 66.071 66 66.071z"
-                      className="fill-errorLight dark:fill-errorDark"></path>
+                      className="fill-error"></path>
                     </svg>
                   </motion.section>
                 </button>
@@ -625,7 +625,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
           <motion.button initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
           transition={{stiffness: 200, damping: 24, duration: 0.1}}
           onClick={(e:any) => {e.target.style.marginTop = "-40px"}}
-          className="text-successLight dark:text-successDark rounded-2xl absolute
+          className="text-success rounded-2xl absolute
           bg-backgroundLight dark:bg-backgroundDark p-2 min-w-xs w-full -ml-4 mt-6 -z-10
           flex justify-center items-center font-medium transition-[margin]">
             <IconAlerts classes="h-4 w-4 mr-2" type="success"></IconAlerts>
@@ -642,7 +642,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
           onClick={(e:any) => {e.target.style.marginTop = "-40px"; setTimeout(() => {
             setIsError(false)
           }, 100);}}
-          className="text-errorLight dark:text-errorDark rounded-2xl absolute
+          className="text-error rounded-2xl absolute
           bg-backgroundLight dark:bg-backgroundDark p-2 min-w-xs w-full -ml-4 mt-6 -z-10
           flex justify-center items-center font-medium transition-[margin]">
             <IconAlerts classes="mr-2 h-5 w-5" type="error"></IconAlerts>
@@ -659,7 +659,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
           onClick={(e:any) => {e.target.style.marginTop = "-40px"; setTimeout(() => {
             setIsWarning(false)
           }, 100);}}
-          className="text-warningLight dark:text-warningDark rounded-2xl absolute
+          className="text-warning rounded-2xl absolute
           bg-backgroundLight dark:bg-backgroundDark p-2 min-w-xs w-full -ml-4 mt-6 -z-10
           flex justify-center items-center font-medium transition-[margin]">
             <IconAlerts type="warning" classes="h-5 w-5 mr-2"></IconAlerts>
