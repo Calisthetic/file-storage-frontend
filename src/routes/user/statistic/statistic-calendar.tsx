@@ -1,7 +1,7 @@
 import { ResponsiveCalendar } from '@nivo/calendar'
 import { AnimatePresence, motion } from "framer-motion"
 import { FunctionComponent, useEffect, useState } from 'react'
-import { GetColorGradient, GetCSSValue } from '../../../lib/color-utils'
+import { GetColorGradient, GetCSSValue, isDarkMode } from '../../../lib/color-utils'
 import { GetCurrentDate, GetCurrentYear } from '../../../lib/utils'
 import { twMerge } from 'tailwind-merge'
 
@@ -445,7 +445,7 @@ const StatisticCalendar:FunctionComponent = () => {
                 <div className="gap-x-0.5 flex flex-row pt-0.5">
                   <div style={{backgroundColor: GetCSSValue("backgroundThird")}}
                   className="h-2.5 w-2.5 rounded-sm"></div>
-                  {calendarColors.reverse().map((item, index) => (
+                  {calendarColors.map((item, index) => (
                     <div key={index} style={{backgroundColor: item}}
                     className="h-2.5 w-2.5 rounded-sm"></div>
                   ))}

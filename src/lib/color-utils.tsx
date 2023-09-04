@@ -6,11 +6,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // Dark mode
-export let isDarkMode:boolean = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? true : false;
+export const isDarkMode = ():boolean => ('theme' in localStorage) 
+  ? (localStorage.theme === 'dark' ? true : false) 
+  : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? true : false;
 
 // Css variables
 export function GetCSSValue(name: string) {
-  return getComputedStyle(document.body).getPropertyValue('--' + name + (isDarkMode ? "Dark" : "Light"))
+  return getComputedStyle(document.body).getPropertyValue('--' + name + (isDarkMode() ? "Dark" : "Light"))
 }
 
 // white to black
@@ -62,21 +64,35 @@ export function GetColorGradient(hex:string, count:number):string[] {
   var r = parseInt(hex.slice(0, 2), 16),
     g = parseInt(hex.slice(2, 4), 16),
     b = parseInt(hex.slice(4, 6), 16);
-  if (r < 64 && g < 64 && b < 64) {
-    r+=64
-    g+=64
-    b+=64
+  if (isDarkMode()) {
+    if (r < 64 && g < 64 && b < 64) {
+      r+=64
+      g+=64
+      b+=64
+    }
+  } else {
+    if (r > 192 && g > 192 && b > 192) {
+      r-=64
+      g-=64
+      b-=64
+    }
   }
-  var rindex = Math.floor(r / count),
-    gindex = Math.floor(g / count),
-    bindex = Math.floor(b / count);
+  var rindex = isDarkMode() ? Math.floor(r / count) : Math.floor((255 - r) / 4),
+    gindex = isDarkMode() ? Math.floor(g / count) : Math.floor((255 - g) / 4),
+    bindex = isDarkMode() ? Math.floor(b / count) : Math.floor((255 - b) / 4);
   
   let result:string[] = []
   for (let i = 0; i < count; i++) {
-    result.push('#' + padZero((r - rindex * i).toString(16)) 
-      + padZero((g - gindex * i).toString(16)) + padZero((b - bindex * i).toString(16)))
+    if (isDarkMode()) {
+      result.push('#' + padZero((r - rindex * i).toString(16)) 
+        + padZero((g - gindex * i).toString(16)) + padZero((b - bindex * i).toString(16)))
+    } else {
+      result.push('#' + padZero((r + rindex * i).toString(16)) 
+        +padZero((g + gindex * i).toString(16)) 
+        +padZero((b + bindex * i).toString(16)))
+    }
   }
-  return result
+  return result.reverse()
 }
 
 function padZero(str:string) {

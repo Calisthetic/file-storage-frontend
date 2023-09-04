@@ -281,7 +281,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     elem.style.transitionProperty = "initial"
     elem.style.transition = "initial"
     elem.style.zIndex = "16"
-    elem.style.boxShadow = "0px 0px 5px -2px var(--shadow" + (isDarkMode ? "Dark" : "Light") + ")"
+    elem.style.boxShadow = "0px 0px 5px -2px var(--shadow" + (isDarkMode() ? "Dark" : "Light") + ")"
     // Mask && cursor
     setIsMaskActive(true)
     if (rootElem) {
