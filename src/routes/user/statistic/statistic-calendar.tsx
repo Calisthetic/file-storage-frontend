@@ -1,7 +1,7 @@
 import { ResponsiveCalendar } from '@nivo/calendar'
 import { motion } from "framer-motion"
 import { FunctionComponent, useEffect, useState } from 'react'
-import { GetColorGradient, GetCSSValue, isDarkMode } from '../../../lib/color-utils'
+import { GetColorGradient, GetCSSValue } from '../../../lib/color-utils'
 import { GetCurrentDate, GetCurrentYear } from '../../../lib/utils'
 import { twMerge } from 'tailwind-merge'
 import YearSelectList from './select-year'
@@ -43,25 +43,38 @@ const StatisticCalendar:FunctionComponent<StatisticCalendarProps> = ({availableY
 
   // Current calendar colors
   const [calendarColors, setCalendarColors] = useState<string[]>(GetColorGradient(GetCSSValue("icon"), 4))
-  // Check css variable changed event
-  var observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation:any) => {
-      if (mutation.type === "attributes") {
-        setCalendarColors(GetColorGradient(GetCSSValue("icon"), 4))
+
+  // If css variable changed
+  function MutationHandler(mutation:MutationRecord) {
+    if (mutation.type === "attributes") {
+      setCalendarColors(GetColorGradient(GetCSSValue("icon"), 4))
+      
+      let textElems:SVGTextElement[] = Array.from(document.getElementsByTagName("text"))
+      if (textElems.length > 22) {
+        for (let i = 10; i < 23; i++) {
+          textElems[i].style.fill = GetCSSValue("text")
+        }
       }
-    });
-  });
-  
-  var observerConfig = {
-    attributes: true,
-    childList: false,
-    characterData: false,
-    attributeOldValue: true
-  };
-  var targetNode = document.querySelector('div');
-  if (targetNode) {
-    observer.observe(targetNode, observerConfig);
+    }
   }
+  // Check css variable changed event
+  useEffect(() => {
+    var observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation:MutationRecord) => MutationHandler(mutation));
+    });
+    var observerConfig = {
+      attributes: true,
+      childList: false,
+      characterData: false,
+      attributeOldValue: true
+    };
+    var targetNode = document.querySelector('div');
+    if (targetNode) {
+      observer.observe(targetNode, observerConfig);
+    }
+
+    return () => observer.disconnect()
+  }, [])
 
 
   // Calendar data
@@ -440,12 +453,13 @@ const StatisticCalendar:FunctionComponent<StatisticCalendarProps> = ({availableY
               />
             </div>
             {/* Bottom section */}
-            <div className="w-[766px] h-4 px-10 -mt-2 text-xs flex flex-row justify-between">
-              <button className="hover:text-buttonHoverLight hover:dark:text-buttonHoverDark">
+            <div className="w-[766px] h-4 px-10 -mt-2 text-xs flex flex-row justify-between
+            text-textLight dark:text-textDark">
+              <button className="hover:text-buttonHoverLight hover:dark:text-buttonHoverDark opacity-80">
                 How we count your actions?
               </button>
               <div className="flex flex-row items-center gap-x-1">
-                <span>Less</span>
+                <span className="opacity-90">Less</span>
                 <div className="gap-x-0.5 flex flex-row pt-0.5">
                   <div style={{backgroundColor: GetCSSValue("backgroundThird")}}
                   className="h-2.5 w-2.5 rounded-sm"></div>
@@ -454,7 +468,7 @@ const StatisticCalendar:FunctionComponent<StatisticCalendarProps> = ({availableY
                     className="h-2.5 w-2.5 rounded-sm"></div>
                   ))}
                 </div>
-                <span>More</span>
+                <span className="opacity-90">More</span>
               </div>
             </div>
           </div>

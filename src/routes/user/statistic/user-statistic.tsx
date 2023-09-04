@@ -134,6 +134,12 @@ const UserStatistic: FunctionComponent = () => {
         height: 1,
         size: 12,
         color: "var(--treeFile)"
+      },
+      {
+        id: "file4",
+        height: 1,
+        size: 12,
+        color: "var(--treeFile)"
       }
     ],
     links: [
@@ -195,6 +201,11 @@ const UserStatistic: FunctionComponent = () => {
       {
         source: "folder11",
         target: "file3",
+        distance: 30
+      },
+      {
+        source: "folder11",
+        target: "file4",
         distance: 30
       }
     ]

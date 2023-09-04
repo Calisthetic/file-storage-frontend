@@ -99,10 +99,10 @@ module.exports = {
   },
   plugins: [
     require("daisyui"),
-    // function ({addVariant}) {
-    //   addVariant('child', '&>*');
-    //   addVariant('child-hover', '&>*:hover');
-    // }
+    function ({addVariant}) {
+      addVariant('child', '&>*');
+      addVariant('child-hover', '&>*:hover');
+    }
   ],
 }
 

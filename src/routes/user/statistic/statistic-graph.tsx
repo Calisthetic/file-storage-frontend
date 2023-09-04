@@ -1,6 +1,7 @@
 import { ResponsiveLine } from '@nivo/line'
 import { FunctionComponent, useEffect, useState } from 'react'
 import YearSelectList from './select-year'
+import { GetCSSValue } from '../../../lib/color-utils'
 
 interface IUsageStat {
   id: string
@@ -16,6 +17,55 @@ interface StatisticGraphProps {
   availableYears: number[]
 }
 const StatisticGraph:FunctionComponent<StatisticGraphProps> = ({availableYears}:StatisticGraphProps) => {
+  // Style text and rectangles
+  function ModifyGraph() {
+    let textElems:SVGTextElement[] = Array.from(document.getElementsByTagName("text"))
+    if (textElems.length > 53) { // from 27 to 53
+      for (let i = 27; i < 54; i++) {
+        textElems[i].style.fill = GetCSSValue("text")
+      }
+    }
+    let pathElems:SVGPathElement[] = Array.from(document.getElementsByTagName("path"))
+    if (pathElems.length > 34) {
+      pathElems[34].style.stroke = GetCSSValue("icon")
+    }
+    let circleElems:SVGCircleElement[] = Array.from(document.getElementsByTagName("circle"))
+    if (circleElems.length > 28) { // from 17 to 28
+      for (let i = circleElems.length - 1; i > circleElems.length - 13; i--) {
+        circleElems[i].style.stroke = GetCSSValue("icon")
+      }
+    }
+  }
+  setTimeout(() => ModifyGraph(), 250);
+
+  // If css variable changed
+  function MutationHandler(mutation:MutationRecord) {
+    if (mutation.type === "attributes") {
+      ModifyGraph()
+    }
+  }
+
+  // Check css variable changed event
+  useEffect(() => {
+    var observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation:any) => MutationHandler(mutation));
+    });
+
+    var observerConfig = {
+      attributes: true,
+      childList: false,
+      characterData: false,
+      attributeOldValue: true
+    };
+    var targetNode = document.querySelector('div');
+    if (targetNode) {
+      observer.observe(targetNode, observerConfig);
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
+
   // Calendar data
   const usageStatTemp:IUsageStat[] = [
     {
@@ -107,7 +157,7 @@ const StatisticGraph:FunctionComponent<StatisticGraphProps> = ({availableYears}:
                   tickSize: 5,
                   tickPadding: 5,
                   tickRotation: 0,
-                  legend: 'disk usage',
+                  legend: 'DISK USAGE',
                   legendOffset: 36,
                   legendPosition: 'middle'
                 }}
@@ -119,6 +169,7 @@ const StatisticGraph:FunctionComponent<StatisticGraphProps> = ({availableYears}:
                   legendOffset: -40,
                   legendPosition: 'middle'
                 }}
+                colors={{ scheme: 'set1' }}
                 pointSize={10}
                 pointColor={{ theme: 'background' }}
                 pointBorderWidth={2}
@@ -137,7 +188,9 @@ const StatisticGraph:FunctionComponent<StatisticGraphProps> = ({availableYears}:
       <div className="flex flex-row px800:justify-center">
         <div className="flex flex-row justify-between w-full px800:w-[766px]">
           <YearSelectList select={(e:any) => setSelectedYear(parseInt(e.target.dataset.year))}
-          data={availableYears} selected={selectedYear} classes="lg:hidden flex"></YearSelectList>
+          data={availableYears} selected={selectedYear} 
+          classes="lg:hidden flex border-none flex-row-reverse flex-wrap justify-center
+          child:p-2 child:w-auto child:sm:w-auto w-full child:py-1"></YearSelectList>
         </div>
       </div>
     </div>
