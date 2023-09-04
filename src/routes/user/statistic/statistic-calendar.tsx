@@ -1,9 +1,10 @@
 import { ResponsiveCalendar } from '@nivo/calendar'
-import { AnimatePresence, motion } from "framer-motion"
+import { motion } from "framer-motion"
 import { FunctionComponent, useEffect, useState } from 'react'
 import { GetColorGradient, GetCSSValue, isDarkMode } from '../../../lib/color-utils'
 import { GetCurrentDate, GetCurrentYear } from '../../../lib/utils'
 import { twMerge } from 'tailwind-merge'
+import YearSelectList from './select-year'
 
 interface IActivityStat {
   value:number,
@@ -16,7 +17,11 @@ interface IDayActivityStat {
   generatedLinks?:number,
 }
 
-const StatisticCalendar:FunctionComponent = () => {
+interface StatisticCalendarProps {
+  availableYears: number[]
+}
+
+const StatisticCalendar:FunctionComponent<StatisticCalendarProps> = ({availableYears}:StatisticCalendarProps) => {
   const currentDate = GetCurrentDate()
 
   // Style text and rectangles
@@ -380,8 +385,7 @@ const StatisticCalendar:FunctionComponent = () => {
   ]
   const [activityStat, setActivityStat] = useState<IActivityStat[]>(activityStatTemp)
   // Available years
-  const [availableYears, setAvailableYears] = useState<number[]>([2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023])
-  const [selectedYear, setSelectedYear] = useState<number>(GetCurrentYear())
+  const [selectedYear, setSelectedYear] = useState<number>(availableYears[availableYears.length-1])
 
   useEffect(() => {
     // Request to year stat (calendar)
@@ -473,34 +477,6 @@ const StatisticCalendar:FunctionComponent = () => {
 }
 export default StatisticCalendar
 
-
-interface YearSelectListProps {
-  select: (e:any) => void
-  data: number[]
-  selected: number
-  classes: string
-}
-const YearSelectList: FunctionComponent<YearSelectListProps> = (props:YearSelectListProps) => {
-  return (
-    <div className={twMerge("flex-col sm:gap-y-1.5 px-2 sm:px-4 my-4 lg:hidden flex", 
-    "border-l border-borderLight dark:border-borderDark", props.classes)}>
-      {props.data.sort((a,b) => (b-a)).map((item, index) => props.selected === item ? (
-        <button key={index} id={"select-year" + item + "-btn"} aria-label="Select year"
-        className="text-textLight dark:text-textDark sm:w-32 py-1 sm:py-1.5 px-3 sm:px-4 text-left
-        bg-buttonLight dark:bg-buttonDark rounded-lg transition-colors" disabled>
-          <span className="opacity-90 text-sm font-medium pointer-events-none">{item}</span>
-        </button>
-      ) : (
-        <button key={index} id={"select-year" + item + "-btn"} aria-label="Select year"
-        className="text-textLight dark:text-textDark sm:w-32 py-1 sm:py-1.5 px-3 sm:px-4 text-left transition-colors
-        hover:bg-backgroundThirdLight hover:dark:bg-backgroundThirdDark rounded-lg"
-        onClick={props.select} data-year={item}>
-          <span className="opacity-90 text-sm font-medium pointer-events-none">{item}</span>
-        </button>
-      ))}
-    </div>
-  );
-}
 
 
 interface DailyStatisticProps {

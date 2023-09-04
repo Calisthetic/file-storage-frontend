@@ -116,6 +116,12 @@ npm i @nivo/calendar
 npm i @nivo/network
 ```
 
+[nivo line](https://nivo.rocks/line/)
+
+```bash
+npm i @nivo/line
+```
+
 #### Optimization
 
 [TailwindCSS optimization](https://tailwindcss.com/docs/optimizing-for-production)

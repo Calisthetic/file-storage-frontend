@@ -2,6 +2,7 @@ import { FunctionComponent, useState } from "react";
 import StatisticPie from "./statistic-pie";
 import StatisticCalendar from "./statistic-calendar";
 import StatisticTree from "./statistic-tree";
+import StatisticGraph from "./statistic-graph";
  
 export interface IFileStat {
   id:string,
@@ -198,6 +199,9 @@ const UserStatistic: FunctionComponent = () => {
       }
     ]
   }
+
+  // for calendar and usage graph
+  const [availableYears, setAvailableYears] = useState<number[]>([2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023])
   
   return (
     <div className="min-h-fullWithHeader flex flex-col items-center">
@@ -205,10 +209,13 @@ const UserStatistic: FunctionComponent = () => {
         <StatisticPie data={fileStat}></StatisticPie>
       </div>
       <div className="w-[calc(100%-24px)] lg:max-w-5xl lg:w-[1024px] mt-3">
-        <StatisticCalendar></StatisticCalendar>
+        <StatisticCalendar availableYears={availableYears}></StatisticCalendar>
       </div>
       <div className="w-[calc(100%-24px)] lg:max-w-5xl lg:w-[1024px] mt-3">
         <StatisticTree data={data}></StatisticTree>
+      </div>
+      <div className="w-[calc(100%-24px)] lg:max-w-5xl lg:w-[1024px] mt-3">
+        <StatisticGraph availableYears={availableYears}></StatisticGraph>
       </div>
     </div>
   );

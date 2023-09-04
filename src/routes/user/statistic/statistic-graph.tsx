@@ -1,0 +1,146 @@
+import { ResponsiveLine } from '@nivo/line'
+import { FunctionComponent, useEffect, useState } from 'react'
+import YearSelectList from './select-year'
+
+interface IUsageStat {
+  id: string
+  color: string
+  data: IUsageData[]
+}
+interface IUsageData {
+  x: string
+  y: number
+}
+
+interface StatisticGraphProps {
+  availableYears: number[]
+}
+const StatisticGraph:FunctionComponent<StatisticGraphProps> = ({availableYears}:StatisticGraphProps) => {
+  // Calendar data
+  const usageStatTemp:IUsageStat[] = [
+    {
+      "id": "japan",
+      "color": "hsl(250, 70%, 50%)",
+      "data": [
+        {
+          "x": "January",
+          "y": 290
+        },
+        {
+          "x": "February",
+          "y": 263
+        },
+        {
+          "x": "March",
+          "y": 180
+        },
+        {
+          "x": "April",
+          "y": 23
+        },
+        {
+          "x": "May",
+          "y": 170
+        },
+        {
+          "x": "June",
+          "y": 107
+        },
+        {
+          "x": "July",
+          "y": 66
+        },
+        {
+          "x": "August",
+          "y": 241
+        },
+        {
+          "x": "September",
+          "y": 197
+        },
+        {
+          "x": "October",
+          "y": 229
+        },
+        {
+          "x": "November",
+          "y": 167
+        },
+        {
+          "x": "December",
+          "y": 132
+        }
+      ]
+    },
+  ]
+  const [usageStat, setUsageStat] = useState<IUsageStat[]>(usageStatTemp)
+  // Available years
+  const [selectedYear, setSelectedYear] = useState<number>(availableYears[0])
+
+  useEffect(() => {
+    // Request to year stat (calendar)
+  }, [selectedYear])
+  
+
+  return (
+    <div className="rounded border border-borderLight dark:border-borderDark">
+      <div className="flex flex-col lg:flex-row lg:justify-center">
+        <div>
+          <div className="overflow-x-auto px800:overflow-x-visible py-2 px800:flex flex-col items-center">
+            {/* Calendar */}
+            <div className="h-[400px] w-[766px]">
+              <ResponsiveLine
+                data={usageStat}
+                margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
+                xScale={{ type: 'point' }}
+                yScale={{
+                  type: 'linear',
+                  min: 'auto',
+                  max: 'auto',
+                  stacked: true,
+                  reverse: false
+                }}
+                yFormat=" >-.2f"
+                axisTop={null}
+                axisRight={null}
+                axisBottom={{
+                  tickSize: 5,
+                  tickPadding: 5,
+                  tickRotation: 0,
+                  legend: 'disk usage',
+                  legendOffset: 36,
+                  legendPosition: 'middle'
+                }}
+                axisLeft={{
+                  tickSize: 5,
+                  tickPadding: 5,
+                  tickRotation: 0,
+                  legend: 'count',
+                  legendOffset: -40,
+                  legendPosition: 'middle'
+                }}
+                pointSize={10}
+                pointColor={{ theme: 'background' }}
+                pointBorderWidth={2}
+                pointBorderColor={{ from: 'serieColor' }}
+                pointLabelYOffset={-12}
+                useMesh={true}
+                legends={[]}
+              />
+            </div>
+          </div>
+        </div>
+        {/* Years list right */}
+        <YearSelectList select={(e:any) => setSelectedYear(parseInt(e.target.dataset.year))}
+        data={availableYears} selected={selectedYear} classes="hidden lg:flex"></YearSelectList>
+      </div>
+      <div className="flex flex-row px800:justify-center">
+        <div className="flex flex-row justify-between w-full px800:w-[766px]">
+          <YearSelectList select={(e:any) => setSelectedYear(parseInt(e.target.dataset.year))}
+          data={availableYears} selected={selectedYear} classes="lg:hidden flex"></YearSelectList>
+        </div>
+      </div>
+    </div>
+  )
+}
+export default StatisticGraph
