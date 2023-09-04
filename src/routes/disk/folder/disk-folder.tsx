@@ -151,7 +151,9 @@ export default function DiskFolder() {
       <header className="w-full px-1 sm:px-0 pt-1 flex flex-row justify-between">
         {/* All actions drop */}
         <div>
-          <button onClick={() => {setIsAddDrop(!isAddDrop)}} id="drop-actions" aria-label="Actions" data-drop="add"
+          <motion.button initial={{opacity: 0, y: -20}} animate={{opacity: 1, y: 0}} 
+          transition={{damping: 24, duration: 0.25, stiffness: 300}} 
+          onClick={() => {setIsAddDrop(!isAddDrop)}} id="drop-actions" aria-label="Actions" data-drop="add"
           className=" text-textLight dark:text-textDark hover:bg-backgroundHoverLight 
           dark:hover:bg-backgroundHoverDark first-letter:uppercase
           font-medium rounded-full text-base sm:text-lg px-4 py-2 text-center
@@ -161,7 +163,7 @@ export default function DiskFolder() {
               <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" 
               strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
             </svg>
-          </button>
+          </motion.button>
           <AnimatePresence>
             {isAddDrop && (
               <motion.div initial={{opacity: 0, y: -50, scaleY: 0.2}} animate={{opacity: 1, y: 0, scaleY: 1}}

@@ -12,7 +12,8 @@ export default function DiskSideBar() {
     dark:text-textDark text-textLight font-medium text-sm sm:text-base
     overflow-y-auto">
       <ul className="space-y-1">
-        <li>
+        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
+        transition={{delay: 0, stiffness: 300, damping: 24}}>
           <Link to="folder/main" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
@@ -21,8 +22,9 @@ export default function DiskSideBar() {
               className="fill-iconLight dark:fill-iconDark"></path></svg>
             <span className="ml-3">My storage</span>
           </Link>
-        </li>
-        <li>
+        </motion.li>
+        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
+        transition={{delay: 0.02, stiffness: 300, damping: 24}}>
           <Link to="favorites" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
           <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -38,15 +40,16 @@ export default function DiskSideBar() {
           </svg>
           <span className="ml-3">Favorites</span>
           </Link>
-        </li>
-        {/* <li>
+        </motion.li>
+        {/* <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
+        transition={{delay: 0.1, stiffness: 300, damping: 24}}>
             <a href="#" className="flex items-center p-1.5 sm:p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
               <span className="flex-1 ml-3 whitespace-nowrap">Kanban</span>
               <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span>
             </a>
-        </li>
-        <li> */}
-        <li>
+        </motion.li> */}
+        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
+        transition={{delay: 0.04, stiffness: 300, damping: 24}}>
           <Link to="recent" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -59,15 +62,17 @@ export default function DiskSideBar() {
             </svg>
             <span className="ml-3">Recent</span>
           </Link>
-        </li>
-        <li>
+        </motion.li>
+        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
+        transition={{delay: 0.06, stiffness: 300, damping: 24}}>
           <Link to="bin" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <IconDelete classes="w-5 h-5 sm:w-6 sm:h-6" fillClasses="fill-iconLight dark:fill-iconDark"></IconDelete>
             <span className="ml-3">Recycle bin</span>
           </Link>
-        </li>
-        <li>
+        </motion.li>
+        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
+        transition={{delay: 0.08, stiffness: 300, damping: 24}}>
           <Link to="shared" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 512 512">
@@ -99,8 +104,9 @@ export default function DiskSideBar() {
               14.47 7.59 25.68 18.18 31.56 29.81 5.83 11.51 7.51 25.57 5.31 44.27z" className="fill-iconLight dark:fill-iconDark"></path></svg>
             <span className="ml-3">Shared with me</span>
           </Link>
-        </li>
-        <li>
+        </motion.li>
+        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
+        transition={{delay: 0.1, stiffness: 300, damping: 24}}>
           <Link to="files" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
@@ -114,14 +120,14 @@ export default function DiskSideBar() {
             </svg>
             <span className="ml-3">Files</span>
           </Link>
-        </li>
+        </motion.li>
       </ul>
       {/* Storage usage */}
       <div className="mt-1 sm:mt-3 border-y pt-2 pb-4 border-borderLight dark:border-borderDark">
         <motion.span className="flex-1 ml-1"
           initial={{y: 20, opacity: 0}} 
           animate={{y: 0, opacity: 1}} 
-          transition={{delay: 0.1, stiffness: 300, damping: 24}}>
+          transition={{delay: 0.2, stiffness: 300, damping: 24}}>
           Used {4}Gb of {7}Gb
         </motion.span>
         <div className="w-full bg-backgroundThirdLight mt-1 rounded-full h-2.5 dark:bg-backgroundThirdDark">
@@ -130,7 +136,8 @@ export default function DiskSideBar() {
         </div>
       </div>
       <ul className="pt-1 sm:pt-3 space-y-1">
-        <li>
+        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
+        transition={{delay: 0.12, stiffness: 300, damping: 24}}>
           <Link to="upgrade" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <motion.svg className="w-5 h-5 sm:w-6 sm:h-6 fill-iconLight dark:fill-iconDark" 
@@ -143,8 +150,9 @@ export default function DiskSideBar() {
             </motion.svg>
             <span className="flex-1 ml-3 whitespace-nowrap">Upgrade</span>
           </Link>
-        </li>
-        <motion.li>
+        </motion.li>
+        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
+        transition={{delay: 0.14, stiffness: 300, damping: 24}}>
           <Link to="help" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24"><g>
@@ -165,7 +173,7 @@ export default function DiskSideBar() {
       <AnimatePresence>
         {isAdOpen === true && (
           <motion.div initial={{x: -300, opacity: 0}} animate={{x: 0, opacity: 1}} 
-          transition={{stiffness: 300, damping: 24}} exit={{x: -1000, opacity: 0}}
+          transition={{delay: 0.12, stiffness: 300, damping: 24}} exit={{x: -1000, opacity: 0}}
           ref={adRef} role="alert"
           className="p-2 sm:p-4 mt-4 sm:mt-6 transition rounded-lg bg-backgroundThirdLight dark:bg-backgroundThirdDark 
           text-textLight dark:text-textDark text-sm">
