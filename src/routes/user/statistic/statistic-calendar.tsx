@@ -1,6 +1,6 @@
 import { ResponsiveCalendar } from '@nivo/calendar'
 import { motion } from "framer-motion"
-import { FunctionComponent, useEffect, useState } from 'react'
+import { FunctionComponent, useCallback, useEffect, useState } from 'react'
 import { GetColorGradient, GetCSSValue } from '../../../lib/color-utils'
 import { GetCurrentDate, GetCurrentYear } from '../../../lib/utils'
 import { twMerge } from 'tailwind-merge'
@@ -45,7 +45,7 @@ const StatisticCalendar:FunctionComponent<StatisticCalendarProps> = ({availableY
   const [calendarColors, setCalendarColors] = useState<string[]>(GetColorGradient(GetCSSValue("icon"), 4))
 
   // If css variable changed
-  function MutationHandler(mutation:MutationRecord) {
+  const MutationHandler = useCallback((mutation:MutationRecord) => {
     if (mutation.type === "attributes") {
       setCalendarColors(GetColorGradient(GetCSSValue("icon"), 4))
       
@@ -56,7 +56,7 @@ const StatisticCalendar:FunctionComponent<StatisticCalendarProps> = ({availableY
         }
       }
     }
-  }
+  }, [])
   // Check css variable changed event
   useEffect(() => {
     var observer = new MutationObserver((mutations) => {
@@ -74,7 +74,7 @@ const StatisticCalendar:FunctionComponent<StatisticCalendarProps> = ({availableY
     }
 
     return () => observer.disconnect()
-  }, [])
+  }, [MutationHandler])
 
 
   // Calendar data

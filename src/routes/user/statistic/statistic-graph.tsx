@@ -1,5 +1,5 @@
 import { ResponsiveLine } from '@nivo/line'
-import { FunctionComponent, useEffect, useState } from 'react'
+import { FunctionComponent, useCallback, useEffect, useState } from 'react'
 import YearSelectList from './select-year'
 import { GetCSSValue } from '../../../lib/color-utils'
 
@@ -39,11 +39,11 @@ const StatisticGraph:FunctionComponent<StatisticGraphProps> = ({availableYears}:
   setTimeout(() => ModifyGraph(), 250);
 
   // If css variable changed
-  function MutationHandler(mutation:MutationRecord) {
+  const MutationHandler = useCallback((mutation:MutationRecord) => {
     if (mutation.type === "attributes") {
       ModifyGraph()
     }
-  }
+  }, [])
 
   // Check css variable changed event
   useEffect(() => {
@@ -63,7 +63,7 @@ const StatisticGraph:FunctionComponent<StatisticGraphProps> = ({availableYears}:
     }
 
     return () => observer.disconnect()
-  }, [])
+  }, [MutationHandler])
 
 
   // Calendar data
