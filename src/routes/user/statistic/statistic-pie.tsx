@@ -74,8 +74,8 @@ const StatisticPie:FunctionComponent<StatisticPieProps> = ({data}:StatisticPiePr
           </button>
         </div>
         <div className="flex flex-row font-semibold text-textLight dark:text-textDark">
-          <span className="mr-2 hidden sm:block">Number of file types: </span>
-          <span className="mr-2 sm:hidden">Amount: </span>
+          <span className="mr-2 hidden md:block">Number of file types: </span>
+          <span className="mr-2 md:hidden">Amount: </span>
           <button id="subtract-file-stat-count-btn" aria-label="Subtract file stat count" 
           className="w-7 bg-backgroundThirdLight dark:bg-backgroundThirdDark
           hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors
@@ -91,7 +91,7 @@ const StatisticPie:FunctionComponent<StatisticPieProps> = ({data}:StatisticPiePr
           onClick={() => CalculateFileStatCount("+")}>+</button>
         </div>
       </div>
-      <div className="overflow-y-auto h-auto w-full min-h sm:flex justify-center">
+      <div className="overflow-y-auto h-auto w-full min-h md:flex justify-center">
         <div className=" h-[400px] w-[638px]" style={{
           transform: "scale(" + (fileStatScale / 10) + ")",
         }}>

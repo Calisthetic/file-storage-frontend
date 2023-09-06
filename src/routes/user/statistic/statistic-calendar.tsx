@@ -421,9 +421,9 @@ const StatisticCalendar:FunctionComponent<StatisticCalendarProps> = ({availableY
 
   return (
     <div className="rounded border border-borderLight dark:border-borderDark">
-      <div className="flex flex-col lg:flex-row lg:justify-center">
+      <div className="flex flex-col xl:flex-row xl:justify-center">
         <div>
-          <div className="overflow-x-auto px800:overflow-x-visible py-2 px800:flex flex-col items-center">
+          <div className="overflow-x-auto lg:overflow-x-visible py-2 lg:flex flex-col items-center">
             {/* Calendar */}
             <div className="h-[140px] w-[766px]">
               <ResponsiveCalendar
@@ -472,18 +472,18 @@ const StatisticCalendar:FunctionComponent<StatisticCalendarProps> = ({availableY
               </div>
             </div>
           </div>
-          <DailyStatistic data={selectedDayStat} date={selectedDay} classes='hidden lg:flex'></DailyStatistic>
+          <DailyStatistic data={selectedDayStat} date={selectedDay} classes='hidden xl:flex'></DailyStatistic>
         </div>
         {/* Years list right */}
         <YearSelectList select={(e:any) => setSelectedYear(parseInt(e.target.dataset.year))}
-        data={availableYears} selected={selectedYear} classes="hidden lg:flex"></YearSelectList>
+        data={availableYears} selected={selectedYear} classes="hidden xl:flex"></YearSelectList>
       </div>
-      <div className="flex flex-row px800:justify-center">
-        <div className="flex flex-row justify-between w-full px800:w-[766px]">
-          <DailyStatistic data={selectedDayStat} date={selectedDay} classes='flex lg:hidden'></DailyStatistic>
+      <div className="flex flex-row lg:justify-center">
+        <div className="flex flex-row justify-between w-full lg:w-[766px]">
+          <DailyStatistic data={selectedDayStat} date={selectedDay} classes='flex xl:hidden'></DailyStatistic>
           {/* Years list bottom */}
           <YearSelectList select={(e:any) => setSelectedYear(parseInt(e.target.dataset.year))}
-          data={availableYears} selected={selectedYear} classes="lg:hidden flex"></YearSelectList>
+          data={availableYears} selected={selectedYear} classes="xl:hidden flex"></YearSelectList>
         </div>
       </div>
     </div>

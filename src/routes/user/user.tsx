@@ -1,10 +1,11 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState, useEffect } from "react";
 import { Link, Route, Routes } from "react-router-dom";
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import UserProfileDropdown from "../../components/user-profile-dropdown";
 import Redirect from "../../components/redirect";
 import UserProfile from "./profile/user-profile";
 import UserStatistic from "./statistic/user-statistic";
+import { cn } from "../../lib/color-utils";
 
 interface UserMainProps {
   
@@ -26,6 +27,23 @@ const UserMain: FunctionComponent<UserMainProps> = () => {
 
   /* eslint-enable global-require */
 
+  // Sidebar
+  const [isSideBarOpen, setIsSideBarOpen] = useState(window.innerWidth > 640)
+  function ChangeSideBar() {
+    if (window.innerWidth > 640) {
+      setIsSideBarOpen(true)
+    } else {
+      setIsSideBarOpen(false)
+    }
+  } 
+  useEffect(() => {
+    window.addEventListener('resize', ChangeSideBar);
+
+    return () => {
+      window.removeEventListener("resize", ChangeSideBar)
+    }
+  }, [])
+
 
 
   return ( 
@@ -34,6 +52,30 @@ const UserMain: FunctionComponent<UserMainProps> = () => {
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start">
+            <label className="min-h-8 h-8 w-8 m-0 p-0 border-none sm:hidden
+              bg-backgroundLight dark:bg-backgroundDark hover:bg-backgroundLight hover:dark:bg-backgroundDark">
+                <AnimatePresence>
+                  {isSideBarOpen ? (
+                    <motion.div initial={{rotate: 360, opacity: 0}} animate={{rotate: 0, opacity: 1}}
+                    transition={{damping: 24, stiffness: 200, duration: 0.2}} exit={{rotate: -360, opacity: 0}}>
+                      <svg onClick={() => {setIsSideBarOpen(!isSideBarOpen)}}
+                      className="h-8 w-8 fill-iconLight dark:fill-iconDark pointer-events-auto cursor-pointer" 
+                      xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
+                        <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 
+                        112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49"/>
+                      </svg>
+                    </motion.div>
+                  ) : (
+                    <motion.svg initial={{opacity: 0}} animate={{opacity: 1}}
+                    transition={{damping: 24, stiffness: 200, duration: 0.2}} exit={{rotate: -90, opacity: 0}}
+                    onClick={() => {setIsSideBarOpen(!isSideBarOpen)}}
+                    className="h-8 w-8 fill-iconLight dark:fill-iconDark pointer-events-auto cursor-pointer" 
+                    xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
+                      <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"/>
+                    </motion.svg>
+                  )}
+                </AnimatePresence>
+              </label>
               <Link to="../disk" className="flex ml-2 md:mr-24">
                 <motion.img src={mainLogo} className="h-8 w-8 mr-3" alt="Logo"
                 initial={{opacity: 0}} animate={{opacity:1 }} transition={{delay: 0.1}}/>
@@ -48,7 +90,13 @@ const UserMain: FunctionComponent<UserMainProps> = () => {
         </div>
       </nav>
 
-      <div className="pt-14 transition-transform bg-backgroundSecondLight overflow-x-hidden dark:bg-backgroundSecondDark">
+      <aside id="main-sidebar" 
+      className={cn("fixed top-0 left-0 z-30 w-56 sm:w-64 h-screen pt-16 transition-transform border-borderLight dark:border-borderDark bg-backgroundLight dark:bg-backgroundDark", {
+        "-translate-x-64": !isSideBarOpen
+      })} aria-label="Sidebar">
+      </aside>
+
+      <div className="pt-14 sm:ml-64 transition-transform bg-backgroundSecondLight overflow-x-hidden dark:bg-backgroundSecondDark">
         <Routes>
           <Route path="profile" element={<UserProfile></UserProfile>}></Route>
           <Route path="statistic" element={<UserStatistic></UserStatistic>}></Route>

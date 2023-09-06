@@ -9,17 +9,17 @@ interface YearSelectListProps {
 }
 const YearSelectList: FunctionComponent<YearSelectListProps> = (props:YearSelectListProps) => {
   return (
-    <div className={twMerge("flex-col sm:gap-y-1.5 px-2 sm:px-4 my-4 lg:hidden flex", 
+    <div className={twMerge("flex-col md:gap-y-1.5 px-2 md:px-4 my-4", 
     "border-l border-borderLight dark:border-borderDark", props.classes)}>
       {props.data.sort((a,b) => (b-a)).map((item, index) => props.selected === item ? (
         <button key={index} id={"select-year" + item + "-btn"} aria-label="Select year"
-        className="text-textLight dark:text-textDark sm:w-32 py-1 sm:py-1.5 px-3 sm:px-4 text-left
+        className="text-textLight dark:text-textDark md:w-32 py-1 md:py-1.5 px-3 md:px-4 text-left
         bg-buttonLight dark:bg-buttonDark rounded-lg transition-colors" disabled>
           <span className="opacity-90 text-sm font-medium pointer-events-none">{item}</span>
         </button>
       ) : (
         <button key={index} id={"select-year" + item + "-btn"} aria-label="Select year"
-        className="text-textLight dark:text-textDark sm:w-32 py-1 sm:py-1.5 px-3 sm:px-4 text-left transition-colors
+        className="text-textLight dark:text-textDark md:w-32 py-1 md:py-1.5 px-3 md:px-4 text-left transition-colors
         hover:bg-backgroundThirdLight hover:dark:bg-backgroundThirdDark rounded-lg"
         onClick={props.select} data-year={item}>
           <span className="opacity-90 text-sm font-medium pointer-events-none">{item}</span>

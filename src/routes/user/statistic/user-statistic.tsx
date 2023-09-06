@@ -215,18 +215,20 @@ const UserStatistic: FunctionComponent = () => {
   const [availableYears, setAvailableYears] = useState<number[]>([2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023])
   
   return (
-    <div className="min-h-fullWithHeader flex flex-col items-center">
-      <div className="w-[calc(100%-24px)] lg:max-w-5xl lg:w-[1024px] mt-3">
-        <StatisticPie data={fileStat}></StatisticPie>
-      </div>
-      <div className="w-[calc(100%-24px)] lg:max-w-5xl lg:w-[1024px] mt-3">
-        <StatisticCalendar availableYears={availableYears}></StatisticCalendar>
-      </div>
-      <div className="w-[calc(100%-24px)] lg:max-w-5xl lg:w-[1024px] mt-3">
-        <StatisticTree data={data}></StatisticTree>
-      </div>
-      <div className="w-[calc(100%-24px)] lg:max-w-5xl lg:w-[1024px] mt-3">
-        <StatisticGraph availableYears={availableYears}></StatisticGraph>
+    <div className="min-h-fullWithHeader flex flex-col xl:flex-row justify-center xl:items-center max-w-full">
+      <div>
+        <div className="w-[calc(100%-24px)] xl:max-w-5xl xl:w-[1024px] mt-3">
+          <StatisticPie data={fileStat}></StatisticPie>
+        </div>
+        <div className="w-[calc(100%-24px)] xl:max-w-5xl xl:w-[1024px] mt-3">
+          <StatisticCalendar availableYears={availableYears}></StatisticCalendar>
+        </div>
+        <div className="w-[calc(100%-24px)] xl:max-w-5xl xl:w-[1024px] mt-3">
+          <StatisticTree data={data}></StatisticTree>
+        </div>
+        <div className="w-[calc(100%-24px)] xl:max-w-5xl xl:w-[1024px] mt-3">
+          <StatisticGraph availableYears={availableYears}></StatisticGraph>
+        </div>
       </div>
     </div>
   );

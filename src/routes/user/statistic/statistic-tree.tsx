@@ -56,7 +56,7 @@ const StatisticTree: FunctionComponent<StatisticTreeProps> = (props:StatisticTre
         </div>
         <div className="flex flex-row font-semibold text-textLight dark:text-textDark"></div>
       </div>
-      <div className="overflow-y-auto h-auto w-full min-h sm:flex justify-center">
+      <div className="overflow-y-auto h-auto w-full min-h md:flex justify-center">
         <div className=" h-[400px] w-[638px]" style={{
           transform: "scale(" + (fileStatScale / 10) + ")",
         }}>

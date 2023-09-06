@@ -134,9 +134,9 @@ const StatisticGraph:FunctionComponent<StatisticGraphProps> = ({availableYears}:
 
   return (
     <div className="rounded border border-borderLight dark:border-borderDark">
-      <div className="flex flex-col lg:flex-row lg:justify-center">
+      <div className="flex flex-col xl:flex-row xl:justify-center">
         <div>
-          <div className="overflow-x-auto px800:overflow-x-visible py-2 px800:flex flex-col items-center">
+          <div className="overflow-x-auto lg:overflow-x-visible py-2 lg:flex flex-col items-center">
             {/* Calendar */}
             <div className="h-[400px] w-[766px]">
               <ResponsiveLine
@@ -183,14 +183,14 @@ const StatisticGraph:FunctionComponent<StatisticGraphProps> = ({availableYears}:
         </div>
         {/* Years list right */}
         <YearSelectList select={(e:any) => setSelectedYear(parseInt(e.target.dataset.year))}
-        data={availableYears} selected={selectedYear} classes="hidden lg:flex"></YearSelectList>
+        data={availableYears} selected={selectedYear} classes="hidden xl:flex"></YearSelectList>
       </div>
       <div className="flex flex-row px800:justify-center">
         <div className="flex flex-row justify-between w-full px800:w-[766px]">
           <YearSelectList select={(e:any) => setSelectedYear(parseInt(e.target.dataset.year))}
           data={availableYears} selected={selectedYear} 
-          classes="lg:hidden flex border-none flex-row-reverse flex-wrap justify-center
-          child:p-2 child:w-auto child:sm:w-auto w-full child:py-1"></YearSelectList>
+          classes="xl:hidden flex border-none flex-row-reverse flex-wrap justify-center
+          child:p-2 child:w-auto child:md:w-auto w-full child:py-1"></YearSelectList>
         </div>
       </div>
     </div>
