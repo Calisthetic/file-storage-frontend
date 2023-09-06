@@ -52,7 +52,6 @@ export function BlurColor(hex:string, value: number) {
 }
 
 export function GetColorGradient(hex:string, count:number):string[] {
-  console.log(hex)
   if (hex.indexOf('#') === 0) {
     hex = hex.slice(1);
   }
