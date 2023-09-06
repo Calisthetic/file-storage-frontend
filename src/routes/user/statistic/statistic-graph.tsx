@@ -26,9 +26,8 @@ const StatisticGraph:FunctionComponent<StatisticGraphProps> = ({availableYears}:
       }
     }
     let pathElems:SVGPathElement[] = Array.from(document.getElementsByTagName("path"))
-    if (pathElems.length > 34) {
-      pathElems[34].style.stroke = GetCSSValue("icon")
-    }
+    pathElems[pathElems.length - 1].style.stroke = GetCSSValue("icon")
+
     let circleElems:SVGCircleElement[] = Array.from(document.getElementsByTagName("circle"))
     if (circleElems.length > 28) { // from 17 to 28
       for (let i = circleElems.length - 1; i > circleElems.length - 13; i--) {
