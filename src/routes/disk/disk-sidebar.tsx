@@ -1,10 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion"
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {Link,} from "react-router-dom";
 import { IconClose, IconDelete } from "../../components/icons";
 
 export default function DiskSideBar() {
-  const adRef:any = useRef()
   const [isAdOpen, setIsAdOpen] = useState(true)
 
   return (
@@ -122,6 +121,7 @@ export default function DiskSideBar() {
           </Link>
         </motion.li>
       </ul>
+
       {/* Storage usage */}
       <div className="mt-1 sm:mt-3 border-y pt-2 pb-4 border-borderLight dark:border-borderDark">
         <motion.span className="flex-1 ml-1"
@@ -135,24 +135,39 @@ export default function DiskSideBar() {
           className=" bg-iconLight dark:bg-iconDark h-2.5 rounded-full"></motion.div>
         </div>
       </div>
+
       <ul className="pt-1 sm:pt-3 space-y-1">
         <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
         transition={{delay: 0.12, stiffness: 300, damping: 24}}>
+          <Link to="/user/profile" draggable="false" className="flex items-center p-1.5 sm:p-2
+          rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark transition-all">
+            <svg fill="none" strokeWidth="1.5" className="w-5 h-5 sm:w-6 sm:h-6" 
+            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2Z" 
+              className="stroke-iconLight dark:stroke-iconDark" strokeLinecap="round" strokeLinejoin="round"></path>
+              <path d="M4.271 18.346S6.5 15.5 12 15.5s7.73 2.846 7.73 2.846M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" 
+              className="stroke-iconLight dark:stroke-iconDark" strokeLinecap="round" strokeLinejoin="round"></path>
+            </svg>
+            <span className="flex-1 ml-3 whitespace-nowrap">Profile</span>
+          </Link>
+        </motion.li>
+        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
+        transition={{delay: 0.14, stiffness: 300, damping: 24}}>
           <Link to="upgrade" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
-          rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
-            <motion.svg className="w-5 h-5 sm:w-6 sm:h-6 fill-iconLight dark:fill-iconDark" 
+          rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6 fill-iconLight dark:fill-iconDark" 
             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 20">
               <path d="M7.958 19.393a7.7 7.7 0 0 1-6.715-3.439c-2.868-4.832 
               0-9.376.944-10.654l.091-.122a3.286 3.286 0 0 0 .765-3.288A1 
               1 0 0 1 4.6.8c.133.1.313.212.525.347A10.451 10.451 0 0 1 
               10.6 9.3c.5-1.06.772-2.213.8-3.385a1 1 0 0 1 1.592-.758c1.636 
               1.205 4.638 6.081 2.019 10.441a8.177 8.177 0 0 1-7.053 3.795Z"/>
-            </motion.svg>
+            </svg>
             <span className="flex-1 ml-3 whitespace-nowrap">Upgrade</span>
           </Link>
         </motion.li>
         <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
-        transition={{delay: 0.14, stiffness: 300, damping: 24}}>
+        transition={{delay: 0.16, stiffness: 300, damping: 24}}>
           <Link to="help" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24"><g>
@@ -169,12 +184,12 @@ export default function DiskSideBar() {
           </Link>
         </motion.li>
       </ul>
+
       {/* Banner */}
       <AnimatePresence>
         {isAdOpen === true && (
           <motion.div initial={{x: -300, opacity: 0}} animate={{x: 0, opacity: 1}} 
           transition={{delay: 0.12, stiffness: 300, damping: 24}} exit={{x: -1000, opacity: 0}}
-          ref={adRef} role="alert"
           className="p-2 sm:p-4 mt-4 sm:mt-6 transition rounded-lg bg-backgroundThirdLight dark:bg-backgroundThirdDark 
           text-textLight dark:text-textDark text-sm">
             <div className="flex items-center mb-3 justify-between">

@@ -11,6 +11,7 @@ const UserAccount = lazy(() => import("./account/user-account"));
 const UserAppearance = lazy(() => import("./appearance/user-appearance"));
 const UserProfile = lazy(() => import("./profile/user-profile"));
 const UserStatistic = lazy(() => import("./statistic/user-statistic"));
+const UserTariff = lazy(() => import("./tariff/user-tariff"));
 
 interface UserMainProps {
   
@@ -107,7 +108,8 @@ const UserMain: FunctionComponent<UserMainProps> = () => {
           <Suspense fallback={<Loading></Loading>}>
             <Routes>
               <Route path="account" element={<UserAccount></UserAccount>}></Route>
-              <Route path="tariff" element={<DiskUpgrade></DiskUpgrade>}></Route>
+              <Route path="upgrade" element={<DiskUpgrade></DiskUpgrade>}></Route>
+              <Route path="tariff" element={<UserTariff></UserTariff>}></Route>
               <Route path="appearance" element={<UserAppearance></UserAppearance>}></Route>
               <Route path="profile" element={<UserProfile></UserProfile>}></Route>
               <Route path="statistic" element={<UserStatistic></UserStatistic>}></Route>
