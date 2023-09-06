@@ -1,12 +1,16 @@
-import { FunctionComponent, useState, useEffect, Suspense } from "react";
+import { FunctionComponent, useState, useEffect, Suspense, lazy } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion"
 import UserProfileDropdown from "../../components/user-profile-dropdown";
 import Redirect from "../../components/redirect";
-import UserProfile from "./profile/user-profile";
-import UserStatistic from "./statistic/user-statistic";
 import { cn } from "../../lib/color-utils";
 import Loading from "../../components/loading";
+import UserSidebar from "./user-sidebar";
+const DiskUpgrade = lazy(() => import("../disk/upgrade/disk-upgrade"));
+const UserAccount = lazy(() => import("./account/user-account"));
+const UserAppearance = lazy(() => import("./appearance/user-appearance"));
+const UserProfile = lazy(() => import("./profile/user-profile"));
+const UserStatistic = lazy(() => import("./statistic/user-statistic"));
 
 interface UserMainProps {
   
@@ -95,15 +99,16 @@ const UserMain: FunctionComponent<UserMainProps> = () => {
       className={cn("fixed top-0 left-0 z-30 w-56 sm:w-64 h-screen pt-16 transition-transform border-borderLight dark:border-borderDark bg-backgroundLight dark:bg-backgroundDark", {
         "-translate-x-64": !isSideBarOpen
       })} aria-label="Sidebar">
+        <UserSidebar></UserSidebar>
       </aside>
 
       <div className="pt-14 sm:ml-64 transition-transform">
         <div className="bg-backgroundSecondLight overflow-x-hidden dark:bg-backgroundSecondDark min-h-fullWithHeader sm:rounded-tl-2xl">
           <Suspense fallback={<Loading></Loading>}>
             <Routes>
-              <Route path="account" element={<div></div>}></Route>
-              <Route path="tariff" element={<div></div>}></Route>
-              <Route path="appearance" element={<div></div>}></Route>
+              <Route path="account" element={<UserAccount></UserAccount>}></Route>
+              <Route path="tariff" element={<DiskUpgrade></DiskUpgrade>}></Route>
+              <Route path="appearance" element={<UserAppearance></UserAppearance>}></Route>
               <Route path="profile" element={<UserProfile></UserProfile>}></Route>
               <Route path="statistic" element={<UserStatistic></UserStatistic>}></Route>
               <Route path="*" element={<Redirect location="/user/profile"></Redirect>}></Route>
