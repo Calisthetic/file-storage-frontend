@@ -215,7 +215,7 @@ const UserStatistic: FunctionComponent = () => {
   const [availableYears, setAvailableYears] = useState<number[]>([2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023])
   
   return (
-    <div className="min-h-fullWithHeader flex flex-col xl:flex-row justify-center xl:items-center max-w-full">
+    <div className="min-h-fullWithHeader flex flex-col xl:flex-row justify-center xl:items-center w-full sm:rounded-tl-2xl">
       <div>
         <div className="w-[calc(100%-24px)] xl:max-w-5xl xl:w-[1024px] mt-3">
           <StatisticPie data={fileStat}></StatisticPie>

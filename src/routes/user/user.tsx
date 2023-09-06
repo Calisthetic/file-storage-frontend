@@ -1,4 +1,4 @@
-import { FunctionComponent, useState, useEffect } from "react";
+import { FunctionComponent, useState, useEffect, Suspense } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion"
 import UserProfileDropdown from "../../components/user-profile-dropdown";
@@ -6,6 +6,7 @@ import Redirect from "../../components/redirect";
 import UserProfile from "./profile/user-profile";
 import UserStatistic from "./statistic/user-statistic";
 import { cn } from "../../lib/color-utils";
+import Loading from "../../components/loading";
 
 interface UserMainProps {
   
@@ -96,12 +97,19 @@ const UserMain: FunctionComponent<UserMainProps> = () => {
       })} aria-label="Sidebar">
       </aside>
 
-      <div className="pt-14 sm:ml-64 transition-transform bg-backgroundSecondLight overflow-x-hidden dark:bg-backgroundSecondDark">
-        <Routes>
-          <Route path="profile" element={<UserProfile></UserProfile>}></Route>
-          <Route path="statistic" element={<UserStatistic></UserStatistic>}></Route>
-          <Route path="*" element={<Redirect location="/user/profile"></Redirect>}></Route>
-        </Routes>
+      <div className="pt-14 sm:ml-64 transition-transform">
+        <div className="bg-backgroundSecondLight overflow-x-hidden dark:bg-backgroundSecondDark min-h-fullWithHeader sm:rounded-tl-2xl">
+          <Suspense fallback={<Loading></Loading>}>
+            <Routes>
+              <Route path="account" element={<div></div>}></Route>
+              <Route path="tariff" element={<div></div>}></Route>
+              <Route path="appearance" element={<div></div>}></Route>
+              <Route path="profile" element={<UserProfile></UserProfile>}></Route>
+              <Route path="statistic" element={<UserStatistic></UserStatistic>}></Route>
+              <Route path="*" element={<Redirect location="/user/profile"></Redirect>}></Route>
+            </Routes>
+          </Suspense>
+        </div>
       </div>
     </div>
    );
