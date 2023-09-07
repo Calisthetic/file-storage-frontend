@@ -20,21 +20,21 @@ const UserAccount: FunctionComponent<UserAccountProps> = () => {
         <div className="flex flex-col gap-y-6 child:flex child:flex-col child:gap-y-1">
           <motion.div  initial={{y: 50, opacity: 0}} animate={{y: 0, opacity: 1}}
           transition={{delay: 0.05, damping: 24, stiffness: 300}} className="mt-4">
-            <label className="font-medium">Username</label>
-            <input type="text" aria-label="UserName" placeholder="change later" 
+            <label className="font-medium">First name</label>
+            <input type="text" aria-label="First Name" placeholder="change later" 
             className="block w-full pl-2 py-1 border-1 border-borderLight dark:border-borderDark
             ring-1 ring-inset ring-borderLight dark:ring-borderDark 
             focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6
             focus:ring-black focus:dark:ring-backgroundDark rounded-md transition-inputs
             focus:dark:outline-white focus:outline-0 focus:dark:outline-1
             bg-backgroundSecondLight dark:bg-backgroundSecondDark"></input>
-            <p className="opacity-80 dark:opacity-70 text-sm">This is your public display name. It can be your real name or a pseudonym.</p>
+            <p className="opacity-80 dark:opacity-70 text-sm">Your name is wholly yours.</p>
           </motion.div>
           <motion.div initial={{y: 50, opacity: 0}} animate={{y: 0, opacity: 1}}
           transition={{delay: 0.1, damping: 24, stiffness: 300}}>
-            <label className="font-medium">Email</label>
+            <label className="font-medium">Date of birth</label>
             <CustomDatePicker></CustomDatePicker>
-            <p className="opacity-80 dark:opacity-70 text-sm">You can manage verified email addresses in your account settings.</p>
+            <p className="opacity-80 dark:opacity-70 text-sm">Your date of birth is used to calculate your age.</p>
           </motion.div>
           <motion.div initial={{y: 50, opacity: 0}} animate={{y: 0, opacity: 1}}
           transition={{delay: 0.15, damping: 24, stiffness: 300}}>
