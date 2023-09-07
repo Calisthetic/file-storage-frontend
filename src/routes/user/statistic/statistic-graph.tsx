@@ -35,7 +35,7 @@ const StatisticGraph:FunctionComponent<StatisticGraphProps> = ({availableYears}:
       }
     }
   }
-  setTimeout(() => ModifyGraph(), 250);
+  setTimeout(() => ModifyGraph(), 50);
 
   // If css variable changed
   const MutationHandler = useCallback((mutation:MutationRecord) => {
@@ -135,7 +135,7 @@ const StatisticGraph:FunctionComponent<StatisticGraphProps> = ({availableYears}:
     <div className="rounded border border-borderLight dark:border-borderDark">
       <div className="flex flex-col xl:flex-row xl:justify-center">
         <div>
-          <div className="overflow-x-auto lg:overflow-x-visible py-2 lg:flex flex-col items-center">
+          <div className="overflow-x-auto px1050:overflow-x-visible py-2 px1050:flex flex-col items-center">
             {/* Calendar */}
             <div className="h-[400px] w-[766px]">
               <ResponsiveLine

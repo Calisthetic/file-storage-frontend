@@ -3,6 +3,7 @@ import StatisticPie from "./statistic-pie";
 import StatisticCalendar from "./statistic-calendar";
 import StatisticTree from "./statistic-tree";
 import StatisticGraph from "./statistic-graph";
+import { motion } from "framer-motion";
  
 export interface IFileStat {
   id:string,
@@ -216,19 +217,35 @@ const UserStatistic: FunctionComponent = () => {
   
   return (
     <div className="min-h-fullWithHeader flex flex-col xl:flex-row justify-center xl:items-center w-full">
-      <div className=" sm:rounded-tl-2xl">
-        <div className="w-[calc(100%-24px)] ml-3 xl:w-[1024px] mt-3">
+      <div className="pb-3 sm:rounded-tl-2xl overflow-y-hidden">
+        <motion.div initial={{y: 50, opacity: 0}}
+        transition={{damping: 24, stiffness: 300}} 
+        whileInView={{y: 0, opacity: 1}}
+        viewport={{ once: true }}
+        className="w-[calc(100%-24px)] ml-3 xl:w-[1024px] mt-3">
           <StatisticPie data={fileStat}></StatisticPie>
-        </div>
-        <div className="w-[calc(100%-24px)] ml-3 xl:w-[1024px] mt-3">
+        </motion.div>
+        <motion.div initial={{y: 50, opacity: 0}}
+        transition={{damping: 24, stiffness: 300}} 
+        whileInView={{y: 0, opacity: 1}}
+        viewport={{ once: true }}
+         className="w-[calc(100%-24px)] ml-3 xl:w-[1024px] mt-3">
           <StatisticCalendar availableYears={availableYears}></StatisticCalendar>
-        </div>
-        <div className="w-[calc(100%-24px)] ml-3 xl:w-[1024px] mt-3">
+        </motion.div>
+        <motion.div initial={{y: 50, opacity: 0}}
+        transition={{damping: 24, stiffness: 300}} 
+        whileInView={{y: 0, opacity: 1}}
+        viewport={{ once: true }}
+         className="w-[calc(100%-24px)] ml-3 xl:w-[1024px] mt-3">
           <StatisticTree data={data}></StatisticTree>
-        </div>
-        <div className="w-[calc(100%-24px)] ml-3 xl:w-[1024px] mt-3">
+        </motion.div>
+        <motion.div initial={{y: 50, opacity: 0}}
+        transition={{damping: 24, stiffness: 300}}
+        whileInView={{y: 0, opacity: 1}}
+        viewport={{ once: true }}
+         className="w-[calc(100%-24px)] ml-3 xl:w-[1024px] mt-3">
           <StatisticGraph availableYears={availableYears}></StatisticGraph>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

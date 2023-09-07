@@ -39,7 +39,7 @@ const StatisticCalendar:FunctionComponent<StatisticCalendarProps> = ({availableY
         textElems[i].style.fill = GetCSSValue("text")
       }
     }
-  }, 250);
+  }, 50);
 
   // Current calendar colors
   const [calendarColors, setCalendarColors] = useState<string[]>(GetColorGradient(GetCSSValue("icon"), 4))
@@ -423,7 +423,7 @@ const StatisticCalendar:FunctionComponent<StatisticCalendarProps> = ({availableY
     <div className="rounded border border-borderLight dark:border-borderDark">
       <div className="flex flex-col xl:flex-row xl:justify-center">
         <div>
-          <div className="overflow-x-auto lg:overflow-x-visible py-2 lg:flex flex-col items-center">
+          <div className="overflow-x-auto px1050:overflow-x-visible py-2 px1050:flex flex-col items-center">
             {/* Calendar */}
             <div className="h-[140px] w-[766px]">
               <ResponsiveCalendar
@@ -478,8 +478,8 @@ const StatisticCalendar:FunctionComponent<StatisticCalendarProps> = ({availableY
         <YearSelectList select={(e:any) => setSelectedYear(parseInt(e.target.dataset.year))}
         data={availableYears} selected={selectedYear} classes="hidden xl:flex"></YearSelectList>
       </div>
-      <div className="flex flex-row lg:justify-center">
-        <div className="flex flex-row justify-between w-full lg:w-[766px]">
+      <div className="flex flex-row px1050:justify-center">
+        <div className="flex flex-row justify-between w-full px1050:w-[766px]">
           <DailyStatistic data={selectedDayStat} date={selectedDay} classes='flex xl:hidden'></DailyStatistic>
           {/* Years list bottom */}
           <YearSelectList select={(e:any) => setSelectedYear(parseInt(e.target.dataset.year))}

@@ -93,7 +93,7 @@ module.exports = {
       },
 
       screens: {
-        'px800': '800px'
+        'px1050': '1050px'
       },
     },
   },
