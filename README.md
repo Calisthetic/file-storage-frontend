@@ -122,6 +122,12 @@ npm i @nivo/network
 npm i @nivo/line
 ```
 
+[React Datepicker](https://reactdatepicker.com/)
+
+```bash
+npm install react-datepicker --save
+```
+
 #### Optimization
 
 [TailwindCSS optimization](https://tailwindcss.com/docs/optimizing-for-production)
