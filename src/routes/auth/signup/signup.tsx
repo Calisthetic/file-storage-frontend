@@ -93,7 +93,7 @@ export default function SignUp() {
               className="pt-2">
                 <input type="text" name="first-name" id="first-name" aria-label="first-name" autoComplete="given-name" required ref={firstNameRef}
                 className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
-                ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
+                ring-1 ring-inset ring-borderLight dark:ring-borderDark 
                 focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
                 focus:ring-black focus:dark:ring-backgroundDark text-gray-900 shadow-sm
                 focus:dark:outline-white focus:outline-0 focus:dark:outline-1 rounded-md transition-inputs"/>
@@ -109,7 +109,7 @@ export default function SignUp() {
               className="pt-2">
                 <input type="text" name="last-name" id="last-name" aria-label="last-name" autoComplete="family-name" required ref={lastNameRef}
                 className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
-                ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
+                ring-1 ring-inset ring-borderLight dark:ring-borderDark 
                 focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
                 focus:ring-black focus:dark:ring-backgroundDark text-gray-900 shadow-sm
                 focus:dark:outline-white focus:outline-0 focus:dark:outline-1 rounded-md transition-inputs"/>
@@ -125,7 +125,7 @@ export default function SignUp() {
               className="pt-2">
                 <input id="email" name="email" type="email" aria-label="email" autoComplete="email" required ref={emailRef}
                 className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
-                ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
+                ring-1 ring-inset ring-borderLight dark:ring-borderDark 
                 focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
                 focus:ring-black focus:dark:ring-backgroundDark text-gray-900 shadow-sm
                 focus:dark:outline-white focus:outline-0 focus:dark:outline-1 rounded-md transition-inputs"/>
@@ -143,7 +143,7 @@ export default function SignUp() {
               className="pt-2">
                 <input id="password" name="password" type="password" aria-label="password" autoComplete="password" required ref={passwordRef}
                 className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
-                ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
+                ring-1 ring-inset ring-borderLight dark:ring-borderDark 
                 focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
                 focus:ring-black focus:dark:ring-backgroundDark text-gray-900 shadow-sm
                 focus:dark:outline-white focus:outline-0 focus:dark:outline-1 rounded-md transition-inputs"/>
@@ -154,7 +154,7 @@ export default function SignUp() {
               className="pt-2">
                 <input id="password2" name="password2" type="password2" aria-label="password2" autoComplete="password" required ref={repeatPasswordRef}
                 className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
-                ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
+                ring-1 ring-inset ring-borderLight dark:ring-borderDark 
                 focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
                 focus:ring-black focus:dark:ring-backgroundDark text-gray-900 shadow-sm
                 focus:dark:outline-white focus:outline-0 focus:dark:outline-1 rounded-md transition-inputs"/>
@@ -168,7 +168,7 @@ export default function SignUp() {
               className="pt-2">
                 <textarea id="about" name="about" rows={3} ref={aboutRef} aria-label="about"
                 className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
-                ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
+                ring-1 ring-inset ring-borderLight dark:ring-borderDark 
                 focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
                 focus:ring-black focus:dark:ring-backgroundDark text-gray-900 shadow-sm
                 focus:dark:outline-white focus:outline-0 focus:dark:outline-1 rounded-md transition-inputs"></textarea>

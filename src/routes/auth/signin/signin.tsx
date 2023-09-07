@@ -73,7 +73,7 @@ export default function SignIn() {
                 <motion.input initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.06, damping: 24, stiffness: 300}}
                 id="email" name="email" type="email" autoComplete="email" required aria-label="Email" ref={emailRef}
                 className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
-                ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
+                ring-1 ring-inset ring-borderLight dark:ring-borderDark 
                 focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
                 focus:ring-black focus:dark:ring-backgroundDark text-gray-900 shadow-sm
                 focus:dark:outline-white focus:outline-0 focus:dark:outline-1 rounded-md transition-inputs" />
@@ -94,7 +94,7 @@ export default function SignIn() {
                 <motion.input initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.12, damping: 24, stiffness: 300}}
                 id="password" name="password" type="password" autoComplete="current-password" required aria-label="Password" ref={passwordRef} 
                 className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
-                ring-1 ring-inset ring-borderLight dark:ring-borderDark placeholder:text-gray-400 
+                ring-1 ring-inset ring-borderLight dark:ring-borderDark 
                 focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
                 focus:ring-black focus:dark:ring-backgroundDark text-gray-900 shadow-sm
                 focus:dark:outline-white focus:outline-0 focus:dark:outline-1 rounded-md transition-inputs" />

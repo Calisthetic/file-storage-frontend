@@ -68,6 +68,9 @@ code {
 button svg, button path {
   pointer-events: none;
 }
+input[type="text"]::placeholder {
+  color: rgb(156, 163, 175)
+}
 
 div {
   user-select: none;
