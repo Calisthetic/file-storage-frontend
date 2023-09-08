@@ -1,9 +1,9 @@
-import { FunctionComponent, useState } from "react";
-import StatisticPie from "./statistic-pie";
-import StatisticCalendar from "./statistic-calendar";
-import StatisticTree from "./statistic-tree";
-import StatisticGraph from "./statistic-graph";
+import { FunctionComponent, lazy, useState } from "react";
 import { motion } from "framer-motion";
+const StatisticPie = lazy(() => import("./statistic-pie"));
+const StatisticCalendar = lazy(() => import("./statistic-calendar"));
+const StatisticTree = lazy(() => import("./statistic-tree"));
+const StatisticGraph = lazy(() => import("./statistic-graph"));
  
 export interface IFileStat {
   id:string,
@@ -226,7 +226,7 @@ const UserStatistic: FunctionComponent = () => {
           <StatisticPie data={fileStat}></StatisticPie>
         </motion.div>
         <motion.div initial={{y: 50, opacity: 0}}
-        transition={{damping: 24, stiffness: 300}} 
+        transition={{delay: 0.1, damping: 24, stiffness: 300}} 
         whileInView={{y: 0, opacity: 1}}
         viewport={{ once: true }}
          className="w-[calc(100%-24px)] ml-3 xl:w-[1024px] mt-3">
