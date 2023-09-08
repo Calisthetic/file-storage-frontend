@@ -29,14 +29,14 @@ const ColorPicker: FunctionComponent<ColorPickerProps> = memo(({onSelect, curren
                 style={{backgroundColor: "#" + default_color.color}}
                 id={"select-color-" + (temp_default_color_index * 4 + default_color_index).toString()} aria-label="Select color"
                 title={default_color.name} onClick={() => onSelect({id: dataId, color: default_color})}>
-                  {currentColor?.toLowerCase() === default_color.color.toLowerCase() && (
+                  {currentColor?.toLowerCase() === default_color.color.toLowerCase() ? (
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
                     enableBackground="new 0 0 24 24" className="w-6 h-6">
                       <path d="M10 18c-.5 0-1-.2-1.4-.6l-4-4c-.8-.8-.8-2 0-2.8.8-.8 2.1-.8 
                       2.8 0l2.6 2.6 6.6-6.6c.8-.8 2-.8 2.8 0 .8.8.8 2 0 2.8l-8 8c-.4.4-.9.6-1.4.6z" 
                       fill={InvertColor("#" + default_color.color)}></path>
                     </svg>
-                  )}
+                  ) : null}
                 </button>
               </div>
             ))}

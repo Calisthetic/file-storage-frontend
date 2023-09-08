@@ -28,7 +28,7 @@ const DailyStatistic: FunctionComponent<DailyStatisticProps> = (props:DailyStati
             <span className="opacity-80 font-normal">{props.date.slice(0, props.date.indexOf("-"))}</span>
           </time>
           <div>
-            {props.data.binValue && (
+            {props.data.binValue ? (
               <div className="mt-2 sm:grid grid-cols-2 items-center">
                 <p>Moved files to trash</p>
                 <div className="w-full bg-backgroundThirdLight mt-1 rounded-full h-3 dark:bg-backgroundThirdDark">
@@ -38,8 +38,8 @@ const DailyStatistic: FunctionComponent<DailyStatisticProps> = (props:DailyStati
                   </motion.div>
                 </div>
               </div>
-            )}
-            {props.data.deletedValue && (
+            ) : null}
+            {props.data.deletedValue ? (
               <div className="mt-2 sm:grid grid-cols-2 items-center">
                 <p>Permanently deleted files</p>
                 <div className="w-full bg-backgroundThirdLight mt-1 rounded-full h-3 dark:bg-backgroundThirdDark">
@@ -50,8 +50,8 @@ const DailyStatistic: FunctionComponent<DailyStatisticProps> = (props:DailyStati
                   </motion.div>
                 </div>
               </div>
-            )}
-            {props.data.addedFiles && (
+            ) : null}
+            {props.data.addedFiles ? (
               <div className="mt-2 sm:grid grid-cols-2 items-center">
                 <p>Added files</p>
                 <div className="w-full bg-backgroundThirdLight mt-1 rounded-full h-3 dark:bg-backgroundThirdDark">
@@ -62,8 +62,8 @@ const DailyStatistic: FunctionComponent<DailyStatisticProps> = (props:DailyStati
                   </motion.div>
                 </div>
               </div>
-            )}
-            {props.data.generatedLinks && (
+            ) : null}
+            {props.data.generatedLinks ? (
               <div className="mt-2 sm:grid grid-cols-2 items-center">
                 <p>Moved files to trash</p>
                 <div className="w-full bg-backgroundThirdLight mt-1 rounded-full h-3 dark:bg-backgroundThirdDark">
@@ -74,7 +74,7 @@ const DailyStatistic: FunctionComponent<DailyStatisticProps> = (props:DailyStati
                   </motion.div>
                 </div>
               </div>
-            )}
+            ) : null}
           </div>
         </li>
       </ol>

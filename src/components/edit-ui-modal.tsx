@@ -359,7 +359,7 @@ export default function EditUIModal() {
                   </button>
                   {/* Dropdown himself */}
                   <AnimatePresence>
-                    {isFontSortModalOpen && (
+                    {isFontSortModalOpen ? (
                       <div className="pb-2 absolute -translate-y-full">
                         <motion.div initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
                         transition={{stiffness: 200, damping: 24, duration: 0.1}} exit={{opacity: 0, y: 40}}
@@ -373,7 +373,7 @@ export default function EditUIModal() {
                             border-borderLight dark:border-borderDark" data-name={item}>
                               <div className="w-4 h-4 pointer-events-none">
                                 <AnimatePresence>
-                                  {currentFontSort === item && (
+                                  {currentFontSort === item ? (
                                     <motion.svg initial={{opacity: 0, x: -24}} animate={{opacity: 1, x: 0}}
                                     transition={{damping: 24, stiffness: 300, duration: 0.1}} exit={{opacity: 0, x: -24}}
                                     viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
@@ -383,7 +383,7 @@ export default function EditUIModal() {
                                       8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
                                       32 13.7 32 32z" className="fill-iconLight dark:fill-iconDark"></path>
                                     </motion.svg>
-                                  )}
+                                  ) : null}
                                 </AnimatePresence>
                               </div>
                               <span className="pointer-events-none first-letter:uppercase">{item}</span>
@@ -408,7 +408,7 @@ export default function EditUIModal() {
                             border-borderLight dark:border-borderDark" data-name={item}>
                               <div className="w-4 h-4 pointer-events-none">
                                 <AnimatePresence>
-                                  {currentFontSort2 === item && (
+                                  {currentFontSort2 === item ? (
                                     <motion.svg initial={{opacity: 0, x: -24}} animate={{opacity: 1, x: 0}}
                                     transition={{damping: 24, stiffness: 300, duration: 0.1}} exit={{opacity: 0, x: -24}}
                                     viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
@@ -418,7 +418,7 @@ export default function EditUIModal() {
                                       8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
                                       32 13.7 32 32z" className="fill-iconLight dark:fill-iconDark"></path>
                                     </motion.svg>
-                                  )}
+                                  ) : null}
                                 </AnimatePresence>
                               </div>
                               <span className="pointer-events-none first-letter:uppercase">{item}</span>
@@ -434,7 +434,7 @@ export default function EditUIModal() {
                           ))}
                         </motion.div>
                       </div>
-                    )}
+                    ) : null}
                   </AnimatePresence>
                 </div>
                 {/* Reset font */}
@@ -453,7 +453,7 @@ export default function EditUIModal() {
 
       {/* Alert success */}
       <AnimatePresence>
-        {isAlertSuccessOpen === true && (
+        {isAlertSuccessOpen === true ? (
           <motion.div initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
           transition={{stiffness: 200, damping: 24, duration: 0.1}} exit={{opacity: 0, y: -40}}
           id="alert-1" className="absolute w-full items-center p-4 text-success 
@@ -471,12 +471,12 @@ export default function EditUIModal() {
               <IconClose classes='h-3 w-3' strokeClasses='stroke-success'></IconClose>
             </button>
           </motion.div>
-        )}
+        ) : null}
       </AnimatePresence>
 
       {/* Alert warning */}
       <AnimatePresence>
-        {isAlertWarningOpen === true && (
+        {isAlertWarningOpen === true ? (
           <motion.div initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
           transition={{stiffness: 200, damping: 24, duration: 0.1}} exit={{opacity: 0, y: -40}}
           id="alert-1" className="absolute w-full items-center p-2 text-warning 
@@ -499,12 +499,12 @@ export default function EditUIModal() {
               <IconClose classes='h-3 w-3' strokeClasses='stroke-warning'></IconClose>
             </button>
           </motion.div>
-        )}
+        ) : null}
       </AnimatePresence>
 
       {/* Alert fonts error */}
       <AnimatePresence>
-        {isAlertErrorOpen === true && (
+        {isAlertErrorOpen === true ? (
           <motion.div initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
           transition={{stiffness: 200, damping: 24, duration: 0.1}} exit={{opacity: 0, y: -40}}
           id="alert-1" className="absolute w-full items-center p-2 text-error dark:text-error
@@ -522,7 +522,7 @@ export default function EditUIModal() {
               <IconClose classes='h-3 w-3' strokeClasses='stroke-error'></IconClose>
             </button>
           </motion.div>
-        )}
+        ) : null}
       </AnimatePresence>
     </div>
   )

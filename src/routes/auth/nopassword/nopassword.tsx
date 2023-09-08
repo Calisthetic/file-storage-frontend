@@ -117,7 +117,7 @@ export default function NoPassword() {
             </div>
             
             <AnimatePresence>
-              {isEmailSent && (
+              {isEmailSent ? (
                 <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{damping: 24, stiffness: 300}}>
                   <label className="block text-sm font-medium leading-6 text-textLight dark:text-textDark">Please enter verify code</label>
                   <div className="mt-2">
@@ -129,7 +129,7 @@ export default function NoPassword() {
                     focus:dark:outline-white focus:outline-0 focus:dark:outline-1 rounded-md transition-inputs" />
                   </div>
                 </motion.div>
-              )}
+              ) : null}
             </AnimatePresence>
 
             <div>
@@ -141,7 +141,7 @@ export default function NoPassword() {
               text-textLight shadow-sm dark:text-textDark transition-colors">{buttonText}</motion.button>
             </div>
             <AnimatePresence>
-              {isEmailSent && (
+              {isEmailSent ? (
                 <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{damping: 24, stiffness: 300}}>
                   <p className="text-textLight text-base dark:text-textDark text-center flex sm:gap-x-1 flex-col md:flex-row">
                     <span>Tha email was send,</span>
@@ -154,7 +154,7 @@ export default function NoPassword() {
                     hover:text-buttonHoverLight hover:dark:text-buttonHoverDark">Send again</button>
                   </p>
                 </motion.div>
-              )}
+              ) : null}
             </AnimatePresence>
           </div>
 

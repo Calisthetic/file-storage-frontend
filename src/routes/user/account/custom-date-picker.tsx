@@ -2,30 +2,17 @@ import { FunctionComponent, forwardRef, useState } from "react";
 import DatePicker from "react-datepicker";
 
 import "./custom-date-picker.css";
+import { monthNames } from "../../../data/common/months";
 
 
 interface CustomDatePickerProps {
-  
+  onSelect: (e:any) => void
 }
  
-const CustomDatePicker: FunctionComponent<CustomDatePickerProps> = () => {
+const CustomDatePicker: FunctionComponent<CustomDatePickerProps> = ({onSelect}:CustomDatePickerProps) => {
   const currentDate = new Date()
   const [startDate, setStartDate] = useState(new Date());
   const years = Array(100).fill(currentDate.getFullYear() - 100).map((n, i) => n + i);
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
   const ExampleCustomInput = forwardRef(({ value, onClick }:any, ref:any) => (
     <button className="rounded-md py-1 px-4 flex items-center gap-x-4
     border border-borderLight dark:border-borderDark" onClick={onClick} ref={ref}>
@@ -74,7 +61,7 @@ const CustomDatePicker: FunctionComponent<CustomDatePickerProps> = () => {
               className="fill-textLight dark:fill-textDark"></path><path d="M0 0h32v32H0z" fill="none"></path>
             </svg>
           </button>
-          <select value={currentDate.getFullYear()}
+          <select defaultValue={currentDate.getFullYear()}
             onChange={({ target: { value } }) => changeYear(value)}
             className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark px-0.5"
           >
@@ -84,11 +71,11 @@ const CustomDatePicker: FunctionComponent<CustomDatePickerProps> = () => {
               </option>
             ))}
           </select>
-          <select value={months[currentDate.getMonth()]}
-            onChange={({ target: { value } }) => changeMonth(months.indexOf(value))}
+          <select defaultValue={monthNames[currentDate.getMonth()]}
+            onChange={({ target: { value } }) => changeMonth(monthNames.indexOf(value))}
             className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark px-0.5"
           >
-            {months.map((option) => (
+            {monthNames.map((option) => (
               <option key={option} value={option}>
                 {option}
               </option>
@@ -107,7 +94,7 @@ const CustomDatePicker: FunctionComponent<CustomDatePickerProps> = () => {
         </div>
       )}
       selected={startDate}
-      onChange={(date:any) => setStartDate(date)}
+      onChange={(date:any) => {setStartDate(date); onSelect(date)}}
     />
   );
 }

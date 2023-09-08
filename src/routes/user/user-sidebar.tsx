@@ -153,7 +153,7 @@ const UserSidebar: FunctionComponent<UserSidebarProps> = () => {
 
       {/* Banner */}
       <AnimatePresence>
-        {isAdOpen === true && (
+        {isAdOpen === true ? (
           <motion.div initial={{x: -300, opacity: 0}} animate={{x: 0, opacity: 1}} 
           transition={{delay: 0.12, stiffness: 300, damping: 24}} exit={{x: -1000, opacity: 0}}
           className="p-2 sm:p-4 mt-4 sm:mt-6 transition rounded-lg bg-backgroundThirdLight dark:bg-backgroundThirdDark 
@@ -178,7 +178,7 @@ const UserSidebar: FunctionComponent<UserSidebarProps> = () => {
               Try new feature now
             </Link>
           </motion.div>
-        )}
+        ) : null}
       </AnimatePresence>
     </div>
   );

@@ -56,7 +56,7 @@ const UserProfile: FunctionComponent<UserProfileProps> = () => {
           <motion.button  initial={{y: 50, opacity: 0}} animate={{y: 0, opacity: 1}}
           transition={{delay: 0.2, damping: 24, stiffness: 300}} 
           id="updateProfile" aria-label="Update profile" onClick={() => console.log("change later")}
-          className="bg-buttonLight dark:bg-buttonDark py-2 px-4 rounded-lg w-fit font-semibold">Update profile</motion.button>
+          className="bg-buttonLight dark:bg-buttonDark py-2 px-4 mb-4 rounded-lg w-fit font-semibold">Update profile</motion.button>
         </div>
       </div>
     </div>

@@ -66,7 +66,7 @@ const UserProfileDropdown: FunctionComponent<UserProfileDropdownProps> = () => {
           src={userImage} />
         </button>
         <AnimatePresence>
-          {isUserDropMenuOpen && (
+          {isUserDropMenuOpen ? (
             <motion.div initial={{opacity: 0, y: 44, scaleY: 0.2, x: "calc(-100% + 32px)"}} 
             animate={{opacity: 1, y: "calc(50% + 18px)", scaleY: 1}}
             exit={{opacity: 0, y: 44, scaleY: 0.2}}
@@ -109,7 +109,7 @@ const UserProfileDropdown: FunctionComponent<UserProfileDropdownProps> = () => {
                 </button>
               </div>
             </motion.div>
-          )}
+          ) : null}
         </AnimatePresence>
       </div>
 

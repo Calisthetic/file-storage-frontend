@@ -125,7 +125,7 @@ export default function DiskFolder() {
   const handleChange = (files: any) => {
     setFile(files);
     setIsDragVisible(false)
-    console.log(file)
+    console.log(files)
   };
 
   function VisualizeUploader(e:any | null) {
@@ -165,7 +165,7 @@ export default function DiskFolder() {
             </svg>
           </motion.button>
           <AnimatePresence>
-            {isAddDrop && (
+            {isAddDrop ? (
               <motion.div initial={{opacity: 0, y: -50, scaleY: 0.2}} animate={{opacity: 1, y: 0, scaleY: 1}}
               transition={{stiffness: 200, damping: 24, duration: 0.16}} exit={{opacity: 0, y: -50, scaleY: 0.2}} 
               className="z-10 opacity-0 divide-y divide-gray-100 rounded w-44 mt-0.5
@@ -201,7 +201,7 @@ export default function DiskFolder() {
                   </button>
                 </div>
               </motion.div>
-            )}
+            ) : null}
           </AnimatePresence>
         </div>
 
@@ -221,7 +221,7 @@ export default function DiskFolder() {
               </motion.svg>
             </button>
             <AnimatePresence>
-              {isSortDrop && (
+              {isSortDrop ? (
                 <motion.div initial={{opacity: 0, y: -110, scaleY: 0.2, x: "calc(-100% + 44px)"}} animate={{opacity: 1, y: 0, scaleY: 1}}
                 transition={{stiffness: 200, damping: 24, duration: 0.16}} exit={{opacity: 0, y: -110, scaleY: 0}}
                 className="rounded w-44 mt-0.5 overflow-hidden
@@ -235,7 +235,7 @@ export default function DiskFolder() {
                         flex flex-row justify-start items-center" data-drop="child"
                         data-name={item} onClick={() => {setCurrentSortType(item)}}>
                           <AnimatePresence>
-                            {currentSortType === item && (
+                            {currentSortType === item ? (
                               <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
                               transition={{damping: 24, stiffness: 300, duration: 0.25}}
                               viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
@@ -246,7 +246,7 @@ export default function DiskFolder() {
                                 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 32 13.7 32 32z" 
                                 className=" fill-iconLight dark:fill-iconDark"></path>
                               </motion.svg>
-                            )}
+                            ) : null}
                           </AnimatePresence>
                           <span className="pointer-events-none ml-6 first-letter:uppercase">{item}</span>
                         </button>
@@ -262,7 +262,7 @@ export default function DiskFolder() {
                       flex flex-row justify-start items-center" data-drop="child"
                       onClick={() => {setCurrentSortBy("ascending")}}>
                         <AnimatePresence>
-                          {currentSortBy === "ascending" && (
+                          {currentSortBy === "ascending" ? (
                             <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
                             transition={{damping: 24, stiffness: 300, duration: 0.25}}
                             viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
@@ -272,7 +272,7 @@ export default function DiskFolder() {
                               8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
                               32 13.7 32 32z" className=" fill-iconLight dark:fill-iconDark"></path>
                             </motion.svg>
-                          )}
+                          ) : null}
                         </AnimatePresence>
                         <span className="pointer-events-none ml-6">Ascending</span>
                       </button>
@@ -283,7 +283,7 @@ export default function DiskFolder() {
                       flex flex-row justify-start items-center" data-drop="child"
                       onClick={() => {setCurrentSortBy("descending")}}>
                         <AnimatePresence>
-                          {currentSortBy === "descending" && (
+                          {currentSortBy === "descending" ? (
                             <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
                             transition={{damping: 24, stiffness: 300, duration: 0.25}}
                             viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
@@ -293,14 +293,14 @@ export default function DiskFolder() {
                               8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
                               32 13.7 32 32z" className=" fill-iconLight dark:fill-iconDark"></path>
                             </motion.svg>
-                          )}
+                          ) : null}
                         </AnimatePresence>
                         <span className="pointer-events-none ml-6">Descending</span>
                       </button>
                     </li>
                   </ul>
                 </motion.div>
-              )}
+              ) : null}
             </AnimatePresence>
           </div>
 
@@ -345,14 +345,14 @@ export default function DiskFolder() {
               ))}
             </button>
             <AnimatePresence>
-              {isCellTypeDrop === true && (
+              {isCellTypeDrop === true ? (
                 <motion.div initial={{opacity: 0, y: -70, scaleY: 0.2}} animate={{opacity: 1, y: 0, scaleY: 1}}
                 transition={{stiffness: 200, damping: 24, duration: 0.16}} exit={{opacity: 0, y: -70, scaleY: 0}}
                 className="divide-y divide-gray-100 rounded w-10 mt-0.5
                 absolute shadow-defaultLight dark:shadow-none z-10
                 bg-backgroundSecondLight dark:bg-backgroundThirdDark">
                   <ul className=" text-sm font-medium text-textLight dark:text-textDark">
-                    {currentRenderType !== "list" && (
+                    {currentRenderType !== "list" ? (
                       <li>
                         <button className="transition-colors px-2 py-2 flex flex-row
                         hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center" 
@@ -364,8 +364,8 @@ export default function DiskFolder() {
                           </svg>
                         </button>
                       </li>
-                    )}
-                    {currentRenderType !== "table" && (
+                    ) : null}
+                    {currentRenderType !== "table" ? (
                       <li>
                         <button className="transition-colors px-2 py-2 flex flex-row
                         hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center" 
@@ -378,8 +378,8 @@ export default function DiskFolder() {
                           </svg>
                         </button>
                       </li>
-                    )}
-                    {currentRenderType !== "tile" && (
+                    ) : null}
+                    {currentRenderType !== "tile" ? (
                       <li>
                         <button className="transition-colors px-2 py-2 flex flex-row
                         hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center" 
@@ -391,10 +391,10 @@ export default function DiskFolder() {
                           </svg>
                         </button>
                       </li>
-                    )}
+                    ) : null}
                   </ul>
                 </motion.div>
-              )}
+              ) : null}
             </AnimatePresence>
           </div>
         </div>
@@ -432,7 +432,7 @@ export default function DiskFolder() {
             </div>
 
             <AnimatePresence>
-              {isErrorAlert && (
+              {isErrorAlert ? (
                 <motion.button initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
                 transition={{stiffness: 200, damping: 24, duration: 0.1}}
                 onClick={(e:any) => {e.target.style.marginTop = "-40px"; 
@@ -445,14 +445,14 @@ export default function DiskFolder() {
                   <IconAlerts classes="mr-2 h-5 w-5" type="error"></IconAlerts>
                   <span className="pointer-events-none">{currentError}</span>
                 </motion.button>
-              )}
+              ) : null}
             </AnimatePresence>
           </div>
         </Box>
       </Modal>
 
       {/* Drag and drop files */}
-      {isDragVisible === true && (
+      {isDragVisible === true ? (
         <motion.div initial={{opacity: 0}} animate={{opacity: 1}} ref={fileUploaderRef}
         onMouseMove={VisualizeUploader} className="absolute transition-dropFiles top-0 left-0 z-50 h-fulldvh w-fulldvw bg-black/70">
           <FileUploader onDragEnter={VisualizeUploader} multiple={true} onTypeError={(err:any) => console.log(err)} 
@@ -461,7 +461,7 @@ export default function DiskFolder() {
           outline-3 -outline-offset-8 outline-blue-700 outline-dashed border-imp0 hover:bg-red"
           handleChange={handleChange} name="file" />
         </motion.div>
-      )}
+      ) : null}
     </div>
   )
 }

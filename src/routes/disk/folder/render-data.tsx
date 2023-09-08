@@ -282,7 +282,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     elem.style.transition = "initial"
     elem.style.zIndex = "16"
     elem.style.boxShadow = "0px 0px 5px -2px var(--shadow" + (isDarkMode() ? "Dark" : "Light") + ")"
-    // Mask && cursor
+    // Mask and cursor
     setIsMaskActive(true)
     if (rootElem) {
       rootElem.style.cursor = "grabbing"
@@ -318,7 +318,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           dragged_type: elem.dataset.type,
         })
       }
-      // Mask && cursor
+      // Mask and cursor
       setIsMaskActive(false)
       if (rootElem) {
         rootElem.style["cursor"] = "auto"
@@ -401,10 +401,10 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
               text-lg rounded-lg rendered-folder transition-colors
               bg-backgroundSecondLight dark:bg-backgroundSecondDark relative">
-                {isMaskActive && (
+                {isMaskActive ? (
                   <div data-id={item.id} data-type="folder" 
                   className="absolute h-full w-full z-20"></div>
-                )}
+                ) : null}
                 <div className="flex px-2 py-1 flex-row justify-between">
                   <div className="flex flex-row items-center space-x-2 max-w-[calc(100dvw-88px)] 
                   sm:max-w-[calc(100dvw-348px)] md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]">
@@ -551,10 +551,10 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
               text-lg rounded-lg rendered-file h-full w-full relative
               bg-backgroundSecondLight dark:bg-backgroundSecondDark transition-colors">
-              {isMaskActive && (
+              {isMaskActive ? (
                 <div data-id={item.id} data-type="file" 
                 className="absolute h-full w-full z-20"></div>
-              )}
+              ) : null}
                 <div className="flex px-2 py-1 flex-row justify-between">
                   <div className="flex flex-row items-center space-x-2 
                   pointer-events-none max-w-[calc(100dvw-88px)] 
@@ -694,10 +694,10 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                 dark:border-borderDark hover-parent rendered-folder relative
                 hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark
                 bg-backgroundSecondLight dark:bg-backgroundSecondDark">
-                  {isMaskActive && (
+                  {isMaskActive ? (
                     <td data-id={item.id} data-type="folder" data-token={item.token} 
                     className="absolute h-full w-full z-20"></td>
-                  )}
+                  ) : null}
                   <td className="flex items-center justify-center h-8 flex-row">
                     <button data-id={item.id} data-type="folder" className="w-6 focus-first-right">
                       <svg viewBox="0 0 20 16" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
@@ -824,10 +824,10 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                 hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark 
                 bg-backgroundSecondLight dark:bg-backgroundSecondDark 
                 rendered-file -outline-offset-2">
-                  {isMaskActive && (
+                  {isMaskActive ? (
                     <td data-id={item.id} data-type="file"
                     className="absolute h-full w-full z-20"></td>
-                  )}
+                  ) : null}
                   <td data-id={item.id} className="flex items-center justify-center">
                     <img src={item.icon_link} alt=""></img>
                   </td>
@@ -945,10 +945,10 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               className=" hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark
               px-2 w-36 rounded-md flex flex-col py-1 hover-parent rendered-folder
               bg-backgroundSecondLight dark:bg-backgroundSecondDark relative">
-                {isMaskActive && (
+                {isMaskActive ? (
                   <div data-id={item.id} data-type="folder" 
                   className="absolute h-full w-full z-20"></div>
-                )}
+                ) : null}
                 {/* Actions */}
                 <div data-id={item.id} data-type="folder" 
                 className="h-6 flex flex-row justify-around flex-nowrap">
@@ -992,7 +992,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   {/* Folder info */}
                   <div className="absolute w-28 h-28 flex flex-col justify-between
                   text-textLight dark:text-textDark pointer-events-none">
-                    {/* Watches && items in folder */}
+                    {/* Watches and items in folder */}
                     <div data-id={item.id} data-type="folder" 
                     className="flex flex-row justify-between pt-2.5 px-0.5">
                       <div>
@@ -1015,7 +1015,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                         {item.files_inside}
                       </div>
                     </div>
-                    {/* Elected && size */}
+                    {/* Elected and size */}
                     <div data-id={item.id} data-type="folder" 
                     className="flex flex-row justify-between items-end px-1 pb-1.5">
                       <div className="">

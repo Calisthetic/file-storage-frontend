@@ -1,13 +1,21 @@
 import { motion } from "framer-motion";
-import { FunctionComponent } from "react";
-import CustomDatePicker from "./custom-date-picker";
-import { Link } from "react-router-dom";
+import { FunctionComponent, Suspense, lazy, useRef, useState } from "react";
+
+const CustomDatePicker = lazy(() => import("./custom-date-picker"));
 
 interface UserAccountProps {
   
 }
  
 const UserAccount: FunctionComponent<UserAccountProps> = () => {
+  const firstNameInputRef:any = useRef()
+  const secondNameInputRef:any = useRef()
+  const [birthdayDate, setBirthdayDate] = useState<number>(0)
+
+  function SelectBirthdayDate(data:any) {
+    setBirthdayDate(Date.parse(data))
+  }
+
   return (
     <div className="min-h-fullWithHeader flex flex-col items-center">
       <div className="text-textLight dark:text-textDark font-normal
@@ -22,7 +30,7 @@ const UserAccount: FunctionComponent<UserAccountProps> = () => {
           <motion.div  initial={{y: 50, opacity: 0}} animate={{y: 0, opacity: 1}}
           transition={{delay: 0.05, damping: 24, stiffness: 300}} className="mt-4">
             <label className="font-medium">First name</label>
-            <input type="text" aria-label="First Name" placeholder="change later" 
+            <input type="text" aria-label="First Name" placeholder="change later" ref={firstNameInputRef}
             className="block w-full pl-2 py-1 border-1 border-borderLight dark:border-borderDark
             ring-1 ring-inset ring-borderLight dark:ring-borderDark 
             focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6
@@ -32,9 +40,9 @@ const UserAccount: FunctionComponent<UserAccountProps> = () => {
             <p className="opacity-80 dark:opacity-70 text-sm">Your name is wholly yours.</p>
           </motion.div>
           <motion.div  initial={{y: 50, opacity: 0}} animate={{y: 0, opacity: 1}}
-          transition={{delay: 0.05, damping: 24, stiffness: 300}}>
+          transition={{delay: 0.1, damping: 24, stiffness: 300}}>
             <label className="font-medium">Last name</label>
-            <input type="text" aria-label="Last Name" placeholder="change later" 
+            <input type="text" aria-label="Last Name" placeholder="change later" ref={secondNameInputRef}
             className="block w-full pl-2 py-1 border-1 border-borderLight dark:border-borderDark
             ring-1 ring-inset ring-borderLight dark:ring-borderDark 
             focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6
@@ -44,21 +52,23 @@ const UserAccount: FunctionComponent<UserAccountProps> = () => {
             <p className="opacity-80 dark:opacity-70 text-sm">Last name too.</p>
           </motion.div>
           <motion.div initial={{y: 50, opacity: 0}} animate={{y: 0, opacity: 1}}
-          transition={{delay: 0.1, damping: 24, stiffness: 300}}>
+          transition={{delay: 0.15, damping: 24, stiffness: 300}}>
             <label className="font-medium">Date of birth</label>
-            <CustomDatePicker></CustomDatePicker>
+            <Suspense fallback={<div></div>}>
+              <CustomDatePicker onSelect={SelectBirthdayDate}></CustomDatePicker>
+            </Suspense>
             <p className="opacity-80 dark:opacity-70 text-sm">Your date of birth is used to calculate your age.</p>
           </motion.div>
           <motion.div  initial={{y: 50, opacity: 0}} animate={{y: 0, opacity: 1}}
-          transition={{delay: 0.05, damping: 24, stiffness: 300}}>
+          transition={{delay: 0.2, damping: 24, stiffness: 300}}>
             <label className="font-medium">Add email adress</label>
             
             <p className="opacity-80 dark:opacity-70 text-sm">We recommend using at least 2 mailboxes.</p>
           </motion.div>
-          <motion.button  initial={{y: 50, opacity: 0}} animate={{y: 0, opacity: 1}}
-          transition={{delay: 0.2, damping: 24, stiffness: 300}} 
+          <motion.button initial={{y: 50, opacity: 0}} animate={{y: 0, opacity: 1}}
+          transition={{delay: 0.25, damping: 24, stiffness: 300}} 
           id="updateProfile" aria-label="Update profile" onClick={() => console.log("change later")}
-          className="bg-buttonLight dark:bg-buttonDark py-2 px-4 rounded-lg w-fit font-semibold">Update account</motion.button>
+          className="bg-buttonLight dark:bg-buttonDark py-2 px-4 mb-4 rounded-lg w-fit font-semibold">Update account</motion.button>
         </div>
       </div>
     </div>

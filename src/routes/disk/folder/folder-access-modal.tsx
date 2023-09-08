@@ -179,7 +179,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
           </div>
         </div>
         {/* Back button */}
-        {currentPage !== "default" && (
+        {currentPage !== "default" ? (
           <button className="mt-2 rounded-md p-1.5 transition-colors gap-x-2 w-full md:max-w-[80px]
           bg-backgroundLight dark:bg-backgroundDark flex flex-row items-center justify-center
           hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark
@@ -187,7 +187,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
           onClick={() => {setCurrentPage("default")}}>
             <span>Back</span>
           </button>
-        )}
+        ) : null}
       </div>
       {currentPage === "default" ? (
         <>
@@ -240,7 +240,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                   </motion.button>
                   {/* Dropdown himself */}
                   <AnimatePresence>
-                    {isRolesMenuOpen === true && (
+                    {isRolesMenuOpen === true ? (
                       <motion.div initial={{opacity: 0, y: -20}} animate={{opacity: 1, y: 0}}
                       transition={{stiffness: 200, damping: 24, duration: 0.1}} exit={{opacity: 0, y: -20}} 
                       className="absolute bg-backgroundThirdLight dark:bg-backgroundThirdDark
@@ -252,7 +252,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                         border-borderLight dark:border-borderDark">
                           <div className="h-4 w-4 pointer-events-none">
                             <AnimatePresence>
-                              {currentAccessType === "editor" && (
+                              {currentAccessType === "editor" ? (
                                 <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
                                 transition={{damping: 24, stiffness: 300, duration: 0.25}}
                                 viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
@@ -262,7 +262,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                                   8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
                                   32 13.7 32 32z" className=" fill-iconLight dark:fill-iconDark"></path>
                                 </motion.svg>
-                              )}
+                              ) : null}
                             </AnimatePresence>
                           </div>
                           <span className="pointer-events-none">Editor</span>
@@ -273,7 +273,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                         border-borderLight dark:border-borderDark">
                           <div className="h-4 w-4 pointer-events-none">
                             <AnimatePresence>
-                              {currentAccessType === "reader" && (
+                              {currentAccessType === "reader" ? (
                                 <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
                                 transition={{damping: 24, stiffness: 300, duration: 0.25}}
                                 viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
@@ -283,7 +283,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                                   8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
                                   32 13.7 32 32z" className=" fill-iconLight dark:fill-iconDark"></path>
                                 </motion.svg>
-                              )}
+                              ) : null}
                             </AnimatePresence>
                           </div>
                           <span className="pointer-events-none">Reader</span>
@@ -294,7 +294,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                         border-borderLight dark:border-borderDark">
                           <div className="h-4 w-4 pointer-events-none">
                             <AnimatePresence>
-                              {currentAccessType === "guest" && (
+                              {currentAccessType === "guest" ? (
                                 <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
                                 transition={{damping: 24, stiffness: 300, duration: 0.25}}
                                 viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
@@ -304,13 +304,13 @@ export default function FolderAccessModal({children, folderId, folderName, folde
                                   8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
                                   32 13.7 32 32z" className=" fill-iconLight dark:fill-iconDark"></path>
                                 </motion.svg>
-                              )}
+                              ) : null}
                             </AnimatePresence>
                           </div>
                           <span className="pointer-events-none">Guest</span>
                         </button>
                       </motion.div>
-                    )}
+                    ) : null}
                   </AnimatePresence>
                 </div>
                 {/* Role description */}
@@ -621,7 +621,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
 
       {/* Successfully copied */}
       <AnimatePresence>
-        {isCopied && (
+        {isCopied ? (
           <motion.button initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
           transition={{stiffness: 200, damping: 24, duration: 0.1}}
           onClick={(e:any) => {e.target.style.marginTop = "-40px"}}
@@ -631,12 +631,12 @@ export default function FolderAccessModal({children, folderId, folderName, folde
             <IconAlerts classes="h-4 w-4 mr-2" type="success"></IconAlerts>
             <span className="pointer-events-none">Copied</span>
           </motion.button>
-        )}
+        ) : null}
       </AnimatePresence>
 
       {/* Error alert */}
       <AnimatePresence>
-        {isError && (
+        {isError ? (
           <motion.button initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
           transition={{stiffness: 200, damping: 24, duration: 0.1}}
           onClick={(e:any) => {e.target.style.marginTop = "-40px"; setTimeout(() => {
@@ -648,12 +648,12 @@ export default function FolderAccessModal({children, folderId, folderName, folde
             <IconAlerts classes="mr-2 h-5 w-5" type="error"></IconAlerts>
             <span className="pointer-events-none">Failes to copy new link</span>
           </motion.button>
-        )}
+        ) : null}
       </AnimatePresence>
 
       {/* Warning alert */}
       <AnimatePresence>
-        {isWarning && (
+        {isWarning ? (
           <motion.button initial={{opacity: 0, y: 40}} animate={{opacity: 1, y: 0}}
           transition={{stiffness: 200, damping: 24, duration: 0.1}}
           onClick={(e:any) => {e.target.style.marginTop = "-40px"; setTimeout(() => {
@@ -665,7 +665,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
             <IconAlerts type="warning" classes="h-5 w-5 mr-2"></IconAlerts>
             <span className="pointer-events-none">{warningText}</span>
           </motion.button>
-        )}
+        ) : null}
       </AnimatePresence>
     </div>
   )
