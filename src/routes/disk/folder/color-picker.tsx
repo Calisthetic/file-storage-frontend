@@ -1,17 +1,16 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, memo } from "react";
 import { defaultColors, extendedColors } from "../../../data/folder-colors";
 import { InvertColor } from "../../../lib/color-utils";
 
 interface ColorPickerProps {
+  onSelect:(e:any) => void
   type:string
-  folderColor:string | null | undefined
-  folderId:number
+  dataId:number
+  currentColor:string | null | undefined
 }
  
-const ColorPicker: FunctionComponent<ColorPickerProps> = ({type, folderColor, folderId}:ColorPickerProps) => {
-  function ChangeColor(color:string) {
-    alert(color)
-  }
+const ColorPicker: FunctionComponent<ColorPickerProps> = memo(({onSelect, currentColor, type, dataId}:ColorPickerProps) => {
+  
   const colorsInRow = 5
   return type === "default" ? (
     <>
@@ -29,8 +28,8 @@ const ColorPicker: FunctionComponent<ColorPickerProps> = ({type, folderColor, fo
                 hover:shadow-defaultLight hover:dark:shadow-defaultDark pointer-events-auto"
                 style={{backgroundColor: "#" + default_color.color}}
                 id={"select-color-" + (temp_default_color_index * 4 + default_color_index).toString()} aria-label="Select color"
-                title={default_color.name} onClick={() => ChangeColor(default_color.color)}>
-                  {folderColor?.toLowerCase() === default_color.color.toLowerCase() && (
+                title={default_color.name} onClick={() => onSelect({id: dataId, color: default_color})}>
+                  {currentColor?.toLowerCase() === default_color.color.toLowerCase() && (
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
                     enableBackground="new 0 0 24 24" className="w-6 h-6">
                       <path d="M10 18c-.5 0-1-.2-1.4-.6l-4-4c-.8-.8-.8-2 0-2.8.8-.8 2.1-.8 
@@ -51,9 +50,9 @@ const ColorPicker: FunctionComponent<ColorPickerProps> = ({type, folderColor, fo
         <div>Folder's color</div>
       </div>
       <div className="flex flex-col flex-wrap max-h-[145px] min-h-[145px]">
-        {extendedColors.map((extended_color, extended_color_index) => folderColor === extended_color ? (
-          <button className="rounded h-4 w-4" style={{backgroundColor: "#" + extended_color}}
-          key={extended_color_index} onClick={() => ChangeColor(extended_color)}
+        {extendedColors.map((extended_color, extended_color_index) => currentColor === extended_color ? (
+          <button className="rounded h-4 w-4 pointer-events-none" 
+          style={{backgroundColor: "#" + extended_color}} key={extended_color_index}
           id={"select-color-" + extended_color_index.toString()} aria-label="Select color">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
             enableBackground="new 0 0 24 24" className="w-4 h-4">
@@ -64,11 +63,11 @@ const ColorPicker: FunctionComponent<ColorPickerProps> = ({type, folderColor, fo
           </button>
         ) : (
           <button className="rounded h-4 w-4 m-[1px]" style={{backgroundColor: "#" + extended_color}}
-          key={extended_color_index} onClick={() => ChangeColor(extended_color)}></button>
+          key={extended_color_index} onClick={() => onSelect({id: dataId, color: extended_color})}></button>
         ))}
       </div>
     </>
   );
-}
+})
  
 export default ColorPicker;
