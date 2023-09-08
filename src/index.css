@@ -44,16 +44,10 @@ body,html {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--backgroundLight);
 }
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: var(--backgroundDark);
-  }
-}
-@media (prefers-color-scheme: light) {
-  body {
-    background-color: var(--backgroundLight);
-  }
+:is(.dark body) {
+  background-color: var(--backgroundDark);
 }
 
 #root {

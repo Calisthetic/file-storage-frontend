@@ -44,7 +44,8 @@ const CustomDatePicker: FunctionComponent<CustomDatePickerProps> = () => {
     </button>
   ));
   return (
-    <DatePicker showIcon 
+    <DatePicker showIcon showWeekNumbers
+    maxDate={currentDate}
     closeOnScroll={(e) => e.target === document}
     customInput={<ExampleCustomInput />}
     renderCustomHeader={({
