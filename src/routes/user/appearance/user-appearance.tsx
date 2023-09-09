@@ -21,7 +21,7 @@ const UserAppearance: FunctionComponent<UserAppearanceProps> = () => {
 
   return (
     <div className="pl-4 pt-4 text-textLight dark:text-textDark">
-      <div className="grid max-w-[200px] lg:max-w-2xl lg:grid-cols-3 gap-8 pt-2">
+      <div className="child:w-[200px] lg:max-w-2xl flex flex-wrap gap-8 pt-2">
         <button className="text-sm font-medium leading-none group"
         onClick={() => ChangeTheme("light")}>
           <div className={cn("items-center rounded-md p-1 transition-all " +
@@ -29,18 +29,18 @@ const UserAppearance: FunctionComponent<UserAppearanceProps> = () => {
             "border-backgroundThirdDark dark:border-backgroundThirdLight outline-backgroundThirdDark dark:outline-backgroundThirdLight" : currentTheme === "light",
             "border-[#808489] outline-[#808489]": currentTheme !== "light",
           })}>
-            <div className="space-y-2 rounded-md bg-[#ecedef] p-2">
-              <div className="space-y-2 rounded-md bg-white p-2 shadow-sm">
-                <div className="h-2 w-[80px] rounded-lg bg-[#ecedef]"></div>
-                <div className="h-2 w-[100px] rounded-lg bg-[#ecedef]"></div>
+            <div className="space-y-2 rounded-md bg-backgroundLight p-2">
+              <div className="space-y-2 rounded-md bg-backgroundSecondLight p-2 shadow-sm">
+                <div className="h-2 w-[80px] rounded-lg bg-backgroundThirdLight"></div>
+                <div className="h-2 w-[100px] rounded-lg bg-backgroundThirdLight"></div>
               </div>
-              <div className="flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm">
-                <div className="h-4 w-4 rounded-full bg-[#ecedef]"></div>
-                <div className="h-2 w-[100px] rounded-lg bg-[#ecedef]"></div>
+              <div className="flex items-center space-x-2 rounded-md bg-backgroundSecondLight p-2 shadow-sm">
+                <div className="h-4 w-4 rounded-full bg-backgroundThirdLight"></div>
+                <div className="h-2 w-[100px] rounded-lg bg-backgroundThirdLight"></div>
               </div>
-              <div className="flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm">
-                <div className="h-4 w-4 rounded-full bg-[#ecedef]"></div>
-                <div className="h-2 w-[100px] rounded-lg bg-[#ecedef]"></div>
+              <div className="flex items-center space-x-2 rounded-md bg-backgroundSecondLight p-2 shadow-sm">
+                <div className="h-4 w-4 rounded-full bg-backgroundThirdLight"></div>
+                <div className="h-2 w-[100px] rounded-lg bg-backgroundThirdLight"></div>
               </div>
             </div>
           </div>
@@ -51,22 +51,22 @@ const UserAppearance: FunctionComponent<UserAppearanceProps> = () => {
         <button className="text-sm font-medium leading-none group"
         onClick={() => ChangeTheme("dark")}>
           <div  className={cn("items-center rounded-md p-1 transition-all " +
-          " border-2 outline outline-2 -outline-offset-2 group-hover:outline-offset-2", {
+          "border-2 outline outline-2 -outline-offset-2 group-hover:outline-offset-2", {
             "border-backgroundThirdDark dark:border-backgroundThirdLight outline-backgroundThirdDark dark:outline-backgroundThirdLight" : currentTheme === "dark",
             "border-[#808489] outline-[#808489]": currentTheme !== "dark",
           })}>
-            <div className="space-y-2 rounded-sm bg-slate-950 p-2">
-              <div className="space-y-2 rounded-md bg-slate-800 p-2 shadow-sm">
-                <div className="h-2 w-[80px] rounded-lg bg-slate-400"></div>
-                <div className="h-2 w-[100px] rounded-lg bg-slate-400"></div>
+            <div className="space-y-2 rounded-md bg-backgroundDark p-2">
+              <div className="space-y-2 rounded-md bg-backgroundSecondDark p-2 shadow-sm">
+                <div className="h-2 w-[80px] rounded-lg bg-backgroundThirdDark"></div>
+                <div className="h-2 w-[100px] rounded-lg bg-backgroundThirdDark"></div>
               </div>
-              <div className="flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm">
-                <div className="h-4 w-4 rounded-full bg-slate-400"></div>
-                <div className="h-2 w-[100px] rounded-lg bg-slate-400"></div>
+              <div className="flex items-center space-x-2 rounded-md bg-backgroundSecondDark p-2 shadow-sm">
+                <div className="h-4 w-4 rounded-full bg-backgroundThirdDark"></div>
+                <div className="h-2 w-[100px] rounded-lg bg-backgroundThirdDark"></div>
               </div>
-              <div className="flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm">
-                <div className="h-4 w-4 rounded-full bg-slate-400"></div>
-                <div className="h-2 w-[100px] rounded-lg bg-slate-400"></div>
+              <div className="flex items-center space-x-2 rounded-md bg-backgroundSecondDark p-2 shadow-sm">
+                <div className="h-4 w-4 rounded-full bg-backgroundThirdDark"></div>
+                <div className="h-2 w-[100px] rounded-lg bg-backgroundThirdDark"></div>
               </div>
             </div>
           </div>
@@ -76,24 +76,47 @@ const UserAppearance: FunctionComponent<UserAppearanceProps> = () => {
         </button>
         <button className="text-sm font-medium leading-none group"
         onClick={() => ChangeTheme("system")}>
-          <div  className={cn("grid grid-cols-2 rounded-md p-1 transition-all " +
-          " border-2 outline outline-2 -outline-offset-2 group-hover:outline-offset-2", {
+          <div  className={cn("flex flex-row rounded-md p-1 transition-all overflow-hidden " +
+          "border-2 outline outline-2 -outline-offset-2 group-hover:outline-offset-2", {
             "border-backgroundThirdDark dark:border-backgroundThirdLight outline-backgroundThirdDark dark:outline-backgroundThirdLight" : currentTheme === "system",
             "border-[#808489] outline-[#808489]": currentTheme !== "system",
           })}>
-            <div className="space-y-2 rounded-sm bg-slate-950 p-2">
-              <div className="space-y-2 rounded-md bg-slate-800 p-2 shadow-sm">
-                <div className="h-2 w-[80px] rounded-lg bg-slate-400"></div>
-                <div className="h-2 w-[100px] rounded-lg bg-slate-400"></div>
+            <div className="space-y-2 rounded-md bg-backgroundDark p-2 w-[160px]">
+              <div className="space-y-2 rounded-md bg-backgroundSecondDark p-2 shadow-sm">
+                <div className="h-2 w-[80px] rounded-lg bg-backgroundThirdDark"></div>
+                <div className="h-2 w-[100px] rounded-lg bg-backgroundThirdDark"></div>
               </div>
-              <div className="flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm">
-                <div className="h-4 w-4 rounded-full bg-slate-400"></div>
-                <div className="h-2 w-[100px] rounded-lg bg-slate-400"></div>
+              <div className="flex items-center space-x-2 rounded-md bg-backgroundSecondDark p-2 shadow-sm">
+                <div className="h-4 w-4 rounded-full bg-backgroundThirdDark"></div>
+                <div className="h-2 w-[100px] rounded-lg bg-backgroundThirdDark"></div>
               </div>
-              <div className="flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm">
-                <div className="h-4 w-4 rounded-full bg-slate-400"></div>
-                <div className="h-2 w-[100px] rounded-lg bg-slate-400"></div>
+              <div className="flex items-center space-x-2 rounded-md bg-backgroundSecondDark p-2 shadow-sm">
+                <div className="h-4 w-4 rounded-full bg-backgroundThirdDark"></div>
+                <div className="h-2 w-[100px] rounded-lg bg-backgroundThirdDark"></div>
               </div>
+            </div>
+            <div className="border-[68px] border-l-[transparent] border-t-[transparent] absolute translate-x-6 bg-transparent border-backgroundLight"></div>
+            <div className="w-[28px] bg-backgroundLight">
+              <div className="absolute -translate-x-[48px] translate-y-2 bg-transparent border-[20px]
+              border-t-transparent border-l-transparent border-backgroundSecondLight"></div>
+              <div className="absolute -translate-x-[88px] translate-y-[56px] bg-transparent border-[16px]
+              border-t-transparent border-l-transparent border-backgroundSecondLight"></div>
+              <div className="absolute -translate-x-[128px] translate-y-[96px] bg-transparent border-[16px]
+              border-t-transparent border-l-transparent border-backgroundSecondLight"></div>
+              <div className="absolute -translate-x-[8px] translate-y-[8px] bg-backgroundSecondLight
+              rounded-r-md border-backgroundSecondLight h-10 w-[28px]"></div>
+              <div className="absolute -translate-x-[56px] translate-y-[56px] bg-backgroundSecondLight
+              rounded-r-md border-backgroundSecondLight h-8 w-[76px]"></div>
+              <div className="absolute -translate-x-[96px] translate-y-[96px] bg-backgroundSecondLight
+              rounded-r-md border-backgroundSecondLight h-8 w-[116px]"></div>
+              <div className="absolute -translate-x-[76px] translate-y-[68px] bg-transparent border-[4px]
+              border-t-transparent border-l-transparent border-backgroundThirdLight"></div>
+              <div className="absolute -translate-x-[116px] translate-y-[108px] bg-transparent border-[4px]
+              border-t-transparent border-l-transparent border-backgroundThirdLight"></div>
+              <div className="absolute -translate-x-[68px] translate-y-[68px] bg-backgroundThirdLight
+              rounded-r-md border-backgroundThirdLight h-2 w-[48px]"></div>
+              <div className="absolute -translate-x-[108px] translate-y-[108px] bg-backgroundThirdLight
+              rounded-r-md border-backgroundThirdLight h-2 w-[88px]"></div>
             </div>
           </div>
           <span className="block w-full p-2 text-center font-medium text-base">
