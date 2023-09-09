@@ -1,16 +1,15 @@
 import { FunctionComponent, memo } from "react";
-import { defaultColors, extendedColors } from "../../../data/style/folder-colors";
-import { InvertColor } from "../../../lib/color-utils";
+import { defaultColors, extendedColors } from "../data/style/folder-colors";
+import { InvertColor } from "../lib/color-utils";
 
 interface ColorPickerProps {
   onSelect:(e:any) => void
   type:string
-  dataId?:number
+  dataId?:any
   currentColor:string | null | undefined
 }
  
 const ColorPicker: FunctionComponent<ColorPickerProps> = memo(({onSelect, currentColor, type, dataId}:ColorPickerProps) => {
-  
   const colorsInRow = 5
   return type === "default" ? (
     <>
@@ -28,7 +27,7 @@ const ColorPicker: FunctionComponent<ColorPickerProps> = memo(({onSelect, curren
                 hover:shadow-defaultLight hover:dark:shadow-defaultDark pointer-events-auto"
                 style={{backgroundColor: "#" + default_color.color}}
                 id={"select-color-" + (temp_default_color_index * 4 + default_color_index).toString()} aria-label="Select color"
-                title={default_color.name} onClick={() => onSelect({id: dataId, color: default_color})}>
+                title={default_color.name} onClick={() => onSelect({id: dataId, color: default_color.color})}>
                   {currentColor?.toLowerCase() === default_color.color.toLowerCase() ? (
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
                     enableBackground="new 0 0 24 24" className="w-6 h-6">

@@ -10,7 +10,7 @@ import { CutNumber, CutSize, IsNumeric } from "../../../lib/utils";
 import { GetCSSValue, BlurColor, cn, isDarkMode} from "../../../lib/color-utils";
 // @ts-ignore
 import Hammer from 'hammerjs';
-import ColorPicker from "./color-picker";
+import ColorPicker from "../../../components/color-picker";
 import { modalWindowStyle } from "../../../data/style/modal-styles";
 
 type Props = {

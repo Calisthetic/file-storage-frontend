@@ -11,8 +11,8 @@ export const isDarkMode = ():boolean => ('theme' in localStorage)
   : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? true : false;
 
 // Css variables
-export function GetCSSValue(name: string) {
-  return getComputedStyle(document.body).getPropertyValue('--' + name + (isDarkMode() ? "Dark" : "Light"))
+export function GetCSSValue(name: string, useTheme:boolean = true) {
+  return getComputedStyle(document.body).getPropertyValue(useTheme ? '--' + name + (isDarkMode() ? "Dark" : "Light") : '--' + name)
 }
 
 // white to black
