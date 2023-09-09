@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useState, useEffect, useCallback } from "react";
 import { cn } from "../../../lib/color-utils";
 
 interface UserAppearanceProps {}
@@ -7,17 +7,37 @@ const UserAppearance: FunctionComponent<UserAppearanceProps> = () => {
   const [currentTheme, setCurrentTheme] = useState(!('theme' in localStorage) ? "system" : localStorage.getItem('theme'))
 
   // Theming
-  function ChangeTheme(theme:string) {
+  const ChangeTheme = useCallback((theme:string) => {
+    if (theme === currentTheme) return
     setCurrentTheme(theme)
 
-    if (localStorage.theme !== 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
-      document.documentElement.classList.add('dark')
-      localStorage.setItem("theme", "dark")
-    } else {
+    if (theme === "system") {
+      localStorage.removeItem("theme")
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+    } else if (theme === "light") {
       document.documentElement.classList.remove('dark')
       localStorage.setItem("theme", "light")
+    } else {
+      document.documentElement.classList.add('dark')
+      localStorage.setItem("theme", "dark")
     }
-  }
+  }, [currentTheme])
+
+  useEffect(() => {
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", PrefersThemeChangedHandler)
+
+    function PrefersThemeChangedHandler() {
+      if (!('theme' in localStorage)) {
+        ChangeTheme("system")
+      }
+    }
+
+    return () => window.matchMedia("(prefers-color-scheme: dark)").removeEventListener("change", PrefersThemeChangedHandler)
+  }, [ChangeTheme])
 
   return (
     <div className="pl-4 pt-4 text-textLight dark:text-textDark">
@@ -81,6 +101,7 @@ const UserAppearance: FunctionComponent<UserAppearanceProps> = () => {
             "border-backgroundThirdDark dark:border-backgroundThirdLight outline-backgroundThirdDark dark:outline-backgroundThirdLight" : currentTheme === "system",
             "border-[#808489] outline-[#808489]": currentTheme !== "system",
           })}>
+            {/* Dark theme blocks */}
             <div className="space-y-2 rounded-md bg-backgroundDark p-2 w-[160px]">
               <div className="space-y-2 rounded-md bg-backgroundSecondDark p-2 shadow-sm">
                 <div className="h-2 w-[80px] rounded-lg bg-backgroundThirdDark"></div>
@@ -95,8 +116,9 @@ const UserAppearance: FunctionComponent<UserAppearanceProps> = () => {
                 <div className="h-2 w-[100px] rounded-lg bg-backgroundThirdDark"></div>
               </div>
             </div>
+            {/* Light triangle and decorations parent */}
             <div className="border-[68px] border-l-[transparent] border-t-[transparent] absolute translate-x-6 bg-transparent border-backgroundLight"></div>
-            <div className="w-[28px] bg-backgroundLight">
+            <div className="w-[28px] bg-backgroundLight rounded-r-md">
               <div className="absolute -translate-x-[48px] translate-y-2 bg-transparent border-[20px]
               border-t-transparent border-l-transparent border-backgroundSecondLight"></div>
               <div className="absolute -translate-x-[88px] translate-y-[56px] bg-transparent border-[16px]
