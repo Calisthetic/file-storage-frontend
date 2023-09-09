@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from "framer-motion"
 import { IconAlerts, IconClose } from './icons';
 import { isDarkMode } from '../lib/color-utils';
+import { CSSVariablesExtended } from '../data/style/css-variables';
 
 export default function EditUIModal() {
   // Pages (colors/fonts) logic
@@ -48,51 +49,6 @@ export default function EditUIModal() {
     return styleVariables.getPropertyValue('--' + name)
   }
 
-  const getAllCSSVariableNames = (styleSheets: StyleSheetList = document.styleSheets) => {
-    const cssVars:string[] = [];
-    Array.from(styleSheets).forEach(function (sheet) {
-      if (sheet.hasOwnProperty("cssRules")) {
-        try {
-          Array.from(sheet.cssRules || []).forEach((rule:any) => {
-            if (!rule || !rule['style']) {
-              return;
-            }
-            Array.from(rule['style']).forEach((style: any) => {
-              if (style.startsWith('--') && cssVars.indexOf(style) === -1 && !style.startsWith('--tw')) {
-                cssVars.push(style.substring(2));
-              }
-            });
-          });
-        } catch (e:any) {
-          console.log('Error while reading CSS rules from ' + sheet.href, e.toString());
-          setCurrentErrorText("Error while reading CSS rules\nfrom " + sheet.href)
-          if (isAlertErrorOpen === false) {
-            CloseOpenErrorAlert()
-          }
-        }
-      }
-    });
-
-    // Old method
-    // Array.from(styleSheets).forEach((styleSheet) => {
-    //   try {
-    //     Array.from(styleSheet.cssRules).forEach((rule:any) => {
-    //       if (!rule || !rule['style']) {
-    //         return;
-    //       }
-    //       Array.from(rule['style']).forEach((style: any) => {
-    //         if (style.startsWith('--') && cssVars.indexOf(style) === -1 && !style.startsWith('--tw')) {
-    //           cssVars.push(style.substring(2));
-    //         }
-    //       });
-    //     });
-    //   } catch (e:any) {
-    //     console.log('Error while reading CSS rules: ' + e.toString());
-    //   }
-    // });
-
-    return cssVars;
-  };
 
   // Saving changes
   interface StyleObject {
@@ -110,9 +66,8 @@ export default function EditUIModal() {
     }
 
     // Saving changes
-    let colorNames:string[] = getAllCSSVariableNames()
     let colors:StyleObject[] = []
-    colorNames.forEach(x => {
+    CSSVariablesExtended.forEach(x => {
       colors.push({
         name: x,
         value: GetCSSValue(x),

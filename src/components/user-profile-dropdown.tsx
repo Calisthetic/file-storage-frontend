@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { Link } from "react-router-dom";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { modalWindowStyle } from "../data/modal-styles";
+import { modalWindowStyle } from "../data/style/modal-styles";
 import EditUIModal from "./edit-ui-modal";
 
 interface UserProfileDropdownProps {

@@ -1,11 +1,11 @@
 import { FunctionComponent, memo } from "react";
-import { defaultColors, extendedColors } from "../../../data/folder-colors";
+import { defaultColors, extendedColors } from "../../../data/style/folder-colors";
 import { InvertColor } from "../../../lib/color-utils";
 
 interface ColorPickerProps {
   onSelect:(e:any) => void
   type:string
-  dataId:number
+  dataId?:number
   currentColor:string | null | undefined
 }
  
