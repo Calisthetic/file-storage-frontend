@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { FunctionComponent, Suspense, lazy, useRef, useState } from "react";
-
+import { z } from "zod";
+const AlertButton = lazy(() => import("../../../components/alert-button"));
 const CustomDatePicker = lazy(() => import("./custom-date-picker"));
 
 interface UserAccountProps {
@@ -8,16 +9,57 @@ interface UserAccountProps {
 }
  
 const UserAccount: FunctionComponent<UserAccountProps> = () => {
-  const firstNameInputRef:any = useRef()
-  const secondNameInputRef:any = useRef()
-  const [birthdayDate, setBirthdayDate] = useState<number>(0)
-
+  const [birthdayDate, setBirthdayDate] = useState<string>("")
   function SelectBirthdayDate(data:any) {
-    setBirthdayDate(Date.parse(data))
+    setBirthdayDate(new Date(Date.parse(data)).toISOString().slice(0,10))
+  }
+
+  const firstNameInputRef:any = useRef()
+  const lastNameInputRef:any = useRef()
+  
+  const [alertText, setAlertText] = useState("Something went wrong")
+  const [alertTitle, setAlertTitle] = useState("Error!")
+  const [alertType, setAlertType] = useState("error")
+  const [isAlertOpen, setIsAlertOpen] = useState(false)
+
+  const UpdateAccountSchema = z.object({
+    "First name": z.string().min(3).max(20),
+    "Last name": z.string().min(3).max(20),
+    "Birthday date": z.date()
+      .min(new Date(((new Date()).getFullYear() - 100).toString() + "-01-01"), {message: "Too old"})
+      .max(new Date(((new Date()).getFullYear() - 14).toString() + "-01-01"), {message: "Too young"}),
+  })
+
+  function CheckData():boolean {
+    setIsAlertOpen(false)
+    try {
+      UpdateAccountSchema.parse({
+        "First name": firstNameInputRef.current.value,
+        "Last name": lastNameInputRef.current.value,
+        "Birthday date": new Date(birthdayDate)
+      })
+    } catch (e:any) {
+      setAlertText(JSON.parse(e)[0].message.toString())
+      setAlertTitle(JSON.parse(e)[0].path[0].toString())
+      setAlertType("error")
+      setTimeout(() => {
+        setIsAlertOpen(true)
+      }, 250);
+      return false
+    }
+    return true
+  }
+
+  function UpdateAccount() {
+    if (CheckData() === false) {
+      return
+    }
+
+    // change later
   }
 
   return (
-    <div className="min-h-fullWithHeader flex flex-col items-center">
+    <div className="min-h-fullWithHeader flex flex-col items-center overflow-y-hidden relative">
       <div className="text-textLight dark:text-textDark font-normal
       w-[calc(100dvw-24px)] sm:w-[calc(100dvw-256px-24px)] xl:w-[800px]">
         <motion.div initial={{y: 50, opacity: 0}} animate={{y: 0, opacity: 1}}
@@ -42,7 +84,7 @@ const UserAccount: FunctionComponent<UserAccountProps> = () => {
           <motion.div  initial={{y: 50, opacity: 0}} animate={{y: 0, opacity: 1}}
           transition={{delay: 0.1, damping: 24, stiffness: 300}}>
             <label className="font-medium">Last name</label>
-            <input type="text" aria-label="Last Name" placeholder="change later" ref={secondNameInputRef}
+            <input type="text" aria-label="Last Name" placeholder="change later" ref={lastNameInputRef}
             className="block w-full pl-2 py-1 border-1 border-borderLight dark:border-borderDark
             ring-1 ring-inset ring-borderLight dark:ring-borderDark 
             focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6
@@ -67,10 +109,15 @@ const UserAccount: FunctionComponent<UserAccountProps> = () => {
           </motion.div>
           <motion.button initial={{y: 50, opacity: 0}} animate={{y: 0, opacity: 1}}
           transition={{delay: 0.25, damping: 24, stiffness: 300}} 
-          id="updateProfile" aria-label="Update profile" onClick={() => console.log("change later")}
+          id="updateProfile" aria-label="Update profile" onClick={UpdateAccount}
           className="bg-buttonLight dark:bg-buttonDark py-2 px-4 mb-4 rounded-lg w-fit font-semibold">Update account</motion.button>
         </div>
       </div>
+
+      <Suspense fallback={<div></div>}>
+        <AlertButton open={isAlertOpen} text={alertText} title={alertTitle}
+        type={alertType} close={() => setIsAlertOpen(false)}></AlertButton>
+      </Suspense>
     </div>
   );
 }

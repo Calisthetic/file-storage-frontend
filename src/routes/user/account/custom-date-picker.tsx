@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 
 import "./custom-date-picker.css";
 import { monthNames } from "../../../data/common/months";
+import { RotateArray } from "../../../lib/utils";
 
 
 interface CustomDatePickerProps {
@@ -12,7 +13,7 @@ interface CustomDatePickerProps {
 const CustomDatePicker: FunctionComponent<CustomDatePickerProps> = ({onSelect}:CustomDatePickerProps) => {
   const currentDate = new Date()
   const [startDate, setStartDate] = useState(new Date());
-  const years = Array(100).fill(currentDate.getFullYear() - 100).map((n, i) => n + i);
+  const years = RotateArray(Array(87).fill(currentDate.getFullYear() - 86).map((n, i) => n + i));
   const ExampleCustomInput = forwardRef(({ value, onClick }:any, ref:any) => (
     <button className="rounded-md py-1 px-4 flex items-center gap-x-4
     border border-borderLight dark:border-borderDark" onClick={onClick} ref={ref}>
