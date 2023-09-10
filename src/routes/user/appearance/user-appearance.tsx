@@ -11,7 +11,7 @@ const UserAppearance: FunctionComponent<UserAppearanceProps> = () => {
   return (
     <div className="text-textLight dark:text-textDark min-h-fullWithHeader flex flex-col items-center">
       <div className="text-textLight dark:text-textDark font-normal overflow-y-hidden
-      w-[calc(100dvw-24px)] sm:w-[calc(100dvw-256px-24px)] lg:w-[740px]">
+      w-[calc(100dvw-24px)] sm:w-[calc(100dvw-256px-24px)] lg:w-[740px] px-2 lg:px-0">
         <motion.div initial={{y: 50, opacity: 0}} animate={{y: 0, opacity: 1}}
         transition={{delay: 0, damping: 24, stiffness: 300}} 
         className="border-b border-borderLight dark:border-borderDark py-4">
