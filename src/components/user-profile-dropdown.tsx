@@ -1,10 +1,6 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion"
 import { Link } from "react-router-dom";
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import { modalWindowStyle } from "../data/style/modal-styles";
-import EditUIModal from "./edit-ui-modal";
 
 interface UserProfileDropdownProps {
   
@@ -12,12 +8,6 @@ interface UserProfileDropdownProps {
  
 const UserProfileDropdown: FunctionComponent<UserProfileDropdownProps> = () => {
   const [isUserDropMenuOpen, setIsUserDropMenuOpen] = useState(false)
-  
-  // Modal customize
-  const [modalOpen, setModalOpen] = useState(false);
-  const modalCustomizeOpen = () => setModalOpen(true);
-  const modalCustomizeClose = () => setModalOpen(false);
-
 
   // Close modal event
   const root = document.getElementById("root")
@@ -83,9 +73,6 @@ const UserProfileDropdown: FunctionComponent<UserProfileDropdownProps> = () => {
                   dark:hover:bg-backgroundHoverDark" role="menuitem">Statistic
                 </Link>
                 <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
-                  dark:hover:bg-backgroundHoverDark" role="menuitem" onClick={modalCustomizeOpen}>Customize
-                </button>
-                <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
                   dark:hover:bg-backgroundHoverDark" role="menuitem">Settings
                 </button>
                 <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
@@ -99,15 +86,6 @@ const UserProfileDropdown: FunctionComponent<UserProfileDropdownProps> = () => {
           ) : null}
         </AnimatePresence>
       </div>
-
-      
-      {/* Customize modal */}
-      <Modal open={modalOpen} onClose={modalCustomizeClose}
-      aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-        <Box sx={modalWindowStyle}>
-          <EditUIModal></EditUIModal>
-        </Box>
-      </Modal>
     </div>
    );
 }
