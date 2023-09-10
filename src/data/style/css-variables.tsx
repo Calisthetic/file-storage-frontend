@@ -1,12 +1,12 @@
 export const CSSVariablesExtended:string[] =  [
   "backgroundDark",
   "backgroundLight",
-  "backgroundHoverDark",
-  "backgroundHoverLight",
   "backgroundSecondDark",
   "backgroundSecondLight",
   "backgroundThirdDark",
   "backgroundThirdLight",
+  "backgroundHoverDark",
+  "backgroundHoverLight",
   "backgroundAccentDark",
   "backgroundAccentLight",
   "borderDark",
@@ -25,9 +25,9 @@ export const CSSVariablesExtended:string[] =  [
 
 export const CSSVariables:string[] =  [
   "background",
-  "backgroundHover",
   "backgroundSecond",
   "backgroundThird",
+  "backgroundHover",
   "backgroundAccent",
   "border",
   "text",

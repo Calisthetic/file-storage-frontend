@@ -156,7 +156,7 @@ const UserSidebar: FunctionComponent<UserSidebarProps> = () => {
         {isAdOpen === true ? (
           <motion.div initial={{x: -300, opacity: 0}} animate={{x: 0, opacity: 1}} 
           transition={{delay: 0.12, stiffness: 300, damping: 24}} exit={{x: -1000, opacity: 0}}
-          className="p-2 sm:p-4 mt-4 sm:mt-6 transition rounded-lg bg-backgroundThirdLight dark:bg-backgroundThirdDark 
+          className="p-2 sm:p-4 mt-4 sm:mt-6 rounded-lg bg-backgroundThirdLight dark:bg-backgroundThirdDark 
           text-textLight dark:text-textDark text-sm">
             <div className="flex items-center mb-3 justify-between">
               <span className=" bg-backgroundAccentLight text-textLight font-semibold mr-2 px-2.5 py-0.5 rounded 
@@ -169,13 +169,12 @@ const UserSidebar: FunctionComponent<UserSidebarProps> = () => {
               </button>
             </div>
             <p className="mb-2 sm:mb-3">
-              Prewiew new feature with <u>favorites</u> files! 
-              Now you can get fast access to your files without special links and folders search.
+              Due to the increased possibilities for customization, a new <u>appearance</u> page has been added
             </p>
-            <Link to="favorites" draggable="false" onClick={() => {setIsAdOpen(false)}} 
+            <Link to="appearance" draggable="false" onClick={() => {setIsAdOpen(false)}} 
             className="text-buttonLight underline font-medium transition-all
             hover:text-buttonHoverLight dark:text-buttonDark dark:hover:text-buttonHoverDark">
-              Try new feature now
+              Try customization now
             </Link>
           </motion.div>
         ) : null}
