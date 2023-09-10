@@ -136,6 +136,12 @@ npm install react-datepicker --save
 npm i postcss autoprefixer
 ```
 
+[lodash.debounce](https://lodash.com/docs/4.17.15#debounce) - minimize request from search input
+
+```bash
+npm i lodash.debounce
+```
+
 ### Also used in project
 
 - [Google Fonts API](https://developers.google.com/fonts/docs/developer_api?hl=ru#APIKey)
