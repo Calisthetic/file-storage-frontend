@@ -12,7 +12,7 @@ interface DailyStatisticProps {
 const DailyStatistic: FunctionComponent<DailyStatisticProps> = (props:DailyStatisticProps) => {
   const maxValue = Math.max((props.data.binValue ? props.data.binValue : 0),
   (props.data.addedFiles ? props.data.addedFiles : 0),
-  (props.data.generatedLinks ? props.data.generatedLinks : 0),
+  (props.data.downloadFiles ? props.data.downloadFiles : 0),
   (props.data.deletedValue ? props.data.deletedValue : 0))
   
   return (
@@ -63,14 +63,14 @@ const DailyStatistic: FunctionComponent<DailyStatisticProps> = (props:DailyStati
                 </div>
               </div>
             ) : null}
-            {props.data.generatedLinks ? (
+            {props.data.downloadFiles ? (
               <div className="mt-2 sm:grid grid-cols-2 items-center">
-                <p>Moved files to trash</p>
+                <p>Downloaded files</p>
                 <div className="w-full bg-backgroundThirdLight mt-1 rounded-full h-3 dark:bg-backgroundThirdDark">
-                  <motion.div initial={{width: 0}} animate={{width: (props.data.generatedLinks / maxValue * 100) + "%"}}
+                  <motion.div initial={{width: 0}} animate={{width: (props.data.downloadFiles / maxValue * 100) + "%"}}
                   className=" bg-iconLight dark:bg-iconDark h-3 rounded-full items-center justify-center
                   text-sm flex">
-                    <span className="opacity-90 font-medium text-xs">{props.data.generatedLinks}</span>
+                    <span className="opacity-90 font-medium text-xs">{props.data.downloadFiles}</span>
                   </motion.div>
                 </div>
               </div>

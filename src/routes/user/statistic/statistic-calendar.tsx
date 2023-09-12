@@ -9,7 +9,7 @@ export interface IDayActivityStat {
   binValue?:number,
   deletedValue?:number,
   addedFiles?:number,
-  generatedLinks?:number,
+  downloadFiles?:number,
 }
 
 interface IActivityStat {
@@ -410,7 +410,7 @@ const StatisticCalendar:FunctionComponent<StatisticCalendarProps> = ({availableY
     binValue:23,
     deletedValue:50,
     addedFiles:13,
-    generatedLinks:14,
+    downloadFiles:14,
   }
   const [selectedDayStat, setSelectedDayStat] = useState<IDayActivityStat>(selectedDayStatTemp)
 

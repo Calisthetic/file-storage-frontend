@@ -2,6 +2,7 @@ import { ResponsivePie } from '@nivo/pie'
 import { FunctionComponent, useEffect, useState } from 'react'
 import { IFileStat } from './user-statistic'
 import { GetCSSValue } from '../../../lib/color-utils'
+import { useDebounce } from '../../../hooks/useDebounce'
 
 interface StatisticPieProps {
   data: IFileStat[],
@@ -21,10 +22,11 @@ const StatisticPie:FunctionComponent<StatisticPieProps> = ({data}:StatisticPiePr
       setFileStatCount(6)
     }
   }
+  const debouncedFileStatCount = useDebounce(fileStatCount, 400)
   useEffect(() => {
     console.log(fileStatCount)
     // change later
-  }, [fileStatCount])
+  }, [debouncedFileStatCount])
 
   const [fileStatScale, setFileStatScale] = useState<number>(10)
   function CalculateFileStatScale(operation:string = "") {
