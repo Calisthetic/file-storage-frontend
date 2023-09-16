@@ -6,6 +6,7 @@ import Redirect from "../../components/redirect";
 import { cn } from "../../lib/color-utils";
 import Loading from "../../components/loading";
 import UserSidebar from "./user-sidebar";
+import IconLogo from "../../components/icons/IconLogo";
 const DiskUpgrade = lazy(() => import("../disk/upgrade/disk-upgrade"));
 const UserAccount = lazy(() => import("./account/user-account"));
 const UserAppearance = lazy(() => import("./appearance/user-appearance"));
@@ -18,21 +19,6 @@ interface UserMainProps {
 }
  
 const UserMain: FunctionComponent<UserMainProps> = () => {
-
-
-  /* eslint-disable global-require */
-
-  // Logos
-  let mainLogo: string | undefined = undefined;
-
-  try {
-    mainLogo = require("./../../icons/logo.png") as string;
-  } catch (error) {
-    console.log(error)
-  }
-
-  /* eslint-enable global-require */
-
   // Sidebar
   const [isSideBarOpen, setIsSideBarOpen] = useState(window.innerWidth > 640)
   function ChangeSideBar() {
@@ -58,7 +44,7 @@ const UserMain: FunctionComponent<UserMainProps> = () => {
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start">
-            <label className="min-h-8 h-8 w-8 m-0 p-0 border-none sm:hidden
+              <label className="min-h-8 h-8 w-8 m-0 p-0 border-none sm:hidden
               bg-backgroundLight dark:bg-backgroundDark hover:bg-backgroundLight hover:dark:bg-backgroundDark">
                 <AnimatePresence>
                   {isSideBarOpen ? (
@@ -83,8 +69,9 @@ const UserMain: FunctionComponent<UserMainProps> = () => {
                 </AnimatePresence>
               </label>
               <Link to="../disk" className="flex ml-2 md:mr-24">
-                <motion.img src={mainLogo} className="h-8 w-8 mr-3" alt="Logo"
-                initial={{opacity: 0}} animate={{opacity:1 }} transition={{delay: 0.1}}/>
+                <motion.div initial={{opacity: 0}} animate={{opacity:1 }} transition={{delay: 0.1}}>
+                  <IconLogo classes="h-8 w-8 mr-3" fillClasses="fill-iconLight dark:fill-iconDark"></IconLogo>
+                </motion.div>
                 <motion.span initial={{opacity: 0, marginLeft: 20}} 
                 animate={{opacity:1, marginLeft: 0}} transition={{delay: 0.24}} 
                 className="self-center text-xl font-semibold sm:text-2xl 

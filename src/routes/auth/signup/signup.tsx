@@ -2,6 +2,7 @@ import { motion } from "framer-motion"
 import React, { Suspense, useState, useRef } from "react";
 import { Link } from 'react-router-dom';
 import { z } from "zod";
+import IconLogo from "../../../components/icons/IconLogo";
 const AlertButton = React.lazy(() => import("../../../components/alert-button"));
 
 export default function SignUp() {
@@ -12,14 +13,6 @@ export default function SignUp() {
   const repeatPasswordRef:any = useRef()
   const aboutRef:any = useRef()
 
-  // Logos
-  let mainLogo: string | undefined = undefined;
-
-  try {
-    mainLogo = require("./../../../icons/logo.png") as string;
-  } catch (error) {
-    console.log(error)
-  }
 
   const [alertText, setAlertText] = useState("Something went wrong")
   const [alertTitle, setAlertTitle] = useState("Error!")
@@ -74,9 +67,10 @@ export default function SignUp() {
       <div className='py-6 flex flex-col justify-center min-h-fulldvh sm:h-auto bg-backgroundLight dark:bg-backgroundDark 
       sm:rounded-xl w-[100cvw] sm:w-auto px-10'>
         <div className="w-full flex justify-center pb-2">
-          <motion.img initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
-          transition={{delay: 0.00, damping: 24, stiffness: 300}} src={mainLogo} alt="Logo" width="48" height="48"
-          className="w-12 text-center font-semibold leading-6 text-textLight dark:text-textDark aspect-square"></motion.img>
+          <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
+          transition={{damping: 24, stiffness: 300}} className="flex justify-center">
+            <IconLogo classes="h-12 w-12" fillClasses="fill-iconLight dark:fill-iconDark"></IconLogo>
+          </motion.div>
         </div>
 
         <motion.p initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.02, damping: 24, stiffness: 300}} 

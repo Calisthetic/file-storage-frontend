@@ -3,17 +3,9 @@ import { Suspense, useRef, useState } from "react";
 import { Link } from 'react-router-dom';
 import { z } from "zod";
 import AlertButton from "../../../components/alert-button";
+import IconLogo from "../../../components/icons/IconLogo";
 
 export default function SignIn() {
-  // Logos
-  let mainLogo: string | undefined = undefined;
-
-  try {
-    mainLogo = require("./../../../icons/logo.png") as string;
-  } catch (error) {
-    console.log(error)
-  }
-
   // Inputs
   const emailRef:any = useRef()
   const passwordRef:any = useRef()
@@ -58,8 +50,10 @@ export default function SignIn() {
     <div className="min-h-fulldvh flex justify-center items-center relative overflow-y-hidden">
       <div className="flex w-80 sm:w-auto min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <motion.img initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.0, damping: 24, stiffness: 300}}
-          className="mx-auto h-12 w-auto aspect-square" src={mainLogo} alt="Logo" width="48" height="48" />
+          <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
+          transition={{damping: 24, stiffness: 300}} className="flex justify-center">
+            <IconLogo classes="h-12 w-12" fillClasses="fill-iconLight dark:fill-iconDark"></IconLogo>
+          </motion.div>
           <motion.h2 initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.02, damping: 24, stiffness: 300}}
           className="mt-2 text-center text-xl font-bold leading-9 tracking-tight text-textLight dark:text-textDark">Sign in to your account</motion.h2>
         </div>

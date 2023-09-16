@@ -6,6 +6,7 @@ import Hammer from 'hammerjs';
 import { cn } from "../../lib/color-utils";
 import UserProfileDropdown from"../../components/user-profile-dropdown";
 import Loading from "../../components/loading";
+import IconLogo from "../../components/icons/IconLogo";
 const Redirect = lazy(() => import("../../components/redirect"));
 const DiskSideBar = lazy(() => import("./disk-sidebar"));
 const DiskRecent = lazy(() => import('./recent/disk-recent'));
@@ -17,23 +18,8 @@ const DiskRecycleBin = lazy(() => import("./recycle-bin/disk-recycle-bin"));
 const DiskFiles = lazy(() => import("./files/disk-files"));
 
 export default function DiskMain() {
-  const [isSideBarOpen, setIsSideBarOpen] = useState(window.innerWidth > 640 ? true : false)
-
-  /* eslint-disable global-require */
-
-  // Logos
-  let mainLogo: string | undefined = undefined;
-
-  try {
-    mainLogo = require("./../../icons/logo.png") as string;
-  } catch (error) {
-    console.log(error)
-  }
-
-  /* eslint-enable global-require */
-  
-
   // Sidebar
+  const [isSideBarOpen, setIsSideBarOpen] = useState(window.innerWidth > 640 ? true : false)
   function ChangeSideBar() {
     if (window.innerWidth > 640) {
       setIsSideBarOpen(true)
@@ -105,10 +91,9 @@ export default function DiskMain() {
                 </AnimatePresence>
               </label>
               <Link to="../disk" className="flex ml-2 md:mr-24">
-                <motion.img src={mainLogo} className="h-8 w-8 mr-3" alt="Logo"
-                initial={{opacity: 0}} 
-                animate={{opacity:1 }} 
-                transition={{delay: 0.1}}/>
+                <motion.div initial={{opacity: 0}} animate={{opacity:1 }} transition={{delay: 0.1}}>
+                  <IconLogo classes="h-8 w-8 mr-3" fillClasses="fill-iconLight dark:fill-iconDark"></IconLogo>
+                </motion.div>
                 <motion.span 
                 initial={{opacity: 0, marginLeft: 20}} 
                 animate={{opacity:1, marginLeft: 0}} 
