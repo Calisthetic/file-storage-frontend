@@ -92,6 +92,7 @@ export default function DiskFolder() {
 
   // Close dropdowns
   function CloseAllDrops(e:any) {
+    e.preventDefault()
     if (e.target.dataset.drop !== "add" && e.target.dataset.drop !== "child") {
       setIsAddDrop(false)
     }

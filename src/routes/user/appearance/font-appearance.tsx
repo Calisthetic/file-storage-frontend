@@ -84,6 +84,7 @@ const FontAppearance: FunctionComponent<FontAppearanceProps> = memo(() => {
     document.addEventListener("click", CloseDropdown)
 
     function CloseDropdown(e:any) {
+      e.preventDefault()
       if (!e.target.dataset.name) {
         setIsFontSortModalOpen(false)
       }
