@@ -5,13 +5,19 @@ import { useNavigate } from 'react-router-dom';
 
 import "../../../styles/focus-elems.css"
 import FolderAccessModal from "./folder-access-modal";
-import IconTileStar, { IconDelete, IconDownload, IconEdit, IconInfo, IconLink, IconWatch } from "../../../components/icons";
 import { CutNumber, CutSize, IsNumeric } from "../../../lib/utils";
 import { GetCSSValue, BlurColor, cn, isDarkMode} from "../../../lib/color-utils";
 // @ts-ignore
 import Hammer from 'hammerjs';
 import ColorPicker from "../../../components/color-picker";
 import { modalWindowStyle } from "../../../data/style/modal-styles";
+import IconInfo from "../../../components/icons/IconInfo";
+import IconLink from "../../../components/icons/IconLink";
+import IconEdit from "../../../components/icons/IconEdit";
+import IconDownload from "../../../components/icons/IconDownload";
+import IconDelete from "../../../components/icons/IconDelete";
+import IconWatch from "../../../components/icons/IconWatch";
+import IconTileStar from "../../../components/icons/IconTileStar";
 
 type Props = {
   currentSortType: string

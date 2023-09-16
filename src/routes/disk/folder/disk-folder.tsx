@@ -7,7 +7,7 @@ import Modal from '@mui/material/Modal';
 
 import "../../../styles/hover-elems.css"
 import RenderData from "./render-data";
-import { IconAlerts } from "../../../components/icons";
+import IconAlerts from "../../../components/icons/IconAlerts";
 
 export default function DiskFolder() {
   const inputFileButtonRef:any = useRef()
@@ -191,7 +191,7 @@ export default function DiskFolder() {
                   hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center
                   bg-backgroundSecondLight dark:bg-backgroundThirdDark">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24"
-                    className="w-6 h-6 mr-2"><g id="_icons">
+                    className="w-6 h-6 mr-2"><g>
                       <path d="M11.3 15.7c.1.1.2.2.3.2.1.1.3.1.4.1s.3 0 .4-.1c.1-.1.2-.1.3-.2l4-4c.4-.4.4-1 0-1.4s-1-.4-1.4 0L13 
                       12.6V5c0-.6-.4-1-1-1s-1 .4-1 1v7.6l-2.3-2.3c-.4-.4-1-.4-1.4 0s-.4 1 0 1.4l4 4z" className="fill-iconLight dark:fill-iconDark"></path>
                       <path d="M19 13c-.6 0-1 .4-1 1v2c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2v-2c0-.6-.4-1-1-1s-1 .4-1 1v2c0 2.2 1.8 4 4 

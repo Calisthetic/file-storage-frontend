@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { FunctionComponent, useState } from "react";
-import { IconClose } from "../../components/icons";
 import { Link } from "react-router-dom";
+import IconClose from "../../components/icons/IconClose";
 
 interface UserSidebarProps {
   

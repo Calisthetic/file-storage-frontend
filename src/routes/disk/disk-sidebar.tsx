@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react";
 import {Link,} from "react-router-dom";
-import { IconClose, IconDelete } from "../../components/icons";
+import IconClose from "../../components/icons/IconClose";
+import IconDelete from "../../components/icons/IconDelete";
 
 export default function DiskSideBar() {
   const [isAdOpen, setIsAdOpen] = useState(true)

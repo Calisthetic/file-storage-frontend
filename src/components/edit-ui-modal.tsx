@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from "framer-motion"
-import { IconAlerts, IconClose } from './icons';
 import { isDarkMode } from '../lib/color-utils';
 import { CSSVariablesExtended } from '../data/style/css-variables';
+import IconClose from './icons/IconClose';
+import IconAlerts from './icons/IconAlerts';
 
 export default function EditUIModal() {
   // Pages (colors/fonts) logic

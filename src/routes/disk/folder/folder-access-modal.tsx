@@ -1,7 +1,8 @@
 import { useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { selfUrl } from "../../../data/data"
-import { IconAlerts, IconLink } from "../../../components/icons"
+import IconLink from "../../../components/icons/IconLink"
+import IconAlerts from "../../../components/icons/IconAlerts"
 
 type Props = {
   children:string | JSX.Element | JSX.Element[]
