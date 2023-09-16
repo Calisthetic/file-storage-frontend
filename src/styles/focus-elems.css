@@ -41,10 +41,6 @@
   transform: scale(0,0) !important;
   opacity: 0 !important;
 }
-.focus-first-bottom {
-  outline: 3px double red;
-  content: "dd";
-}
 .focus-second-bottom {
   transform: scale(0,0);
   position: absolute;
