@@ -1,6 +1,5 @@
-import { useParams } from "react-router-dom";
 import { FileUploader } from "react-drag-drop-files";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion"
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -8,6 +7,7 @@ import Modal from '@mui/material/Modal';
 import "../../../styles/hover-elems.css"
 import RenderData from "./render-data";
 import IconAlerts from "../../../components/icons/IconAlerts";
+import { apiUrl } from "../../../data/data";
 
 export default function DiskFolder() {
   const inputFileButtonRef:any = useRef()
@@ -55,6 +55,7 @@ export default function DiskFolder() {
   };
 
   // Create folder
+  const [isUpdate, setIsUpdate] = useState(true)
   const newFolderNameInputRef:any = useRef()
   function CreateFolder() {
     let currentName = newFolderNameInputRef.current.value
@@ -63,7 +64,31 @@ export default function DiskFolder() {
     } else if (currentName.length > 21) {
       PushCreateFolderError("Folder name is too long")
     } else {
-      modalCreateClose()
+      const createFolder = async () => {
+        let token = localStorage.getItem("token")
+        await fetch(apiUrl + "folder", {
+          method: 'POST',
+          body: JSON.stringify({
+            "name": currentName
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": token === null ? "" : token,
+          },
+        })
+        .then((res) => {
+          if (res.status === 400) {
+            throw new Error('Bad request');
+          }
+          return res.json();
+        })
+        .then(() => {setIsUpdate(!isUpdate); modalCreateClose()})
+        .catch(error => {
+          console.log(error)
+          PushCreateFolderError("Bad request")
+        })
+      }
+      createFolder()
     }
   }
 
@@ -116,18 +141,30 @@ export default function DiskFolder() {
   }, [])
 
   // File uploader
-  const params: any = useParams();
-  if (params.id === undefined) {
-    throw Error("Check params")
-  }
   const fileUploaderRef:any = useRef()
   const [isDragVisible, setIsDragVisible] = useState(false);
-  const [file, setFile] = useState([]);
-  const handleChange = (files: any) => {
-    setFile(files);
+  //const [file, setFile] = useState([]);
+  const handleChange = useCallback((files: any) => {
+    const pushFiles = async () => {
+      const request = new XMLHttpRequest();
+      const formData = new FormData();
+
+      request.open("POST", apiUrl + "files", true);
+      request.onreadystatechange = () => {
+        if (request.readyState === 4) {
+          console.log(request.responseText);
+        }
+      };
+      for (let i = 0; i < files.length; i++) {
+        formData.append("file", files[i]);
+      }
+      request.send(formData);
+    }
+    pushFiles()
+
     setIsDragVisible(false)
     console.log(files)
-  };
+  }, []);
 
   function VisualizeUploader(e:any | null) {
     if (e.type === "dragenter" && e.nativeEvent?.dataTransfer?.types.length !== 0) {
@@ -152,7 +189,7 @@ export default function DiskFolder() {
       <header className="w-full px-1 sm:px-0 pt-1 flex flex-row justify-between">
         {/* All actions drop */}
         <div>
-          <motion.button initial={{opacity: 0, y: -20}} animate={{opacity: 1, y: 0}} 
+          <motion.button initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
           transition={{damping: 24, duration: 0.25, stiffness: 300}} 
           onClick={() => {setIsAddDrop(!isAddDrop)}} id="drop-actions" aria-label="Actions" data-drop="add"
           className=" text-textLight dark:text-textDark hover:bg-backgroundHoverLight 
@@ -401,7 +438,7 @@ export default function DiskFolder() {
         </div>
       </header>
 
-      <RenderData currentSortBy={currentSortBy}
+      <RenderData currentSortBy={currentSortBy} updateTrigger={isUpdate}
       currentSortType={currentSortType} currentRenderType={currentRenderType}></RenderData>
 
       {/* Create folder */}

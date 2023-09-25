@@ -28,7 +28,15 @@
 
 </details>
 
-### Tasks
+<details>
+<summary><h4>Useful tools and libs<h4></summary>
+
+- [How to create SVG](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Basic_Shapes)
+- [Create svg](https://editsvgcode.com/)
+- [Generate HTML AI](https://v0.dev/)
+- [highlight.js](https://highlightjs.org/demo)
+
+</details>
 
 ### Dependencies
 

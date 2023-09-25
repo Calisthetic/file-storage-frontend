@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect, useCallback } from "react"
+import { useState, useRef, useEffect, useCallback, FunctionComponent, memo } from "react"
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import "../../../styles/focus-elems.css"
 import FolderAccessModal from "./folder-access-modal";
@@ -18,14 +18,18 @@ import IconDownload from "../../../components/icons/IconDownload";
 import IconDelete from "../../../components/icons/IconDelete";
 import IconWatch from "../../../components/icons/IconWatch";
 import IconTileStar from "../../../components/icons/IconTileStar";
+import FileIcon from "./file-icon";
+import { apiUrl } from "../../../data/data";
 
 type Props = {
   currentSortType: string
   currentSortBy:string
   currentRenderType:string
+  updateTrigger:boolean
 }
 
-export default function RenderData({currentSortType, currentSortBy, currentRenderType}:Props) {
+const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortBy, currentRenderType, updateTrigger}:Props) => {
+  console.log("Rerender")
   const newNameInputRef:any = useRef();
   const [selectedItem, setSelectedItem] = useState<any>();
 
@@ -95,121 +99,63 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
 
   // Data
   interface FoldersResponse {
-    id: number,
     token: string,
     name: string,
-    size: number, // in bytes
-    created_at: string,
-    access_type: string | null,
-    watches: number | null,
-    downloads: number | null,
-    is_elected: boolean,
+    accessType: string | null,
     color: string | null,
-    files_inside: number,
+    createdAt: string,
+    downloads: number | null,
+    views: number | null,
+    filesInside: number,
+    isElected: boolean,
+    size: number, // in bytes
   }
   interface FilesResponse {
-    id: number,
-    icon_link: string,
+    token: string,
     name: string,
-    size: number, // in bytes
-    created_at: string,
-    is_public: boolean,
-    watches: number | null,
+    fileSize: number, // in bytes
+    createdAt: string,
     downloads: number | null,
-    is_elected: boolean,
+    views: number | null,
+    fileType: string
+    isElected: boolean,
   }
   
-  let folders:FoldersResponse[] = [
-    {
-      id: 1,
-      token: "123",
-      name: "folder hjhjh1",
-      size: 77828556,
-      created_at: "13032001",
-      access_type: "editor",
-      watches: null,
-      downloads: null,
-      is_elected: true,
-      color: null,
-      files_inside: 2,
-    },
-    {
-      id: 2,
-      token: "234",
-      name: "folder2",
-      size: 90000,
-      created_at: "14042004",
-      access_type: null,
-      watches: 1212,
-      downloads: 64646,
-      is_elected: false,
-      color: "881337",
-      files_inside: 999,
-    },
-    {
-      id: 3,
-      token: "345",
-      name: "folder3",
-      size: 9000000000,
-      created_at: "14042004",
-      access_type: null,
-      watches: 125987654,
-      downloads: 65646,
-      is_elected: false,
-      color: "0000ff",
-      files_inside: 999,
-    },
-    {
-      id: 4,
-      token: "456",
-      name: "folder4",
-      size: 900000000000,
-      created_at: "14042004",
-      access_type: "guest",
-      watches: 12555555555555,
-      downloads: 6,
-      is_elected: true,
-      color: "a7a9ab",
-      files_inside: 65,
-    },
-  ]
-  let files:FilesResponse[] = [
-    {
-      id: 1,
-      icon_link: "url",
-      name: "dfile1.apng",
-      size: 1825600000,
-      created_at: "20122002",
-      is_public: false,
-      watches: null,
-      downloads: null,
-      is_elected: true,
-    },
-    {
-      id: 2,
-      icon_link: "url",
-      name: "file2.jpg",
-      size: 90,
-      created_at: "19122002",
-      is_public: true,
-      watches: 12,
-      downloads: 6,
-      is_elected: false,
-    },
-    {
-      id: 3,
-      icon_link: "url",
-      name: "lfile3.ajpg",
-      size: 97000,
-      created_at: "11822002",
-      is_public: true,
-      watches: 12,
-      downloads: 6,
-      is_elected: true,
+  const [foldersResponse, setFoldersResponse] = useState<FoldersResponse[]>();
+  const [filesResponse, setFilesResponse] = useState<FilesResponse[]>();
+  const [isUpdate, setIsUpdate] = useState(true)
+  const [isUpdated, setIsUpdated] = useState(true)
+
+  const params: any = useParams();
+  if (params.id === undefined) {
+    throw Error("Check params")
+  }
+  useEffect(() => {
+    const getData = async () => {
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "folder/" + params.id, {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 404) {
+          throw new Error('Folder not found');
+        }
+        return res.json();
+      })
+      .then(data => {setFilesResponse(data.files); setFoldersResponse(data.folders); setIsUpdated(!isUpdated)})
+      .catch(error => {
+        console.log(error)
+        //ShowError("User not found", "404")
+      })
     }
-  ]
+    getData()
 
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.id, isUpdate, updateTrigger])
 
   // Last moved item/folder data
   type MoveItemsProps = {
@@ -251,6 +197,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     && lastMovedData.current.target_type === target_type) {
       return false
     }
+    setIsUpdate(!isUpdate)
     console.log("Target: " + target_type + ", id: " + target_id)
     console.log("Dragged: " + dragged_type + ", id: " + dragged_id)
 
@@ -260,7 +207,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       dragged_type: dragged_type,
       target_type: target_type,
     }
-  }, [])
+  }, [isUpdate])
   
   const DoubleTapEvent = useCallback((event:any) => {
     if (event.target.dataset.token !== undefined) {
@@ -359,7 +306,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
         }
       }
     }
-  }, [currentSortType, currentSortBy, currentRenderType, navigate, 
+  }, [currentSortType, currentSortBy, currentRenderType, isUpdated, navigate, 
   DoubleTapEvent, PanEvent, PanStartEvent, PanEndEvent, MoveItems])
 
   // Folder color
@@ -368,12 +315,40 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
     console.log("Color - " + data.color)
   }
 
+  // Delete folder
+  function DeleteFolder(folderToken:string) {
+    const getData = async () => {
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "folder/" + folderToken, {
+        method: 'DELETE',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 400) {
+          throw new Error('Bad request');
+        }
+        if (res.status === 404) {
+          throw new Error('Not found');
+        }
+      })
+      .then(() => setIsUpdate(!isUpdate))
+      .catch(error => {
+        console.log(error)
+        //ShowError("User not found", "404")
+      })
+    }
+    getData()
+  }
+
 
 
 
   return (
     <main className="py-4">
-      {currentRenderType === "list" ? (
+      {(foldersResponse === undefined || filesResponse === undefined) ? null : currentRenderType === "list" ? (
         <div>
           <div className="px-2 mb-2 pb-1
           font-semibold text-base border-b border-borderLight dark:border-borderDark
@@ -391,30 +366,30 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           </div>
           <div ref={visualizeFoldersRef}
           className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all h-auto">
-            {folders.sort((a, b) => {
+            {foldersResponse.sort((a, b) => {
               if (currentSortType === "size" ? a.size < b.size
-                : currentSortType === "date" ? a.created_at < b.created_at
+                : currentSortType === "date" ? a.createdAt < b.createdAt
                 : a.name < b.name) 
               { return currentSortBy === "descending" ? 1 : -1; }
               if (currentSortType === "size" ? a.size > b.size
-                : currentSortType === "date" ? a.created_at > b.created_at
+                : currentSortType === "date" ? a.createdAt > b.createdAt
                 : a.name > b.name) 
               { return currentSortBy === "descending" ? -1 : 1; }
               return 0;
             }).map((item, index) => (
-              <div key={index} data-id={item.id} data-type="folder" data-token={item.token}
+              <div key={index} data-type="folder" data-token={item.token}
               className="h-full w-full text-textLight dark:text-textDark
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
               text-lg rounded-lg rendered-folder transition-colors
               bg-backgroundSecondLight dark:bg-backgroundSecondDark relative">
                 {isMaskActive ? (
-                  <div data-id={item.id} data-type="folder" 
+                  <div data-token={item.token} data-type="folder" 
                   className="absolute h-full w-full z-20"></div>
                 ) : null}
                 <div className="flex px-2 py-1 flex-row justify-between">
                   <div className="flex flex-row items-center space-x-2 max-w-[calc(100dvw-88px)] 
                   sm:max-w-[calc(100dvw-348px)] md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]">
-                    <button id={"open-folder-colors-" + item.id} aria-label="Folder colors"
+                    <button id={"open-folder-colors-" + item.token} aria-label="Folder colors"
                     className="w-6 focus-first-right flex flex-row">
                       <svg viewBox="0 0 20 16" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 0H2C.9 0 0 .9 0 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2h-8L8 0Z" 
@@ -424,7 +399,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     {/* Color picker */}
                     <div className="bg-backgroundLight dark:bg-backgroundThirdDark w-max
                     focus-second-right rounded-lg text-base -mt-6 px-2 pb-2 pt-1 z-10">
-                      <ColorPicker type="defaultt" currentColor={item.color} dataId={item.id} onSelect={SetFolderColor}></ColorPicker>
+                      <ColorPicker type="defaultt" currentColor={item.color} onSelect={SetFolderColor}></ColorPicker>
                     </div>
                     <div className="truncate pointer-events-none">{item.name}</div>
                   </div>
@@ -438,15 +413,15 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded text-gray-700 dark:text-gray-400">
                         <div className="space-x-1">
                           <span className="text-sm">Size:</span>
-                          <span className="text-base text-textLight dark:text-textDark">{CutSize(item.size * 10)}</span>
+                          <span className="text-base text-textLight dark:text-textDark">{item.size === null ? null : CutSize(item.size * 10)}</span>
                         </div>
                         <div className="space-x-1">
                           <span className="text-sm">Created:</span>
-                          <span className="text-base text-textLight dark:text-textDark">{item.created_at}</span>
+                          <span className="text-base text-textLight dark:text-textDark">{item.createdAt}</span>
                         </div>
                         <div className="space-x-1">
                           <span className="text-sm">Watches:</span>
-                          <span className="text-base text-textLight dark:text-textDark">{item.watches ? CutNumber(item.watches) : 0}</span>
+                          <span className="text-base text-textLight dark:text-textDark">{item.views ? CutNumber(item.views) : 0}</span>
                         </div>
                         <div className="space-x-1">
                           <span className="text-sm">Downloads:</span>
@@ -469,18 +444,18 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       </div>
                       <div className="hover-second ml-3.5 w-8 z-10
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
-                        <button data-id={item.id} data-name={item.name}
-                        data-access={item.access_type} data-token={item.token} onClick={modalAccessOpen}
+                        <button data-name={item.name}
+                        data-access={item.accessType} data-token={item.token} onClick={modalAccessOpen}
                         className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           <IconLink classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconLink>
                         </button>
-                        <button data-id={item.id} data-name={item.name} data-token={item.token} 
+                        <button data-name={item.name} data-token={item.token} 
                         data-type="folder" onClick={modalRenameOpen}
                         className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           <IconEdit classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconEdit>
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
-                          {item.is_elected === true ? (
+                          {item.isElected === true ? (
                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                             className="w-5 h-5">
                               <path d="m21.82 10.74-5.12 3.71 2 6a1 1 0 0 1-.37 1.12 1 1 0 0 1-1.17 0L12 17.87l-5.12 
@@ -505,7 +480,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
-                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
+                        onClick={() => DeleteFolder(item.token)}>
                           <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
                         </button>
                       </div>
@@ -533,32 +509,32 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           <div ref={visualizeFilesRef}
           className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all h-auto"
           >
-            {files.sort((a, b) => {
+            {filesResponse.sort((a, b) => {
               if (currentSortType === "name" ? a.name < b.name
               : currentSortType === "type" 
                 ? a.name.lastIndexOf('.') + 1 === a.name.length ? false
                 : b.name.lastIndexOf('.') + 1 === b.name.length ? true 
                   : a.name.slice(a.name.lastIndexOf('.') + 1) < b.name.slice(b.name.lastIndexOf('.') + 1)
-                : currentSortType === "size" ? a.size < b.size
-                : a.created_at < b.created_at) 
+                : currentSortType === "size" ? a.fileSize < b.fileSize
+                : a.createdAt < b.createdAt) 
               { return currentSortBy === "descending" ? 1 : -1; }
               if (currentSortType === "name" ? a.name > b.name
               : currentSortType === "type" 
                 ? a.name.lastIndexOf('.') + 1 === a.name.length ? true
                 : b.name.lastIndexOf('.') + 1 === b.name.length ? false 
                   : a.name.slice(a.name.lastIndexOf('.') + 1) > b.name.slice(b.name.lastIndexOf('.') + 1)
-              : currentSortType === "size" ? a.size > b.size
-              : a.created_at > b.created_at) 
+              : currentSortType === "size" ? a.fileSize > b.fileSize
+              : a.createdAt > b.createdAt) 
               { return currentSortBy === "descending" ? -1 : 1; }
               return 0;
             }).map((item, index) => (
-              <div key={index} data-id={item.id} data-type="file" 
+              <div key={index} data-type="file" 
               className="text-textLight dark:text-textDark
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
               text-lg rounded-lg rendered-file h-full w-full relative
               bg-backgroundSecondLight dark:bg-backgroundSecondDark transition-colors">
               {isMaskActive ? (
-                <div data-id={item.id} data-type="file" 
+                <div data-token={item.token} data-type="file" 
                 className="absolute h-full w-full z-20"></div>
               ) : null}
                 <div className="flex px-2 py-1 flex-row justify-between">
@@ -578,15 +554,15 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded text-gray-700 dark:text-gray-400">
                         <div className="space-x-1">
                           <span className="text-sm">Size:</span>
-                          <span className="text-base text-textLight dark:text-textDark">{CutSize(item.size * 10)}</span>
+                          <span className="text-base text-textLight dark:text-textDark">{CutSize(item.fileSize * 10)}</span>
                         </div>
                         <div className="space-x-1">
                           <span className="text-sm">Created:</span>
-                          <span className="text-base text-textLight dark:text-textDark">{item.created_at}</span>
+                          <span className="text-base text-textLight dark:text-textDark">{item.createdAt}</span>
                         </div>
                         <div className="space-x-1">
                           <span className="text-sm">Watches:</span>
-                          <span className="text-base text-textLight dark:text-textDark">{item.watches ? item.watches : 0}</span>
+                          <span className="text-base text-textLight dark:text-textDark">{item.views ? item.views : 0}</span>
                         </div>
                         <div className="space-x-1">
                           <span className="text-sm">Downloads:</span>
@@ -596,7 +572,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     </div>
                     {/* Actions */}
                     <div className="w-6 sm:w-7 mg:w-8">
-                      <div data-id={item.id} data-type="file"
+                      <div data-type="file"
                       className="h-full flex items-center justify-center hover-first">
                         <svg viewBox="0 0 256 256"  xmlns="http://www.w3.org/2000/svg"
                         className="w-6 h-6">
@@ -610,12 +586,12 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       </div>
                       <div className="hover-second ml-3.5 w-8 z-10
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
-                        <button data-id={item.id} data-name={item.name} data-type="file" onClick={modalRenameOpen}
+                        <button data-name={item.name} data-type="file" onClick={modalRenameOpen}
                         className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           <IconEdit classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconEdit>
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
-                          {item.is_elected === true ? (
+                          {item.isElected === true ? (
                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                             className="w-5 h-5">
                               <path d="m21.82 10.74-5.12 3.71 2 6a1 1 0 0 1-.37 1.12 1 1 0 0 1-1.17 0L12 17.87l-5.12 
@@ -684,28 +660,28 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
               </tr>
             </thead>
             <tbody>
-              {folders.sort((a, b) => {
+              {foldersResponse.sort((a, b) => {
                 if (currentSortType === "size" ? a.size < b.size
-                  : currentSortType === "date" ? a.created_at < b.created_at
+                  : currentSortType === "date" ? a.createdAt < b.createdAt
                   : a.name < b.name) 
                 { return currentSortBy === "descending" ? 1 : -1; }
                 if (currentSortType === "size" ? a.size > b.size
-                : currentSortType === "date" ? a.created_at > b.created_at
+                : currentSortType === "date" ? a.createdAt > b.createdAt
                 : a.name > b.name) 
                 { return currentSortBy === "descending" ? -1 : 1; }
                 return 0;
               }).map((item, index) => (
-                <tr key={index} data-id={item.id} data-type="folder" data-token={item.token}
+                <tr key={index} data-type="folder" data-token={item.token}
                 className="border-b border-borderLight transition-colors h-8 -outline-offset-2
                 dark:border-borderDark hover-parent rendered-folder relative
                 hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark
                 bg-backgroundSecondLight dark:bg-backgroundSecondDark">
                   {isMaskActive ? (
-                    <td data-id={item.id} data-type="folder" data-token={item.token} 
+                    <td data-type="folder" data-token={item.token} 
                     className="absolute h-full w-full z-20"></td>
                   ) : null}
                   <td className="flex items-center justify-center h-8 flex-row">
-                    <button data-id={item.id} data-type="folder" className="w-6 focus-first-right">
+                    <button data-type="folder" className="w-6 focus-first-right">
                       <svg viewBox="0 0 20 16" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 0H2C.9 0 0 .9 0 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2h-8L8 0Z" 
                         fillRule="evenodd" fill={item.color ? ("#" + item.color) : "#888"}></path>
@@ -713,20 +689,20 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     </button>
                     <div className="focus-second-right bg-backgroundLight dark:bg-backgroundThirdDark 
                     rounded-lg text-base px-2 pb-2 pt-1 z-10 w-max" data-intable="true">
-                      <ColorPicker type="default" currentColor={item.color} dataId={item.id} onSelect={SetFolderColor}></ColorPicker>
+                      <ColorPicker type="default" currentColor={item.color} onSelect={SetFolderColor}></ColorPicker>
                     </div>
                   </td>
                   <td data-token={item.token}
                   className="font-medium text truncate max-w-[1px]">{item.name}</td>
                   <td
-                  data-token={item.token}>{CutSize(item.size * 10)}</td>
+                  data-token={item.token}>{item.size === null ? null : CutSize(item.size * 10)}</td>
                   <td
-                  data-token={item.token} className="hidden lg:table-cell">{item.created_at}</td>
+                  data-token={item.token} className="hidden lg:table-cell">{item.createdAt}</td>
                   {/* Links */}
                   <td>
                     <div className="flex hover-child justify-center items-center h-full">
-                      <button data-id={item.id} data-name={item.name}
-                      data-access={item.access_type} data-token={item.token} onClick={modalAccessOpen}>
+                      <button data-name={item.name}
+                      data-access={item.accessType} data-token={item.token} onClick={modalAccessOpen}>
                         <IconLink classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconLink>
                       </button>
                     </div>
@@ -734,7 +710,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   {/* Edit */}
                   <td className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
-                      <button data-id={item.id} data-name={item.name} data-type="folder" onClick={modalRenameOpen}>
+                      <button data-name={item.name} data-type="folder" onClick={modalRenameOpen}>
                         <IconEdit classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconEdit>
                       </button>
                     </div>
@@ -742,9 +718,9 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   {/* Delete */}
                   <td 
                   className="text-center">
-                    <div data-id={item.id} data-type="folder" 
+                    <div data-type="folder" 
                     className="flex hover-child justify-center items-center h-full">
-                      <button data-id={item.id} data-type="folder">
+                      <button data-type="folder">
                         <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
                       </button>
                     </div>
@@ -757,7 +733,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     <div className="hover-second-info ml-4 bg-backgroundThirdLight dark:bg-backgroundThirdDark px-2 py-1 rounded z-10">
                       <div className="flex flex-row space-x-2 text-sm font-medium">
                         <IconWatch classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconWatch>
-                        <p>{item.watches === null ? 0 : CutNumber(item.watches)}</p>
+                        <p>{item.views === null ? 0 : CutNumber(item.views)}</p>
                       </div>
                       <div className="flex flex-row space-x-2 text-base font-medium">
                         <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
@@ -769,7 +745,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   <td 
                   className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <button data-id={item.id} data-type="folder">
+                      <button data-type="folder">
                         <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                       </button>
                     </div>
@@ -777,8 +753,8 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   {/* Star */}
                   <td className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <button data-id={item.id} data-type="folder">
-                        {item.is_elected === true ? (
+                      <button data-type="folder">
+                        {item.isElected === true ? (
                           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                           className="w-5 h-5">
                             <path d="m21.82 10.74-5.12 3.71 2 6a1 1 0 0 1-.37 1.12 1 1 0 0 1-1.17 0L12 17.87l-5.12 
@@ -805,58 +781,58 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   </td>
                 </tr>
               ))}
-              {files.sort((a, b) => {
+              {filesResponse.sort((a, b) => {
                 if (currentSortType === "name" ? a.name < b.name
                   : currentSortType === "type" 
                     ? a.name.lastIndexOf('.') + 1 === a.name.length ? false
                     : b.name.lastIndexOf('.') + 1 === b.name.length ? true 
                       : a.name.slice(a.name.lastIndexOf('.') + 1) < b.name.slice(b.name.lastIndexOf('.') + 1)
-                  : currentSortType === "size" ? a.size < b.size
-                  : a.created_at < b.created_at) 
+                  : currentSortType === "size" ? a.fileSize < b.fileSize
+                  : a.createdAt < b.createdAt) 
                 { return currentSortBy === "descending" ? 1 : -1; }
                 if (currentSortType === "name" ? a.name > b.name
                 : currentSortType === "type" 
                   ? a.name.lastIndexOf('.') + 1 === a.name.length ? true
                   : b.name.lastIndexOf('.') + 1 === b.name.length ? false 
                     : a.name.slice(a.name.lastIndexOf('.') + 1) > b.name.slice(b.name.lastIndexOf('.') + 1)
-                : currentSortType === "size" ? a.size > b.size
-                : a.created_at > b.created_at) 
+                : currentSortType === "size" ? a.fileSize > b.fileSize
+                : a.createdAt > b.createdAt) 
                 { return currentSortBy === "descending" ? -1 : 1; }
                 return 0;
               }).map((item, index) => (
-                <tr key={index} data-id={item.id} data-type="file"
+                <tr key={index} data-type="file"
                 className="border-b border-borderLight dark:border-borderDark 
                 transition-colors h-8 relative hover-parent rendered-files
                 hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark 
                 bg-backgroundSecondLight dark:bg-backgroundSecondDark 
                 rendered-file -outline-offset-2">
                   {isMaskActive ? (
-                    <td data-id={item.id} data-type="file"
+                    <td data-token={item.token} data-type="file"
                     className="absolute h-full w-full z-20"></td>
                   ) : null}
-                  <td data-id={item.id} className="flex items-center justify-center">
-                    <img src={item.icon_link} alt=""></img>
+                  <td className="flex items-center justify-center">
+                    <FileIcon fileType={item.fileType}></FileIcon>
                   </td>
-                  <td data-id={item.id} data-type="file" 
+                  <td data-type="file" 
                   className="font-medium text truncate max-w-[1px]">{item.name}</td>
-                  <td data-id={item.id} data-type="file">{CutSize(item.size * 10)}</td>
-                  <td data-id={item.id} data-type="file"
-                  className="hidden lg:table-cell">{item.created_at}</td>
+                  <td data-type="file">{CutSize(item.fileSize * 10)}</td>
+                  <td data-type="file"
+                  className="hidden lg:table-cell">{item.createdAt}</td>
                   {/* Links */}
-                  <td data-id={item.id} data-type="file"></td>
+                  <td data-type="file"></td>
                   {/* Edit */}
-                  <td data-id={item.id} data-type="file" 
+                  <td data-type="file" 
                   className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
-                      <button data-id={item.id} data-name={item.name} data-type="file" onClick={modalRenameOpen}>
+                      <button data-name={item.name} data-type="file" onClick={modalRenameOpen}>
                         <IconEdit classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconEdit>
                       </button>
                     </div>
                   </td>
                   {/* Delete */}
-                  <td data-id={item.id} data-type="file" className="text-center">
+                  <td data-type="file" className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
-                      <button data-id={item.id} data-type="file">
+                      <button data-type="file">
                         <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
                       </button>
                     </div>
@@ -869,7 +845,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     <div className="hover-second-info ml-4 bg-backgroundThirdLight dark:bg-backgroundThirdDark px-2 py-1 rounded z-10">
                       <div className="flex flex-row space-x-2 text-sm font-medium">
                         <IconWatch classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconWatch>
-                        <p>{item.watches === null ? 0 : CutNumber(item.watches)}</p>
+                        <p>{item.views === null ? 0 : CutNumber(item.views)}</p>
                       </div>
                       <div className="flex flex-row space-x-2 text-base font-medium">
                         <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
@@ -878,18 +854,18 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     </div>
                   </td>
                   {/* Download */}
-                  <td data-id={item.id} data-type="file" className="text-center">
+                  <td data-type="file" className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <div data-id={item.id} data-type="file">
+                      <div data-type="file">
                         <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                       </div>
                     </div>
                   </td>
                   {/* Star */}
-                  <td data-id={item.id} data-type="file" className="text-center">
+                  <td data-type="file" className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <div data-id={item.id} data-type="file">
-                        {item.is_elected === true ? (
+                      <div data-type="file">
+                        {item.isElected === true ? (
                           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                           className="w-5 h-5">
                             <path d="m21.82 10.74-5.12 3.71 2 6a1 1 0 0 1-.37 1.12 1 1 0 0 1-1.17 0L12 17.87l-5.12 
@@ -936,47 +912,47 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
           </div>
           <div ref={visualizeFoldersRef}
           className="flex gap-x-1 md:gap-x-1.5 lg:gap-x-2 mt-2 flex-row flex-wrap transition-all h-auto">
-            {folders.sort((a, b) => {
+            {foldersResponse.sort((a, b) => {
               if (currentSortType === "size" ? a.size < b.size
-                : currentSortType === "date" ? a.created_at < b.created_at
+                : currentSortType === "date" ? a.createdAt < b.createdAt
                 : a.name < b.name) 
               { return currentSortBy === "descending" ? 1 : -1; }
               if (currentSortType === "size" ? a.size > b.size
-                : currentSortType === "date" ? a.created_at > b.created_at
+                : currentSortType === "date" ? a.createdAt > b.createdAt
                 : a.name > b.name) 
               { return currentSortBy === "descending" ? -1 : 1; }
               return 0;
             }).map((item, index) => (
-              <div key={index} data-id={item.id} data-type="folder" data-token={item.token}
+              <div key={index} data-type="folder" data-token={item.token}
               className=" hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark
               px-2 w-36 rounded-md flex flex-col py-1 hover-parent rendered-folder
               bg-backgroundSecondLight dark:bg-backgroundSecondDark relative">
                 {isMaskActive ? (
-                  <div data-id={item.id} data-type="folder" 
+                  <div data-token={item.token} data-type="folder" 
                   className="absolute h-full w-full z-20"></div>
                 ) : null}
                 {/* Actions */}
-                <div data-id={item.id} data-type="folder" 
+                <div data-type="folder" 
                 className="h-6 flex flex-row justify-around flex-nowrap">
-                  <div data-id={item.id} data-type="folder" className="hover-child">
-                    <button data-id={item.id} data-name={item.name} data-type="folder"
-                    data-access={item.access_type} data-token={item.token} onClick={modalAccessOpen}
+                  <div data-type="folder" className="hover-child">
+                    <button data-name={item.name} data-type="folder"
+                    data-access={item.accessType} data-token={item.token} onClick={modalAccessOpen}
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
                       <IconLink classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconLink>
                     </button>
-                    <button data-id={item.id} data-type="folder"
+                    <button data-type="folder"
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
                       <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                     </button>
-                    <button data-id={item.id} data-type="folder"
+                    <button data-type="folder"
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
                       <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
                     </button>
                   </div>
                 </div>
                 {/* Main icon */}
-                <div data-id={item.id} data-type="folder" className="px-2 flex flex-col">
-                  <button data-id={item.id} data-token={item.token} data-type="folder" 
+                <div data-type="folder" className="px-2 flex flex-col">
+                  <button data-token={item.token} data-type="folder" 
                   className="focus-first-bottom">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                     className="w-28 h-28">
@@ -993,13 +969,13 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                   {/* Color picker */}
                   <div className="bg-backgroundLight dark:bg-backgroundThirdDark z-10 w-max
                   focus-second-bottom rounded-lg text-base px-2 pb-2 pt-1 mt-[112px] -ml-[20px]">
-                    <ColorPicker type="default" currentColor={item.color} dataId={item.id} onSelect={SetFolderColor}></ColorPicker>
+                    <ColorPicker type="default" currentColor={item.color} onSelect={SetFolderColor}></ColorPicker>
                   </div>
                   {/* Folder info */}
                   <div className="absolute w-28 h-28 flex flex-col justify-between
                   text-textLight dark:text-textDark pointer-events-none">
                     {/* Watches and items in folder */}
-                    <div data-id={item.id} data-type="folder" 
+                    <div data-type="folder" 
                     className="flex flex-row justify-between pt-2.5 px-0.5">
                       <div>
                         <IconInfo classes="w-6 h-6 hover-first-info pointer-events-auto" 
@@ -1008,7 +984,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                         px-2 py-1 rounded z-10">
                           <div className="flex flex-row space-x-2 text-sm font-medium">
                             <IconWatch classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconWatch>
-                            <p>{item.watches === null ? 0 : CutNumber(item.watches)}</p>
+                            <p>{item.views === null ? 0 : CutNumber(item.views)}</p>
                           </div>
                           <div className="flex flex-row space-x-2 text-base font-medium">
                             <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
@@ -1018,27 +994,27 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                       </div>
                       <div className=" mt-2.5 mr-0.5 font-medium pointer-events-none"
                       style={{color: item.color ? BlurColor(item.color, -60) : "#585858"}}>
-                        {item.files_inside}
+                        {item.filesInside}
                       </div>
                     </div>
                     {/* Elected and size */}
-                    <div data-id={item.id} data-type="folder" 
+                    <div data-type="folder" 
                     className="flex flex-row justify-between items-end px-1 pb-1.5">
                       <div className="">
-                        <button data-id={item.id} data-type="folder" className="pointer-events-auto">
-                          <IconTileStar width="24px" height="24px" isActive={item.is_elected}
-                          firstColor={GetCSSValue(item.is_elected ? "icon" : "text")} 
+                        <button data-type="folder" className="pointer-events-auto">
+                          <IconTileStar width="24px" height="24px" isActive={item.isElected}
+                          firstColor={GetCSSValue(item.isElected ? "icon" : "text")} 
                           secondColor={BlurColor(GetCSSValue("icon"), -48)}></IconTileStar>
                         </button>
                       </div>
-                      <div data-id={item.id} data-type="folder" 
-                      className="font-medium">{CutSize(item.size * 10)}</div>
+                      <div data-type="folder" 
+                      className="font-medium">{item.size === null ? null : CutSize(item.size * 10)}</div>
                     </div>
                   </div>
                 </div>
-                <div data-id={item.id} data-type="folder" className="flex cursor-default justify-center">
+                <div data-type="folder" className="flex cursor-default justify-center">
                   <button className="text-center pointer-events-auto transition-all whitespace-pre-wrap hover:underline" 
-                  data-id={item.id} data-name={item.name} data-token={item.token} data-type="folder" onClick={modalRenameOpen}>
+                 data-name={item.name} data-token={item.token} data-type="folder" onClick={modalRenameOpen}>
                     {item.name}
                   </button>
                 </div>
@@ -1061,26 +1037,26 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
             </svg>
           </div>
           <div className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-4 transition-all h-auto">
-            {files.sort((a, b) => {
+            {filesResponse.sort((a, b) => {
               if (currentSortType === "name" ? a.name < b.name
               : currentSortType === "type" 
                 ? a.name.lastIndexOf('.') + 1 === a.name.length ? false
                 : b.name.lastIndexOf('.') + 1 === b.name.length ? true 
                   : a.name.slice(a.name.lastIndexOf('.') + 1) < b.name.slice(b.name.lastIndexOf('.') + 1)
-                : currentSortType === "size" ? a.size < b.size
-                : a.created_at < b.created_at) 
+                : currentSortType === "size" ? a.fileSize < b.fileSize
+                : a.createdAt < b.createdAt) 
               { return currentSortBy === "descending" ? 1 : -1; }
               if (currentSortType === "name" ? a.name > b.name
               : currentSortType === "type" 
                 ? a.name.lastIndexOf('.') + 1 === a.name.length ? true
                 : b.name.lastIndexOf('.') + 1 === b.name.length ? false 
                   : a.name.slice(a.name.lastIndexOf('.') + 1) > b.name.slice(b.name.lastIndexOf('.') + 1)
-              : currentSortType === "size" ? a.size > b.size
-              : a.created_at > b.created_at) 
+              : currentSortType === "size" ? a.fileSize > b.fileSize
+              : a.createdAt > b.createdAt) 
               { return currentSortBy === "descending" ? -1 : 1; }
               return 0;
             }).map((item, index) => (
-              <div key={index} data-id={item.id} data-type="file"
+              <div key={index} data-type="file"
               className="flex h-full w-full text-textLight dark:text-textDark
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
               flex-row justify-between text-lg px-2 py-1 rounded-lg rendered-files">
@@ -1108,15 +1084,15 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded text-gray-700 dark:text-gray-400">
                       <div className="space-x-1">
                         <span className="text-sm">Size:</span>
-                        <span className="text-base text-textLight dark:text-textDark">{CutSize(item.size * 10)}</span>
+                        <span className="text-base text-textLight dark:text-textDark">{CutSize(item.fileSize * 10)}</span>
                       </div>
                       <div className="space-x-1">
                         <span className="text-sm">Created:</span>
-                        <span className="text-base text-textLight dark:text-textDark">{item.created_at}</span>
+                        <span className="text-base text-textLight dark:text-textDark">{item.createdAt}</span>
                       </div>
                       <div className="space-x-1">
                         <span className="text-sm">Watches:</span>
-                        <span className="text-base text-textLight dark:text-textDark">{item.watches ? item.watches : 0}</span>
+                        <span className="text-base text-textLight dark:text-textDark">{item.views ? item.views : 0}</span>
                       </div>
                       <div className="space-x-1">
                         <span className="text-sm">Downloads:</span>
@@ -1141,7 +1117,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                     </div>
                     <div className="hover-second ml-3.5 w-8
                     bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
-                      <button data-id={item.id} data-name={item.name} data-type="file" onClick={modalRenameOpen}
+                      <button data-name={item.name} data-type="file" onClick={modalRenameOpen}
                       className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                         <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
                         className="w-5 h-5"><g>
@@ -1158,7 +1134,7 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
                         </svg>
                       </button>
                       <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
-                        {item.is_elected === true ? (
+                        {item.isElected === true ? (
                           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                           className="w-5 h-5">
                             <path d="m21.82 10.74-5.12 3.71 2 6a1 1 0 0 1-.37 1.12 1 1 0 0 1-1.17 0L12 17.87l-5.12 
@@ -1263,4 +1239,5 @@ export default function RenderData({currentSortType, currentSortBy, currentRende
       </Modal>
     </main>
   )
-}
+})
+export default RenderData
