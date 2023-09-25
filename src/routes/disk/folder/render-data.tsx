@@ -358,7 +358,7 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
 
   // Delete folder
   function DeleteFolder(folderToken:string) {
-    const getData = async () => {
+    const deleteFolder = async () => {
       let token = localStorage.getItem("token")
       await fetch(apiUrl + "folder/" + folderToken, {
         method: 'DELETE',
@@ -381,7 +381,7 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
         //ShowError("User not found", "404")
       })
     }
-    getData()
+    deleteFolder()
   }
 
   // Rename file/folder
@@ -428,6 +428,80 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
     }
     getData()
     modalRenameClose()
+  }
+
+  // Elect folder
+  function ElectFolder(folderToken:string) {
+    const elect = async () => {
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "folder/elect/" + folderToken, {
+        method: 'PATCH',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 400) {
+          throw new Error('Bad request');
+        }
+        if (res.status === 404) {
+          throw new Error('Not found');
+        }
+      })
+      .then(() => {
+        let elems = foldersResponse?.filter(x => x.token === selectedItem.token)
+        if (elems !== undefined && elems?.length > 0) {
+          let deleteIndex = elems.indexOf(elems[0])
+          let changed = elems[0]
+          changed.isElected = !changed.isElected
+          setFoldersResponse(foldersResponse?.splice(deleteIndex))
+          setFoldersResponse(foldersResponse?.concat(changed))
+        }
+      })
+      .catch(error => {
+        console.log(error)
+        //ShowError("User not found", "404")
+      })
+    }
+    elect()
+  }
+
+  // Elect file
+  function ElectFile(fileToken:string) {
+    const elect = async () => {
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "file/elect/" + fileToken, {
+        method: 'PATCH',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 400) {
+          throw new Error('Bad request');
+        }
+        if (res.status === 404) {
+          throw new Error('Not found');
+        }
+      })
+      .then(() => {
+        let elems = filesResponse?.filter(x => x.token === selectedItem.token)
+        if (elems !== undefined && elems?.length > 0) {
+          let deleteIndex = elems.indexOf(elems[0])
+          let changed = elems[0]
+          changed.isElected = !changed.isElected
+          setFilesResponse(filesResponse?.splice(deleteIndex))
+          setFilesResponse(filesResponse?.concat(changed))
+        }
+      })
+      .catch(error => {
+        console.log(error)
+        //ShowError("User not found", "404")
+      })
+    }
+    elect()
   }
 
 
@@ -541,7 +615,8 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                         className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           <IconEdit classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconEdit>
                         </button>
-                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
+                        onClick={() => ElectFolder(item.token)}>
                           {item.isElected === true ? (
                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                             className="w-5 h-5">
@@ -677,7 +752,8 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                         className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           <IconEdit classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconEdit>
                         </button>
-                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
+                        onClick={() => ElectFile(item.token)}>
                           {item.isElected === true ? (
                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                             className="w-5 h-5">
@@ -840,7 +916,7 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                   {/* Star */}
                   <td className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <button data-type="folder">
+                      <button data-type="folder" onClick={() => ElectFolder(item.token)}>
                         {item.isElected === true ? (
                           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                           className="w-5 h-5">
@@ -951,7 +1027,7 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                   {/* Star */}
                   <td data-type="file" className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <div data-type="file">
+                      <button data-type="file" onClick={() => ElectFile(item.token)}>
                         {item.isElected === true ? (
                           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                           className="w-5 h-5">
@@ -973,7 +1049,7 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                             className="fill-textLight dark:fill-textDark"></path>
                           </svg>
                         )}
-                      </div>
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -1088,7 +1164,8 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                     <div data-type="folder" 
                     className="flex flex-row justify-between items-end px-1 pb-1.5">
                       <div className="">
-                        <button data-type="folder" className="pointer-events-auto">
+                        <button data-type="folder" className="pointer-events-auto" 
+                        onClick={() => ElectFolder(item.token)}>
                           <IconTileStar width="24px" height="24px" isActive={item.isElected}
                           firstColor={GetCSSValue(item.isElected ? "icon" : "text")} 
                           secondColor={BlurColor(GetCSSValue("icon"), -48)}></IconTileStar>
