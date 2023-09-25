@@ -313,6 +313,48 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
   function SetFolderColor(data:any) {
     console.log("Folder - " + data.id);
     console.log("Color - " + data.color)
+    if (data.id === undefined || data.color === undefined) {
+      // ShowError
+      return;
+    }
+
+    const getData = async () => {
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "folder/color/" + data.id, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          "color": data.color
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 400) {
+          throw new Error('Bad request');
+        }
+        if (res.status === 404) {
+          throw new Error('Not found');
+        }
+      })
+      .then(() => {
+        let elems = foldersResponse?.filter(x => x.token === data.id)
+        if (elems !== undefined && elems?.length > 0) {
+          let deleteIndex = elems.indexOf(elems[0])
+          let changed = elems[0]
+          changed.color = data.color
+          setFoldersResponse(foldersResponse?.splice(deleteIndex))
+          setFoldersResponse(foldersResponse?.concat(changed))
+        }
+        console.log(foldersResponse)
+      })
+      .catch(error => {
+        console.log(error)
+        //ShowError("User not found", "404")
+      })
+    }
+    getData()
   }
 
   // Delete folder
@@ -393,13 +435,13 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                     className="w-6 focus-first-right flex flex-row">
                       <svg viewBox="0 0 20 16" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 0H2C.9 0 0 .9 0 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2h-8L8 0Z" 
-                        fillRule="evenodd" fill={item.color ? ("#" + item.color) : "#888"}></path>
+                        fillRule="evenodd" className="transition-colors" fill={item.color ? ("#" + item.color) : "#888"}></path>
                       </svg>
                     </button>
                     {/* Color picker */}
                     <div className="bg-backgroundLight dark:bg-backgroundThirdDark w-max
                     focus-second-right rounded-lg text-base -mt-6 px-2 pb-2 pt-1 z-10">
-                      <ColorPicker type="defaultt" currentColor={item.color} onSelect={SetFolderColor}></ColorPicker>
+                      <ColorPicker type="defaultt" currentColor={item.color} dataId={item.token} onSelect={SetFolderColor}></ColorPicker>
                     </div>
                     <div className="truncate pointer-events-none">{item.name}</div>
                   </div>
@@ -684,12 +726,12 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                     <button data-type="folder" className="w-6 focus-first-right">
                       <svg viewBox="0 0 20 16" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 0H2C.9 0 0 .9 0 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2h-8L8 0Z" 
-                        fillRule="evenodd" fill={item.color ? ("#" + item.color) : "#888"}></path>
+                        fillRule="evenodd" className="transition-colors" fill={item.color ? ("#" + item.color) : "#888"}></path>
                       </svg>
                     </button>
                     <div className="focus-second-right bg-backgroundLight dark:bg-backgroundThirdDark 
                     rounded-lg text-base px-2 pb-2 pt-1 z-10 w-max" data-intable="true">
-                      <ColorPicker type="default" currentColor={item.color} onSelect={SetFolderColor}></ColorPicker>
+                      <ColorPicker type="default" currentColor={item.color} dataId={item.token} onSelect={SetFolderColor}></ColorPicker>
                     </div>
                   </td>
                   <td data-token={item.token}
@@ -958,18 +1000,18 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                     className="w-28 h-28">
                       <path d="M12 6c0 1.1-.895 2-2 2H2c-1.105 0-2 .9-2 2v11c0 1.1.895 
                       2 2 2h20c1.105 0 2-.9 2-2V8c0-1.1-.895-2-2-2H12z" 
-                      fill={item.color ? BlurColor(item.color, -32) : "#686868"}></path>
+                      className="transition-colors"fill={item.color ? BlurColor(item.color, -32) : "#686868"}></path>
                       <path d="M2 2a2 2 0 0 0-2 2v5h10v1h14V5a2 2 0 0 0-2-2H11.719A1.98 1.98 0 0 0 10 2H2z" 
-                      fill={item.color ? BlurColor(item.color, -32) : "#686868"}></path>
+                       className="transition-colors"fill={item.color ? BlurColor(item.color, -32) : "#686868"}></path>
                       <path d="M12 5c0 1.1-.895 2-2 2H2C.895 7 0 7.9 0 9v11c0 1.1.895 
                       2 2 2h20c1.105 0 2-.9 2-2V7c0-1.1-.895-2-2-2H12z" 
-                      fill={item.color ? "#" + item.color : "#888888"}></path>
+                      className="transition-colors"fill={item.color ? "#" + item.color : "#888888"}></path>
                     </svg>
                   </button>
                   {/* Color picker */}
                   <div className="bg-backgroundLight dark:bg-backgroundThirdDark z-10 w-max
                   focus-second-bottom rounded-lg text-base px-2 pb-2 pt-1 mt-[112px] -ml-[20px]">
-                    <ColorPicker type="default" currentColor={item.color} onSelect={SetFolderColor}></ColorPicker>
+                    <ColorPicker type="default" currentColor={item.color} dataId={item.token} onSelect={SetFolderColor}></ColorPicker>
                   </div>
                   {/* Folder info */}
                   <div className="absolute w-28 h-28 flex flex-col justify-between

@@ -6,7 +6,7 @@ interface ColorPickerProps {
   onSelect:(e:any) => void
   type:string
   dataId?:any
-  currentColor:string | null | undefined
+  currentColor:string | null 
 }
  
 const ColorPicker: FunctionComponent<ColorPickerProps> = memo(({onSelect, currentColor, type, dataId}:ColorPickerProps) => {
@@ -49,7 +49,7 @@ const ColorPicker: FunctionComponent<ColorPickerProps> = memo(({onSelect, curren
       </div>
       <div className="flex flex-col flex-wrap max-h-[145px] min-h-[145px]">
         {extendedColors.map((extended_color, extended_color_index) => currentColor === extended_color ? (
-          <button className="rounded h-4 w-4 pointer-events-none" 
+          <button className="rounded h-4 w-4 pointer-events-none m-[1px]" 
           style={{backgroundColor: "#" + extended_color}} 
           key={extended_color_index} aria-label="Select color">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
