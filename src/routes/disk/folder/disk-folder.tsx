@@ -8,6 +8,7 @@ import "../../../styles/hover-elems.css"
 import RenderData from "./render-data";
 import IconAlerts from "../../../components/icons/IconAlerts";
 import { apiUrl } from "../../../data/data";
+import { useParams } from "react-router-dom";
 
 export default function DiskFolder() {
   const inputFileButtonRef:any = useRef()
@@ -139,32 +140,50 @@ export default function DiskFolder() {
       rootElem?.removeEventListener("click", CloseAllDrops)
     }
   }, [])
-
+  
+  const params: any = useParams();
+  if (params.id === undefined) {
+    throw Error("Check params")
+  }
   // File uploader
   const fileUploaderRef:any = useRef()
   const [isDragVisible, setIsDragVisible] = useState(false);
   //const [file, setFile] = useState([]);
   const handleChange = useCallback((files: any) => {
     const pushFiles = async () => {
-      const request = new XMLHttpRequest();
       const formData = new FormData();
-
-      request.open("POST", apiUrl + "files", true);
-      request.onreadystatechange = () => {
-        if (request.readyState === 4) {
-          console.log(request.responseText);
-        }
-      };
       for (let i = 0; i < files.length; i++) {
-        formData.append("file", files[i]);
+        formData.append("files", files[i]);
       }
-      request.send(formData);
+      formData.append("folderToken", params.id);
+
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "file", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 400) {
+          throw new Error('Bad request');
+        }
+        if (res.status === 404) {
+          throw new Error('Not found');
+        }
+      })
+      .then(() => setIsUpdate(!isUpdate))
+      .catch(error => {
+        console.log(error)
+        //ShowError("User not found", "404")
+      })
     }
     pushFiles()
 
     setIsDragVisible(false)
     console.log(files)
-  }, []);
+  }, [params.id, isUpdate]);
 
   function VisualizeUploader(e:any | null) {
     if (e.type === "dragenter" && e.nativeEvent?.dataTransfer?.types.length !== 0) {
