@@ -1,11 +1,15 @@
 import { motion } from "framer-motion"
 import React, { Suspense, useState, useRef } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { z } from "zod";
 import IconLogo from "../../../components/icons/IconLogo";
+import { apiUrl } from "../../../data/data";
+
 const AlertButton = React.lazy(() => import("../../../components/alert-button"));
 
 export default function SignUp() {
+  const navigate = useNavigate()
+
   const firstNameRef:any = useRef()
   const lastNameRef:any = useRef()
   const emailRef:any = useRef()
@@ -18,13 +22,38 @@ export default function SignUp() {
   const [alertTitle, setAlertTitle] = useState("Error!")
   const [isAlertOpen, setIsAlertOpen] = useState(false)
 
-  function SendRequest() {
-    // Show error
+  async function SendRequest() {
+    // Check data
     if (CheckData() === false) {
       return
     }
     
     // Api request
+    await fetch(apiUrl + "auth/signup", {
+      method: 'POST', 
+      body: JSON.stringify({
+        firstName: firstNameRef.current.value,
+        lastName: lastNameRef.current.value,
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
+        about: aboutRef.current.value.length === 0 ? null : aboutRef.current.value,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((res) => {
+      if (res.status === 404) {
+        throw new Error('User not found');
+      }
+      return res.json();
+    })
+    // !!! change later
+    .then(data => {localStorage.setItem("token", data.token); navigate("/disk/folder/main")})
+    .catch(error => {
+      console.log(error)
+      ShowError("User not found", "404")
+    })
   }
 
   const SignUpSchema = z.object({
@@ -40,7 +69,6 @@ export default function SignUp() {
   })
 
   function CheckData():boolean {
-    setIsAlertOpen(false)
     try {
       SignUpSchema.parse({
         "First name": firstNameRef.current.value,
@@ -51,15 +79,20 @@ export default function SignUp() {
         About: aboutRef.current.value.length === 0 ? null : aboutRef.current.value,
       })
     } catch (e:any) {
-      setAlertText(JSON.parse(e)[0].message.toString())
-      setAlertTitle(JSON.parse(e)[0].path[0].toString())
-      setTimeout(() => {
-        setIsAlertOpen(true)
-      }, 250);
+      ShowError(JSON.parse(e)[0].message.toString(), JSON.parse(e)[0].path[0].toString())
       return false
     }
 
     return true
+  }
+
+  function ShowError(text:string, title:string) {
+    setIsAlertOpen(false)
+    setAlertText(text)
+    setAlertTitle(title)
+    setTimeout(() => {
+      setIsAlertOpen(true)
+    }, 250);
   }
   
   return (

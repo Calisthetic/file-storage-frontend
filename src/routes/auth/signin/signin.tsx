@@ -1,11 +1,13 @@
 import { motion } from "framer-motion"
 import { Suspense, useRef, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { z } from "zod";
 import AlertButton from "../../../components/alert-button";
 import IconLogo from "../../../components/icons/IconLogo";
+import { apiUrl } from "../../../data/data";
 
 export default function SignIn() {
+  const navigate = useNavigate()
   // Inputs
   const emailRef:any = useRef()
   const passwordRef:any = useRef()
@@ -14,36 +16,61 @@ export default function SignIn() {
   const [alertTitle, setAlertTitle] = useState("Error!")
   const [isAlertOpen, setIsAlertOpen] = useState(false)
   const SignInSchema = z.object({
-    Email: z.string().email(),
-    Password: z.string().min(8).max(32),
+    // change later
+    Email: z.string().max(32),//email(),
+    Password: z.string().min(4).max(32),
   })
 
-  function SendData() {
+  async function SendData() {
     // Show error
     if (CheckData() === false) {
       return
     }
     
     // Api request
+    await fetch(apiUrl + "auth/signin", {
+      method: 'POST', 
+      body: JSON.stringify({
+        login: emailRef.current.value, 
+        password: passwordRef.current.value
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((res) => {
+      if (res.status === 404) {
+        throw new Error('User not found');
+      }
+      return res.json();
+    })
+    .then(data => {localStorage.setItem("token", data.token); navigate("/disk/folder/main")})
+    .catch(error => {
+      console.log(error)
+      ShowError("User not found", "404")
+    })
   }
   
   function CheckData():boolean {
-    setIsAlertOpen(false)
     try {
       SignInSchema.parse({
         Email: emailRef.current.value,
         Password: passwordRef.current.value,
       })
     } catch (e:any) {
-      console.log(e)
-      setAlertText(JSON.parse(e)[0].message.toString())
-      setAlertTitle(JSON.parse(e)[0].path[0].toString())
-      setTimeout(() => {
-        setIsAlertOpen(true)
-      }, 250);
+      ShowError(JSON.parse(e)[0].message.toString(), JSON.parse(e)[0].path[0].toString())
       return false
     }
     return true
+  }
+
+  function ShowError(text:string, title:string) {
+    setIsAlertOpen(false)
+    setAlertText(text)
+    setAlertTitle(title)
+    setTimeout(() => {
+      setIsAlertOpen(true)
+    }, 250);
   }
 
   return (
