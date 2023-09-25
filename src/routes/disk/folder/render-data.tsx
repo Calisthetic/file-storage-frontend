@@ -318,7 +318,7 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
       return;
     }
 
-    const getData = async () => {
+    const patchColor = async () => {
       let token = localStorage.getItem("token")
       await fetch(apiUrl + "folder/color/" + data.id, {
         method: 'PATCH',
@@ -347,14 +347,13 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
           setFoldersResponse(foldersResponse?.splice(deleteIndex))
           setFoldersResponse(foldersResponse?.concat(changed))
         }
-        console.log(foldersResponse)
       })
       .catch(error => {
         console.log(error)
         //ShowError("User not found", "404")
       })
     }
-    getData()
+    patchColor()
   }
 
   // Delete folder
@@ -383,6 +382,52 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
       })
     }
     getData()
+  }
+
+  // Rename file/folder
+  function handleRename() {
+    let newName = newNameInputRef.current.value
+    if (newName.length === 0 || newName.length > 20) {
+      // Show error
+      return
+    }
+    const getData = async () => {
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "folder/name/" + selectedItem.token, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          "name": newName
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 400) {
+          throw new Error('Bad request');
+        }
+        if (res.status === 404) {
+          throw new Error('Not found');
+        }
+      })
+      .then(() => {
+        let elems = foldersResponse?.filter(x => x.token === selectedItem.token)
+        if (elems !== undefined && elems?.length > 0) {
+          let deleteIndex = elems.indexOf(elems[0])
+          let changed = elems[0]
+          changed.name = newName
+          setFoldersResponse(foldersResponse?.splice(deleteIndex))
+          setFoldersResponse(foldersResponse?.concat(changed))
+        }
+      })
+      .catch(error => {
+        console.log(error)
+        //ShowError("User not found", "404")
+      })
+    }
+    getData()
+    modalRenameClose()
   }
 
 
@@ -1253,7 +1298,7 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
               </button>
               <button className=" bg-buttonLight dark:bg-buttonDark rounded-full px-5 py-1
               hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark transition-colors"
-              onClick={modalRenameClose}>
+              onClick={handleRename}>
                 OK
               </button>
             </div>
