@@ -20,11 +20,14 @@ const StatisticGraph:FunctionComponent<StatisticGraphProps> = ({availableYears}:
   // Style text and rectangles
   function ModifyGraph() {
     let textElems:SVGTextElement[] = Array.from(document.getElementsByTagName("text"))
-    if (textElems.length > 53) { // from 27 to 53
-      for (let i = 27; i < 54; i++) {
+    // if (textElems.length > 53) { // from 27 to 53
+    //   for (let i = 27; i < 54; i++) {
+    //     textElems[i].style.fill = GetCSSValue("text")
+    //   }
+    // }
+      for (let i = 0; i < textElems.length; i++) {
         textElems[i].style.fill = GetCSSValue("text")
       }
-    }
     let pathElems:SVGPathElement[] = Array.from(document.getElementsByTagName("path"))
     pathElems[pathElems.length - 1].style.stroke = GetCSSValue("icon")
 

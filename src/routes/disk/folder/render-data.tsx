@@ -345,7 +345,6 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
           let changed = elems[0]
           changed.color = data.color
           setFoldersResponse(foldersResponse?.splice(deleteIndex))
-          setFoldersResponse(foldersResponse?.concat(changed))
         }
       })
       .catch(error => {
@@ -384,6 +383,34 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
     deleteFolder()
   }
 
+  // Delete file
+  function DeleteFile(fileToken:string) {
+    const deleteFile = async () => {
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "file/" + fileToken, {
+        method: 'DELETE',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 400) {
+          throw new Error('Bad request');
+        }
+        if (res.status === 404) {
+          throw new Error('Not found');
+        }
+      })
+      .then(() => setIsUpdate(!isUpdate))
+      .catch(error => {
+        console.log(error)
+        //ShowError("User not found", "404")
+      })
+    }
+    deleteFile()
+  }
+
   // Rename file/folder
   function handleRename() {
     let newName = newNameInputRef.current.value
@@ -418,7 +445,6 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
           let changed = elems[0]
           changed.name = newName
           setFoldersResponse(foldersResponse?.splice(deleteIndex))
-          setFoldersResponse(foldersResponse?.concat(changed))
         }
       })
       .catch(error => {
@@ -456,7 +482,6 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
           let changed = elems[0]
           changed.isElected = !changed.isElected
           setFoldersResponse(foldersResponse?.splice(deleteIndex))
-          setFoldersResponse(foldersResponse?.concat(changed))
         }
       })
       .catch(error => {
@@ -779,7 +804,8 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
-                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
+                        onClick={() => DeleteFile(item.token)}>
                           <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
                         </button>
                       </div>
@@ -995,7 +1021,7 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                   {/* Delete */}
                   <td data-type="file" className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
-                      <button data-type="file">
+                      <button data-type="file" onClick={() => DeleteFile(item.token)}>
                         <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
                       </button>
                     </div>

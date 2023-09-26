@@ -1,14 +1,10 @@
 import { ResponsivePie } from '@nivo/pie'
 import { FunctionComponent, useEffect, useState } from 'react'
-import { IFileStat } from './user-statistic'
 import { GetCSSValue } from '../../../lib/color-utils'
 import { useDebounce } from '../../../hooks/useDebounce'
+import { apiUrl } from '../../../data/data'
 
-interface StatisticPieProps {
-  data: IFileStat[],
-}
-
-const StatisticPie:FunctionComponent<StatisticPieProps> = ({data}:StatisticPieProps) => {
+const StatisticPie:FunctionComponent = () => {
 
   const textColor = GetCSSValue("text")
 
@@ -22,9 +18,35 @@ const StatisticPie:FunctionComponent<StatisticPieProps> = ({data}:StatisticPiePr
       setFileStatCount(6)
     }
   }
+
   const debouncedFileStatCount = useDebounce(fileStatCount, 400)
+  const [fileStat, setFileStat] = useState()
   useEffect(() => {
-    console.log(fileStatCount)
+    const getData = async () => {
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "statistic/pie/" + fileStatCount, {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 404) {
+          throw new Error('Folder not found');
+        }
+        if (res.status === 400) {
+          throw new Error('Bad request')
+        }
+        return res.json();
+      })
+      .then(data => setFileStat(data))
+      .catch(error => {
+        console.log(error)
+        //ShowError("User not found", "404")
+      })
+    }
+    getData()
     // change later
   }, [debouncedFileStatCount])
 
@@ -39,7 +61,7 @@ const StatisticPie:FunctionComponent<StatisticPieProps> = ({data}:StatisticPiePr
     }
   }
 
-  return (
+  return fileStat === undefined ? null : (
     <div className="grid grid-rows-[36px,minmax(0,1fr)] rounded
     border border-borderLight dark:border-borderDark">
       <div className="flex flex-row justify-between items-center w-full
@@ -98,7 +120,7 @@ const StatisticPie:FunctionComponent<StatisticPieProps> = ({data}:StatisticPiePr
           transform: "scale(" + (fileStatScale / 10) + ")",
         }}>
           <ResponsivePie
-            data={data}
+            data={fileStat}
             margin={{ top: fileStatScale > 10 ? (fileStatScale) * 8 : 40, 
               right: 0, bottom: 60, 
               left: fileStatScale > 10 ? (fileStatScale-10) * 8 : 0

@@ -1,12 +1,8 @@
 import { ResponsiveNetwork } from '@nivo/network'
-import { FunctionComponent, useState } from 'react'
-
-interface StatisticTreeProps {
-  data:any
-}
+import { FunctionComponent, useEffect, useState } from 'react'
+import { apiUrl } from '../../../data/data'
  
-const StatisticTree: FunctionComponent<StatisticTreeProps> = (props:StatisticTreeProps) => {
-
+const StatisticTree: FunctionComponent = () => {
   const [fileStatScale, setFileStatScale] = useState<number>(10)
   function CalculateFileStatScale(operation:string = "") {
     if (operation === "+") {
@@ -18,7 +14,36 @@ const StatisticTree: FunctionComponent<StatisticTreeProps> = (props:StatisticTre
     }
   }
 
-  return (
+  const [folderTree, setFolderTree] = useState()
+  useEffect(() => {
+    const getData = async () => {
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "statistic/tree", {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 404) {
+          throw new Error('Folder not found');
+        }
+        if (res.status === 400) {
+          throw new Error('Bad request')
+        }
+        return res.json();
+      })
+      .then(data => setFolderTree(data))
+      .catch(error => {
+        console.log(error)
+        //ShowError("User not found", "404")
+      })
+    }
+    getData()
+  }, [])
+
+  return folderTree === undefined ? null : (
     <div className="grid grid-rows-[36px,minmax(0,1fr)] rounded
     border border-borderLight dark:border-borderDark">
       <div className="flex flex-row justify-between items-center w-full
@@ -61,7 +86,7 @@ const StatisticTree: FunctionComponent<StatisticTreeProps> = (props:StatisticTre
           transform: "scale(" + (fileStatScale / 10) + ")",
         }}>
           <ResponsiveNetwork
-            data={props.data}
+            data={folderTree}
             margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
             linkDistance={(e:any) => e.distance}
             centeringStrength={0.3}
