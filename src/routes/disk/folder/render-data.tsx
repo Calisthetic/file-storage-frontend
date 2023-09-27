@@ -29,7 +29,6 @@ type Props = {
 }
 
 const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortBy, currentRenderType, updateTrigger}:Props) => {
-  console.log("Rerender")
   const newNameInputRef:any = useRef();
   const [selectedItem, setSelectedItem] = useState<any>();
 
@@ -529,6 +528,23 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
     elect()
   }
 
+  // Download file
+  function DownloadFile(fileToken:string) {
+    DownloadData(apiUrl + "file/download/" + fileToken)
+  }
+  // Download folder
+  function DownloadFolder(folderToken:string) {
+    DownloadData(apiUrl + "folder/download/" + folderToken)
+  }
+  function DownloadData(url:string) {
+    const a = document.createElement('a')
+    a.href = url
+    a.download = url.split('/').pop() ?? ""
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  }
+
 
 
 
@@ -664,7 +680,8 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                             </svg>
                           )}
                         </button>
-                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
+                        onClick={() => DownloadFolder(item.token)}>
                           <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
@@ -801,7 +818,8 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                             </svg>
                           )}
                         </button>
-                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5 h-8"
+                        onClick={() => DownloadFile(item.token)}>
                           <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
@@ -934,7 +952,7 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                   <td 
                   className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <button data-type="folder">
+                      <button data-type="folder" onClick={() => DownloadFolder(item.token)}>
                         <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                       </button>
                     </div>
@@ -1045,9 +1063,9 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                   {/* Download */}
                   <td data-type="file" className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <div data-type="file">
+                      <button data-type="file" onClick={() => DownloadFile(item.token)}>
                         <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
-                      </div>
+                      </button>
                     </div>
                   </td>
                   {/* Star */}
@@ -1129,7 +1147,7 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
                       <IconLink classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconLink>
                     </button>
-                    <button data-type="folder"
+                    <button data-type="folder" onClick={() => DownloadFolder(item.token)}
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
                       <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                     </button>

@@ -70,7 +70,8 @@ export default function DiskFolder() {
         await fetch(apiUrl + "folder", {
           method: 'POST',
           body: JSON.stringify({
-            "name": currentName
+            "name": currentName,
+            "upperFolderToken": params.id
           }),
           headers: {
             "Content-Type": "application/json",
