@@ -6,7 +6,9 @@ interface DiskFavoritesProps {
  
 const DiskFavorites: FunctionComponent<DiskFavoritesProps> = () => {
   return (
-    <div>fav</div>
+    <div>
+      <input type="file" multiple onChange={(e:any) => console.log(e)}></input>
+    </div>
   );
 }
  

@@ -119,7 +119,7 @@ export default function DiskFolder() {
 
   // Close dropdowns
   function CloseAllDrops(e:any) {
-    e.preventDefault()
+    //e.preventDefault()
     if (e.target.dataset.drop !== "add" && e.target.dataset.drop !== "child") {
       setIsAddDrop(false)
     }
@@ -150,7 +150,7 @@ export default function DiskFolder() {
   const fileUploaderRef:any = useRef()
   const [isDragVisible, setIsDragVisible] = useState(false);
   //const [file, setFile] = useState([]);
-  const handleChange = useCallback((files: any) => {
+  const UploaderChange = useCallback((files: any) => {
     const pushFiles = async () => {
       const formData = new FormData();
       for (let i = 0; i < files.length; i++) {
@@ -186,6 +186,39 @@ export default function DiskFolder() {
     console.log(files)
   }, [params.id, isUpdate]);
 
+  // const FileInputChange = useCallback((e:any) => {
+    const pushFiles = async () => {
+      const formData = new FormData();
+      // for (let i = 0; i < files.length; i++) {
+      //   formData.append("files", files[i]);
+      // }
+      formData.append("folderToken", params.id);
+
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "file", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 400) {
+          throw new Error('Bad request');
+        }
+        if (res.status === 404) {
+          throw new Error('Not found');
+        }
+      })
+      .then(() => setIsUpdate(!isUpdate))
+      .catch(error => {
+        console.log(error)
+        //ShowError("User not found", "404")
+      })
+    }
+  //   //pushFiles()
+  //   console.log(e);setIsUpdate(!isUpdate)
+
   function VisualizeUploader(e:any | null) {
     if (e.type === "dragenter" && e.nativeEvent?.dataTransfer?.types.length !== 0) {
       setIsDragVisible(true)
@@ -195,6 +228,40 @@ export default function DiskFolder() {
         setIsDragVisible(false)
       }, 100);
     } 
+  }
+
+  function FileInputChange(e:any) {
+    //console.log(e)
+    const pushFiles = async () => {
+      const formData = new FormData();
+      for (let i = 0; i < e.target.files.length; i++) {
+        formData.append("files", e.target.files[i]);
+      }
+      formData.append("folderToken", params.id);
+
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "file", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 400) {
+          throw new Error('Bad request');
+        }
+        if (res.status === 404) {
+          throw new Error('Not found');
+        }
+      })
+      .then(() => setIsUpdate(!isUpdate))
+      .catch(error => {
+        console.log(error)
+        //ShowError("User not found", "404")
+      })
+    }
+    pushFiles()
   }
   
 
@@ -209,6 +276,9 @@ export default function DiskFolder() {
       <header className="w-full px-1 sm:px-0 pt-1 flex flex-row justify-between">
         {/* All actions drop */}
         <div>
+          <input className="absolute text-sm text-gray-900 border border-gray-300 cursor-pointer -z-10
+          bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 py-1 h-0 w-0
+          dark:placeholder-gray-400" id="file_input" type="file" multiple onChange={FileInputChange} ref={inputFileButtonRef}/>
           <motion.button initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
           transition={{damping: 24, duration: 0.25, stiffness: 300}} 
           onClick={() => {setIsAddDrop(!isAddDrop)}} id="drop-actions" aria-label="Actions" data-drop="add"
@@ -241,9 +311,6 @@ export default function DiskFolder() {
                     </svg>
                     <span>Create folder</span>
                   </button>
-                  <input className="absolute w-full text-sm text-gray-900 border border-gray-300 cursor-pointer -z-10
-                  bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 py-1
-                  dark:placeholder-gray-400" id="file_input" multiple={true} type="file" ref={inputFileButtonRef}/>
                   <button onClick={() => {inputFileButtonRef.current.click()}} 
                   className="transition-colors px-2 py-2 flex flex-row w-full
                   hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center
@@ -517,7 +584,7 @@ export default function DiskFolder() {
           classes=" max-h-fulldvh h-full100 max-w-fulldvw w-full100 justify-center text-center fill-white
           p-dfUploadFiles sm:p-smUploadFiles md:p-mdUploadFiles lg:p-lgUploadFiles xl:p-xlUploadFiles 2xl:p-xl2UploadFiles
           outline-3 -outline-offset-8 outline-blue-700 outline-dashed border-imp0 hover:bg-red"
-          handleChange={handleChange} name="file" />
+          handleChange={UploaderChange} name="file" />
         </motion.div>
       ) : null}
     </div>

@@ -25,7 +25,7 @@ const UserProfileDropdown: FunctionComponent<UserProfileDropdownProps> = () => {
     }
   }, [root])
   function SetDropdown(e:any) {
-    e.preventDefault()
+    //e.preventDefault()
     if (e.target.dataset.drop !== "userMenu") {
       setIsUserDropMenuOpen(false)
     }
