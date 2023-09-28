@@ -310,48 +310,56 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
 
   // Folder color
   function SetFolderColor(data:any) {
-    console.log("Folder - " + data.id);
-    console.log("Color - " + data.color)
+    // console.log("Folder - " + data.id);
+    // console.log("Color - " + data.color)
     if (data.id === undefined || data.color === undefined) {
       // ShowError
       return;
     }
 
-    const patchColor = async () => {
-      let token = localStorage.getItem("token")
-      await fetch(apiUrl + "folder/color/" + data.id, {
-        method: 'PATCH',
-        body: JSON.stringify({
-          "color": data.color
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": token === null ? "" : token,
-        },
-      })
-      .then((res) => {
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
-        if (res.status === 404) {
-          throw new Error('Not found');
-        }
-      })
-      .then(() => {
-        let elems = foldersResponse?.filter(x => x.token === data.id)
-        if (elems !== undefined && elems?.length > 0) {
-          let deleteIndex = elems.indexOf(elems[0])
-          let changed = elems[0]
-          changed.color = data.color
-          setFoldersResponse(foldersResponse?.splice(deleteIndex))
-        }
-      })
-      .catch(error => {
-        console.log(error)
-        //ShowError("User not found", "404")
-      })
+    let elems = foldersResponse?.filter(x => x.token === data.id)
+    if (elems !== undefined && elems?.length > 0 && foldersResponse !== undefined) {
+      let deleteIndex = foldersResponse.indexOf(elems[0])
+      let lastColor = foldersResponse[deleteIndex].color
+      let temp = foldersResponse.filter(x => x.token !== null)
+      temp[deleteIndex].color = data.color
+      setFoldersResponse(foldersResponse.filter(x => x.token !== data.id))
+      setFoldersResponse(temp)
+
+      const patchColor = async () => {
+        let token = localStorage.getItem("token")
+        await fetch(apiUrl + "folder/color/" + data.id, {
+          method: 'PATCH',
+          body: JSON.stringify({
+            "color": data.color
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": token === null ? "" : token,
+          },
+        })
+        .then((res) => {
+          if (res.status === 400) {
+            throw new Error('Bad request');
+          }
+          if (res.status === 404) {
+            throw new Error('Not found');
+          }
+        })
+        .then(() => {
+        })
+        .catch(error => {
+          console.log(error)
+          temp = foldersResponse.filter(x => x.token !== null)
+          temp[deleteIndex].color = lastColor
+          setFoldersResponse(foldersResponse.filter(x => x.token !== data.id))
+          setFoldersResponse(temp)
+        })
+      }
+      patchColor()
+    } else {
+      // not found
     }
-    patchColor()
   }
 
   // Delete folder
