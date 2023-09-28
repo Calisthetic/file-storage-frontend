@@ -420,14 +420,30 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
 
   // Rename file/folder
   function handleRename() {
-    let newName = newNameInputRef.current.value
+    let newName = selectedItem.type === "file" ? newNameInputRef.current.value + selectedItem.name.slice(selectedItem.name.lastIndexOf('.')) : newNameInputRef.current.value
     if (newName.length === 0 || newName.length > 20) {
       // Show error
       return
     }
+
+    let oldName = selectedItem.name
+    if (selectedItem.type === "file") {
+      let elems = filesResponse?.filter(x => x.token !== null)
+      if (elems !== undefined) {
+        elems[elems.findIndex(x => x.token === selectedItem.token)].name = newName
+        setFilesResponse(elems)
+      }
+    } else {
+      let elems = foldersResponse?.filter(x => x.token !== null)
+      if (elems !== undefined) {
+        elems[elems.findIndex(x => x.token === selectedItem.token)].name = newName
+        setFoldersResponse(elems)
+      }
+    }
+
     const getData = async () => {
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + "folder/name/" + selectedItem.token, {
+      await fetch(apiUrl + selectedItem.type + "/name/" + selectedItem.token, {
         method: 'PATCH',
         body: JSON.stringify({
           "name": newName
@@ -445,18 +461,21 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
           throw new Error('Not found');
         }
       })
-      .then(() => {
-        let elems = foldersResponse?.filter(x => x.token === selectedItem.token)
-        if (elems !== undefined && elems?.length > 0) {
-          let deleteIndex = elems.indexOf(elems[0])
-          let changed = elems[0]
-          changed.name = newName
-          setFoldersResponse(foldersResponse?.splice(deleteIndex))
-        }
-      })
       .catch(error => {
         console.log(error)
-        //ShowError("User not found", "404")
+        if (selectedItem.type === "file") {
+          let elems = filesResponse?.filter(x => x.token !== null)
+          if (elems !== undefined) {
+            elems[elems.findIndex(x => x.token === selectedItem.token)].name = oldName
+            setFilesResponse(elems)
+          }
+        } else {
+          let elems = foldersResponse?.filter(x => x.token !== null)
+          if (elems !== undefined) {
+            elems[elems.findIndex(x => x.token === selectedItem.token)].name = oldName
+            setFoldersResponse(elems)
+          }
+        }
       })
     }
     getData()
@@ -466,6 +485,12 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
   // Elect folder
   function ElectFolder(folderToken:string) {
     const elect = async () => {
+      let elems = foldersResponse?.filter(x => x.token !== null)
+      if (elems !== undefined) {
+        elems[elems.findIndex(x => x.token === folderToken)].isElected = !elems[elems.findIndex(x => x.token === folderToken)].isElected
+        setFoldersResponse(elems)
+      }
+
       let token = localStorage.getItem("token")
       await fetch(apiUrl + "folder/elect/" + folderToken, {
         method: 'PATCH',
@@ -482,18 +507,13 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
           throw new Error('Not found');
         }
       })
-      .then(() => {
-        let elems = foldersResponse?.filter(x => x.token === selectedItem.token)
-        if (elems !== undefined && elems?.length > 0) {
-          let deleteIndex = elems.indexOf(elems[0])
-          let changed = elems[0]
-          changed.isElected = !changed.isElected
-          setFoldersResponse(foldersResponse?.splice(deleteIndex))
-        }
-      })
       .catch(error => {
         console.log(error)
-        //ShowError("User not found", "404")
+        let elems = foldersResponse?.filter(x => x.token !== null)
+        if (elems !== undefined) {
+          elems[elems.findIndex(x => x.token === folderToken)].isElected = !elems[elems.findIndex(x => x.token === folderToken)].isElected
+          setFoldersResponse(elems)
+        }
       })
     }
     elect()
@@ -502,6 +522,12 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
   // Elect file
   function ElectFile(fileToken:string) {
     const elect = async () => {
+      let elems = filesResponse?.filter(x => x.token !== null)
+      if (elems !== undefined) {
+        elems[elems.findIndex(x => x.token === fileToken)].isElected = !elems[elems.findIndex(x => x.token === fileToken)].isElected
+        setFilesResponse(elems)
+      }
+
       let token = localStorage.getItem("token")
       await fetch(apiUrl + "file/elect/" + fileToken, {
         method: 'PATCH',
@@ -518,19 +544,13 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
           throw new Error('Not found');
         }
       })
-      .then(() => {
-        let elems = filesResponse?.filter(x => x.token === selectedItem.token)
-        if (elems !== undefined && elems?.length > 0) {
-          let deleteIndex = elems.indexOf(elems[0])
-          let changed = elems[0]
-          changed.isElected = !changed.isElected
-          setFilesResponse(filesResponse?.splice(deleteIndex))
-          setFilesResponse(filesResponse?.concat(changed))
-        }
-      })
       .catch(error => {
         console.log(error)
-        //ShowError("User not found", "404")
+        let elems = filesResponse?.filter(x => x.token !== null)
+        if (elems !== undefined) {
+          elems[elems.findIndex(x => x.token === fileToken)].isElected = !elems[elems.findIndex(x => x.token === fileToken)].isElected
+          setFilesResponse(elems)
+        }
       })
     }
     elect()
@@ -798,7 +818,7 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                       </div>
                       <div className="hover-second ml-3.5 w-8 z-10
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
-                        <button data-name={item.name} data-type="file" onClick={modalRenameOpen}
+                        <button data-name={item.name} data-token={item.token} data-type="file" onClick={modalRenameOpen}
                         className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           <IconEdit classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconEdit>
                         </button>
@@ -925,7 +945,7 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                   {/* Edit */}
                   <td className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
-                      <button data-name={item.name} data-type="folder" onClick={modalRenameOpen}>
+                      <button data-name={item.name} data-token={item.token} data-type="folder" onClick={modalRenameOpen}>
                         <IconEdit classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconEdit>
                       </button>
                     </div>
@@ -1039,7 +1059,7 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                   <td data-type="file" 
                   className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
-                      <button data-name={item.name} data-type="file" onClick={modalRenameOpen}>
+                      <button data-name={item.name} data-token={item.token} data-type="file" onClick={modalRenameOpen}>
                         <IconEdit classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconEdit>
                       </button>
                     </div>
@@ -1417,7 +1437,8 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
             dark:placeholder-gray-400 dark:text-textDark "
             type="text" placeholder={selectedItem === undefined ? "name"
               : "last " + selectedItem.type + " name: " + selectedItem.name}
-            defaultValue={selectedItem !== undefined && selectedItem.name}
+            defaultValue={selectedItem !== undefined && (selectedItem.type === "file" ? 
+              (selectedItem.name.lastIndexOf('.') > 0 ? selectedItem.name.slice(0, selectedItem.name.lastIndexOf('.')) : selectedItem.name) : selectedItem.name)}
             ref={newNameInputRef}></input>
             <div className="flex justify-end text-base gap-2">
               <button className=" hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark
