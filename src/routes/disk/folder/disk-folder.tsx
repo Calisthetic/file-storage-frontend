@@ -8,7 +8,7 @@ import "../../../styles/hover-elems.css"
 import RenderData from "./render-data";
 import IconAlerts from "../../../components/icons/IconAlerts";
 import { apiUrl } from "../../../data/data";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function DiskFolder() {
   const inputFileButtonRef:any = useRef()
@@ -186,50 +186,6 @@ export default function DiskFolder() {
     console.log(files)
   }, [params.id, isUpdate]);
 
-  // const FileInputChange = useCallback((e:any) => {
-    const pushFiles = async () => {
-      const formData = new FormData();
-      // for (let i = 0; i < files.length; i++) {
-      //   formData.append("files", files[i]);
-      // }
-      formData.append("folderToken", params.id);
-
-      let token = localStorage.getItem("token")
-      await fetch(apiUrl + "file", {
-        method: "POST",
-        body: formData,
-        headers: {
-          "Authorization": token === null ? "" : token,
-        },
-      })
-      .then((res) => {
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
-        if (res.status === 404) {
-          throw new Error('Not found');
-        }
-      })
-      .then(() => setIsUpdate(!isUpdate))
-      .catch(error => {
-        console.log(error)
-        //ShowError("User not found", "404")
-      })
-    }
-  //   //pushFiles()
-  //   console.log(e);setIsUpdate(!isUpdate)
-
-  function VisualizeUploader(e:any | null) {
-    if (e.type === "dragenter" && e.nativeEvent?.dataTransfer?.types.length !== 0) {
-      setIsDragVisible(true)
-    } else if (isDragVisible === true && e.type === "mousemove") {
-      fileUploaderRef.current.style.opacity = 0
-      setTimeout(() => {
-        setIsDragVisible(false)
-      }, 100);
-    } 
-  }
-
   function FileInputChange(e:any) {
     //console.log(e)
     const pushFiles = async () => {
@@ -263,7 +219,75 @@ export default function DiskFolder() {
     }
     pushFiles()
   }
+
+  function VisualizeUploader(e:any | null) {
+    if (e.type === "dragenter" && e.nativeEvent?.dataTransfer?.types.length !== 0) {
+      setIsDragVisible(true)
+    } else if (isDragVisible === true && e.type === "mousemove") {
+      fileUploaderRef.current.style.opacity = 0
+      setTimeout(() => {
+        setIsDragVisible(false)
+      }, 100);
+    } 
+  }
   
+  function DownloadFolder() {
+    let url = apiUrl + "folder/download/" + params.id
+    const a = document.createElement('a')
+    a.href = url
+    a.download = url.split('/').pop() ?? ""
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  }
+
+  interface IFilePaths {
+    name:string,
+    token:string
+  }
+  const [filePaths, setFilePaths] = useState<IFilePaths[]>()
+  useEffect(() => {
+    const getData = async () => {
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "folder/path/" + params.id, {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 404) {
+          throw new Error('Folder not found');
+        }
+        if (res.status === 400) {
+          throw new Error('Bad request');
+        }
+        return res.json();
+      })
+      .then(data => setFilePaths(data))
+      .catch(error => {
+        console.log(error)
+        //ShowError("User not found", "404")
+      })
+    }
+    if (params.id !== "main") {
+      getData()
+    } else {
+      setFilePaths([{name: "Main", token: "main"}])
+    }
+  }, [params.id])
+
+  const [selectedPath, setSelectedPath] = useState(params.id)
+  const navigate = useNavigate()
+  useEffect(() => {
+    console.log(selectedPath)
+    if (selectedPath !== params.id) {
+      navigate('./../' + selectedPath)
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedPath])
 
 
   
@@ -275,59 +299,90 @@ export default function DiskFolder() {
     className="w-full min-h-fullWithHeader h-fullWithHeader px-2 md:px-6">
       <header className="w-full px-1 sm:px-0 pt-1 flex flex-row justify-between">
         {/* All actions drop */}
-        <div>
+        <div className="flex flex-row">
           <input className="absolute text-sm text-gray-900 border border-gray-300 cursor-pointer -z-10
           bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 py-1 h-0 w-0
           dark:placeholder-gray-400" id="file_input" type="file" multiple onChange={FileInputChange} ref={inputFileButtonRef}/>
-          <motion.button initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
-          transition={{damping: 24, duration: 0.25, stiffness: 300}} 
-          onClick={() => {setIsAddDrop(!isAddDrop)}} id="drop-actions" aria-label="Actions" data-drop="add"
-          className=" text-textLight dark:text-textDark hover:bg-backgroundHoverLight 
-          dark:hover:bg-backgroundHoverDark first-letter:uppercase
-          font-medium rounded-full text-base sm:text-lg px-4 py-2 text-center
-          focus:dark:bg-backgroundThirdDark inline-flex items-center">My storage
-            <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true" 
-            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-              <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" 
-              strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
-            </svg>
-          </motion.button>
-          <AnimatePresence>
-            {isAddDrop ? (
-              <motion.div initial={{opacity: 0, y: -50, scaleY: 0.2}} animate={{opacity: 1, y: 0, scaleY: 1}}
-              transition={{stiffness: 200, damping: 24, duration: 0.16}} exit={{opacity: 0, y: -50, scaleY: 0.2}} 
-              className="z-10 opacity-0 divide-y divide-gray-100 rounded w-44 mt-0.5
-              absolute shadow-defaultLight dark:shadow-none scale-y-0
-              bg-backgroundSecondLight dark:bg-backgroundThirdDark overflow-hidden">
-                <div className="py-2 text-sm font-medium text-textLight dark:text-textDark">
-                  <button className="transition-colors px-2 py-2 flex flex-row w-full
-                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center
-                  bg-backgroundSecondLight dark:bg-backgroundThirdDark" onClick={modalCreateOpen}>
-                    <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11 12V9h2v3h3v2h-3v3h-2v-3H8v-2h3Zm10-7a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V5a2 
-                      2 0 0 1 2-2h6c1.12 0 1.833.475 2.549 1.379.048.06.261.337.313.402.158.195.19.219.14.219H21Zm0 
-                      14V7h-9.005c-.719-.004-1.186-.34-1.69-.963-.069-.086-.29-.373-.323-.416C9.607 5.15 9.384 5 9 5H3v14h18Z" 
-                      fillRule="evenodd" className="fill-iconLight dark:fill-iconDark"></path>
-                    </svg>
-                    <span>Create folder</span>
-                  </button>
-                  <button onClick={() => {inputFileButtonRef.current.click()}} 
-                  className="transition-colors px-2 py-2 flex flex-row w-full
-                  hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center
-                  bg-backgroundSecondLight dark:bg-backgroundThirdDark">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24"
-                    className="w-6 h-6 mr-2"><g>
-                      <path d="M11.3 15.7c.1.1.2.2.3.2.1.1.3.1.4.1s.3 0 .4-.1c.1-.1.2-.1.3-.2l4-4c.4-.4.4-1 0-1.4s-1-.4-1.4 0L13 
-                      12.6V5c0-.6-.4-1-1-1s-1 .4-1 1v7.6l-2.3-2.3c-.4-.4-1-.4-1.4 0s-.4 1 0 1.4l4 4z" className="fill-iconLight dark:fill-iconDark"></path>
-                      <path d="M19 13c-.6 0-1 .4-1 1v2c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2v-2c0-.6-.4-1-1-1s-1 .4-1 1v2c0 2.2 1.8 4 4 
-                      4h8c2.2 0 4-1.8 4-4v-2c0-.6-.4-1-1-1z" className="fill-iconLight dark:fill-iconDark"></path></g>
-                    </svg>
-                    <span>Add files</span>
-                  </button>
-                </div>
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
+          {filePaths === undefined ? null : filePaths.map((item, index) => (
+            <div key={index} className="flex items-center">
+              {index !== filePaths.length - 1 && (
+                <>
+                  <button className="text-textLight dark:text-textDark hover:bg-backgroundHoverLight 
+                  dark:hover:bg-backgroundHoverDark first-letter:uppercase transition-colors
+                  font-medium rounded-full text-base sm:text-lg px-4 py-2 text-center
+                  inline-flex items-center" onClick={() => setSelectedPath(item.token)}>{item.name}</button>
+                  <svg fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.4" viewBox="0 0 24 24" 
+                  xmlns="http://www.w3.org/2000/svg" className="stroke-textLight dark:stroke-textDark h-5 w-5 opacity-80">
+                    <path d="m9 18 6-6-6-6"></path>
+                  </svg>
+                </>
+              )}
+            </div>
+          ))}
+          <div>
+            <motion.button initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
+            transition={{damping: 24, duration: 0.25, stiffness: 300}} 
+            onClick={() => {setIsAddDrop(!isAddDrop)}} id="drop-actions" aria-label="Actions" data-drop="add"
+            className="text-textLight dark:text-textDark hover:bg-backgroundHoverLight 
+            dark:hover:bg-backgroundHoverDark first-letter:uppercase transition-colors
+            font-medium rounded-full text-base sm:text-lg px-4 py-2 text-center
+            focus:dark:bg-backgroundThirdDark focus:bg-backgroundThirdLight inline-flex items-center">
+              {filePaths === undefined ? "My storage" : filePaths[filePaths.length-1].name}
+              <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true" 
+              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" 
+                strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
+              </svg>
+            </motion.button>
+            <AnimatePresence>
+              {isAddDrop ? (
+                <motion.div initial={{opacity: 0, y: -50, scaleY: 0.2}} animate={{opacity: 1, y: 0, scaleY: 1}}
+                transition={{stiffness: 200, damping: 24, duration: 0.16}} exit={{opacity: 0, y: -50, scaleY: 0.2}} 
+                className="z-10 opacity-0 divide-y divide-gray-100 rounded-md w-44 mt-0.5
+                absolute shadow-defaultLight dark:shadow-none scale-y-0
+                bg-backgroundSecondLight dark:bg-backgroundThirdDark overflow-hidden">
+                  <div className="py-2 text-sm font-medium text-textLight dark:text-textDark">
+                    {params.id === "main" ? null : (
+                      <button className="transition-colors px-2 py-2 flex flex-row w-full
+                      hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center
+                      bg-backgroundSecondLight dark:bg-backgroundThirdDark" onClick={DownloadFolder}>
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
+                        className="fill-iconLight dark:fill-iconDark w-6 h-6 mr-2">
+                          <path d="M11 14.59V3a1 1 0 0 1 2 0v11.59l3.3-3.3a1 1 0 0 1 1.4 1.42l-5 5a1 
+                          1 0 0 1-1.4 0l-5-5a1 1 0 0 1 1.4-1.42l3.3 3.3zM3 17a1 1 0 0 1 2 0v3h14v-3a1 
+                          1 0 0 1 2 0v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3z"></path>
+                        </svg>
+                        <span>Download folder</span>
+                      </button>
+                    )}
+                    <button onClick={() => {inputFileButtonRef.current.click()}} 
+                    className="transition-colors px-2 py-2 flex flex-row w-full
+                    hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center
+                    bg-backgroundSecondLight dark:bg-backgroundThirdDark">
+                      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                      className="fill-iconLight dark:fill-iconDark w-6 h-6 mr-2">
+                        <path d="M13 5.41V17a1 1 0 0 1-2 0V5.41l-3.3 3.3a1 1 0 0 1-1.4-1.42l5-5a1 
+                        1 0 0 1 1.4 0l5 5a1 1 0 1 1-1.4 1.42L13 5.4zM3 17a1 1 0 0 1 2 0v3h14v-3a1 
+                        1 0 0 1 2 0v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3z"></path>
+                      </svg>
+                      <span>Upload files</span>
+                    </button>
+                    <button className="transition-colors px-2 py-2 flex flex-row w-full
+                    hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center
+                    bg-backgroundSecondLight dark:bg-backgroundThirdDark" onClick={modalCreateOpen}>
+                      <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11 12V9h2v3h3v2h-3v3h-2v-3H8v-2h3Zm10-7a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V5a2 
+                        2 0 0 1 2-2h6c1.12 0 1.833.475 2.549 1.379.048.06.261.337.313.402.158.195.19.219.14.219H21Zm0 
+                        14V7h-9.005c-.719-.004-1.186-.34-1.69-.963-.069-.086-.29-.373-.323-.416C9.607 5.15 9.384 5 9 5H3v14h18Z" 
+                        fillRule="evenodd" className="fill-iconLight dark:fill-iconDark"></path>
+                      </svg>
+                      <span>Create folder</span>
+                    </button>
+                  </div>
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
+          </div>
         </div>
 
         <div className="flex flex-row items-center space-x-1">
