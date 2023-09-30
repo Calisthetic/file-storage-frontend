@@ -311,7 +311,9 @@ export default function DiskFolder() {
           {/* Home */}
           {filePaths !== undefined && (
             <div className="flex items-center">
-              <button className="text-textLight dark:text-textDark hover:bg-backgroundHoverLight 
+              <motion.button transition={{stiffness: 300, damping: 0}} 
+              initial={{x: -20, opacity: 0}} animate={{x: 0, opacity: 1}} 
+              className="text-textLight dark:text-textDark hover:bg-backgroundHoverLight 
               dark:hover:bg-backgroundHoverDark first-letter:uppercase transition-colors
               font-medium rounded-full text-base sm:text-lg px-2 py-2 text-center
               inline-flex items-center" onClick={() => setSelectedPath("main")}>
@@ -319,17 +321,20 @@ export default function DiskFolder() {
                   <path d="M8 0H2C.9 0 0 .9 0 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2h-8L8 0Z" 
                   fillRule="evenodd" className="fill-textLight dark:fill-textDark"></path>
                 </svg>
-              </button>
-              <svg fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.4" viewBox="0 0 24 24" 
+              </motion.button>
+              <motion.svg transition={{stiffness: 300, damping: 0, delay: 0.05}} 
+              initial={{x: -20, opacity: 0}} animate={{x: 0, opacity: 1}} 
+              fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.4" viewBox="0 0 24 24" 
               xmlns="http://www.w3.org/2000/svg" className="stroke-textLight dark:stroke-textDark h-5 w-5 -mx-1 md:mx-0 opacity-80">
                 <path d="m9 18 6-6-6-6"></path>
-              </svg>
+              </motion.svg>
             </div>
           )}
           {/* Paths */}
           {filePaths !== undefined && filePaths.length > 1 && (
           <>
-            <div>
+            <motion.div initial={{x: -20, opacity: 0}} animate={{x: 0, opacity: 1}}
+            transition={{stiffness: 300, damping: 0, delay: 0.1}}>
               <button className="hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark transition-colors
               rounded-full text-base sm:text-lg px-2 py-2 text-center inline-flex items-center"
               onClick={() => setIsPathDrop(!isPathDrop)} data-drop="path" title="Other folders">
@@ -376,17 +381,19 @@ export default function DiskFolder() {
                   </motion.div>
                 ) : null}
               </AnimatePresence>
-            </div>
-            <svg fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.4" viewBox="0 0 24 24" 
+            </motion.div>
+            <motion.svg initial={{x: -20, opacity: 0}} animate={{x: 0, opacity: 1}}
+            transition={{stiffness: 300, damping: 0, delay: 0.15}}
+            fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.4" viewBox="0 0 24 24" 
             xmlns="http://www.w3.org/2000/svg" className="stroke-textLight dark:stroke-textDark h-5 w-5 -mx-1 md:mx-0 opacity-80">
               <path d="m9 18 6-6-6-6"></path>
-            </svg>
+            </motion.svg>
           </>
           )}
           {/* Current folder */}
           <div className="">
-            <motion.button initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
-            transition={{damping: 24, duration: 0.25, stiffness: 300}} 
+            <motion.button initial={{opacity: 0, x: -20}} animate={{opacity: 1, x: 0}} 
+            transition={{damping: 24, stiffness: 300, delay: 0.2}} 
             onClick={() => {setIsAddDrop(!isAddDrop)}} id="drop-actions" aria-label="Actions" data-drop="add"
             className="text-textLight dark:text-textDark hover:bg-backgroundHoverLight 
             dark:hover:bg-backgroundHoverDark first-letter:uppercase transition-colors
