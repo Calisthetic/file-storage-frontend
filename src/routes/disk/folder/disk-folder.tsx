@@ -14,6 +14,7 @@ export default function DiskFolder() {
   const inputFileButtonRef:any = useRef()
   // dropdowns
   const [isAddDrop, setIsAddDrop] = useState(false)
+  const [isPathDrop, setIsPathDrop] = useState(false)
   const [isCellTypeDrop, setIsCellTypeDrop] = useState(false)
   const [isSortDrop, setIsSortDrop] = useState(false)
   // local storage sort and render items
@@ -128,6 +129,9 @@ export default function DiskFolder() {
     }
     if (e.target.dataset.drop !== "sort" && e.target.dataset.drop !== "child") {
       setIsSortDrop(false)
+    }
+    if (e.target.dataset.drop !== "path" && e.target.dataset.drop !== "child") {
+      setIsPathDrop(false)
     }
   }
 
@@ -273,15 +277,16 @@ export default function DiskFolder() {
     }
     if (params.id !== "main") {
       getData()
+      setSelectedPath(params.id)
     } else {
-      setFilePaths([{name: "Main", token: "main"}])
+      setFilePaths(undefined)
     }
   }, [params.id])
 
   const [selectedPath, setSelectedPath] = useState(params.id)
   const navigate = useNavigate()
   useEffect(() => {
-    console.log(selectedPath)
+    console.log(selectedPath + " | " + params.id)
     if (selectedPath !== params.id) {
       navigate('./../' + selectedPath)
     }
@@ -299,36 +304,99 @@ export default function DiskFolder() {
     className="w-full min-h-fullWithHeader h-fullWithHeader px-2 md:px-6">
       <header className="w-full px-1 sm:px-0 pt-1 flex flex-row justify-between">
         {/* All actions drop */}
-        <div className="flex flex-row">
+        <div className="flex flex-row items-center">
           <input className="absolute text-sm text-gray-900 border border-gray-300 cursor-pointer -z-10
           bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 py-1 h-0 w-0
           dark:placeholder-gray-400" id="file_input" type="file" multiple onChange={FileInputChange} ref={inputFileButtonRef}/>
-          {filePaths === undefined ? null : filePaths.map((item, index) => (
-            <div key={index} className="flex items-center">
-              {index !== filePaths.length - 1 && (
-                <>
-                  <button className="text-textLight dark:text-textDark hover:bg-backgroundHoverLight 
-                  dark:hover:bg-backgroundHoverDark first-letter:uppercase transition-colors
-                  font-medium rounded-full text-base sm:text-lg px-4 py-2 text-center
-                  inline-flex items-center" onClick={() => setSelectedPath(item.token)}>{item.name}</button>
-                  <svg fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.4" viewBox="0 0 24 24" 
-                  xmlns="http://www.w3.org/2000/svg" className="stroke-textLight dark:stroke-textDark h-5 w-5 opacity-80">
-                    <path d="m9 18 6-6-6-6"></path>
-                  </svg>
-                </>
-              )}
+          {/* Home */}
+          {filePaths !== undefined && (
+            <div className="flex items-center">
+              <button className="text-textLight dark:text-textDark hover:bg-backgroundHoverLight 
+              dark:hover:bg-backgroundHoverDark first-letter:uppercase transition-colors
+              font-medium rounded-full text-base sm:text-lg px-2 py-2 text-center
+              inline-flex items-center" onClick={() => setSelectedPath("main")}>
+                <svg viewBox="0 0 20 16" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 0H2C.9 0 0 .9 0 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2h-8L8 0Z" 
+                  fillRule="evenodd" className="fill-textLight dark:fill-textDark"></path>
+                </svg>
+              </button>
+              <svg fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.4" viewBox="0 0 24 24" 
+              xmlns="http://www.w3.org/2000/svg" className="stroke-textLight dark:stroke-textDark h-5 w-5 -mx-1 md:mx-0 opacity-80">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
             </div>
-          ))}
-          <div>
+          )}
+          {/* Paths */}
+          {filePaths !== undefined && filePaths.length > 1 && (
+          <>
+            <div>
+              <button className="hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark transition-colors
+              rounded-full text-base sm:text-lg px-2 py-2 text-center inline-flex items-center"
+              onClick={() => setIsPathDrop(!isPathDrop)} data-drop="path" title="Other folders">
+                <svg viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg" className="h-6 w-6">
+                  <path d="M544 32H432L400 0h-80c-17.62 0-32 14.38-32 32v160c0 17.62 14.38 32 32 32h224c17.62 
+                  0 32-14.38 32-32V64c0-17.62-14.4-32-32-32zm0 288H432l-32-32h-80c-17.62 0-32 14.38-32 32v160c0 
+                  17.62 14.38 32 32 32h224c17.62 0 32-14.38 32-32V352c0-17.6-14.4-32-32-32zM64 
+                  16c0-8.875-7.12-16-16-16H16C7.125 0 0 7.125 0 16v400c0 17.62 14.38 32 32 32h224v-64H64V160h192V96H64V16z" 
+                  className="fill-textLight dark:fill-textDark"></path>
+                </svg>
+              </button>
+              <AnimatePresence>
+                {isPathDrop ? (
+                  <motion.div initial={{opacity: 0, y: -50, scaleY: 0.2}} animate={{opacity: 1, y: 0, scaleY: 1}}
+                  transition={{stiffness: 200, damping: 24, duration: 0.16}} exit={{opacity: 0, y: -50, scaleY: 0.2}}
+                  className="z-10 opacity-0 divide-y divide-gray-100 rounded-md w-48 mt-0.5
+                  absolute shadow-defaultLight dark:shadow-none scale-y-0
+                  bg-backgroundSecondLight dark:bg-backgroundThirdDark overflow-hidden">
+                    <div className="py-2 text-sm font-medium text-textLight dark:text-textDark flex flex-row">
+                      <div>
+                        <svg className="w-4 -translate-y-2 stroke-textLight dark:stroke-textDark opacity-80" 
+                        style={{height: (filePaths.length-1) * 36}}>
+                        {filePaths === undefined ? null : filePaths.length > 1 ? filePaths.map((item, index) => { 
+                        return index < filePaths.length - 1 ? index === filePaths.length - 2 ? (
+                          <path d={"M8 " + (index * 36 - 10) + " C8 " + (index * 36 + 18) + ",8 " + (index * 36 + 18) + ",8 " + (index * 36 + 18) + " S8 " + (index * 36 + 26) + ", 16 " + (index * 36 + 26)} fill="none" strokeWidth="2.4"/>
+                        ) : (
+                          <path d={"M8 " + (index * 36 - 10) + " L8 " + (index * 36 + 26) + " L16 " + (index * 36 + 26)} fill="none" strokeWidth="2.4"/>
+                        ) : null}) : null}
+                        </svg>
+                      </div>
+                      <div className="w-[168px]">
+                        {filePaths === undefined ? null : filePaths.length > 1 ? filePaths.map((item, index) => { return index < filePaths.length - 1 ? (
+                          <div key={index} className="flex items-center">
+                            <button className="transition-colors px-2 py-2 flex flex-row w-full rounded
+                            hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center
+                            bg-backgroundSecondLight dark:bg-backgroundThirdDark" 
+                            onClick={() => setSelectedPath(item.token)}>
+                              {item.name}
+                            </button>
+                          </div>
+                        ) : null}) : null}
+                      </div>
+                    </div>
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
+            </div>
+            <svg fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.4" viewBox="0 0 24 24" 
+            xmlns="http://www.w3.org/2000/svg" className="stroke-textLight dark:stroke-textDark h-5 w-5 -mx-1 md:mx-0 opacity-80">
+              <path d="m9 18 6-6-6-6"></path>
+            </svg>
+          </>
+          )}
+          {/* Current folder */}
+          <div className="">
             <motion.button initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
             transition={{damping: 24, duration: 0.25, stiffness: 300}} 
             onClick={() => {setIsAddDrop(!isAddDrop)}} id="drop-actions" aria-label="Actions" data-drop="add"
             className="text-textLight dark:text-textDark hover:bg-backgroundHoverLight 
             dark:hover:bg-backgroundHoverDark first-letter:uppercase transition-colors
-            font-medium rounded-full text-base sm:text-lg px-4 py-2 text-center
+            font-medium rounded-full text-base sm:text-lg px-2 py-2 text-center 
+            max-w-[37dvw] sm:max-w-[28dvw] md:max-w-none
             focus:dark:bg-backgroundThirdDark focus:bg-backgroundThirdLight inline-flex items-center">
-              {filePaths === undefined ? "My storage" : filePaths[filePaths.length-1].name}
-              <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true" 
+              <span className="truncate pointer-events-none">
+                {filePaths === undefined ? "My storage" : filePaths[filePaths.length-1].name}
+              </span>
+              <svg className="w-2.5 h-2.5 ml-1 md:ml-2.5" aria-hidden="true" 
               xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                 <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" 
                 strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
