@@ -1,25 +1,26 @@
-import { useState, useRef, useEffect, useCallback, FunctionComponent, memo } from "react"
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
+import { useState, useRef, useEffect, useCallback, FunctionComponent, memo, lazy, Suspense } from "react"
 import { useNavigate, useParams } from 'react-router-dom';
 
 import "../../../styles/focus-elems.css"
-import FolderAccessModal from "./folder-access-modal";
 import { CutNumber, CutSize, IsNumeric } from "../../../lib/utils";
 import { GetCSSValue, BlurColor, cn, isDarkMode} from "../../../lib/color-utils";
 // @ts-ignore
 import Hammer from 'hammerjs';
-import ColorPicker from "../../../components/color-picker";
 import { modalWindowStyle } from "../../../data/style/modal-styles";
-import IconInfo from "../../../components/icons/IconInfo";
-import IconLink from "../../../components/icons/IconLink";
-import IconEdit from "../../../components/icons/IconEdit";
-import IconDownload from "../../../components/icons/IconDownload";
-import IconDelete from "../../../components/icons/IconDelete";
-import IconWatch from "../../../components/icons/IconWatch";
-import IconTileStar from "../../../components/icons/IconTileStar";
-import FileIcon from "./file-icon";
 import { apiUrl } from "../../../data/data";
+
+const FileIcon = lazy(() => import("./file-icon"));
+const FolderAccessModal = lazy(() => import("./folder-access-modal"));
+const IconInfo = lazy(() => import("../../../components/icons/IconInfo"));
+const IconLink = lazy(() => import("../../../components/icons/IconLink"));
+const IconEdit = lazy(() => import("../../../components/icons/IconEdit"));
+const IconDownload = lazy(() => import("../../../components/icons/IconDownload"));
+const IconDelete = lazy(() => import("../../../components/icons/IconDelete"));
+const IconWatch = lazy(() => import("../../../components/icons/IconWatch"));
+const IconTileStar = lazy(() => import("../../../components/icons/IconTileStar"));
+const ColorPicker = lazy(() => import("../../../components/color-picker"));
+const Box = lazy(() => import('@mui/material/Box'));
+const Modal = lazy(() => import('@mui/material/Modal'));
 
 type Props = {
   currentSortType: string
@@ -773,7 +774,12 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                   <div className="flex flex-row items-center space-x-2 
                   pointer-events-none max-w-[calc(100dvw-88px)] 
                   sm:max-w-[calc(100dvw-348px)] md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]">
-                    <div className="w-6">i</div>
+                    <div className="h-6 w-6 flex items-center justify-center">
+                      <Suspense fallback={<div></div>}>
+                        <FileIcon fileType={item.name.slice(item.name.lastIndexOf('.') + 1)} 
+                        classes="fill-textLight dark:fill-textDark h-6 w-6"></FileIcon>
+                      </Suspense>
+                    </div>
                     <div className="truncate">{item.name}</div>
                   </div>
                   <div className="flex flex-row items-center">
@@ -1046,7 +1052,12 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                     className="absolute h-full w-full z-20"></td>
                   ) : null}
                   <td className="flex items-center justify-center">
-                    <FileIcon fileType={item.fileType}></FileIcon>
+                    <div className="h-7 w-6 flex items-center justify-center">
+                      <Suspense fallback={<div></div>}>
+                        <FileIcon fileType={item.name.slice(item.name.lastIndexOf('.') + 1)} 
+                        classes="fill-textLight dark:fill-textDark h-6 w-6"></FileIcon>
+                      </Suspense>
+                    </div>
                   </td>
                   <td data-type="file" 
                   className="font-medium text truncate max-w-[1px]">{item.name}</td>

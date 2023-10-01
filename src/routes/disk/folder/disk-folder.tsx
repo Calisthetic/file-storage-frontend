@@ -1,14 +1,15 @@
 import { FileUploader } from "react-drag-drop-files";
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, lazy, Suspense } from "react";
 import { AnimatePresence, motion } from "framer-motion"
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
 
 import "../../../styles/hover-elems.css"
-import RenderData from "./render-data";
 import IconAlerts from "../../../components/icons/IconAlerts";
 import { apiUrl } from "../../../data/data";
 import { useNavigate, useParams } from "react-router-dom";
+
+const RenderData = lazy(() => import("./render-data"));
+const Box = lazy(() => import('@mui/material/Box'));
+const Modal = lazy(() => import('@mui/material/Modal'));
 
 export default function DiskFolder() {
   const inputFileButtonRef:any = useRef()
@@ -359,7 +360,7 @@ export default function DiskFolder() {
                         style={{height: (filePaths.length-1) * 36}}>
                         {filePaths === undefined ? null : filePaths.length > 1 ? filePaths.map((item, index) => { 
                         return index < filePaths.length - 1 ? index === filePaths.length - 2 ? (
-                          <path d={"M8 " + (index * 36 - 10) + " C8 " + (index * 36 + 18) + ",8 " + (index * 36 + 18) + ",8 " + (index * 36 + 18) + " S8 " + (index * 36 + 26) + ", 16 " + (index * 36 + 26)} fill="none" strokeWidth="2.4"/>
+                          <path d={"M8 " + (index * 36 - 10) + " C8 " + (index * 36 + 12) + ",8 " + (index * 36 + 12) + ",8 " + (index * 36 + 18) + " S8 " + (index * 36 + 26) + ", 16 " + (index * 36 + 26)} fill="none" strokeWidth="2.4"/>
                         ) : (
                           <path d={"M8 " + (index * 36 - 10) + " L8 " + (index * 36 + 26) + " L16 " + (index * 36 + 26)} fill="none" strokeWidth="2.4"/>
                         ) : null}) : null}
@@ -655,8 +656,10 @@ export default function DiskFolder() {
         </div>
       </header>
 
-      <RenderData currentSortBy={currentSortBy} updateTrigger={isUpdate}
-      currentSortType={currentSortType} currentRenderType={currentRenderType}></RenderData>
+      <Suspense fallback={<div></div>}>
+        <RenderData currentSortBy={currentSortBy} updateTrigger={isUpdate}
+        currentSortType={currentSortType} currentRenderType={currentRenderType}></RenderData>
+      </Suspense>
 
       {/* Create folder */}
       <Modal open={isCreateModalOpen}
