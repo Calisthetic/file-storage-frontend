@@ -6,8 +6,10 @@ import "../../../styles/hover-elems.css"
 import IconAlerts from "../../../components/icons/IconAlerts";
 import { apiUrl } from "../../../data/data";
 import { useNavigate, useParams } from "react-router-dom";
+import SortDropdown from "../components/sort-dropdown";
+import CellTypesDropdown from "../components/cell-types-dropdown";
 
-const RenderData = lazy(() => import("./render-data"));
+const RenderFolderData = lazy(() => import("./render-folder-data"));
 const Box = lazy(() => import('@mui/material/Box'));
 const Modal = lazy(() => import('@mui/material/Modal'));
 
@@ -16,8 +18,6 @@ export default function DiskFolder() {
   // dropdowns
   const [isAddDrop, setIsAddDrop] = useState(false)
   const [isPathDrop, setIsPathDrop] = useState(false)
-  const [isCellTypeDrop, setIsCellTypeDrop] = useState(false)
-  const [isSortDrop, setIsSortDrop] = useState(false)
   // local storage sort and render items
   interface RenderValues {
     render_type: string,
@@ -29,9 +29,8 @@ export default function DiskFolder() {
   // sort and render types
   const [currentRenderType, setCurrentRenderType] 
     = useState(renderValues.render_type ? renderValues.render_type : "list")
-  const sortTypes = ["name", "type", "size", "date"]
   const [currentSortType, setCurrentSortType] 
-    = useState(renderValues.sort_type ? renderValues.sort_type : sortTypes[0])
+    = useState(renderValues.sort_type ? renderValues.sort_type : "name")
   const [currentSortBy, setCurrentSortBy] 
     = useState(renderValues.sort_by ? renderValues.sort_by : "ascending")
 
@@ -121,15 +120,8 @@ export default function DiskFolder() {
 
   // Close dropdowns
   function CloseAllDrops(e:any) {
-    //e.preventDefault()
     if (e.target.dataset.drop !== "add" && e.target.dataset.drop !== "child") {
       setIsAddDrop(false)
-    }
-    if (e.target.dataset.drop !== "cellType" && e.target.dataset.drop !== "child") {
-      setIsCellTypeDrop(false)
-    }
-    if (e.target.dataset.drop !== "sort" && e.target.dataset.drop !== "child") {
-      setIsSortDrop(false)
     }
     if (e.target.dataset.drop !== "path" && e.target.dataset.drop !== "child") {
       setIsPathDrop(false)
@@ -137,13 +129,10 @@ export default function DiskFolder() {
   }
 
   useEffect(() => {
-    let rootElem = document.getElementById("root")
-    if (rootElem) {
-      rootElem.addEventListener('click', CloseAllDrops);
-    }
+    document.addEventListener('click', CloseAllDrops);
 
     return () => {
-      rootElem?.removeEventListener("click", CloseAllDrops)
+      document.removeEventListener("click", CloseAllDrops)
     }
   }, [])
   
@@ -188,7 +177,6 @@ export default function DiskFolder() {
     pushFiles()
 
     setIsDragVisible(false)
-    console.log(files)
   }, [params.id, isUpdate]);
 
   function FileInputChange(e:any) {
@@ -246,11 +234,11 @@ export default function DiskFolder() {
     document.body.removeChild(a)
   }
 
-  interface IFilePaths {
+  interface IfolderPaths {
     name:string,
     token:string
   }
-  const [filePaths, setFilePaths] = useState<IFilePaths[]>()
+  const [folderPaths, setfolderPaths] = useState<IfolderPaths[]>()
   useEffect(() => {
     const getData = async () => {
       let token = localStorage.getItem("token")
@@ -270,7 +258,7 @@ export default function DiskFolder() {
         }
         return res.json();
       })
-      .then(data => setFilePaths(data))
+      .then(data => setfolderPaths(data))
       .catch(error => {
         console.log(error)
         //ShowError("User not found", "404")
@@ -280,7 +268,7 @@ export default function DiskFolder() {
       getData()
       setSelectedPath(params.id)
     } else {
-      setFilePaths(undefined)
+      setfolderPaths(undefined)
     }
   }, [params.id])
 
@@ -310,7 +298,7 @@ export default function DiskFolder() {
           bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 py-1 h-0 w-0
           dark:placeholder-gray-400" id="file_input" type="file" multiple onChange={FileInputChange} ref={inputFileButtonRef}/>
           {/* Home */}
-          {filePaths !== undefined && (
+          {folderPaths !== undefined && (
             <div className="flex items-center">
               <motion.button transition={{stiffness: 300, damping: 0}} 
               initial={{x: -20, opacity: 0}} animate={{x: 0, opacity: 1}} 
@@ -332,7 +320,7 @@ export default function DiskFolder() {
             </div>
           )}
           {/* Paths */}
-          {filePaths !== undefined && filePaths.length > 1 && (
+          {folderPaths !== undefined && folderPaths.length > 1 && (
           <>
             <motion.div initial={{x: -20, opacity: 0}} animate={{x: 0, opacity: 1}}
             transition={{stiffness: 300, damping: 0, delay: 0.1}}>
@@ -357,9 +345,9 @@ export default function DiskFolder() {
                     <div className="py-2 text-sm font-medium text-textLight dark:text-textDark flex flex-row">
                       <div>
                         <svg className="w-4 -translate-y-2 stroke-textLight dark:stroke-textDark opacity-80" 
-                        style={{height: (filePaths.length-1) * 36}}>
-                        {filePaths === undefined ? null : filePaths.length > 1 ? filePaths.map((item, index) => { 
-                        return index < filePaths.length - 1 ? index === filePaths.length - 2 ? (
+                        style={{height: (folderPaths.length-1) * 36}}>
+                        {folderPaths === undefined ? null : folderPaths.length > 1 ? folderPaths.map((item, index) => { 
+                        return index < folderPaths.length - 1 ? index === folderPaths.length - 2 ? (
                           <path d={"M8 " + (index * 36 - 10) + " C8 " + (index * 36 + 12) + ",8 " + (index * 36 + 12) + ",8 " + (index * 36 + 18) + " S8 " + (index * 36 + 26) + ", 16 " + (index * 36 + 26)} fill="none" strokeWidth="2.4"/>
                         ) : (
                           <path d={"M8 " + (index * 36 - 10) + " L8 " + (index * 36 + 26) + " L16 " + (index * 36 + 26)} fill="none" strokeWidth="2.4"/>
@@ -367,7 +355,7 @@ export default function DiskFolder() {
                         </svg>
                       </div>
                       <div className="w-[168px]">
-                        {filePaths === undefined ? null : filePaths.length > 1 ? filePaths.map((item, index) => { return index < filePaths.length - 1 ? (
+                        {folderPaths === undefined ? null : folderPaths.length > 1 ? folderPaths.map((item, index) => { return index < folderPaths.length - 1 ? (
                           <div key={index} className="flex items-center">
                             <button className="transition-colors px-2 py-2 flex flex-row w-full rounded
                             hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center
@@ -402,7 +390,7 @@ export default function DiskFolder() {
             max-w-[37dvw] sm:max-w-[28dvw] md:max-w-none
             focus:dark:bg-backgroundThirdDark focus:bg-backgroundThirdLight inline-flex items-center">
               <span className="truncate pointer-events-none">
-                {filePaths === undefined ? "My storage" : filePaths[filePaths.length-1].name}
+                {folderPaths === undefined ? "My storage" : folderPaths[folderPaths.length-1].name}
               </span>
               <svg className="w-2.5 h-2.5 ml-1 md:ml-2.5" aria-hidden="true" 
               xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -463,202 +451,18 @@ export default function DiskFolder() {
 
         <div className="flex flex-row items-center space-x-1">
           {/* Sorting */}
-          <div className="">
-            <button onClick={() => {setIsSortDrop(!isSortDrop)}} id="drop-sort" aria-label="Sort" data-drop="sort"
-            className=" dark:text-textDark hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark
-            font-medium rounded-full text-base sm:text-lg w-10 h-10 sm:w-11 sm:h-11 text-textLight 
-            text-center justify-center inline-flex items-center
-            focus:bg-none focus:dark:bg-backgroundThirdDark first-letter:uppercase">
-              <motion.svg initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
-              transition={{damping: 24, duration: 0.25, stiffness: 300}}
-              viewBox="0 0 24 24" className="w-7 h-7" xmlns="http://www.w3.org/2000/svg">
-                <path d="m6 20 4-4H7V4H5v12H2zm5-12h9v2h-9zm0 4h7v2h-7zm0-8h11v2H11zm0 12h5v2h-5z" 
-                className="fill-iconLight dark:fill-iconDark"></path>
-              </motion.svg>
-            </button>
-            <AnimatePresence>
-              {isSortDrop ? (
-                <motion.div initial={{opacity: 0, y: -110, scaleY: 0.2, x: "calc(-100% + 44px)"}} animate={{opacity: 1, y: 0, scaleY: 1}}
-                transition={{stiffness: 200, damping: 24, duration: 0.16}} exit={{opacity: 0, y: -110, scaleY: 0}}
-                className="rounded w-44 mt-0.5 overflow-hidden
-                absolute shadow-defaultLight dark:shadow-none z-10
-                bg-backgroundSecondLight dark:bg-backgroundThirdDark">
-                  <ul className="py-1.5 text-sm font-medium text-textLight dark:text-textDark">
-                    {sortTypes.map((item, index) => (
-                      <li key={index}>
-                        <button className="transition-colors px-2 py-1.5 w-full
-                        hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
-                        flex flex-row justify-start items-center" data-drop="child"
-                        data-name={item} onClick={() => {setCurrentSortType(item)}}>
-                          <AnimatePresence>
-                            {currentSortType === item ? (
-                              <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
-                              transition={{damping: 24, stiffness: 300, duration: 0.25}}
-                              viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
-                              className="w-4 h-4 absolute">
-                                <path d="M480 128c0 8.188-3.125 16.38-9.375 22.62l-256 256C208.4 
-                                412.9 200.2 416 192 416s-16.38-3.125-22.62-9.375l-128-128C35.13 272.4 
-                                32 264.2 32 256c0-18.28 14.95-32 32-32 8.188 0 16.38 3.125 22.62 9.375L192 
-                                338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 32 13.7 32 32z" 
-                                className=" fill-iconLight dark:fill-iconDark"></path>
-                              </motion.svg>
-                            ) : null}
-                          </AnimatePresence>
-                          <span className="pointer-events-none ml-6 first-letter:uppercase">{item}</span>
-                        </button>
-                      </li>
-                    ))}
-                    <li>
-                      <div className="border my-1 border-borderLight dark:border-borderDark"></div>
-                    </li>
-                    {/* is order by ascending or descending */}
-                    <li>
-                      <button className="transition-colors px-2 py-1.5 
-                      hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark w-full
-                      flex flex-row justify-start items-center" data-drop="child"
-                      onClick={() => {setCurrentSortBy("ascending")}}>
-                        <AnimatePresence>
-                          {currentSortBy === "ascending" ? (
-                            <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
-                            transition={{damping: 24, stiffness: 300, duration: 0.25}}
-                            viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4 absolute">
-                              <path d="M480 128c0 8.188-3.125 16.38-9.375 22.62l-256 256C208.4 412.9 200.2 416 192 
-                              416s-16.38-3.125-22.62-9.375l-128-128C35.13 272.4 32 264.2 32 256c0-18.28 14.95-32 32-32 
-                              8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
-                              32 13.7 32 32z" className=" fill-iconLight dark:fill-iconDark"></path>
-                            </motion.svg>
-                          ) : null}
-                        </AnimatePresence>
-                        <span className="pointer-events-none ml-6">Ascending</span>
-                      </button>
-                    </li>
-                    <li>
-                      <button className="transition-colors px-2 py-1.5 
-                      hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark w-full
-                      flex flex-row justify-start items-center" data-drop="child"
-                      onClick={() => {setCurrentSortBy("descending")}}>
-                        <AnimatePresence>
-                          {currentSortBy === "descending" ? (
-                            <motion.svg initial={{x: -50}} animate={{x: 0}} exit={{x: -50}}
-                            transition={{damping: 24, stiffness: 300, duration: 0.25}}
-                            viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4 absolute">
-                              <path d="M480 128c0 8.188-3.125 16.38-9.375 22.62l-256 256C208.4 412.9 200.2 416 192 
-                              416s-16.38-3.125-22.62-9.375l-128-128C35.13 272.4 32 264.2 32 256c0-18.28 14.95-32 32-32 
-                              8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4c6.2-6.27 14.4-9.4 22.6-9.4 17.1 0 
-                              32 13.7 32 32z" className=" fill-iconLight dark:fill-iconDark"></path>
-                            </motion.svg>
-                          ) : null}
-                        </AnimatePresence>
-                        <span className="pointer-events-none ml-6">Descending</span>
-                      </button>
-                    </li>
-                  </ul>
-                </motion.div>
-              ) : null}
-            </AnimatePresence>
-          </div>
+          <SortDropdown currentSortBy={currentSortBy} setCurrentSortBy={(value:string) => setCurrentSortBy(value)}
+          currentSortType={currentSortType} setCurrentSortType={(value:string) => setCurrentSortType(value)}></SortDropdown>
 
           {/* Cell types drop */}
-          <div>
-            <button data-drop="cellType" id="drop-cell-type" aria-label="Cell type"
-            onClick={() => {setIsCellTypeDrop(!isCellTypeDrop)}}
-            className="text-white hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark
-            font-medium rounded-full text-center h-10 w-10 inline-flex items-center first-letter:uppercase
-            focus:dark:bg-backgroundThirdDark">
-              {currentRenderType === "list" ? (
-                <motion.p initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
-                transition={{damping: 24, duration: 0.25, stiffness: 300}}
-                className="w-10 h-10 flex justify-center items-center pointer-events-none">
-                  <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark"
-                  viewBox="0 0 18 10" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0 6h2V4H0v2Zm0 4h2V8H0v2Zm0-8h2V0H0v2Zm4 4h14V4H4v2Zm0 4h14V8H4v2ZM4 
-                    0v2h14V0H4Z" fillRule="evenodd" className="fill-iconLight dark:fill-iconDark"></path>
-                  </svg>
-                </motion.p>
-              ) : (currentRenderType === "table" ? (
-                <motion.section initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
-                transition={{damping: 24, duration: 0.25, stiffness: 300}}
-                className="w-10 h-10 flex justify-center items-center pointer-events-none">
-                  <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark"
-                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 14h12v-3H9v3Zm-2 0v-3H3v3h4Zm2-8v3h12V6H9ZM7 6H3v3h4V6Zm2 13h12v-3H9v3Zm-2 
-                    0v-3H3v3h4ZM3 4h18a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" 
-                    fillRule="evenodd" className="fill-iconLight dark:fill-iconDark"></path>
-                  </svg>
-                </motion.section>
-              ) : ( // tile
-                <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
-                transition={{damping: 24, duration: 0.25, stiffness: 300}}
-                className="w-10 h-10 flex justify-center items-center pointer-events-none">
-                  <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark"
-                  viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16">
-                    <path d="M0 0h4v4H0zM6 0h4v4H6zM12 0h4v4h-4zM0 6h4v4H0zM6 6h4v4H6zM12 6h4v4h-4zM0 12h4v4H0zM6 
-                    12h4v4H6zM12 12h4v4h-4z" className="fill-iconLight dark:fill-iconDark"></path>
-                  </svg>
-                </motion.div>
-              ))}
-            </button>
-            <AnimatePresence>
-              {isCellTypeDrop === true ? (
-                <motion.div initial={{opacity: 0, y: -70, scaleY: 0.2}} animate={{opacity: 1, y: 0, scaleY: 1}}
-                transition={{stiffness: 200, damping: 24, duration: 0.16}} exit={{opacity: 0, y: -70, scaleY: 0}}
-                className="divide-y divide-gray-100 rounded w-10 mt-0.5
-                absolute shadow-defaultLight dark:shadow-none z-10
-                bg-backgroundSecondLight dark:bg-backgroundThirdDark">
-                  <ul className=" text-sm font-medium text-textLight dark:text-textDark">
-                    {currentRenderType !== "list" ? (
-                      <li>
-                        <button className="transition-colors px-2 py-2 flex flex-row
-                        hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center" 
-                        title="list" onClick={() => {setCurrentRenderType("list")}}>
-                          <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark"
-                          viewBox="0 0 18 10" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0 6h2V4H0v2Zm0 4h2V8H0v2Zm0-8h2V0H0v2Zm4 4h14V4H4v2Zm0 4h14V8H4v2ZM4 
-                            0v2h14V0H4Z" fillRule="evenodd" className="fill-iconLight dark:fill-iconDark"></path>
-                          </svg>
-                        </button>
-                      </li>
-                    ) : null}
-                    {currentRenderType !== "table" ? (
-                      <li>
-                        <button className="transition-colors px-2 py-2 flex flex-row
-                        hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center" 
-                        title="table" onClick={() => {setCurrentRenderType("table")}}>
-                          <svg className="h-6 w-6"
-                          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9 14h12v-3H9v3Zm-2 0v-3H3v3h4Zm2-8v3h12V6H9ZM7 6H3v3h4V6Zm2 13h12v-3H9v3Zm-2 
-                            0v-3H3v3h4ZM3 4h18a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" 
-                            fillRule="evenodd" className="fill-iconLight dark:fill-iconDark"></path>
-                          </svg>
-                        </button>
-                      </li>
-                    ) : null}
-                    {currentRenderType !== "tile" ? (
-                      <li>
-                        <button className="transition-colors px-2 py-2 flex flex-row
-                        hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center" 
-                        title="tiles" onClick={() => {setCurrentRenderType("tile")}}>
-                          <svg className="h-6 w-6 fill-iconLight dark:fill-iconDark"
-                          viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 16 16">
-                            <path d="M0 0h4v4H0zM6 0h4v4H6zM12 0h4v4h-4zM0 6h4v4H0zM6 6h4v4H6zM12 6h4v4h-4zM0 12h4v4H0zM6 
-                            12h4v4H6zM12 12h4v4h-4z" className="fill-iconLight dark:fill-iconDark"></path>
-                          </svg>
-                        </button>
-                      </li>
-                    ) : null}
-                  </ul>
-                </motion.div>
-              ) : null}
-            </AnimatePresence>
-          </div>
+          <CellTypesDropdown currentRenderType={currentRenderType} 
+          setCurrentRenderType={(value:string) => setCurrentRenderType(value)}></CellTypesDropdown>
         </div>
       </header>
 
       <Suspense fallback={<div></div>}>
-        <RenderData currentSortBy={currentSortBy} updateTrigger={isUpdate}
-        currentSortType={currentSortType} currentRenderType={currentRenderType}></RenderData>
+        <RenderFolderData currentSortBy={currentSortBy} updateTrigger={isUpdate}
+        currentSortType={currentSortType} currentRenderType={currentRenderType}></RenderFolderData>
       </Suspense>
 
       {/* Create folder */}

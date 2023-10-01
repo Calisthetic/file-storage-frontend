@@ -29,7 +29,7 @@ type Props = {
   updateTrigger:boolean
 }
 
-const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortBy, currentRenderType, updateTrigger}:Props) => {
+const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, currentSortBy, currentRenderType, updateTrigger}:Props) => {
   const newNameInputRef:any = useRef();
   const [selectedItem, setSelectedItem] = useState<any>();
 
@@ -1303,54 +1303,57 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
               { return currentSortBy === "descending" ? -1 : 1; }
               return 0;
             }).map((item, index) => (
-              <div key={index} data-type="file"
-              className="flex h-full w-full text-textLight dark:text-textDark
+              <div key={index} data-type="file" 
+              className="text-textLight dark:text-textDark
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
-              flex-row justify-between text-lg px-2 py-1 rounded-lg rendered-files">
-                <div className="flex flex-row items-center space-x-2 
-                pointer-events-none max-w-[calc(100dvw-88px)] 
-                sm:max-w-[calc(100dvw-348px)] md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]">
-                  <div className="w-6 pointer-events-none">i</div>
-                  <div className="pointer-even-nonets truncate">{item.name}</div>
-                </div>
-                <div className="flex flex-row items-center">
-                  {/* Info */}
-                  <div className="w-6 sm:w-7 mg:w-8">
-                    <div className="w-6 sm:w-7 mg:w-8 hover-first-info">
-                      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
-                      enableBackground="new 0 0 24 24" className="h-6 w-6"><g id="Layer_2">
-                        <path d="M12 10c-.6 0-1 .4-1 1v5c0 .6.4 1 1 1s1-.4 1-1v-5c0-.6-.4-1-1-1z" 
-                        className="fill-textLight dark:fill-textDark"></path>
-                        <circle cx="12" cy="8" r="1" className="fill-textLight dark:fill-textDark"></circle>
-                        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 
-                        18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z" 
-                        className="fill-textLight dark:fill-textDark"></path></g>
-                      </svg>
+              text-lg rounded-lg rendered-file h-full w-full relative
+              bg-backgroundSecondLight dark:bg-backgroundSecondDark transition-colors">
+              {isMaskActive ? (
+                <div data-token={item.token} data-type="file" 
+                className="absolute h-full w-full z-20"></div>
+              ) : null}
+                <div className="flex px-2 py-1 flex-row justify-between">
+                  <div className="flex flex-row items-center space-x-2 
+                  pointer-events-none max-w-[calc(100dvw-88px)] 
+                  sm:max-w-[calc(100dvw-348px)] md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]">
+                    <div className="h-6 w-6 flex items-center justify-center">
+                      <Suspense fallback={<div></div>}>
+                        <FileIcon fileType={item.name.slice(item.name.lastIndexOf('.') + 1)} 
+                        classes="fill-textLight dark:fill-textDark h-6 w-6"></FileIcon>
+                      </Suspense>
                     </div>
-                    <div className="hover-second-info px-1 overflow-hidden text-base whitespace-pre
-                    bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded text-gray-700 dark:text-gray-400">
-                      <div className="space-x-1">
-                        <span className="text-sm">Size:</span>
-                        <span className="text-base text-textLight dark:text-textDark">{CutSize(item.fileSize * 10)}</span>
-                      </div>
-                      <div className="space-x-1">
-                        <span className="text-sm">Created:</span>
-                        <span className="text-base text-textLight dark:text-textDark">{item.createdAt}</span>
-                      </div>
-                      <div className="space-x-1">
-                        <span className="text-sm">Watches:</span>
-                        <span className="text-base text-textLight dark:text-textDark">{item.views ? item.views : 0}</span>
-                      </div>
-                      <div className="space-x-1">
-                        <span className="text-sm">Downloads:</span>
-                        <span className="text-base text-textLight dark:text-textDark">{item.downloads ? item.downloads : 0}</span>
-                      </div>
-                    </div>
+                    <div className="truncate">{item.name}</div>
                   </div>
-                  {/* Actions */}
-                  <div className="w-6 sm:w-7 mg:w-8">
-                    <div className="h-full flex items-center justify-center hover-first">
-                      <div>
+                  <div className="flex flex-row items-center">
+                    {/* Info */}
+                    <div className="w-6 sm:w-7 mg:w-8">
+                      <div className="w-6 sm:w-7 mg:w-8 hover-first-info">
+                        <IconInfo classes="h-6 w-6" fillClasses="fill-textLight dark:fill-textDark"></IconInfo>
+                      </div>
+                      <div className="hover-second-info px-1 overflow-hidden text-base whitespace-pre z-10
+                      bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded text-gray-700 dark:text-gray-400">
+                        <div className="space-x-1">
+                          <span className="text-sm">Size:</span>
+                          <span className="text-base text-textLight dark:text-textDark">{CutSize(item.fileSize * 10)}</span>
+                        </div>
+                        <div className="space-x-1">
+                          <span className="text-sm">Created:</span>
+                          <span className="text-base text-textLight dark:text-textDark">{item.createdAt}</span>
+                        </div>
+                        <div className="space-x-1">
+                          <span className="text-sm">Watches:</span>
+                          <span className="text-base text-textLight dark:text-textDark">{item.views ? item.views : 0}</span>
+                        </div>
+                        <div className="space-x-1">
+                          <span className="text-sm">Downloads:</span>
+                          <span className="text-base text-textLight dark:text-textDark">{item.downloads ? item.downloads : 0}</span>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Actions */}
+                    <div className="w-6 sm:w-7 mg:w-8">
+                      <div data-type="file"
+                      className="h-full flex items-center justify-center hover-first">
                         <svg viewBox="0 0 256 256"  xmlns="http://www.w3.org/2000/svg"
                         className="w-6 h-6">
                           <path fill="none" d="M0 0h256v256H0z"></path>
@@ -1361,68 +1364,45 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
                           <circle cx="128" cy="176" r="12" className="fill-textLight dark:fill-textDark"></circle>
                         </svg>
                       </div>
-                    </div>
-                    <div className="hover-second ml-3.5 w-8
-                    bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
-                      <button data-name={item.name} data-type="file" onClick={modalRenameOpen}
-                      className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
-                        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
-                        className="w-5 h-5"><g>
-                          <path d="M2 29a1 1 0 0 1-1-1.11l.77-7a1 1 0 0 1 .29-.59L18.42 3.94a3.2 
-                          3.2 0 0 1 4.53 0l3.11 3.11a3.2 3.2 0 0 1 0 4.53L9.71 27.93a1 1 0 0 1-.59.29l-7 
-                          .77Zm7-1.78Zm-5.27-5.77-.6 5.42 5.42-.6 16.1-16.1a1.2 1.2 0 0 0 0-1.7l-3.12-3.12a1.2 
-                          1.2 0 0 0-1.7 0Z" className="fill-textLight dark:fill-textDark"></path>
-                          <path d="M23 14.21a1 1 0 0 1-.71-.29l-6.21-6.23a1 1 0 0 1 1.42-1.42l6.23 6.23a1 1 0 
-                          0 1 0 1.42 1 1 0 0 1-.73.29Z" className="fill-textLight dark:fill-textDark"></path>
-                          <path transform="rotate(-45 12.901 17.096)" d="M7.39 16.1H18.4v2H7.39z" 
-                          className="fill-textLight dark:fill-textDark"></path>
-                          <path d="M30 29H14a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2Z" 
-                          className="fill-textLight dark:fill-textDark"></path></g>
-                        </svg>
-                      </button>
-                      <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
-                        {item.isElected === true ? (
-                          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                          className="w-5 h-5">
-                            <path d="m21.82 10.74-5.12 3.71 2 6a1 1 0 0 1-.37 1.12 1 1 0 0 1-1.17 0L12 17.87l-5.12 
-                            3.72a1 1 0 0 1-1.17 0 1 1 0 0 1-.37-1.12l2-6-5.16-3.73a1 1 0 0 1 .59-1.81h6.32l2-6a1 
-                            1 0 0 1 1.9 0l2 6h6.32a1 1 0 0 1 .59 1.81Z"
-                            className="fill-iconLight dark:fill-iconDark"></path>
-                          </svg>
-                        ) : (
-                          <svg viewBox="0 0 32 32" className="w-5 h-5" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M31.881 12.557a2.303 2.303 0 0 0-1.844-1.511l-8.326-1.238-3.619-7.514A2.318 
-                            2.318 0 0 0 16 1c-.896 0-1.711.505-2.092 1.294l-3.619 7.514-8.327 1.238A2.3 2.3 0 0 
-                            0 .12 12.557a2.207 2.207 0 0 0 .537 2.285l6.102 6.092-1.415 8.451a2.224 2.224 0 0 0 
-                            .948 2.203 2.351 2.351 0 0 0 2.449.131L16 27.811l7.26 3.908a2.367 2.367 0 0 0 2.449-.131 
-                            2.225 2.225 0 0 0 .947-2.203l-1.416-8.451 6.104-6.092c.603-.603.81-1.485.537-2.285zm-8.293 
-                            6.806a2.216 2.216 0 0 0-.627 1.934l1.416 8.451-7.26-3.906a2.361 2.361 0 0 0-2.235 0l-7.26 
-                            3.906 1.416-8.451a2.212 2.212 0 0 0-.626-1.934L2.31 13.271l8.326-1.24a2.306 2.306 0 0 0 
-                            1.743-1.268L16 3.251l3.62 7.513a2.31 2.31 0 0 0 1.742 1.268l8.328 1.24-6.102 6.091z" 
-                            className="fill-textLight dark:fill-textDark"></path>
-                          </svg>
-                        )}
-                      </button>
-                      <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
-                        <svg className=" stroke-textLight dark:stroke-textDark h-5 w-5" fill="none" 
-                        strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
-                        </svg>
-                      </button>
-                      <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" className="h-5 w-5" viewBox="0,0,256,256">
-                          <g className="fill-textLight dark:fill-textDark" fillRule="nonzero" stroke="none" 
-                          strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDashoffset="0" 
-                          fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
-                          <g transform="scale(10.66667,10.66667)">
-                            <path d="M10,2l-1,1h-4c-0.6,0 -1,0.4 -1,1c0,0.6 0.4,1 1,1h2h10h2c0.6,0 1,-0.4 1,-1c0,-0.6 
-                            -0.4,-1 -1,-1h-4l-1,-1zM5,7v13c0,1.1 0.9,2 2,2h10c1.1,0 2,-0.9 2,-2v-13zM9,9c0.6,0 
-                            1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1zM15,9c0.6,0 
-                            1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1z"></path>
-                          </g></g>
-                        </svg>
-                      </button>
+                      <div className="hover-second ml-3.5 w-8 z-10
+                      bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
+                        <button data-name={item.name} data-token={item.token} data-type="file" onClick={modalRenameOpen}
+                        className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
+                          <IconEdit classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconEdit>
+                        </button>
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
+                        onClick={() => ElectFile(item.token)}>
+                          {item.isElected === true ? (
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            className="w-5 h-5">
+                              <path d="m21.82 10.74-5.12 3.71 2 6a1 1 0 0 1-.37 1.12 1 1 0 0 1-1.17 0L12 17.87l-5.12 
+                              3.72a1 1 0 0 1-1.17 0 1 1 0 0 1-.37-1.12l2-6-5.16-3.73a1 1 0 0 1 .59-1.81h6.32l2-6a1 
+                              1 0 0 1 1.9 0l2 6h6.32a1 1 0 0 1 .59 1.81Z"
+                              className="fill-iconLight dark:fill-iconDark"></path>
+                            </svg>
+                          ) : (
+                            <svg viewBox="0 0 32 32" className="w-5 h-5" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M31.881 12.557a2.303 2.303 0 0 0-1.844-1.511l-8.326-1.238-3.619-7.514A2.318 
+                              2.318 0 0 0 16 1c-.896 0-1.711.505-2.092 1.294l-3.619 7.514-8.327 1.238A2.3 2.3 0 0 
+                              0 .12 12.557a2.207 2.207 0 0 0 .537 2.285l6.102 6.092-1.415 8.451a2.224 2.224 0 0 0 
+                              .948 2.203 2.351 2.351 0 0 0 2.449.131L16 27.811l7.26 3.908a2.367 2.367 0 0 0 2.449-.131 
+                              2.225 2.225 0 0 0 .947-2.203l-1.416-8.451 6.104-6.092c.603-.603.81-1.485.537-2.285zm-8.293 
+                              6.806a2.216 2.216 0 0 0-.627 1.934l1.416 8.451-7.26-3.906a2.361 2.361 0 0 0-2.235 0l-7.26 
+                              3.906 1.416-8.451a2.212 2.212 0 0 0-.626-1.934L2.31 13.271l8.326-1.24a2.306 2.306 0 0 0 
+                              1.743-1.268L16 3.251l3.62 7.513a2.31 2.31 0 0 0 1.742 1.268l8.328 1.24-6.102 6.091z" 
+                              className="fill-textLight dark:fill-textDark"></path>
+                            </svg>
+                          )}
+                        </button>
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5 h-8"
+                        onClick={() => DownloadFile(item.token)}>
+                          <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
+                        </button>
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
+                        onClick={() => DeleteFile(item.token)}>
+                          <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1488,4 +1468,4 @@ const RenderData:FunctionComponent<Props> = memo(({currentSortType, currentSortB
     </main>
   )
 })
-export default RenderData
+export default RenderFolderData
