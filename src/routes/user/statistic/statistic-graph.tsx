@@ -2,6 +2,7 @@ import { ResponsiveLine } from '@nivo/line'
 import { FunctionComponent, useCallback, useEffect, useState } from 'react'
 import YearSelectList from './select-year'
 import { GetCSSValue } from '../../../lib/color-utils'
+import { motion } from 'framer-motion'
 
 interface IUsageStat {
   id: string
@@ -134,68 +135,73 @@ const StatisticGraph:FunctionComponent<StatisticGraphProps> = ({availableYears}:
   }, [selectedYear])
   
 
-  return (
-    <div className="rounded border border-borderLight dark:border-borderDark">
-      <div className="flex flex-col xl:flex-row xl:justify-center">
-        <div>
-          <div className="overflow-x-auto px1050:overflow-x-visible py-2 px1050:flex flex-col items-center">
-            {/* Calendar */}
-            <div className="h-[400px] w-[766px]">
-              <ResponsiveLine
-                data={usageStat}
-                margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
-                xScale={{ type: 'point' }}
-                yScale={{
-                  type: 'linear',
-                  min: 'auto',
-                  max: 'auto',
-                  stacked: true,
-                  reverse: false
-                }}
-                yFormat=" >-.2f"
-                axisTop={null}
-                axisRight={null}
-                axisBottom={{
-                  tickSize: 5,
-                  tickPadding: 5,
-                  tickRotation: 0,
-                  legend: 'DISK USAGE',
-                  legendOffset: 36,
-                  legendPosition: 'middle'
-                }}
-                axisLeft={{
-                  tickSize: 5,
-                  tickPadding: 5,
-                  tickRotation: 0,
-                  legend: 'count',
-                  legendOffset: -40,
-                  legendPosition: 'middle'
-                }}
-                colors={{ scheme: 'set1' }}
-                pointSize={10}
-                pointColor={{ theme: 'background' }}
-                pointBorderWidth={2}
-                pointBorderColor={{ from: 'serieColor' }}
-                pointLabelYOffset={-12}
-                useMesh={true}
-                legends={[]}
-              />
+  return usageStat === undefined ? null : (
+    <motion.div initial={{y: 50, opacity: 0}}
+    transition={{damping: 24, stiffness: 300}} 
+    whileInView={{y: 0, opacity: 1}}
+    viewport={{ once: true }}>
+      <div className="rounded border border-borderLight dark:border-borderDark">
+        <div className="flex flex-col xl:flex-row xl:justify-center">
+          <div>
+            <div className="overflow-x-auto px1050:overflow-x-visible py-2 px1050:flex flex-col items-center">
+              {/* Calendar */}
+              <div className="h-[400px] w-[766px]">
+                <ResponsiveLine
+                  data={usageStat}
+                  margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
+                  xScale={{ type: 'point' }}
+                  yScale={{
+                    type: 'linear',
+                    min: 'auto',
+                    max: 'auto',
+                    stacked: true,
+                    reverse: false
+                  }}
+                  yFormat=" >-.2f"
+                  axisTop={null}
+                  axisRight={null}
+                  axisBottom={{
+                    tickSize: 5,
+                    tickPadding: 5,
+                    tickRotation: 0,
+                    legend: 'DISK USAGE',
+                    legendOffset: 36,
+                    legendPosition: 'middle'
+                  }}
+                  axisLeft={{
+                    tickSize: 5,
+                    tickPadding: 5,
+                    tickRotation: 0,
+                    legend: 'count',
+                    legendOffset: -40,
+                    legendPosition: 'middle'
+                  }}
+                  colors={{ scheme: 'set1' }}
+                  pointSize={10}
+                  pointColor={{ theme: 'background' }}
+                  pointBorderWidth={2}
+                  pointBorderColor={{ from: 'serieColor' }}
+                  pointLabelYOffset={-12}
+                  useMesh={true}
+                  legends={[]}
+                />
+              </div>
             </div>
           </div>
-        </div>
-        {/* Years list right */}
-        <YearSelectList select={(e:any) => setSelectedYear(parseInt(e.target.dataset.year))}
-        data={availableYears} selected={selectedYear} classes="hidden xl:flex"></YearSelectList>
-      </div>
-      <div className="flex flex-row px800:justify-center">
-        <div className="flex flex-row justify-between w-full px800:w-[766px]">
+          {/* Years list right */}
           <YearSelectList select={(e:any) => setSelectedYear(parseInt(e.target.dataset.year))}
-          data={availableYears} selected={selectedYear} 
-          classes="xl:hidden flex border-none flex-row-reverse flex-wrap justify-center
-          child:p-2 child:w-auto child:md:w-auto w-full child:py-1"></YearSelectList>
+          data={availableYears} selected={selectedYear} classes="hidden xl:flex"></YearSelectList>
+        </div>
+        <div className="flex flex-row px800:justify-center">
+          <div className="flex flex-row justify-between w-full px800:w-[766px]">
+            <YearSelectList select={(e:any) => setSelectedYear(parseInt(e.target.dataset.year))}
+            data={availableYears} selected={selectedYear} 
+            classes="xl:hidden flex border-none flex-row-reverse flex-wrap justify-center
+            child:p-2 child:w-auto child:md:w-auto w-full child:py-1"></YearSelectList>
+          </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 export default StatisticGraph

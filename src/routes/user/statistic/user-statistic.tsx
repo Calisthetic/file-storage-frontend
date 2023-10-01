@@ -13,7 +13,8 @@ const UserStatistic: FunctionComponent = () => {
   
   return (
     <div className="min-h-fullWithHeader flex flex-col xl:flex-row justify-center xl:items-center w-full">
-      <div className="pb-3 sm:rounded-tl-2xl overflow-y-hidden">
+      <div className="pb-3 sm:rounded-tl-2xl overflow-y-hidden
+      child:w-[calc(100%-24px)] child:ml-3 child:xl:w-[1024px] child:mt-3">
         <motion.div initial={{y: 50, opacity: 0}}
         transition={{damping: 24, stiffness: 300}} 
         whileInView={{y: 0, opacity: 1}}

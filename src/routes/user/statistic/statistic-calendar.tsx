@@ -4,6 +4,7 @@ import { GetColorGradient, GetCSSValue } from '../../../lib/color-utils'
 import { GetCurrentDate, GetCurrentYear } from '../../../lib/utils'
 import YearSelectList from './select-year'
 import DailyStatistic from './calendar-daily-stat'
+import { motion } from 'framer-motion'
 
 export interface IDayActivityStat {
   binValue?:number,
@@ -419,74 +420,79 @@ const StatisticCalendar:FunctionComponent<StatisticCalendarProps> = ({availableY
   }, [selectedDay])
   
 
-  return (
-    <div className="rounded border border-borderLight dark:border-borderDark">
-      <div className="flex flex-col xl:flex-row xl:justify-center">
-        <div>
-          <div className="overflow-x-auto px1050:overflow-x-visible py-2 px1050:flex flex-col items-center">
-            {/* Calendar */}
-            <div className="h-[140px] w-[766px]">
-              <ResponsiveCalendar
-                data={activityStat}
-                from={GetCurrentYear().toString() + "-01-01"}
-                to={GetCurrentYear().toString() + "-12-31"}
-                emptyColor={GetCSSValue("backgroundThird")}
-                colors={calendarColors}
-                margin={{ top: 20, right: 0, bottom: 0, left: 30 }}
-                yearSpacing={40}
-                monthBorderColor={GetCSSValue("backgroundSecond")}
-                dayBorderWidth={3}
-                dayBorderColor={GetCSSValue("backgroundSecond")}
-                legends={[
-                  {
-                    anchor: 'bottom-right',
-                    direction: 'row',
-                    translateY: 36,
-                    itemCount: 4,
-                    itemWidth: 42,
-                    itemHeight: 36,
-                    itemsSpacing: 14,
-                    itemDirection: 'right-to-left'
-                  }
-                ]}
-                onClick={(e:any) => setSelectedDay(e.data.day)}
-              />
-            </div>
-            {/* Bottom section */}
-            <div className="w-[766px] h-4 px-10 -mt-2 text-xs flex flex-row justify-between
-            text-textLight dark:text-textDark">
-              <button className="hover:text-buttonHoverLight hover:dark:text-buttonHoverDark opacity-80">
-                How we count your actions?
-              </button>
-              <div className="flex flex-row items-center gap-x-1">
-                <span className="opacity-90">Less</span>
-                <div className="gap-x-0.5 flex flex-row pt-0.5">
-                  <div style={{backgroundColor: GetCSSValue("backgroundThird")}}
-                  className="h-2.5 w-2.5 rounded-sm"></div>
-                  {calendarColors.map((item, index) => (
-                    <div key={index} style={{backgroundColor: item}}
+  return activityStat === undefined ? null : (
+    <motion.div initial={{y: 50, opacity: 0}}
+    transition={{damping: 24, stiffness: 300}} 
+    whileInView={{y: 0, opacity: 1}}
+    viewport={{ once: true }}>
+      <div className="rounded border border-borderLight dark:border-borderDark">
+        <div className="flex flex-col xl:flex-row xl:justify-center">
+          <div>
+            <div className="overflow-x-auto px1050:overflow-x-visible py-2 px1050:flex flex-col items-center">
+              {/* Calendar */}
+              <div className="h-[140px] w-[766px]">
+                <ResponsiveCalendar
+                  data={activityStat}
+                  from={GetCurrentYear().toString() + "-01-01"}
+                  to={GetCurrentYear().toString() + "-12-31"}
+                  emptyColor={GetCSSValue("backgroundThird")}
+                  colors={calendarColors}
+                  margin={{ top: 20, right: 0, bottom: 0, left: 30 }}
+                  yearSpacing={40}
+                  monthBorderColor={GetCSSValue("backgroundSecond")}
+                  dayBorderWidth={3}
+                  dayBorderColor={GetCSSValue("backgroundSecond")}
+                  legends={[
+                    {
+                      anchor: 'bottom-right',
+                      direction: 'row',
+                      translateY: 36,
+                      itemCount: 4,
+                      itemWidth: 42,
+                      itemHeight: 36,
+                      itemsSpacing: 14,
+                      itemDirection: 'right-to-left'
+                    }
+                  ]}
+                  onClick={(e:any) => setSelectedDay(e.data.day)}
+                />
+              </div>
+              {/* Bottom section */}
+              <div className="w-[766px] h-4 px-10 -mt-2 text-xs flex flex-row justify-between
+              text-textLight dark:text-textDark">
+                <button className="hover:text-buttonHoverLight hover:dark:text-buttonHoverDark opacity-80">
+                  How we count your actions?
+                </button>
+                <div className="flex flex-row items-center gap-x-1">
+                  <span className="opacity-90">Less</span>
+                  <div className="gap-x-0.5 flex flex-row pt-0.5">
+                    <div style={{backgroundColor: GetCSSValue("backgroundThird")}}
                     className="h-2.5 w-2.5 rounded-sm"></div>
-                  ))}
+                    {calendarColors.map((item, index) => (
+                      <div key={index} style={{backgroundColor: item}}
+                      className="h-2.5 w-2.5 rounded-sm"></div>
+                    ))}
+                  </div>
+                  <span className="opacity-90">More</span>
                 </div>
-                <span className="opacity-90">More</span>
               </div>
             </div>
+            <DailyStatistic data={selectedDayStat} date={selectedDay} classes='hidden xl:flex'></DailyStatistic>
           </div>
-          <DailyStatistic data={selectedDayStat} date={selectedDay} classes='hidden xl:flex'></DailyStatistic>
-        </div>
-        {/* Years list right */}
-        <YearSelectList select={(e:any) => setSelectedYear(parseInt(e.target.dataset.year))}
-        data={availableYears} selected={selectedYear} classes="hidden xl:flex"></YearSelectList>
-      </div>
-      <div className="flex flex-row px1050:justify-center">
-        <div className="flex flex-row justify-between w-full px1050:w-[766px]">
-          <DailyStatistic data={selectedDayStat} date={selectedDay} classes='flex xl:hidden'></DailyStatistic>
-          {/* Years list bottom */}
+          {/* Years list right */}
           <YearSelectList select={(e:any) => setSelectedYear(parseInt(e.target.dataset.year))}
-          data={availableYears} selected={selectedYear} classes="xl:hidden flex"></YearSelectList>
+          data={availableYears} selected={selectedYear} classes="hidden xl:flex"></YearSelectList>
+        </div>
+        <div className="flex flex-row px1050:justify-center">
+          <div className="flex flex-row justify-between w-full px1050:w-[766px]">
+            <DailyStatistic data={selectedDayStat} date={selectedDay} classes='flex xl:hidden'></DailyStatistic>
+            {/* Years list bottom */}
+            <YearSelectList select={(e:any) => setSelectedYear(parseInt(e.target.dataset.year))}
+            data={availableYears} selected={selectedYear} classes="xl:hidden flex"></YearSelectList>
+          </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 export default StatisticCalendar
