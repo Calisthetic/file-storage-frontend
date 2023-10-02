@@ -9,7 +9,7 @@ import Hammer from 'hammerjs';
 import { modalWindowStyle } from "../../../data/style/modal-styles";
 import { apiUrl } from "../../../data/data";
 
-const FileIcon = lazy(() => import("./file-icon"));
+const FileIcon = lazy(() => import("../file-icon"));
 const FolderAccessModal = lazy(() => import("./folder-access-modal"));
 const IconInfo = lazy(() => import("../../../components/icons/IconInfo"));
 const IconLink = lazy(() => import("../../../components/icons/IconLink"));

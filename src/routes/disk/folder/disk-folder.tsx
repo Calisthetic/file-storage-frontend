@@ -238,7 +238,7 @@ export default function DiskFolder() {
     name:string,
     token:string
   }
-  const [folderPaths, setfolderPaths] = useState<IfolderPaths[]>()
+  const [folderPaths, setFolderPaths] = useState<IfolderPaths[]>()
   useEffect(() => {
     const getData = async () => {
       let token = localStorage.getItem("token")
@@ -258,7 +258,7 @@ export default function DiskFolder() {
         }
         return res.json();
       })
-      .then(data => setfolderPaths(data))
+      .then(data => setFolderPaths(data))
       .catch(error => {
         console.log(error)
         //ShowError("User not found", "404")
@@ -268,14 +268,13 @@ export default function DiskFolder() {
       getData()
       setSelectedPath(params.id)
     } else {
-      setfolderPaths(undefined)
+      setFolderPaths(undefined)
     }
   }, [params.id])
 
   const [selectedPath, setSelectedPath] = useState(params.id)
   const navigate = useNavigate()
   useEffect(() => {
-    console.log(selectedPath + " | " + params.id)
     if (selectedPath !== params.id) {
       navigate('./../' + selectedPath)
     }
