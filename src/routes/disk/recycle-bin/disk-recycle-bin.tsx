@@ -2,9 +2,10 @@ import { FunctionComponent, Suspense, useEffect, useState } from "react";
 import SortDropdown from "../components/sort-dropdown";
 import CellTypesDropdown from "../components/cell-types-dropdown";
 import { AnimatePresence, motion } from "framer-motion";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { apiUrl } from "../../../data/data";
 import RenderBinData from "./render-bin-data";
+import { cn } from "../../../lib/color-utils";
 
 interface DiskRecycleBinProps {
   
@@ -36,9 +37,51 @@ const DiskRecycleBin: FunctionComponent<DiskRecycleBinProps> = () => {
     = useState(renderValues.sort_by ? renderValues.sort_by : "ascending")
 
   const [currentFolder, setCurrentFolder] = useState<any>();
-  const [selectedPath, setSelectedPath] = useState<string | undefined>()
-  const [isAddDrop, setIsAddDrop] = useState(false)
+  useEffect(() => {
+    const getData = async () => {
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "folder/name/" + params.id, {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 404) {
+          throw new Error('Folder not found');
+        }
+        if (res.status === 400) {
+          throw new Error('Bad request');
+        }
+        return res.json()
+      })
+      .then(data => setCurrentFolder(data.name))
+      .catch(error => {
+        console.log(error)
+        //ShowError("User not found", "404")
+      })
+    }
+    if (params.id === "main") {
+      setCurrentFolder(undefined)
+    } else {
+      getData()
+    }
+    setSelectedPath(params.id)
+  }, [params.id])
 
+  const [selectedPath, setSelectedPath] = useState(params.id)
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (selectedPath !== params.id) {
+      setIsUpdate(!isUpdate)
+      navigate('./../' + selectedPath)
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedPath])
+  
+  const [isAddDrop, setIsAddDrop] = useState(false)
   function CloseAllDrops(e:any) {
     if (e.target.dataset.drop !== "add" && e.target.dataset.drop !== "child") {
       setIsAddDrop(false)
@@ -76,30 +119,35 @@ const DiskRecycleBin: FunctionComponent<DiskRecycleBinProps> = () => {
         {/* All actions drop */}
         <div className="flex flex-row items-center">
           {/* Home */}
-          {currentFolder !== undefined && (
-            <div className="flex items-center">
-              <motion.button transition={{stiffness: 300, damping: 0}} 
-              initial={{x: -20, opacity: 0}} animate={{x: 0, opacity: 1}} 
-              className="text-textLight dark:text-textDark hover:bg-backgroundHoverLight 
-              dark:hover:bg-backgroundHoverDark first-letter:uppercase transition-colors
-              font-medium rounded-full text-base sm:text-lg px-2 py-2 text-center
-              inline-flex items-center" onClick={() => setSelectedPath("main")}>
-                <svg viewBox="0 0 20 16" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M8 0H2C.9 0 0 .9 0 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2h-8L8 0Z" 
-                  fillRule="evenodd" className="fill-textLight dark:fill-textDark"></path>
-                </svg>
-              </motion.button>
-              <motion.svg transition={{stiffness: 300, damping: 0, delay: 0.05}} 
-              initial={{x: -20, opacity: 0}} animate={{x: 0, opacity: 1}} 
-              fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.4" viewBox="0 0 24 24" 
-              xmlns="http://www.w3.org/2000/svg" className="stroke-textLight dark:stroke-textDark h-5 w-5 -mx-1 md:mx-0 opacity-80">
-                <path d="m9 18 6-6-6-6"></path>
-              </motion.svg>
-            </div>
-          )}
+          <AnimatePresence>
+            {currentFolder !== undefined && (
+              <div className="flex items-center transition-[width] absolute">
+                <motion.button transition={{stiffness: 300, damping: 24}} 
+                initial={{x: -20, opacity: 0}} animate={{x: 0, opacity: 1}} exit={{x:-60, opacity: 0}}
+                className="text-textLight dark:text-textDark hover:bg-backgroundHoverLight 
+                dark:hover:bg-backgroundHoverDark first-letter:uppercase transition-colors
+                font-medium rounded-full text-base sm:text-lg px-2 py-2 text-center
+                inline-flex items-center" onClick={() => setSelectedPath("main")}>
+                  <svg viewBox="0 0 20 16" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 0H2C.9 0 0 .9 0 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2h-8L8 0Z" 
+                    fillRule="evenodd" className="fill-textLight dark:fill-textDark"></path>
+                  </svg>
+                </motion.button>
+                <motion.svg transition={{stiffness: 300, damping: 0}} 
+                initial={{x: -20, opacity: 0}} animate={{x: 0, opacity: 1}} exit={{x:-60, opacity: 0}}
+                fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.4" viewBox="0 0 24 24" 
+                xmlns="http://www.w3.org/2000/svg" className="stroke-textLight dark:stroke-textDark h-5 w-5 -mx-1 md:mx-0 opacity-80">
+                  <path d="m9 18 6-6-6-6"></path>
+                </motion.svg>
+              </div>
+            )}
+          </AnimatePresence>
           
           {/* Current folder */}
-          <div className="">
+          <div className={cn("transition-all", {
+            " ml-[60px]": currentFolder !== undefined,
+            " ml-0": currentFolder === undefined
+          })}>
             <motion.button initial={{opacity: 0, x: -20}} animate={{opacity: 1, x: 0}} 
             transition={{damping: 24, stiffness: 300, delay: 0.2}} 
             onClick={() => {setIsAddDrop(!isAddDrop)}} id="drop-actions" aria-label="Actions" data-drop="add"
@@ -109,7 +157,7 @@ const DiskRecycleBin: FunctionComponent<DiskRecycleBinProps> = () => {
             max-w-[37dvw] sm:max-w-[28dvw] md:max-w-none
             focus:dark:bg-backgroundThirdDark focus:bg-backgroundThirdLight inline-flex items-center">
               <span className="truncate pointer-events-none">
-                {currentFolder === undefined ? "My bin" : currentFolder.name}
+                {currentFolder === undefined ? "My bin" : currentFolder}
               </span>
               <svg className="w-2.5 h-2.5 ml-1 md:ml-2.5" aria-hidden="true" 
               xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">

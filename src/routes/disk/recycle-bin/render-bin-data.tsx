@@ -9,7 +9,7 @@ import { CutNumber, CutSize } from "../../../lib/utils";
 
 import IconInfo from "../../../components/icons/IconInfo";
 import IconDownload from "../../../components/icons/IconDownload";
-import FileIcon from "../folder/file-icon";
+import FileIcon from "../file-icon";
 import IconWatch from "../../../components/icons/IconWatch";
 import IconTileStar from "../../../components/icons/IconTileStar";
 import IconRestore from "../../../components/icons/IconRestore";
@@ -43,12 +43,13 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
     createdAt: string,
     downloads: number | null,
     views: number | null,
-    fileType: string
+    fileType: string,
     isElected: boolean,
   }
   
   const [foldersResponse, setFoldersResponse] = useState<FoldersResponse[]>();
   const [filesResponse, setFilesResponse] = useState<FilesResponse[]>();
+  const [responseCode, setResponseCode] = useState<number>(200)
   const [isUpdate, setIsUpdate] = useState(true)
   const [isUpdated, setIsUpdated] = useState(true)
 
@@ -72,9 +73,13 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
         if (res.status === 404) {
           throw new Error('Folder not found');
         }
+        if (res.status === 403) {
+          setResponseCode(403);
+          throw new Error('Forbidden');
+        }
         return res.json();
       })
-      .then(data => {setFilesResponse(data.files); setFoldersResponse(data.folders); setIsUpdated(!isUpdated)})
+      .then(data => {setFilesResponse(data.files); setFoldersResponse(data.folders); setIsUpdated(!isUpdated); setResponseCode(200)})
       .catch(error => {
         console.log(error)
         //ShowError("User not found", "404")
@@ -130,7 +135,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
         }
       }
     }
-  }, [currentSortType, currentSortBy, currentRenderType, isUpdate, navigate, DoubleTapEvent, params.id])
+  }, [currentSortType, currentSortBy, currentRenderType, isUpdated, navigate, DoubleTapEvent, params.id])
 
   // Elect folder
   function ElectFolder(folderToken:string) {
@@ -256,7 +261,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
 
   // Restore files/folders
   function RestoreFolder(folderToken:string) {
-    const restoreFile = async () => {
+    const restoreFolder = async () => {
       let token = localStorage.getItem("token")
       await fetch(apiUrl + "folder/restore/" + folderToken, {
         method: 'PATCH',
@@ -279,7 +284,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
         //ShowError("User not found", "404")
       })
     }
-    restoreFile()
+    restoreFolder()
   }
   function RestoreFile(fileToken:string) {
     const restoreFile = async () => {
@@ -308,7 +313,11 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
     restoreFile()
   }
   
-  return (
+  return responseCode === 403 ? (
+    <main className="py-4">
+      <h1>The folder is in your bin</h1>
+    </main>
+  ) : (
     <main className="py-4">
       {(foldersResponse === undefined || filesResponse === undefined) ? null : currentRenderType === "list" ? (
         <div>
