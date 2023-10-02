@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react";
 import {Link,} from "react-router-dom";
 import IconClose from "../../components/icons/IconClose";
-import IconDelete from "../../components/icons/IconDelete";
+import IconBin from "../../components/icons/IconBin";
 
 export default function DiskSideBar() {
   const [isAdOpen, setIsAdOpen] = useState(true)
@@ -67,7 +67,7 @@ export default function DiskSideBar() {
         transition={{delay: 0.06, stiffness: 300, damping: 24}}>
           <Link to="bin" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
-            <IconDelete classes="w-5 h-5 sm:w-6 sm:h-6" fillClasses="fill-iconLight dark:fill-iconDark"></IconDelete>
+            <IconBin classes="w-5 h-5 sm:w-6 sm:h-6" fillClasses="fill-iconLight dark:fill-iconDark"></IconBin>
             <span className="ml-3">Recycle bin</span>
           </Link>
         </motion.li>

@@ -1,18 +1,14 @@
-import { ClassesProps, FillProps } from "./IconProps";
-
-export default function IconDelete({classes, fillClasses}:ClassesProps & FillProps) {
+import { FunctionComponent } from "react";
+import { ClassesProps } from "./IconProps";
+ 
+const IconDelete: FunctionComponent<ClassesProps> = ({classes}:ClassesProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" 
-    className={classes} viewBox="0,0,256,256">
-      <g className={fillClasses} fillRule="nonzero" stroke="none" 
-      strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDashoffset="0" 
-      fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
-      <g transform="scale(10.66667,10.66667)">
-        <path d="M10,2l-1,1h-4c-0.6,0 -1,0.4 -1,1c0,0.6 0.4,1 1,1h2h10h2c0.6,0 1,-0.4 1,-1c0,-0.6 
-        -0.4,-1 -1,-1h-4l-1,-1zM5,7v13c0,1.1 0.9,2 2,2h10c1.1,0 2,-0.9 2,-2v-13zM9,9c0.6,0 
-        1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1zM15,9c0.6,0 
-        1,0.4 1,1v9c0,0.6 -0.4,1 -1,1c-0.6,0 -1,-0.4 -1,-1v-9c0,-0.6 0.4,-1 1,-1z"></path>
-      </g></g>
+    <svg fill="none" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" className={classes}>
+      <path d="M7.8 13a.8.8 0 0 0-.8.8v.4a.8.8 0 0 0 .8.8h12.4a.8.8 0 0 0 .8-.8v-.4a.8.8 0 0 0-.8-.8H7.8Z"></path>
+      <path clipRule="evenodd" d="M14 1C6.82 1 1 6.82 1 14s5.82 13 13 13 13-5.82 13-13S21.18 1 14 1ZM3 14C3 7.925 7.926 
+      3 14 3s11 4.925 11 11-4.926 11-11 11S3 20.075 3 14Z" fillRule="evenodd"></path>
     </svg>
-  )
+  );
 }
+ 
+export default IconDelete;
