@@ -15,7 +15,7 @@ const IconInfo = lazy(() => import("../../../components/icons/IconInfo"));
 const IconLink = lazy(() => import("../../../components/icons/IconLink"));
 const IconEdit = lazy(() => import("../../../components/icons/IconEdit"));
 const IconDownload = lazy(() => import("../../../components/icons/IconDownload"));
-const IconDelete = lazy(() => import("../../../components/icons/IconDelete"));
+const IconBin = lazy(() => import("../../../components/icons/IconBin"));
 const IconWatch = lazy(() => import("../../../components/icons/IconWatch"));
 const IconTileStar = lazy(() => import("../../../components/icons/IconTileStar"));
 const ColorPicker = lazy(() => import("../../../components/color-picker"));
@@ -363,12 +363,12 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
     }
   }
 
-  // Delete folder
-  function DeleteFolder(folderToken:string) {
-    const deleteFolder = async () => {
+  // Bin folder
+  function BinFolder(folderToken:string) {
+    const binFolder = async () => {
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + "folder/" + folderToken, {
-        method: 'DELETE',
+      await fetch(apiUrl + "folder/bin/" + folderToken, {
+        method: 'PATCH',
         headers: {
           "Content-Type": "application/json",
           "Authorization": token === null ? "" : token,
@@ -388,15 +388,15 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
         //ShowError("User not found", "404")
       })
     }
-    deleteFolder()
+    binFolder()
   }
 
-  // Delete file
-  function DeleteFile(fileToken:string) {
-    const deleteFile = async () => {
+  // Bin file
+  function BinFile(fileToken:string) {
+    const binFile = async () => {
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + "file/" + fileToken, {
-        method: 'DELETE',
+      await fetch(apiUrl + "file/bin/" + fileToken, {
+        method: 'PATCH',
         headers: {
           "Content-Type": "application/json",
           "Authorization": token === null ? "" : token,
@@ -416,7 +416,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
         //ShowError("User not found", "404")
       })
     }
-    deleteFile()
+    binFile()
   }
 
   // Rename file/folder
@@ -714,8 +714,8 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                           <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
-                        onClick={() => DeleteFolder(item.token)}>
-                          <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
+                        onClick={() => BinFolder(item.token)}>
+                          <IconBin classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconBin>
                         </button>
                       </div>
                     </div>
@@ -857,8 +857,8 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                           <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
-                        onClick={() => DeleteFile(item.token)}>
-                          <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
+                        onClick={() => BinFile(item.token)}>
+                          <IconBin classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconBin>
                         </button>
                       </div>
                     </div>
@@ -961,8 +961,8 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                   className="text-center">
                     <div data-type="folder" 
                     className="flex hover-child justify-center items-center h-full">
-                      <button data-type="folder">
-                        <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
+                      <button data-type="folder" onClick={() => BinFolder(item.token)}>
+                        <IconBin classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconBin>
                       </button>
                     </div>
                   </td>
@@ -1078,8 +1078,8 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                   {/* Delete */}
                   <td data-type="file" className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
-                      <button data-type="file" onClick={() => DeleteFile(item.token)}>
-                        <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
+                      <button data-type="file" onClick={() => BinFile(item.token)}>
+                        <IconBin classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconBin>
                       </button>
                     </div>
                   </td>
@@ -1190,9 +1190,9 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
                       <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                     </button>
-                    <button data-type="folder"
+                    <button data-type="folder" onClick={() => BinFolder(item.token)}
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
-                      <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
+                      <IconBin classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconBin>
                     </button>
                   </div>
                 </div>
@@ -1399,8 +1399,8 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                           <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
-                        onClick={() => DeleteFile(item.token)}>
-                          <IconDelete classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconDelete>
+                        onClick={() => BinFile(item.token)}>
+                          <IconBin classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconBin>
                         </button>
                       </div>
                     </div>

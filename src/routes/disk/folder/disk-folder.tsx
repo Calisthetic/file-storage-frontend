@@ -348,9 +348,9 @@ export default function DiskFolder() {
                         style={{height: (folderPaths.length-1) * 36}}>
                         {folderPaths === undefined ? null : folderPaths.length > 1 ? folderPaths.map((item, index) => { 
                         return index < folderPaths.length - 1 ? index === folderPaths.length - 2 ? (
-                          <path d={"M8 " + (index * 36 - 10) + " C8 " + (index * 36 + 12) + ",8 " + (index * 36 + 12) + ",8 " + (index * 36 + 18) + " S8 " + (index * 36 + 26) + ", 16 " + (index * 36 + 26)} fill="none" strokeWidth="2.4"/>
+                          <path key={index} d={"M8 " + (index * 36 - 10) + " C8 " + (index * 36 + 12) + ",8 " + (index * 36 + 12) + ",8 " + (index * 36 + 18) + " S8 " + (index * 36 + 26) + ", 16 " + (index * 36 + 26)} fill="none" strokeWidth="2.4"/>
                         ) : (
-                          <path d={"M8 " + (index * 36 - 10) + " L8 " + (index * 36 + 26) + " L16 " + (index * 36 + 26)} fill="none" strokeWidth="2.4"/>
+                          <path key={index} d={"M8 " + (index * 36 - 10) + " L8 " + (index * 36 + 26) + " L16 " + (index * 36 + 26)} fill="none" strokeWidth="2.4"/>
                         ) : null}) : null}
                         </svg>
                       </div>
