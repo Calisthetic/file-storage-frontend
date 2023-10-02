@@ -3,13 +3,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import { apiUrl } from "../../../data/data";
 // @ts-ignore
 import Hammer from 'hammerjs';
+import "./../../../styles/hover-elems.css"
 import { BlurColor, GetCSSValue, cn } from "../../../lib/color-utils";
-import IconInfo from "../../../components/icons/IconInfo";
 import { CutNumber, CutSize } from "../../../lib/utils";
+
+import IconInfo from "../../../components/icons/IconInfo";
 import IconDownload from "../../../components/icons/IconDownload";
 import FileIcon from "../folder/file-icon";
 import IconWatch from "../../../components/icons/IconWatch";
 import IconTileStar from "../../../components/icons/IconTileStar";
+import IconRestore from "../../../components/icons/IconRestore";
+import IconDelete from "../../../components/icons/IconDelete";
 
 interface RenderBinDataProps {
   currentSortType: string
@@ -77,6 +81,8 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
       })
     }
     getData()
+  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id, isUpdate, updateTrigger])
 
   // Hide files and folders
@@ -103,26 +109,28 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
   }, [navigate])
   
   useEffect(() => {
-    const targetElems:any = [...Array.from(document.getElementsByClassName("rendered-folder")),
-    ...Array.from(document.getElementsByClassName("rendered-file"))]
+    if (params.id === "main") {
+      const targetElems:any = [...Array.from(document.getElementsByClassName("rendered-folder")),
+      ...Array.from(document.getElementsByClassName("rendered-file"))]
 
-    if (targetElems) {
-      for (let i = 0; i < targetElems.length; i++) {
-        var hammer_folders = new Hammer(targetElems[i]);
-        hammer_folders.on('doubletap', (event:any) => DoubleTapEvent(event));
-      }
-    }
-
-    // Swith "on" => "off"
-    return () => {
       if (targetElems) {
         for (let i = 0; i < targetElems.length; i++) {
           var hammer_folders = new Hammer(targetElems[i]);
-          hammer_folders.off('doubletap', (event:any) => DoubleTapEvent(event));
+          hammer_folders.on('doubletap', (event:any) => DoubleTapEvent(event));
+        }
+      }
+
+      // Swith "on" => "off"
+      return () => {
+        if (targetElems) {
+          for (let i = 0; i < targetElems.length; i++) {
+            var hammer_folders = new Hammer(targetElems[i]);
+            hammer_folders.off('doubletap', (event:any) => DoubleTapEvent(event));
+          }
         }
       }
     }
-  }, [currentSortType, currentSortBy, currentRenderType, isUpdated, navigate, DoubleTapEvent])
+  }, [currentSortType, currentSortBy, currentRenderType, isUpdate, navigate, DoubleTapEvent, params.id])
 
   // Elect folder
   function ElectFolder(folderToken:string) {
@@ -213,6 +221,91 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
+  }
+
+  // Delete files/folders
+  function DeleteFile(fileToken:string) {
+    const deleteFile = async () => {
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "file/" + fileToken, {
+        method: 'DELETE',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 400) {
+          throw new Error('Bad request');
+        }
+        if (res.status === 404) {
+          throw new Error('Not found');
+        }
+      })
+      .then(() => {setIsUpdate(!isUpdate); console.log(0)})
+      .catch(error => {
+        console.log(error)
+        //ShowError("User not found", "404")
+      })
+    }
+    deleteFile()
+  }
+  function DeleteFolder(folderToken:string) {
+
+  }
+
+  // Restore files/folders
+  function RestoreFolder(folderToken:string) {
+    const restoreFile = async () => {
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "folder/restore/" + folderToken, {
+        method: 'PATCH',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 400) {
+          throw new Error('Bad request');
+        }
+        if (res.status === 404) {
+          throw new Error('Not found');
+        }
+      })
+      .then(() => setIsUpdate(!isUpdate))
+      .catch(error => {
+        console.log(error)
+        //ShowError("User not found", "404")
+      })
+    }
+    restoreFile()
+  }
+  function RestoreFile(fileToken:string) {
+    const restoreFile = async () => {
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "file/restore/" + fileToken, {
+        method: 'PATCH',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 400) {
+          throw new Error('Bad request');
+        }
+        if (res.status === 404) {
+          throw new Error('Not found');
+        }
+      })
+      .then(() => setIsUpdate(!isUpdate))
+      .catch(error => {
+        console.log(error)
+        //ShowError("User not found", "404")
+      })
+    }
+    restoreFile()
   }
   
   return (
@@ -332,6 +425,18 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
                         onClick={() => DownloadFolder(item.token)}>
                           <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
+                        {params.id === "main" && (
+                          <>
+                            <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5 h-8"
+                            onClick={() => RestoreFolder(item.token)}>
+                              <IconRestore classes="h-5 w-5 fill-textLight dark:fill-textDark"></IconRestore>
+                            </button>
+                            <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
+                            onClick={() => DeleteFolder(item.token)}>
+                              <IconDelete classes="h-5 w-5 fill-textLight dark:fill-textDark"></IconDelete>
+                            </button>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -463,6 +568,18 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
                         onClick={() => DownloadFile(item.token)}>
                           <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
+                        {params.id === "main" && (
+                          <>
+                            <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5 h-8"
+                            onClick={() => RestoreFile(item.token)}>
+                              <IconRestore classes="h-5 w-5 fill-textLight dark:fill-textDark"></IconRestore>
+                            </button>
+                            <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
+                            onClick={() => DeleteFile(item.token)}>
+                              <IconDelete classes="h-5 w-5 fill-textLight dark:fill-textDark"></IconDelete>
+                            </button>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -539,9 +656,15 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
                     <div className="flex hover-child justify-center items-center h-full">
                     </div>
                   </td>
-                  {/* Edit */}
+                  {/* Restore */}
                   <td className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
+                      {params.id === "main" && (
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark"
+                        onClick={() => RestoreFolder(item.token)}>
+                          <IconRestore classes="h-5 w-5 fill-textLight dark:fill-textDark"></IconRestore>
+                        </button>
+                      )}
                     </div>
                   </td>
                   {/* Delete */}
@@ -549,6 +672,12 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
                   className="text-center">
                     <div data-type="folder" 
                     className="flex hover-child justify-center items-center h-full">
+                      {params.id === "main" && (
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark"
+                        onClick={() => DeleteFolder(item.token)}>
+                          <IconDelete classes="h-5 w-5 fill-textLight dark:fill-textDark"></IconDelete>
+                        </button>
+                      )}
                     </div>
                   </td>
                   {/* Info watches and downloads */}
@@ -647,15 +776,26 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
                   className="hidden lg:table-cell">{item.createdAt}</td>
                   {/* Links */}
                   <td data-type="file"></td>
-                  {/* Edit */}
-                  <td data-type="file" 
-                  className="text-center">
-                    <div className="flex hover-child justify-center items-center h-full">
+                  {/* Restore */}
+                  <td data-type="file">
+                    <div className="flex hover-child justify-center h-full">
+                      {params.id === "main" && (
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark"
+                        onClick={() => RestoreFile(item.token)}>
+                          <IconRestore classes="h-5 w-5 fill-textLight dark:fill-textDark"></IconRestore>
+                        </button>
+                      )}
                     </div>
                   </td>
                   {/* Delete */}
-                  <td data-type="file" className="text-center">
+                  <td data-type="file">
                     <div className="flex hover-child justify-center items-center h-full">
+                      {params.id === "main" && (
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark"
+                        onClick={() => DeleteFile(item.token)}>
+                          <IconDelete classes="h-5 w-5 fill-textLight dark:fill-textDark"></IconDelete>
+                        </button>
+                      )}
                     </div>
                   </td>
                   {/* Info watches and downloads */}
@@ -756,6 +896,18 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
                       <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                     </button>
+                    {params.id === "main" && (
+                      <>
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5"
+                        onClick={() => RestoreFolder(item.token)}>
+                          <IconRestore classes="h-5 w-5 fill-textLight dark:fill-textDark"></IconRestore>
+                        </button>
+                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5"
+                        onClick={() => DeleteFolder(item.token)}>
+                          <IconDelete classes="h-5 w-5 fill-textLight dark:fill-textDark"></IconDelete>
+                        </button>
+                      </>
+                      )}
                   </div>
                 </div>
                 {/* Main icon */}
@@ -945,15 +1097,18 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
                         onClick={() => DownloadFile(item.token)}>
                           <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
-                        <button>
-                          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 fill-iconLight dark:fill-iconDark">
-                            <path d="M12.25 2a9.81 9.81 0 0 0-7.48 3.46L3.41 4.25a1 1 0 0 0-1.07-.16 1 1 0 0 0-.59.91v4a1 
-                            1 0 0 0 1 1h4.5a1 1 0 0 0 .93-.64 1 1 0 0 0-.27-1.11L6.26 6.78a7.86 7.86 0 0 1 6-2.78 8 8 0 1 
-                            1-7.54 10.67 1 1 0 0 0-1.89.66A10 10 0 1 0 12.25 2Z"></path>
-                            <path d="M16 16a1 1 0 0 1-.6-.2l-4-3a1 1 0 0 1-.4-.8V8a1 1 0 0 1 2 0v3.5l3.6 2.7a1 1 0 0 
-                            1 .2 1.4 1 1 0 0 1-.8.4Z"></path>
-                          </svg>
-                        </button>
+                        {params.id === "main" && (
+                        <>
+                          <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5 h-8"
+                          onClick={() => RestoreFile(item.token)}>
+                            <IconRestore classes="h-5 w-5 fill-textLight dark:fill-textDark"></IconRestore>
+                          </button>
+                          <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5 h-8"
+                          onClick={() => DeleteFile(item.token)}>
+                            <IconDelete classes="h-5 w-5 fill-textLight dark:fill-textDark"></IconDelete>
+                          </button>
+                        </>
+                      )}
                       </div>
                     </div>
                   </div>
