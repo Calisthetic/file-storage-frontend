@@ -114,24 +114,22 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
   }, [navigate])
   
   useEffect(() => {
-    if (params.id === "main") {
-      const targetElems:any = [...Array.from(document.getElementsByClassName("rendered-folder")),
-      ...Array.from(document.getElementsByClassName("rendered-file"))]
+    const targetElems:any = [...Array.from(document.getElementsByClassName("rendered-folder")),
+    ...Array.from(document.getElementsByClassName("rendered-file"))]
 
+    if (targetElems) {
+      for (let i = 0; i < targetElems.length; i++) {
+        var hammer_folders = new Hammer(targetElems[i]);
+        hammer_folders.on('doubletap', (event:any) => DoubleTapEvent(event));
+      }
+    }
+
+    // Swith "on" => "off"
+    return () => {
       if (targetElems) {
         for (let i = 0; i < targetElems.length; i++) {
           var hammer_folders = new Hammer(targetElems[i]);
-          hammer_folders.on('doubletap', (event:any) => DoubleTapEvent(event));
-        }
-      }
-
-      // Swith "on" => "off"
-      return () => {
-        if (targetElems) {
-          for (let i = 0; i < targetElems.length; i++) {
-            var hammer_folders = new Hammer(targetElems[i]);
-            hammer_folders.off('doubletap', (event:any) => DoubleTapEvent(event));
-          }
+          hammer_folders.off('doubletap', (event:any) => DoubleTapEvent(event));
         }
       }
     }
@@ -256,7 +254,30 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
     deleteFile()
   }
   function DeleteFolder(folderToken:string) {
-
+    const deleteFolder = async () => {
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "folder/" + folderToken, {
+        method: 'DELETE',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        if (res.status === 400) {
+          throw new Error('Bad request');
+        }
+        if (res.status === 404) {
+          throw new Error('Not found');
+        }
+      })
+      .then(() => setIsUpdate(!isUpdate))
+      .catch(error => {
+        console.log(error)
+        //ShowError("User not found", "404")
+      })
+    }
+    deleteFolder()
   }
 
   // Restore files/folders
@@ -314,8 +335,26 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
   }
   
   return responseCode === 403 ? (
-    <main className="py-4">
-      <h1>The folder is in your bin</h1>
+    <main className="flex justify-center items-center text-textLight dark:text-textDark h-[calc(100dvh-100px)] sm:h-[calc(100dvh-104px)]">
+      <div className="flex flex-col items-center py-4 px-4 max-w-xs text-center">
+        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="md:h-60 md:w-60 sm:h-[34dvw] sm:w-[34dvw] h-[50dvw] w-[50dvw]">
+          <path d="M64,448 C64,448 64,448 64,448 S16,448 16,400 16,136 16,136 16,88 64,88 208,88 208,88 
+          256,136 256,136 448,136 448,136 496,136 496,188 496,400, 496,400 496,448 448,448 z"
+          className="stroke-iconLight dark:stroke-iconDark fill-none" strokeWidth="20"></path>
+          <path d="m250.26 195.39 5.74 122 5.73-121.95a5.74 5.74 0 0 0-5.79-6h0a5.74 5.74 0 0 0-5.68 5.95Z" 
+          className="fill-none stroke-iconLight dark:stroke-iconDark" 
+          strokeLinecap="round" strokeLinejoin="round" strokeWidth="32"></path>
+          <path d="M256 397.25a20 20 0 1 1 20-20 20 20 0 0 1-20 20Z"
+          className="fill-iconLight dark:fill-iconDark"></path>
+        </svg>
+        <h1 className="text-2xl font-semibold">The folder is in your bin</h1>
+        <h3 className="text-base font-normal mt-2">To view the contents of a folder, restore it from the recycle bin</h3>
+        <button className="rounded-full bg-buttonLight dark:bg-buttonDark transition-colors 
+        hover:bg-buttonHoverLight dark:hover:bg-buttonHoverDark mt-4 py-2 px-6 font-semibold text-lg"
+        onClick={() => navigate("/disk/bin/main")}>
+          Back
+        </button>
+      </div>
     </main>
   ) : (
     <main className="py-4">
