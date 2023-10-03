@@ -145,7 +145,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
       }
 
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + "folder/elect/" + folderToken, {
+      await fetch(apiUrl + "folders/elect/" + folderToken, {
         method: 'PATCH',
         headers: {
           "Content-Type": "application/json",
@@ -182,7 +182,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
       }
 
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + "file/elect/" + fileToken, {
+      await fetch(apiUrl + "files/elect/" + fileToken, {
         method: 'PATCH',
         headers: {
           "Content-Type": "application/json",
@@ -211,11 +211,11 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
 
   // Download file
   function DownloadFile(fileToken:string) {
-    DownloadData(apiUrl + "file/download/" + fileToken)
+    DownloadData(apiUrl + "files/download/" + fileToken)
   }
   // Download folder
   function DownloadFolder(folderToken:string) {
-    DownloadData(apiUrl + "folder/download/" + folderToken)
+    DownloadData(apiUrl + "folders/download/" + folderToken)
   }
   function DownloadData(url:string) {
     const a = document.createElement('a')
@@ -230,7 +230,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
   function DeleteFile(fileToken:string) {
     const deleteFile = async () => {
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + "file/" + fileToken, {
+      await fetch(apiUrl + "files/" + fileToken, {
         method: 'DELETE',
         headers: {
           "Content-Type": "application/json",
@@ -256,7 +256,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
   function DeleteFolder(folderToken:string) {
     const deleteFolder = async () => {
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + "folder/" + folderToken, {
+      await fetch(apiUrl + "folders/" + folderToken, {
         method: 'DELETE',
         headers: {
           "Content-Type": "application/json",
@@ -284,7 +284,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
   function RestoreFolder(folderToken:string) {
     const restoreFolder = async () => {
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + "folder/restore/" + folderToken, {
+      await fetch(apiUrl + "folders/restore/" + folderToken, {
         method: 'PATCH',
         headers: {
           "Content-Type": "application/json",
@@ -310,7 +310,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
   function RestoreFile(fileToken:string) {
     const restoreFile = async () => {
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + "file/restore/" + fileToken, {
+      await fetch(apiUrl + "files/restore/" + fileToken, {
         method: 'PATCH',
         headers: {
           "Content-Type": "application/json",
