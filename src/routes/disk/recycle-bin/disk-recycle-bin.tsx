@@ -40,7 +40,7 @@ const DiskRecycleBin: FunctionComponent<DiskRecycleBinProps> = () => {
   useEffect(() => {
     const getData = async () => {
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + "folder/binName/" + params.id, {
+      await fetch(apiUrl + "folders/binName/" + params.id, {
         method: 'GET',
         headers: {
           "Content-Type": "application/json",
@@ -78,7 +78,7 @@ const DiskRecycleBin: FunctionComponent<DiskRecycleBinProps> = () => {
   const navigate = useNavigate()
   useEffect(() => {
     if (selectedPath !== params.id) {
-      navigate('./../' + selectedPath)
+      navigate('/disk/bin/' + selectedPath)
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -111,7 +111,7 @@ const DiskRecycleBin: FunctionComponent<DiskRecycleBinProps> = () => {
   async function RestoreBin() {
     const restoreBinOrFolder = async () => {
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + (params.id === "main" ? "bin/restore" : ("folder/restore/" + params.id)), {
+      await fetch(apiUrl + (params.id === "main" ? "bin/restore" : ("folders/restore/" + params.id)), {
         method: 'PATCH',
         headers: {
           "Content-Type": "application/json",
@@ -138,7 +138,7 @@ const DiskRecycleBin: FunctionComponent<DiskRecycleBinProps> = () => {
   async function CleanBin() {
     const cleanBinOrFolder = async () => {
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + (params.id === "main" ? "bin/clean" : ("folder/" + params.id)), {
+      await fetch(apiUrl + (params.id === "main" ? "bin/clean" : ("folders/" + params.id)), {
         method: 'DELETE',
         headers: {
           "Content-Type": "application/json",

@@ -100,15 +100,15 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
   const navigate = useNavigate();
   const DoubleTapEvent = useCallback((event:any) => {
     if (event.target.dataset.token !== undefined) {
-      navigate('./../' + event.target.dataset.token)
+      navigate('/disk/bin/' + event.target.dataset.token)
       return
     }
     if (event.target.parentElement.dataset.token !== undefined) {
-      navigate('./../' + event.target.parentElement.dataset.token)
+      navigate('/disk/bin/' + event.target.parentElement.dataset.token)
       return
     }
     if (event.target.parentElement.parentElement.dataset.token !== undefined) {
-      navigate('./../' + event.target.parentElement.parentElement.dataset.token)
+      navigate('/disk/bin/' + event.target.parentElement.parentElement.dataset.token)
       return
     }
   }, [navigate])

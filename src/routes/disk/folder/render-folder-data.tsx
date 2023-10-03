@@ -144,6 +144,10 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
         if (res.status === 404) {
           throw new Error('Folder not found');
         }
+        if (res.status === 403) {
+          navigate("/disk/bin/" + params.id)
+          throw new Error('Bad request')
+        }
         return res.json();
       })
       .then(data => {setFilesResponse(data.files); setFoldersResponse(data.folders); setIsUpdated(!isUpdated)})
@@ -211,15 +215,15 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
   
   const DoubleTapEvent = useCallback((event:any) => {
     if (event.target.dataset.token !== undefined) {
-      navigate('./../' + event.target.dataset.token)
+      navigate('/disk/folder/' + event.target.dataset.token)
       return
     }
     if (event.target.parentElement.dataset.token !== undefined) {
-      navigate('./../' + event.target.parentElement.dataset.token)
+      navigate('/disk/folder/' + event.target.parentElement.dataset.token)
       return
     }
     if (event.target.parentElement.parentElement.dataset.token !== undefined) {
-      navigate('./../' + event.target.parentElement.parentElement.dataset.token)
+      navigate('/disk/folder/' + event.target.parentElement.parentElement.dataset.token)
       return
     }
   }, [navigate])
