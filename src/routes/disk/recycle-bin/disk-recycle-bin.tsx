@@ -99,7 +99,7 @@ const DiskRecycleBin: FunctionComponent<DiskRecycleBinProps> = () => {
   }, [])
 
   async function DownloadBinFolder() {
-    let url = apiUrl + "folder/download/" + params.id
+    let url = apiUrl + "folders/download/" + params.id
     const a = document.createElement('a')
     a.href = url
     a.download = url.split('/').pop() ?? ""

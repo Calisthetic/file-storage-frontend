@@ -133,7 +133,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
   useEffect(() => {
     const getData = async () => {
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + "folder/" + params.id, {
+      await fetch(apiUrl + "folders/" + params.id, {
         method: 'GET',
         headers: {
           "Content-Type": "application/json",
@@ -329,7 +329,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
 
       const patchColor = async () => {
         let token = localStorage.getItem("token")
-        await fetch(apiUrl + "folder/color/" + data.id, {
+        await fetch(apiUrl + "folders/color/" + data.id, {
           method: 'PATCH',
           body: JSON.stringify({
             "color": data.color
@@ -367,7 +367,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
   function BinFolder(folderToken:string) {
     const binFolder = async () => {
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + "folder/bin/" + folderToken, {
+      await fetch(apiUrl + "folders/bin/" + folderToken, {
         method: 'PATCH',
         headers: {
           "Content-Type": "application/json",
@@ -395,7 +395,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
   function BinFile(fileToken:string) {
     const binFile = async () => {
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + "file/bin/" + fileToken, {
+      await fetch(apiUrl + "files/bin/" + fileToken, {
         method: 'PATCH',
         headers: {
           "Content-Type": "application/json",
@@ -444,7 +444,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
 
     const getData = async () => {
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + selectedItem.type + "/name/" + selectedItem.token, {
+      await fetch(apiUrl + selectedItem.type + "s/name/" + selectedItem.token, {
         method: 'PATCH',
         body: JSON.stringify({
           "name": newName
@@ -493,7 +493,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
       }
 
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + "folder/elect/" + folderToken, {
+      await fetch(apiUrl + "folders/elect/" + folderToken, {
         method: 'PATCH',
         headers: {
           "Content-Type": "application/json",
@@ -530,7 +530,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
       }
 
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + "file/elect/" + fileToken, {
+      await fetch(apiUrl + "files/elect/" + fileToken, {
         method: 'PATCH',
         headers: {
           "Content-Type": "application/json",
@@ -559,11 +559,11 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
 
   // Download file
   function DownloadFile(fileToken:string) {
-    DownloadData(apiUrl + "file/download/" + fileToken)
+    DownloadData(apiUrl + "files/download/" + fileToken)
   }
   // Download folder
   function DownloadFolder(folderToken:string) {
-    DownloadData(apiUrl + "folder/download/" + folderToken)
+    DownloadData(apiUrl + "folders/download/" + folderToken)
   }
   function DownloadData(url:string) {
     const a = document.createElement('a')
@@ -1261,7 +1261,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                 </div>
                 <div data-type="folder" className="flex cursor-default justify-center">
                   <button className="text-center pointer-events-auto transition-all whitespace-pre-wrap hover:underline" 
-                 data-name={item.name} data-token={item.token} data-type="folder" onClick={modalRenameOpen}>
+                  data-name={item.name} data-token={item.token} data-type="folder" onClick={modalRenameOpen}>
                     {item.name}
                   </button>
                 </div>

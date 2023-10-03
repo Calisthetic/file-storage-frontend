@@ -68,7 +68,7 @@ export default function DiskFolder() {
     } else {
       const createFolder = async () => {
         let token = localStorage.getItem("token")
-        await fetch(apiUrl + "folder", {
+        await fetch(apiUrl + "folders", {
           method: 'POST',
           body: JSON.stringify({
             "name": currentName,
@@ -143,7 +143,7 @@ export default function DiskFolder() {
   // File uploader
   const fileUploaderRef:any = useRef()
   const [isDragVisible, setIsDragVisible] = useState(false);
-  //const [file, setFile] = useState([]);
+  
   const UploaderChange = useCallback((files: any) => {
     const pushFiles = async () => {
       const formData = new FormData();
@@ -153,7 +153,7 @@ export default function DiskFolder() {
       formData.append("folderToken", params.id);
 
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + "file", {
+      await fetch(apiUrl + "files", {
         method: "POST",
         body: formData,
         headers: {
@@ -189,7 +189,7 @@ export default function DiskFolder() {
       formData.append("folderToken", params.id);
 
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + "file", {
+      await fetch(apiUrl + "files", {
         method: "POST",
         body: formData,
         headers: {
@@ -225,7 +225,7 @@ export default function DiskFolder() {
   }
   
   function DownloadFolder() {
-    let url = apiUrl + "folder/download/" + params.id
+    let url = apiUrl + "folders/download/" + params.id
     const a = document.createElement('a')
     a.href = url
     a.download = url.split('/').pop() ?? ""
@@ -242,7 +242,7 @@ export default function DiskFolder() {
   useEffect(() => {
     const getData = async () => {
       let token = localStorage.getItem("token")
-      await fetch(apiUrl + "folder/path/" + params.id, {
+      await fetch(apiUrl + "folders/path/" + params.id, {
         method: 'GET',
         headers: {
           "Content-Type": "application/json",
