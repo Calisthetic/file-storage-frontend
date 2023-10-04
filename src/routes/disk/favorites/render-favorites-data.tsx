@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback, FunctionComponent, memo, lazy, Suspense } from "react"
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import "../../../styles/focus-elems.css"
 import { CutNumber, CutSize } from "../../../lib/utils";
@@ -98,6 +98,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
     views: number | null,
     filesInside: number,
     isElected: boolean,
+    isDeleted: boolean,
     size: number, // in bytes
   }
   interface FilesResponse {
@@ -147,19 +148,34 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
   const navigate = useNavigate();
 
   const DoubleTapEvent = useCallback((event:any) => {
+    let token:string = ""
     if (event.target.dataset.token !== undefined) {
-      navigate('/disk/folder/' + event.target.dataset.token)
+      token = event.target.dataset.token
+    } else if (event.target.parentElement.dataset.token !== undefined) {
+      token = event.target.parentElement.dataset.token
+      return
+    } else if (event.target.parentElement.parentElement.dataset.token !== undefined) {
+      token = event.target.parentElement.parentElement.dataset.token
+    }
+    if (token.length === 0) {
       return
     }
-    if (event.target.parentElement.dataset.token !== undefined) {
-      navigate('/disk/folder/' + event.target.parentElement.dataset.token)
+    let temp = foldersResponse
+    console.log(temp)
+    if (temp === undefined) {
       return
     }
-    if (event.target.parentElement.parentElement.dataset.token !== undefined) {
-      navigate('/disk/folder/' + event.target.parentElement.parentElement.dataset.token)
+    let currentFolder = temp.filter(x => x.token === token)
+    if (currentFolder === undefined || currentFolder.length === 0) {
+      navigate("/disk/folder/" + token)
       return
     }
-  }, [navigate])
+    if (currentFolder[0].isDeleted === true) {
+      navigate("/disk/bin/" + token)
+    } else {
+      navigate("/disk/folder/" + token)
+    }
+  }, [navigate, foldersResponse])
 
   // Folder/files events
   useEffect(() => {
@@ -432,7 +448,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
               text-lg rounded-lg rendered-folder transition-colors
               bg-backgroundSecondLight dark:bg-backgroundSecondDark relative">
-                <div className="flex px-2 py-1 flex-row justify-between">
+                <div className="flex px-2 py-1 flex-row justify-between" data-token={item.token}>
                   <div className="flex flex-row items-center space-x-2 max-w-[calc(100dvw-88px)] 
                   sm:max-w-[calc(100dvw-348px)] md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]">
                     <button id={"open-folder-colors-" + item.token} aria-label="Folder colors"
@@ -567,16 +583,16 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
               { return currentSortBy === "descending" ? -1 : 1; }
               return 0;
             }).map((item, index) => (
-              <div key={index} data-type="file" 
+              <div key={index} data-type="file" data-token={item.folderToken}
               className="text-textLight dark:text-textDark
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
               text-lg rounded-lg rendered-file h-full w-full relative
               bg-backgroundSecondLight dark:bg-backgroundSecondDark transition-colors">
                 <div className="flex px-2 py-1 flex-row justify-between">
                   <div className="flex flex-row items-center space-x-2 
-                  pointer-events-none max-w-[calc(100dvw-88px)] 
-                  sm:max-w-[calc(100dvw-348px)] md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]">
-                    <div className="h-6 w-6 flex items-center justify-center">
+                  pointer-events-none max-w-[calc(100dvw-88px)] sm:max-w-[calc(100dvw-348px)] 
+                  md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]">
+                    <div className="h-6 w-6 flex items-center justify-center" data-token={item.folderToken}>
                       <Suspense fallback={<div></div>}>
                         <FileIcon fileType={item.name.slice(item.name.lastIndexOf('.') + 1)} 
                         classes="fill-textLight dark:fill-textDark h-6 w-6"></FileIcon>
@@ -584,14 +600,15 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
                     </div>
                     <div className="truncate">{item.name}</div>
                   </div>
-                  <div className="flex flex-row items-center">
+                  <div className="flex flex-row items-center" data-token={item.folderToken}>
                     {/* Info */}
                     <div className="w-6 sm:w-7 mg:w-8">
                       <div className="w-6 sm:w-7 mg:w-8 hover-first-info">
                         <IconInfo classes="h-6 w-6" fillClasses="fill-textLight dark:fill-textDark"></IconInfo>
                       </div>
                       <div className="hover-second-info px-1 overflow-hidden text-base whitespace-pre z-10
-                      bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded text-gray-700 dark:text-gray-400">
+                      bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded text-gray-700 dark:text-gray-400"
+                      data-token={item.folderToken}>
                         <div className="space-x-1">
                           <span className="text-sm">Size:</span>
                           <span className="text-base text-textLight dark:text-textDark">{CutSize(item.fileSize * 10)}</span>
@@ -611,7 +628,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
                       </div>
                     </div>
                     {/* Actions */}
-                    <div className="w-6 sm:w-7 mg:w-8">
+                    <div className="w-6 sm:w-7 mg:w-8" data-token={item.folderToken}>
                       <div data-type="file"
                       className="h-full flex items-center justify-center hover-first">
                         <svg viewBox="0 0 256 256"  xmlns="http://www.w3.org/2000/svg"
@@ -625,7 +642,8 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
                         </svg>
                       </div>
                       <div className="hover-second ml-3.5 w-8 z-10
-                      bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
+                      bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden"
+                      data-token={item.folderToken}>
                         <button data-name={item.name} data-token={item.token} data-type="file" onClick={modalRenameOpen}
                         className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           <IconEdit classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconEdit>
@@ -828,7 +846,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
                 { return currentSortBy === "descending" ? -1 : 1; }
                 return 0;
               }).map((item, index) => (
-                <tr key={index} data-type="file"
+                <tr key={index} data-type="file" data-token={item.folderToken}
                 className="border-b border-borderLight dark:border-borderDark 
                 transition-colors h-8 relative hover-parent rendered-files
                 hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark 
@@ -850,8 +868,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
                   {/* Links */}
                   <td data-type="file"></td>
                   {/* Edit */}
-                  <td data-type="file" 
-                  className="text-center">
+                  <td data-token={item.folderToken} data-type="file" className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
                       <button data-name={item.name} data-token={item.token} data-type="file" onClick={modalRenameOpen}>
                         <IconEdit classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconEdit>
@@ -864,7 +881,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
                     </div>
                   </td>
                   {/* Info watches and downloads */}
-                  <td>
+                  <td data-token={item.folderToken}>
                     <div className="hover-first-info">
                       <IconInfo classes="w-6 h-6 ml-0 sm:ml-0.5 md:ml-1" fillClasses="fill-textLight dark:fill-textDark"></IconInfo>
                     </div>
@@ -880,7 +897,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
                     </div>
                   </td>
                   {/* Download */}
-                  <td data-type="file" className="text-center">
+                  <td data-token={item.folderToken} data-type="file" className="text-center">
                     <div className="flex justify-center items-center h-full">
                       <button data-type="file" onClick={() => DownloadFile(item.token)}>
                         <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
@@ -888,7 +905,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
                     </div>
                   </td>
                   {/* Star */}
-                  <td data-type="file" className="text-center">
+                  <td data-token={item.folderToken} data-type="file" className="text-center">
                     <div className="flex justify-center items-center h-full">
                       <button data-type="file" onClick={() => ElectFile(item.token)}>
                         {item.isElected === true ? (
@@ -1070,15 +1087,16 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
               { return currentSortBy === "descending" ? -1 : 1; }
               return 0;
             }).map((item, index) => (
-              <div key={index} data-type="file" 
+              <div key={index} data-type="file" data-token={item.folderToken} 
               className="text-textLight dark:text-textDark
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
               text-lg rounded-lg rendered-file h-full w-full relative
               bg-backgroundSecondLight dark:bg-backgroundSecondDark transition-colors">
                 <div className="flex px-2 py-1 flex-row justify-between">
                   <div className="flex flex-row items-center space-x-2 
-                  pointer-events-none max-w-[calc(100dvw-88px)] 
-                  sm:max-w-[calc(100dvw-348px)] md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]">
+                  pointer-events-none max-w-[calc(100dvw-88px)] sm:max-w-[calc(100dvw-348px)] 
+                  md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]"
+                  data-token={item.folderToken}>
                     <div className="h-6 w-6 flex items-center justify-center">
                       <Suspense fallback={<div></div>}>
                         <FileIcon fileType={item.name.slice(item.name.lastIndexOf('.') + 1)} 
@@ -1089,7 +1107,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
                   </div>
                   <div className="flex flex-row items-center">
                     {/* Info */}
-                    <div className="w-6 sm:w-7 mg:w-8">
+                    <div className="w-6 sm:w-7 mg:w-8" data-token={item.folderToken}>
                       <div className="w-6 sm:w-7 mg:w-8 hover-first-info">
                         <IconInfo classes="h-6 w-6" fillClasses="fill-textLight dark:fill-textDark"></IconInfo>
                       </div>
@@ -1114,7 +1132,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
                       </div>
                     </div>
                     {/* Actions */}
-                    <div className="w-6 sm:w-7 mg:w-8">
+                    <div className="w-6 sm:w-7 mg:w-8" data-token={item.folderToken}>
                       <div data-type="file"
                       className="h-full flex items-center justify-center hover-first">
                         <svg viewBox="0 0 256 256"  xmlns="http://www.w3.org/2000/svg"
@@ -1128,7 +1146,8 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
                         </svg>
                       </div>
                       <div className="hover-second ml-3.5 w-8 z-10
-                      bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden">
+                      bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden"
+                      data-token={item.folderToken}>
                         <button data-name={item.name} data-token={item.token} data-type="file" onClick={modalRenameOpen}
                         className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5">
                           <IconEdit classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconEdit>
