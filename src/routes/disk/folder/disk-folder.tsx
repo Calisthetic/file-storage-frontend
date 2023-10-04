@@ -8,6 +8,7 @@ import { apiUrl } from "../../../data/data";
 import { useNavigate, useParams } from "react-router-dom";
 import SortDropdown from "../components/sort-dropdown";
 import CellTypesDropdown from "../components/cell-types-dropdown";
+import { modalWindowStyle } from "../../../data/style/modal-styles";
 
 const RenderFolderData = lazy(() => import("./render-folder-data"));
 const Box = lazy(() => import('@mui/material/Box'));
@@ -43,17 +44,6 @@ export default function DiskFolder() {
   const modalCreateClose = () => {
     setIsErrorAlert(false)
     setIsCreateModalOpen(false)
-  };
-
-  const modalWindowStyle = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: "auto",
-    bgcolor: 'none',
-    boxShadow: 24,
-    borderRadius: "16px"
   };
 
   // Create folder

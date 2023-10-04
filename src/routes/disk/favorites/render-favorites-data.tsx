@@ -153,7 +153,6 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
       token = event.target.dataset.token
     } else if (event.target.parentElement.dataset.token !== undefined) {
       token = event.target.parentElement.dataset.token
-      return
     } else if (event.target.parentElement.parentElement.dataset.token !== undefined) {
       token = event.target.parentElement.parentElement.dataset.token
     }
@@ -161,7 +160,6 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
       return
     }
     let temp = foldersResponse
-    console.log(temp)
     if (temp === undefined) {
       return
     }
