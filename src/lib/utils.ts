@@ -32,7 +32,7 @@ export function IsNumeric(n:any) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-export function RotateArray(arr:string[]) {
+export function RotateArray(arr:any[]) {
   for (let i = 0; i < Math.floor(arr.length / 2); i++) {
     let temp = arr[i];
     arr[i] = arr[arr.length - 1 - i]
