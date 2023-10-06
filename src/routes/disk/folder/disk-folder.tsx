@@ -214,14 +214,37 @@ export default function DiskFolder() {
     } 
   }
   
-  function DownloadFolder() {
-    let url = apiUrl + "folders/download/" + params.id
-    const a = document.createElement('a')
-    a.href = url
-    a.download = url.split('/').pop() ?? ""
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
+  async function DownloadFolder() {
+    let token = localStorage.getItem("token")
+    await fetch(apiUrl + "folders/download/" + params.id, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token === null ? "" : token,
+      },
+    })
+    .then(resp => {
+      if (resp.status === 200) {
+        resp.headers.get('Content-Disposition');
+        return resp.blob()
+      } else {
+        throw new Error('something went wrong')
+      }
+    })
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = folderPaths === undefined ? "folder.zip" : folderPaths[folderPaths?.length - 1].name + ".zip";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a)
+      window.URL.revokeObjectURL(url); 
+    })
+    .catch(() => {
+      console.log("Error")
+    });
   }
 
   interface IfolderPaths {

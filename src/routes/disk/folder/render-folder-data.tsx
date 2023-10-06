@@ -562,20 +562,70 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
   }
 
   // Download file
-  function DownloadFile(fileToken:string) {
-    DownloadData(apiUrl + "files/download/" + fileToken)
+  async function DownloadFile(fileToken:string, fileName:string) {
+    let token = localStorage.getItem("token")
+    await fetch(apiUrl + "files/download/" + fileToken, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token === null ? "" : token,
+      },
+    })
+    .then(resp => {
+      if (resp.status === 200) {
+        resp.headers.get('Content-Disposition');
+        return resp.blob()
+      } else {
+        throw new Error('something went wrong')
+      }
+    })
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a)
+      window.URL.revokeObjectURL(url); 
+    })
+    .catch(() => {
+      console.log("Error")
+    });
   }
   // Download folder
-  function DownloadFolder(folderToken:string) {
-    DownloadData(apiUrl + "folders/download/" + folderToken)
-  }
-  function DownloadData(url:string) {
-    const a = document.createElement('a')
-    a.href = url
-    a.download = url.split('/').pop() ?? ""
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
+  async function DownloadFolder(folderToken:string, folderName:string) {
+    let token = localStorage.getItem("token")
+    await fetch(apiUrl + "folders/download/" + folderToken, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token === null ? "" : token,
+      },
+    })
+    .then(resp => {
+      if (resp.status === 200) {
+        resp.headers.get('Content-Disposition');
+        return resp.blob()
+      } else {
+        throw new Error('something went wrong')
+      }
+    })
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = folderName + ".zip";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a)
+      window.URL.revokeObjectURL(url); 
+    })
+    .catch(() => {
+      console.log("Error")
+    });
   }
 
 
@@ -714,7 +764,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                           )}
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
-                        onClick={() => DownloadFolder(item.token)}>
+                        onClick={() => DownloadFolder(item.token, item.name)}>
                           <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
@@ -857,7 +907,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                           )}
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5 h-8"
-                        onClick={() => DownloadFile(item.token)}>
+                        onClick={() => DownloadFile(item.token, item.name)}>
                           <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
@@ -990,7 +1040,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                   <td 
                   className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <button data-type="folder" onClick={() => DownloadFolder(item.token)}>
+                      <button data-type="folder" onClick={() => DownloadFolder(item.token, item.name)}>
                         <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                       </button>
                     </div>
@@ -1106,7 +1156,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                   {/* Download */}
                   <td data-type="file" className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <button data-type="file" onClick={() => DownloadFile(item.token)}>
+                      <button data-type="file" onClick={() => DownloadFile(item.token, item.name)}>
                         <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                       </button>
                     </div>
@@ -1190,7 +1240,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
                       <IconLink classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconLink>
                     </button>
-                    <button data-type="folder" onClick={() => DownloadFolder(item.token)}
+                    <button data-type="folder" onClick={() => DownloadFolder(item.token, item.name)}
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
                       <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                     </button>
@@ -1399,7 +1449,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                           )}
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5 h-8"
-                        onClick={() => DownloadFile(item.token)}>
+                        onClick={() => DownloadFile(item.token, item.name)}>
                           <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"

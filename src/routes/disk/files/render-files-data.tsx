@@ -1,9 +1,8 @@
 import { useState, useRef, useEffect, useCallback, FunctionComponent, memo, lazy, Suspense } from "react"
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import "../../../styles/focus-elems.css"
-import { CutNumber, CutSize, IsNumeric } from "../../../lib/utils";
-import { GetCSSValue, BlurColor, cn, isDarkMode} from "../../../lib/color-utils";
+import { CutNumber, CutSize } from "../../../lib/utils";
 // @ts-ignore
 import Hammer from 'hammerjs';
 import { modalWindowStyle } from "../../../data/style/modal-styles";
@@ -11,13 +10,10 @@ import { apiUrl } from "../../../data/data";
 
 const FileIcon = lazy(() => import("../file-icon"));
 const IconInfo = lazy(() => import("../../../components/icons/IconInfo"));
-const IconLink = lazy(() => import("../../../components/icons/IconLink"));
 const IconEdit = lazy(() => import("../../../components/icons/IconEdit"));
 const IconDownload = lazy(() => import("../../../components/icons/IconDownload"));
 const IconBin = lazy(() => import("../../../components/icons/IconBin"));
 const IconWatch = lazy(() => import("../../../components/icons/IconWatch"));
-const IconTileStar = lazy(() => import("../../../components/icons/IconTileStar"));
-const ColorPicker = lazy(() => import("../../../components/color-picker"));
 const Box = lazy(() => import('@mui/material/Box'));
 const Modal = lazy(() => import('@mui/material/Modal'));
 
@@ -243,16 +239,37 @@ const RenderFilesData:FunctionComponent<Props> = memo(({currentSortType, current
   }
 
   // Download file
-  function DownloadFile(fileToken:string) {
-    DownloadData(apiUrl + "files/download/" + fileToken)
-  }
-  function DownloadData(url:string) {
-    const a = document.createElement('a')
-    a.href = url
-    a.download = url.split('/').pop() ?? ""
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
+  async function DownloadFile(fileToken:string, fileName:string) {
+    let token = localStorage.getItem("token")
+    await fetch(apiUrl + "files/download/" + fileToken, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token === null ? "" : token,
+      },
+    })
+    .then(resp => {
+      if (resp.status === 200) {
+        resp.headers.get('Content-Disposition');
+        return resp.blob()
+      } else {
+        throw new Error('something went wrong')
+      }
+    })
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a)
+      window.URL.revokeObjectURL(url); 
+    })
+    .catch(() => {
+      console.log("Error")
+    });
   }
 
 
@@ -378,7 +395,7 @@ const RenderFilesData:FunctionComponent<Props> = memo(({currentSortType, current
                           )}
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5 h-8"
-                        onClick={() => DownloadFile(item.token)}>
+                        onClick={() => DownloadFile(item.token, item.name)}>
                           <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
@@ -497,7 +514,7 @@ const RenderFilesData:FunctionComponent<Props> = memo(({currentSortType, current
                   {/* Download */}
                   <td className="text-center">
                     <div className="flex justify-center items-center h-full" data-token={item.folderToken}>
-                      <button onClick={() => DownloadFile(item.token)}>
+                      <button onClick={() => DownloadFile(item.token, item.name)}>
                         <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                       </button>
                     </div>
