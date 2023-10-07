@@ -1,7 +1,8 @@
 import { Suspense, lazy } from "react";
 import { Routes, Route, } from "react-router-dom";
 import Redirect from "../../components/redirect";
-import Loading from "../../components/loading";
+import LoadingComponent from "../../components/loading-component";
+
 const SignIn = lazy(() => import("./signin/signin"));
 const SignUp = lazy(() => import("./signup/signup"));
 const NoPassword = lazy(() => import("./nopassword/nopassword"));
@@ -10,7 +11,7 @@ export default function AuthMain() {
 
   return (
     <div className="bg-backgroundLight min-h-fulldvh dark:bg-backgroundDark">
-      <Suspense fallback={<Loading></Loading>}>
+      <Suspense fallback={<LoadingComponent></LoadingComponent>}>
         <Routes>
           <Route path="*" element={<Redirect location="/auth/signin"></Redirect>}></Route>
           <Route path="/" element={<Redirect location="/auth/signin"></Redirect>}></Route>

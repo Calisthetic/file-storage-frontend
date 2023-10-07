@@ -10,6 +10,7 @@ import { modalWindowStyle } from "../../../data/style/modal-styles";
 import { apiUrl } from "../../../data/data";
 import AlertButton from "../../../components/alert-button";
 import { CheckForError } from "../../../lib/check-errors";
+import Loading from "../../../components/loading";
 
 const FileIcon = lazy(() => import("../file-icon"));
 const IconInfo = lazy(() => import("../../../components/icons/IconInfo"));
@@ -453,10 +454,13 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
 
   return (foldersResponse === undefined || filesResponse === undefined) ? (
     <main className="h-[calc(100%-44px)] sm:h-[calc(100%-48px)] w-full flex items-center justify-center">
-      <span className="loading loading-spinner text-iconLight dark:text-iconDark h-10 w-10"></span>
+      <Loading></Loading>
     </main>
   ) : (foldersResponse === null || filesResponse === null) ? ( // not found
     <main className="h-[calc(100%-44px)] sm:h-[calc(100%-48px)] flex items-center justify-center">
+      <div className=" text-center">
+        <span></span>
+      </div>
     </main>
   ) : (foldersResponse.length === 0 && filesResponse.length === 0) ? (
     <main></main>

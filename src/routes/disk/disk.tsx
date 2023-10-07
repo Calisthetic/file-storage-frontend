@@ -5,8 +5,9 @@ import { AnimatePresence, motion } from "framer-motion"
 import Hammer from 'hammerjs';
 import { cn } from "../../lib/color-utils";
 import UserProfileDropdown from"../../components/user-profile-dropdown";
-import Loading from "../../components/loading";
 import IconLogo from "../../components/icons/IconLogo";
+import LoadingComponent from "../../components/loading-component";
+
 const Redirect = lazy(() => import("../../components/redirect"));
 const DiskSideBar = lazy(() => import("./disk-sidebar"));
 const DiskRecent = lazy(() => import('./recent/disk-recent'));
@@ -116,7 +117,7 @@ export default function DiskMain() {
 
       <div className="pt-14 transition-transform sm:ml-64">
         <div className="bg-backgroundSecondLight overflow-x-hidden dark:bg-backgroundSecondDark min-h-fullWithHeader sm:rounded-tl-2xl ">
-          <Suspense fallback={<Loading></Loading>}>
+          <Suspense fallback={<LoadingComponent></LoadingComponent>}>
             <Routes>
               <Route path='*' element={<Redirect location="/disk/folder/main"></Redirect>}></Route>
               <Route path='recent' element={<DiskRecent></DiskRecent>}></Route>

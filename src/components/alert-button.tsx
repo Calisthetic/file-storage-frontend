@@ -18,7 +18,7 @@ const AlertButton: FunctionComponent<AlertButtonProps> = (props:AlertButtonProps
     <AnimatePresence>
       {props.open && (
         <motion.button initial={{
-          y: "-50%",
+          y: "-150%",
           x: (props.position === undefined || props.position === 1 || props.position === 2) ? 
             "calc(-100% - " + cornerMargin + ")" : cornerMargin,
           opacity: 0,

@@ -4,9 +4,10 @@ import { AnimatePresence, motion } from "framer-motion"
 import UserProfileDropdown from "../../components/user-profile-dropdown";
 import Redirect from "../../components/redirect";
 import { cn } from "../../lib/color-utils";
-import Loading from "../../components/loading";
 import UserSidebar from "./user-sidebar";
 import IconLogo from "../../components/icons/IconLogo";
+import LoadingComponent from "../../components/loading-component";
+
 const DiskUpgrade = lazy(() => import("../disk/upgrade/disk-upgrade"));
 const UserAccount = lazy(() => import("./account/user-account"));
 const UserAppearance = lazy(() => import("./appearance/user-appearance"));
@@ -92,7 +93,7 @@ const UserMain: FunctionComponent<UserMainProps> = () => {
 
       <div className="pt-14 sm:ml-64 transition-transform">
         <div className="bg-backgroundSecondLight overflow-x-hidden dark:bg-backgroundSecondDark min-h-fullWithHeader sm:rounded-tl-2xl">
-          <Suspense fallback={<Loading></Loading>}>
+          <Suspense fallback={<LoadingComponent></LoadingComponent>}>
             <Routes>
               <Route path="account" element={<UserAccount></UserAccount>}></Route>
               <Route path="upgrade" element={<DiskUpgrade></DiskUpgrade>}></Route>
