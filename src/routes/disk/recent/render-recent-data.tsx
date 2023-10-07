@@ -1,20 +1,22 @@
-import { useState, useEffect, useCallback, FunctionComponent, memo, lazy } from "react"
+import { useState, useEffect, useCallback, FunctionComponent, memo, lazy, Suspense } from "react"
 import { useNavigate } from 'react-router-dom';
 
 import "../../../styles/focus-elems.css"
 import { CutNumber, CutSize, RotateArray } from "../../../lib/utils";
-import { GetCSSValue, BlurColor} from "../../../lib/color-utils";
+import { BlurColor} from "../../../lib/color-utils";
 // @ts-ignore
 import Hammer from 'hammerjs';
 import { apiUrl } from "../../../data/data";
+import { CheckForError } from "../../../lib/check-errors";
+import AlertButton from "../../../components/alert-button";
+import Loading from "../../../components/loading";
+import DiskErrorResponse from "../components/disk-error-response";
+import EmptyData from "../components/empty-data";
 
 const IconInfo = lazy(() => import("../../../components/icons/IconInfo"));
-const IconLink = lazy(() => import("../../../components/icons/IconLink"));
-const IconEdit = lazy(() => import("../../../components/icons/IconEdit"));
 const IconDownload = lazy(() => import("../../../components/icons/IconDownload"));
 const IconBin = lazy(() => import("../../../components/icons/IconBin"));
 const IconWatch = lazy(() => import("../../../components/icons/IconWatch"));
-const IconTileStar = lazy(() => import("../../../components/icons/IconTileStar"));
 
 type Props = {
   currentSortBy:string
@@ -37,9 +39,11 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
     size: number, // in bytes
   }
   
-  const [foldersResponse, setFoldersResponse] = useState<FoldersResponse[]>();
+  const [foldersResponse, setFoldersResponse] = useState<FoldersResponse[]|null>();
   const [isUpdate, setIsUpdate] = useState(true)
   const [isUpdated, setIsUpdated] = useState(true)
+  const [currentError, setCurrentError] = useState("Error")
+  const [lastResponseStatus, setLastResponseStatus] = useState<number>(404)
 
   useEffect(() => {
     const getData = async () => {
@@ -52,12 +56,8 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
         },
       })
       .then((res) => {
-        if (res.status === 404) {
-          throw new Error('Folder not found');
-        }
-        if (res.status === 400) {
-          throw new Error('Bad request')
-        }
+        setLastResponseStatus(res.status);
+        CheckForError(res.status)
         return res.json();
       })
       .then(data => {
@@ -65,8 +65,8 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
         setIsUpdated(!isUpdated)
       })
       .catch(error => {
-        console.log(error)
-        //ShowError("User not found", "404")
+        setCurrentError(error.message)
+        setFoldersResponse(null)
       })
     }
     getData()
@@ -134,65 +134,45 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
         },
       })
       .then((res) => {
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
-        if (res.status === 404) {
-          throw new Error('Not found');
-        }
+        CheckForError(res.status)
       })
       .then(() => setIsUpdate(!isUpdate))
       .catch(error => {
-        console.log(error)
-        //ShowError("User not found", "404")
+        ShowError("Failed to delete folder from history", error.message)
       })
     }
     clean()
   }
 
-  // Elect folder
-  function ElectFolder(folderToken:string) {
-    const elect = async () => {
-      let elems = foldersResponse?.filter(x => x.token !== null)
-      if (elems !== undefined) {
-        elems[elems.findIndex(x => x.token === folderToken)].isElected = !elems[elems.findIndex(x => x.token === folderToken)].isElected
-        setFoldersResponse(elems)
-      }
-
-      let token = localStorage.getItem("token")
-      await fetch(apiUrl + "folders/elect/" + folderToken, {
-        method: 'PATCH',
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": token === null ? "" : token,
-        },
-      })
-      .then((res) => {
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
-        if (res.status === 404) {
-          throw new Error('Not found');
-        }
-      })
-      .catch(error => {
-        console.log(error)
-        let elems = foldersResponse?.filter(x => x.token !== null)
-        if (elems !== undefined) {
-          elems[elems.findIndex(x => x.token === folderToken)].isElected = !elems[elems.findIndex(x => x.token === folderToken)].isElected
-          setFoldersResponse(elems)
-        }
-      })
-    }
-    elect()
+  const [alertText, setAlertText] = useState("Something went wrong")
+  const [alertTitle, setAlertTitle] = useState("Error!")
+  const [alertType, setAlertType] = useState("error")
+  const [isAlertOpen, setIsAlertOpen] = useState(false)
+  function ShowError(text:string, title:string, type:string = "error") {
+    setAlertType(type)
+    setIsAlertOpen(false)
+    setAlertText(text)
+    setAlertTitle(title)
+    setTimeout(() => {
+      setIsAlertOpen(true)
+    }, 250);
   }
 
 
 
 
-  return (
+  return (foldersResponse === undefined) ? (
+    <main className="h-[calc(100%-44px)] sm:h-[calc(100%-48px)] w-full flex items-center justify-center">
+      <Loading></Loading>
+    </main>
+    ) : (foldersResponse === null) ? ( // error
+      <DiskErrorResponse code={lastResponseStatus} title={currentError} text="Failed to get folder"></DiskErrorResponse>
+    ) : (foldersResponse.length === 0) ? (
+      <EmptyData title="There's no folders in history" 
+      text="Visit any folder to see it here"></EmptyData>
+    ) : (
     <main className="py-4">
-      {foldersResponse === undefined ? null : currentRenderType === "list" ? (
+      {currentRenderType === "list" ? (
         <div>
           <div className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all h-auto">
             {foldersResponse.map((item, index) => (
@@ -205,13 +185,13 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
                   <div className="flex flex-row items-center space-x-2 max-w-[calc(100dvw-88px)] 
                   sm:max-w-[calc(100dvw-348px)] md:max-w-[calc(100dvw-358px)] lg:max-w-[calc(100%-60px)]"
                   data-token={item.token}>
-                    <button id={"open-folder-colors-" + item.token} aria-label="Folder colors"
-                    className="w-6 focus-first-right flex flex-row">
+                    <div id={"open-folder-colors-" + item.token} aria-label="Folder colors"
+                    className="w-6 flex flex-row">
                       <svg viewBox="0 0 20 16" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 0H2C.9 0 0 .9 0 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2h-8L8 0Z" 
                         fillRule="evenodd" className="transition-colors" fill={item.color ? ("#" + item.color) : "#888"}></path>
                       </svg>
-                    </button>
+                    </div>
                     <div className="truncate pointer-events-none">{item.name}</div>
                   </div>
                   <div className="flex flex-row items-center">
@@ -257,30 +237,6 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded overflow-hidden"
                       data-token={item.token}>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
-                        onClick={() => ElectFolder(item.token)}>
-                          {item.isElected === true ? (
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                            className="w-5 h-5">
-                              <path d="m21.82 10.74-5.12 3.71 2 6a1 1 0 0 1-.37 1.12 1 1 0 0 1-1.17 0L12 17.87l-5.12 
-                              3.72a1 1 0 0 1-1.17 0 1 1 0 0 1-.37-1.12l2-6-5.16-3.73a1 1 0 0 1 .59-1.81h6.32l2-6a1 
-                              1 0 0 1 1.9 0l2 6h6.32a1 1 0 0 1 .59 1.81Z"
-                              className="fill-iconLight dark:fill-iconDark"></path>
-                            </svg>
-                          ) : (
-                            <svg viewBox="0 0 32 32" className="w-5 h-5" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M31.881 12.557a2.303 2.303 0 0 0-1.844-1.511l-8.326-1.238-3.619-7.514A2.318 
-                              2.318 0 0 0 16 1c-.896 0-1.711.505-2.092 1.294l-3.619 7.514-8.327 1.238A2.3 2.3 0 0 
-                              0 .12 12.557a2.207 2.207 0 0 0 .537 2.285l6.102 6.092-1.415 8.451a2.224 2.224 0 0 0 
-                              .948 2.203 2.351 2.351 0 0 0 2.449.131L16 27.811l7.26 3.908a2.367 2.367 0 0 0 2.449-.131 
-                              2.225 2.225 0 0 0 .947-2.203l-1.416-8.451 6.104-6.092c.603-.603.81-1.485.537-2.285zm-8.293 
-                              6.806a2.216 2.216 0 0 0-.627 1.934l1.416 8.451-7.26-3.906a2.361 2.361 0 0 0-2.235 0l-7.26 
-                              3.906 1.416-8.451a2.212 2.212 0 0 0-.626-1.934L2.31 13.271l8.326-1.24a2.306 2.306 0 0 0 
-                              1.743-1.268L16 3.251l3.62 7.513a2.31 2.31 0 0 0 1.742 1.268l8.328 1.24-6.102 6.091z" 
-                              className="fill-textLight dark:fill-textDark"></path>
-                            </svg>
-                          )}
-                        </button>
-                        <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
                         onClick={() => CleanEntry(item.token)}>
                           <IconBin classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconBin>
                         </button>
@@ -319,9 +275,6 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
                 <th scope="col" className="py-3 w-6 sm:w-7 mg:w-8"></th>
                 <th scope="col" className="py-3 w-6 sm:w-7 mg:w-8"></th>
                 <th scope="col" className="py-3 w-6 sm:w-7 mg:w-8"></th>
-                <th scope="col" className="py-3 w-6 sm:w-7 mg:w-8"></th>
-                <th scope="col" className="py-3 w-6 sm:w-7 mg:w-8"></th>
-                <th scope="col" className="py-3 w-6 sm:w-7 mg:w-8"></th>
               </tr>
             </thead>
             <tbody>
@@ -332,12 +285,12 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
                 hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark
                 bg-backgroundSecondLight dark:bg-backgroundSecondDark">
                   <td className="flex items-center justify-center h-8 flex-row">
-                    <button data-type="folder" className="w-6 focus-first-right">
+                    <div data-type="folder" className="w-6 focus-first-right">
                       <svg viewBox="0 0 20 16" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 0H2C.9 0 0 .9 0 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2h-8L8 0Z" 
                         fillRule="evenodd" className="transition-colors" fill={item.color ? ("#" + item.color) : "#888"}></path>
                       </svg>
-                    </button>
+                    </div>
                   </td>
                   <td data-token={item.token}
                   className="font-medium text truncate max-w-[1px]">{item.name}</td>
@@ -345,23 +298,7 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
                   data-token={item.token}>{item.size === null ? null : CutSize(item.size * 10)}</td>
                   <td
                   data-token={item.token} className="hidden lg:table-cell">{item.createdAt}</td>
-                  {/* Links */}
-                  <td>
-                    <div className="flex hover-child justify-center items-center h-full">
-                      <button data-name={item.name}
-                      data-access={item.accessType} data-token={item.token}>
-                        <IconLink classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconLink>
-                      </button>
-                    </div>
-                  </td>
-                  {/* Edit */}
-                  <td className="text-center">
-                    <div className="flex hover-child justify-center items-center h-full">
-                      <button data-name={item.name} data-token={item.token} data-type="folder">
-                        <IconEdit classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconEdit>
-                      </button>
-                    </div>
-                  </td>
+                  <td></td>
                   {/* Info watches and downloads */}
                   <td>
                     <div className="hover-first-info">
@@ -376,40 +313,6 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
                         <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         <p>{item.downloads === null ? 0 : CutNumber(item.downloads)}</p>
                       </div>
-                    </div>
-                  </td>
-                  {/* Download */}
-                  <td className="text-center">
-                    <div className="flex justify-center items-center h-full">
-                    </div>
-                  </td>
-                  {/* Star */}
-                  <td className="text-center">
-                    <div className="flex justify-center items-center h-full">
-                      <button data-type="folder" onClick={() => ElectFolder(item.token)}>
-                        {item.isElected === true ? (
-                          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                          className="w-5 h-5">
-                            <path d="m21.82 10.74-5.12 3.71 2 6a1 1 0 0 1-.37 1.12 1 1 0 0 1-1.17 0L12 17.87l-5.12 
-                            3.72a1 1 0 0 1-1.17 0 1 1 0 0 1-.37-1.12l2-6-5.16-3.73a1 1 0 0 1 .59-1.81h6.32l2-6a1 
-                            1 0 0 1 1.9 0l2 6h6.32a1 1 0 0 1 .59 1.81Z"
-                            className="fill-iconLight dark:fill-iconDark"></path>
-                          </svg>
-                        ) : (
-                          <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" 
-                          className="w-5 h-5">
-                            <path d="M31.881 12.557a2.303 2.303 0 0 0-1.844-1.511l-8.326-1.238-3.619-7.514A2.318 
-                            2.318 0 0 0 16 1c-.896 0-1.711.505-2.092 1.294l-3.619 7.514-8.327 1.238A2.3 2.3 0 0 
-                            0 .12 12.557a2.207 2.207 0 0 0 .537 2.285l6.102 6.092-1.415 8.451a2.224 2.224 0 0 0 
-                            .948 2.203 2.351 2.351 0 0 0 2.449.131L16 27.811l7.26 3.908a2.367 2.367 0 0 0 2.449-.131 
-                            2.225 2.225 0 0 0 .947-2.203l-1.416-8.451 6.104-6.092c.603-.603.81-1.485.537-2.285zm-8.293 
-                            6.806a2.216 2.216 0 0 0-.627 1.934l1.416 8.451-7.26-3.906a2.361 2.361 0 0 0-2.235 0l-7.26 
-                            3.906 1.416-8.451a2.212 2.212 0 0 0-.626-1.934L2.31 13.271l8.326-1.24a2.306 2.306 0 0 0 
-                            1.743-1.268L16 3.251l3.62 7.513a2.31 2.31 0 0 0 1.742 1.268l8.328 1.24-6.102 6.091z" 
-                            className="fill-textLight dark:fill-textDark"></path>
-                          </svg>
-                        )}
-                      </button>
                     </div>
                   </td>
                   {/* Delete */}
@@ -434,21 +337,6 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
               className=" hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark
               px-2 w-36 rounded-md flex flex-col py-1 hover-parent rendered-folder
               bg-backgroundSecondLight dark:bg-backgroundSecondDark relative">
-                {/* Actions */}
-                <div data-type="folder" 
-                className="h-6 flex flex-row justify-around flex-nowrap">
-                  <div data-type="folder" className="hover-child">
-                    <button data-name={item.name} data-type="folder"
-                    data-access={item.accessType} data-token={item.token}
-                    className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
-                      <IconLink classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconLink>
-                    </button>
-                    <button data-type="folder" onClick={() => CleanEntry(item.token)}
-                    className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
-                      <IconBin classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconBin>
-                    </button>
-                  </div>
-                </div>
                 {/* Main icon */}
                 <div data-type="folder" className="px-2 flex flex-col">
                   <button data-token={item.token} data-type="folder" 
@@ -465,7 +353,6 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
                       className="transition-colors"fill={item.color ? "#" + item.color : "#888888"}></path>
                     </svg>
                   </button>
-                  {/* Color picker */}
                   {/* Folder info */}
                   <div className="absolute w-28 h-28 flex flex-col justify-between
                   text-textLight dark:text-textDark pointer-events-none">
@@ -496,11 +383,9 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
                     <div data-type="folder" 
                     className="flex flex-row justify-between items-end px-1 pb-1.5">
                       <div className="">
-                        <button data-type="folder" className="pointer-events-auto" 
-                        onClick={() => ElectFolder(item.token)}>
-                          <IconTileStar width="24px" height="24px" isActive={item.isElected}
-                          firstColor={GetCSSValue(item.isElected ? "icon" : "text")} 
-                          secondColor={BlurColor(GetCSSValue("icon"), -48)}></IconTileStar>
+                        <button data-type="folder" onClick={() => CleanEntry(item.token)}
+                        className="p-0.5 pointer-events-auto">
+                          <IconBin classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconBin>
                         </button>
                       </div>
                       <div data-type="folder" 
@@ -509,16 +394,21 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
                   </div>
                 </div>
                 <div data-type="folder" className="flex cursor-default justify-center">
-                  <button className="text-center pointer-events-auto transition-all whitespace-pre-wrap hover:underline" 
+                  <span className="text-center transition-all whitespace-pre-wrap" 
                   data-name={item.name} data-token={item.token} data-type="folder">
                     {item.name}
-                  </button>
+                  </span>
                 </div>
               </div>
             ))}
           </div>
         </div>
       )}
+      
+      <Suspense fallback={<div></div>}>
+        <AlertButton open={isAlertOpen} text={alertText} title={alertTitle}
+        type={alertType} close={() => setIsAlertOpen(false)}></AlertButton>
+      </Suspense>
     </main>
   )
 })

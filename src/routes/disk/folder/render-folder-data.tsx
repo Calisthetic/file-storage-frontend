@@ -8,6 +8,11 @@ import { GetCSSValue, BlurColor, cn, isDarkMode} from "../../../lib/color-utils"
 import Hammer from 'hammerjs';
 import { modalWindowStyle } from "../../../data/style/modal-styles";
 import { apiUrl } from "../../../data/data";
+import AlertButton from "../../../components/alert-button";
+import { CheckForError } from "../../../lib/check-errors";
+import Loading from "../../../components/loading";
+import DiskErrorResponse from "../components/disk-error-response";
+import EmptyData from "../components/empty-data";
 
 const FileIcon = lazy(() => import("../file-icon"));
 const FolderAccessModal = lazy(() => import("./folder-access-modal"));
@@ -121,10 +126,12 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
     isElected: boolean,
   }
   
-  const [foldersResponse, setFoldersResponse] = useState<FoldersResponse[]>();
-  const [filesResponse, setFilesResponse] = useState<FilesResponse[]>();
+  const [foldersResponse, setFoldersResponse] = useState<FoldersResponse[] | null>();
+  const [filesResponse, setFilesResponse] = useState<FilesResponse[] | null>();
   const [isUpdate, setIsUpdate] = useState(true)
   const [isUpdated, setIsUpdated] = useState(true)
+  const [currentError, setCurrentError] = useState("Error")
+  const [lastResponseStatus, setLastResponseStatus] = useState<number>(404)
 
   const params: any = useParams();
   if (params.id === undefined) {
@@ -141,19 +148,19 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
         },
       })
       .then((res) => {
-        if (res.status === 404) {
-          throw new Error('Folder not found');
-        }
         if (res.status === 403) {
           navigate("/disk/bin/" + params.id)
           throw new Error('Bad request')
         }
+        setLastResponseStatus(res.status);
+        CheckForError(res.status)
         return res.json();
       })
       .then(data => {setFilesResponse(data.files); setFoldersResponse(data.folders); setIsUpdated(!isUpdated)})
       .catch(error => {
-        console.log(error)
-        //ShowError("User not found", "404")
+        setCurrentError(error.message)
+        setFoldersResponse(null)
+        setFilesResponse(null)
       })
     }
     getData()
@@ -323,7 +330,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
     }
 
     let elems = foldersResponse?.filter(x => x.token === data.id)
-    if (elems !== undefined && elems?.length > 0 && foldersResponse !== undefined) {
+    if (elems && elems?.length > 0 && foldersResponse) {
       let deleteIndex = foldersResponse.indexOf(elems[0])
       let lastColor = foldersResponse[deleteIndex].color
       let temp = foldersResponse.filter(x => x.token !== null)
@@ -344,17 +351,10 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
           },
         })
         .then((res) => {
-          if (res.status === 400) {
-            throw new Error('Bad request');
-          }
-          if (res.status === 404) {
-            throw new Error('Not found');
-          }
-        })
-        .then(() => {
+          CheckForError(res.status)
         })
         .catch(error => {
-          console.log(error)
+          ShowError("Failed to download file", error.message)
           temp = foldersResponse.filter(x => x.token !== null)
           temp[deleteIndex].color = lastColor
           setFoldersResponse(foldersResponse.filter(x => x.token !== data.id))
@@ -379,12 +379,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
         },
       })
       .then((res) => {
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
-        if (res.status === 404) {
-          throw new Error('Not found');
-        }
+        CheckForError(res.status)
       })
       .then(() => setIsUpdate(!isUpdate))
       .catch(error => {
@@ -407,12 +402,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
         },
       })
       .then((res) => {
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
-        if (res.status === 404) {
-          throw new Error('Not found');
-        }
+        CheckForError(res.status)
       })
       .then(() => setIsUpdate(!isUpdate))
       .catch(error => {
@@ -459,15 +449,10 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
         },
       })
       .then((res) => {
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
-        if (res.status === 404) {
-          throw new Error('Not found');
-        }
+        CheckForError(res.status)
       })
       .catch(error => {
-        console.log(error)
+        ShowError("Failed to rename " + selectedItem.type, error.message)
         if (selectedItem.type === "file") {
           let elems = filesResponse?.filter(x => x.token !== null)
           if (elems !== undefined) {
@@ -505,15 +490,10 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
         },
       })
       .then((res) => {
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
-        if (res.status === 404) {
-          throw new Error('Not found');
-        }
+        CheckForError(res.status)
       })
       .catch(error => {
-        console.log(error)
+        ShowError("Failed to elect folder", error.message)
         let elems = foldersResponse?.filter(x => x.token !== null)
         if (elems !== undefined) {
           elems[elems.findIndex(x => x.token === folderToken)].isElected = !elems[elems.findIndex(x => x.token === folderToken)].isElected
@@ -542,15 +522,10 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
         },
       })
       .then((res) => {
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
-        if (res.status === 404) {
-          throw new Error('Not found');
-        }
+        CheckForError(res.status)
       })
       .catch(error => {
-        console.log(error)
+        ShowError("Failed to elect file", error.message)
         let elems = filesResponse?.filter(x => x.token !== null)
         if (elems !== undefined) {
           elems[elems.findIndex(x => x.token === fileToken)].isElected = !elems[elems.findIndex(x => x.token === fileToken)].isElected
@@ -572,6 +547,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
       },
     })
     .then(resp => {
+      CheckForError(resp.status)
       if (resp.status === 200) {
         resp.headers.get('Content-Disposition');
         return resp.blob()
@@ -590,8 +566,8 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
       document.body.removeChild(a)
       window.URL.revokeObjectURL(url); 
     })
-    .catch(() => {
-      console.log("Error")
+    .catch((error) => {
+      ShowError("Failed to download file", error.message)
     });
   }
   // Download folder
@@ -605,6 +581,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
       },
     })
     .then(resp => {
+      CheckForError(resp.status)
       if (resp.status === 200) {
         resp.headers.get('Content-Disposition');
         return resp.blob()
@@ -623,17 +600,39 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
       document.body.removeChild(a)
       window.URL.revokeObjectURL(url); 
     })
-    .catch(() => {
-      console.log("Error")
+    .catch((error) => {
+      ShowError("Failed to download folder", error.message)
     });
+  }
+
+  const [alertText, setAlertText] = useState("Something went wrong")
+  const [alertTitle, setAlertTitle] = useState("Error!")
+  const [alertType, setAlertType] = useState("error")
+  const [isAlertOpen, setIsAlertOpen] = useState(false)
+  function ShowError(text:string, title:string, type:string = "error") {
+    setAlertType(type)
+    setIsAlertOpen(false)
+    setAlertText(text)
+    setAlertTitle(title)
+    setTimeout(() => {
+      setIsAlertOpen(true)
+    }, 250);
   }
 
 
 
-
-  return (
+  return (foldersResponse === undefined || filesResponse === undefined) ? (
+    <main className="h-[calc(100%-44px)] sm:h-[calc(100%-48px)] w-full flex items-center justify-center">
+      <Loading></Loading>
+    </main>
+    ) : (foldersResponse === null || filesResponse === null) ? ( // error
+      <DiskErrorResponse code={lastResponseStatus} title={currentError} text="Failed to get folder"></DiskErrorResponse>
+    ) : (foldersResponse.length === 0 && filesResponse.length === 0) ? (
+      <EmptyData title="Current folder is empty" 
+      text="Create new folder or drop some files here"></EmptyData>
+    ) : (
     <main className="py-4">
-      {(foldersResponse === undefined || filesResponse === undefined) ? null : currentRenderType === "list" ? (
+      {currentRenderType === "list" ? (
         <div>
           <div className="px-2 mb-2 pb-1
           font-semibold text-base border-b border-borderLight dark:border-borderDark
@@ -1300,7 +1299,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                     {/* Elected and size */}
                     <div data-type="folder" 
                     className="flex flex-row justify-between items-end px-1 pb-1.5">
-                      <div className="">
+                      <div>
                         <button data-type="folder" className="pointer-events-auto" 
                         onClick={() => ElectFolder(item.token)}>
                           <IconTileStar width="24px" height="24px" isActive={item.isElected}
@@ -1519,6 +1518,11 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
           </FolderAccessModal>
         </Box>
       </Modal>
+      
+      <Suspense fallback={<div></div>}>
+        <AlertButton open={isAlertOpen} text={alertText} title={alertTitle}
+        type={alertType} close={() => setIsAlertOpen(false)}></AlertButton>
+      </Suspense>
     </main>
   )
 })

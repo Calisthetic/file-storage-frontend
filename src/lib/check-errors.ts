@@ -3,7 +3,7 @@ export function CheckForError(code:number) {
     case 400:
       throw new Error("Bad request")
     case 401:
-      throw new Error("Unauthorized")
+      throw new Error("Authorization required")
     case 403:
       throw new Error("Access denied")
     case 404:

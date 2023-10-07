@@ -11,6 +11,8 @@ import { apiUrl } from "../../../data/data";
 import AlertButton from "../../../components/alert-button";
 import { CheckForError } from "../../../lib/check-errors";
 import Loading from "../../../components/loading";
+import DiskErrorResponse from "../components/disk-error-response";
+import EmptyData from "../components/empty-data";
 
 const FileIcon = lazy(() => import("../file-icon"));
 const IconInfo = lazy(() => import("../../../components/icons/IconInfo"));
@@ -119,6 +121,8 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
   const [foldersResponse, setFoldersResponse] = useState<FoldersResponse[] | null>();
   const [filesResponse, setFilesResponse] = useState<FilesResponse[] | null>();
   const [isUpdated, setIsUpdated] = useState(true)
+  const [currentError, setCurrentError] = useState("Error")
+  const [lastResponseStatus, setLastResponseStatus] = useState<number>(404)
 
   useEffect(() => {
     const getData = async () => {
@@ -131,12 +135,13 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
         },
       })
       .then((res) => {
+        setLastResponseStatus(res.status);
         CheckForError(res.status)
         return res.json();
       })
       .then(data => {setFilesResponse(data.files); setFoldersResponse(data.folders); setIsUpdated(!isUpdated)})
-      .catch(() => {
-        ShowError("Failed to get favorites files", "Error")
+      .catch(error => {
+        setCurrentError(error.message)
         setFoldersResponse(null)
         setFilesResponse(null)
       })
@@ -233,7 +238,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
           CheckForError(res.status)
         })
         .catch(error => {
-          ShowError(error.message, "Error")
+          ShowError("Failed to change folder color", error.message)
           temp = foldersResponse.filter(x => x.token !== null)
           temp[deleteIndex].color = lastColor
           setFoldersResponse(foldersResponse.filter(x => x.token !== data.id))
@@ -285,7 +290,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
         CheckForError(res.status)
       })
       .catch(error => {
-        ShowError(error.message, "Error")
+        ShowError("Failed to rename " + selectedItem.type, error.message)
         if (selectedItem.type === "file") {
           let elems = filesResponse?.filter(x => x.token !== null)
           if (elems !== undefined) {
@@ -326,7 +331,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
         CheckForError(res.status)
       })
       .catch(error => {
-        ShowError(error.message, "Error")
+        ShowError("Failed to elect folder", error.message)
         let elems = foldersResponse?.filter(x => x.token !== null)
         if (elems !== undefined) {
           elems[elems.findIndex(x => x.token === folderToken)].isElected = !elems[elems.findIndex(x => x.token === folderToken)].isElected
@@ -358,7 +363,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
         CheckForError(res.status)
       })
       .catch(error => {
-        ShowError(error.message, "Error")
+        ShowError("Failed to elect file", error.message)
         let elems = filesResponse?.filter(x => x.token !== null)
         if (elems !== undefined) {
           elems[elems.findIndex(x => x.token === fileToken)].isElected = !elems[elems.findIndex(x => x.token === fileToken)].isElected
@@ -380,6 +385,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
       },
     })
     .then(resp => {
+      CheckForError(resp.status)
       if (resp.status === 200) {
         resp.headers.get('Content-Disposition');
         return resp.blob()
@@ -398,8 +404,8 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
       document.body.removeChild(a)
       window.URL.revokeObjectURL(url); 
     })
-    .catch(() => {
-      ShowError("Failed to download file", "Error")
+    .catch(error => {
+      ShowError("Failed to download file", error.message)
     });
   }
   // Download folder
@@ -413,6 +419,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
       },
     })
     .then(resp => {
+      CheckForError(resp.status)
       if (resp.status === 200) {
         resp.headers.get('Content-Disposition');
         return resp.blob()
@@ -431,8 +438,8 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
       document.body.removeChild(a)
       window.URL.revokeObjectURL(url); 
     })
-    .catch(() => {
-      ShowError("Failed to download folder", "Error", "error")
+    .catch(error => {
+      ShowError("Failed to download folder", error.message)
     });
   }
   
@@ -456,15 +463,11 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
     <main className="h-[calc(100%-44px)] sm:h-[calc(100%-48px)] w-full flex items-center justify-center">
       <Loading></Loading>
     </main>
-  ) : (foldersResponse === null || filesResponse === null) ? ( // not found
-    <main className="h-[calc(100%-44px)] sm:h-[calc(100%-48px)] flex items-center justify-center">
-      <div className=" text-center">
-        <span></span>
-      </div>
-    </main>
-  ) : (foldersResponse.length === 0 && filesResponse.length === 0) ? (
-    <main></main>
-  ) : (
+    ) : (foldersResponse === null || filesResponse === null) ? ( // error
+      <DiskErrorResponse code={lastResponseStatus} title={currentError} text="Failed to get favorite files"></DiskErrorResponse>
+    ) : (foldersResponse.length === 0 && filesResponse.length === 0) ? (
+      <EmptyData title="Not found" text="Elect few files/folders to see them here"></EmptyData>
+    ) : (
     <main className="py-4">
       {currentRenderType === "list" ? (
         <div>

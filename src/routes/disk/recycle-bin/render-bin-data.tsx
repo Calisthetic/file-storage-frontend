@@ -15,6 +15,11 @@ import IconTileStar from "../../../components/icons/IconTileStar";
 import IconRestore from "../../../components/icons/IconRestore";
 import IconDelete from "../../../components/icons/IconDelete";
 import IconFolderError from "../../../components/icons/IconFolderError";
+import Loading from "../../../components/loading";
+import DiskErrorResponse from "../components/disk-error-response";
+import EmptyData from "../components/empty-data";
+import { CheckForError } from "../../../lib/check-errors";
+import AlertButton from "../../../components/alert-button";
 
 interface RenderBinDataProps {
   currentSortType: string
@@ -48,11 +53,12 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
     isElected: boolean,
   }
   
-  const [foldersResponse, setFoldersResponse] = useState<FoldersResponse[]>();
-  const [filesResponse, setFilesResponse] = useState<FilesResponse[]>();
-  const [responseCode, setResponseCode] = useState<number>(200)
+  const [foldersResponse, setFoldersResponse] = useState<FoldersResponse[]|null>();
+  const [filesResponse, setFilesResponse] = useState<FilesResponse[]|null>();
   const [isUpdate, setIsUpdate] = useState(true)
   const [isUpdated, setIsUpdated] = useState(true)
+  const [currentError, setCurrentError] = useState("Error")
+  const [lastResponseStatus, setLastResponseStatus] = useState<number>(404)
 
   const params: any = useParams();
   if (params.id === undefined) {
@@ -71,19 +77,15 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
         },
       })
       .then((res) => {
-        if (res.status === 404) {
-          throw new Error('Folder not found');
-        }
-        if (res.status === 403) {
-          setResponseCode(403);
-          throw new Error('Forbidden');
-        }
+        setLastResponseStatus(res.status);
+        CheckForError(res.status)
         return res.json();
       })
-      .then(data => {setFilesResponse(data.files); setFoldersResponse(data.folders); setIsUpdated(!isUpdated); setResponseCode(200)})
+      .then(data => {setFilesResponse(data.files); setFoldersResponse(data.folders); setIsUpdated(!isUpdated)})
       .catch(error => {
-        console.log(error)
-        //ShowError("User not found", "404")
+        setCurrentError(error.message)
+        setFilesResponse(null)
+        setFoldersResponse(null)
       })
     }
     getData()
@@ -154,15 +156,10 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
         },
       })
       .then((res) => {
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
-        if (res.status === 404) {
-          throw new Error('Not found');
-        }
+        CheckForError(res.status)
       })
       .catch(error => {
-        console.log(error)
+        ShowError("Failed to elect folder", error.message)
         let elems = foldersResponse?.filter(x => x.token !== null)
         if (elems !== undefined) {
           elems[elems.findIndex(x => x.token === folderToken)].isElected = !elems[elems.findIndex(x => x.token === folderToken)].isElected
@@ -191,15 +188,10 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
         },
       })
       .then((res) => {
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
-        if (res.status === 404) {
-          throw new Error('Not found');
-        }
+        CheckForError(res.status)
       })
       .catch(error => {
-        console.log(error)
+        ShowError("Failed to elect file", error.message)
         let elems = filesResponse?.filter(x => x.token !== null)
         if (elems !== undefined) {
           elems[elems.findIndex(x => x.token === fileToken)].isElected = !elems[elems.findIndex(x => x.token === fileToken)].isElected
@@ -211,20 +203,72 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
   }
 
   // Download file
-  function DownloadFile(fileToken:string) {
-    DownloadData(apiUrl + "files/download/" + fileToken)
+  async function DownloadFile(fileToken:string, fileName:string) {
+    let token = localStorage.getItem("token")
+    await fetch(apiUrl + "files/download/" + fileToken, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token === null ? "" : token,
+      },
+    })
+    .then(resp => {
+      CheckForError(resp.status)
+      if (resp.status === 200) {
+        resp.headers.get('Content-Disposition');
+        return resp.blob()
+      } else {
+        throw new Error('something went wrong')
+      }
+    })
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a)
+      window.URL.revokeObjectURL(url); 
+    })
+    .catch((error) => {
+      ShowError("Failed to download file", error.message)
+    });
   }
   // Download folder
-  function DownloadFolder(folderToken:string) {
-    DownloadData(apiUrl + "folders/download/" + folderToken)
-  }
-  function DownloadData(url:string) {
-    const a = document.createElement('a')
-    a.href = url
-    a.download = url.split('/').pop() ?? ""
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
+  async function DownloadFolder(folderToken:string, folderName:string) {
+    let token = localStorage.getItem("token")
+    await fetch(apiUrl + "folders/download/" + folderToken, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token === null ? "" : token,
+      },
+    })
+    .then(resp => {
+      CheckForError(resp.status)
+      if (resp.status === 200) {
+        resp.headers.get('Content-Disposition');
+        return resp.blob()
+      } else {
+        throw new Error('something went wrong')
+      }
+    })
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = folderName + ".zip";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a)
+      window.URL.revokeObjectURL(url); 
+    })
+    .catch((error) => {
+      ShowError("Failed to download folder", error.message)
+    });
   }
 
   // Delete files/folders
@@ -239,17 +283,11 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
         },
       })
       .then((res) => {
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
-        if (res.status === 404) {
-          throw new Error('Not found');
-        }
+        CheckForError(res.status)
       })
       .then(() => {setIsUpdate(!isUpdate); console.log(0)})
       .catch(error => {
-        console.log(error)
-        //ShowError("User not found", "404")
+        ShowError("Failed to delete file", error.message)
       })
     }
     deleteFile()
@@ -265,17 +303,11 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
         },
       })
       .then((res) => {
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
-        if (res.status === 404) {
-          throw new Error('Not found');
-        }
+        CheckForError(res.status)
       })
       .then(() => setIsUpdate(!isUpdate))
       .catch(error => {
-        console.log(error)
-        //ShowError("User not found", "404")
+        ShowError("Failed to delete folder", error.message)
       })
     }
     deleteFolder()
@@ -293,17 +325,11 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
         },
       })
       .then((res) => {
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
-        if (res.status === 404) {
-          throw new Error('Not found');
-        }
+        CheckForError(res.status)
       })
       .then(() => setIsUpdate(!isUpdate))
       .catch(error => {
-        console.log(error)
-        //ShowError("User not found", "404")
+        ShowError("Failed to restore folder", error.message)
       })
     }
     restoreFolder()
@@ -319,23 +345,35 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
         },
       })
       .then((res) => {
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
-        if (res.status === 404) {
-          throw new Error('Not found');
-        }
+        CheckForError(res.status)
       })
       .then(() => setIsUpdate(!isUpdate))
       .catch(error => {
-        console.log(error)
-        //ShowError("User not found", "404")
+        ShowError("Failed to restore file", error.message)
       })
     }
     restoreFile()
   }
+
+  const [alertText, setAlertText] = useState("Something went wrong")
+  const [alertTitle, setAlertTitle] = useState("Error!")
+  const [alertType, setAlertType] = useState("error")
+  const [isAlertOpen, setIsAlertOpen] = useState(false)
+  function ShowError(text:string, title:string, type:string = "error") {
+    setAlertType(type)
+    setIsAlertOpen(false)
+    setAlertText(text)
+    setAlertTitle(title)
+    setTimeout(() => {
+      setIsAlertOpen(true)
+    }, 250);
+  }
+
+
+
+
   
-  return responseCode === 403 ? (
+  return lastResponseStatus === 403 ? (
     <main className="flex justify-center items-center text-textLight dark:text-textDark h-[calc(100dvh-100px)] sm:h-[calc(100dvh-104px)]">
       <div className="flex flex-col items-center py-4 px-4 max-w-xs text-center">
         <IconFolderError classes="md:h-60 md:w-60 sm:h-[34dvw] sm:w-[34dvw] h-[50dvw] w-[50dvw]"
@@ -350,9 +388,18 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
         </button>
       </div>
     </main>
-  ) : (
+    ) : (foldersResponse === undefined || filesResponse === undefined) ? (
+      <main className="h-[calc(100%-44px)] sm:h-[calc(100%-48px)] w-full flex items-center justify-center">
+        <Loading></Loading>
+      </main>
+    ) : (foldersResponse === null || filesResponse === null) ? ( // error
+      <DiskErrorResponse title={currentError} text="Failed to get files inside bin" code={lastResponseStatus}></DiskErrorResponse>
+    ) : (foldersResponse?.length === 0 && filesResponse.length === 0) ? (
+      <EmptyData title="Your bin is empty" 
+      text="Files/folders will be here when you delete them from the main storage"></EmptyData>
+    ) : (
     <main className="py-4">
-      {(foldersResponse === undefined || filesResponse === undefined) ? null : currentRenderType === "list" ? (
+      {currentRenderType === "list" ? (
         <div>
           <div className="px-2 mb-2 pb-1
           font-semibold text-base border-b border-borderLight dark:border-borderDark
@@ -464,7 +511,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
                           )}
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5"
-                        onClick={() => DownloadFolder(item.token)}>
+                        onClick={() => DownloadFolder(item.token, item.name)}>
                           <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
                         {params.id === "main" && (
@@ -607,7 +654,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
                           )}
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5 h-8"
-                        onClick={() => DownloadFile(item.token)}>
+                        onClick={() => DownloadFile(item.token, item.name)}>
                           <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
                         {params.id === "main" && (
@@ -742,7 +789,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
                   <td 
                   className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <button data-type="folder" onClick={() => DownloadFolder(item.token)}>
+                      <button data-type="folder" onClick={() => DownloadFolder(item.token, item.name)}>
                         <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                       </button>
                     </div>
@@ -859,7 +906,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
                   {/* Download */}
                   <td data-type="file" className="text-center">
                     <div className="flex justify-center items-center h-full">
-                      <button data-type="file" onClick={() => DownloadFile(item.token)}>
+                      <button data-type="file" onClick={() => DownloadFile(item.token, item.name)}>
                         <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                       </button>
                     </div>
@@ -934,7 +981,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
                 <div data-type="folder" 
                 className="h-6 flex flex-row justify-around flex-nowrap">
                   <div data-type="folder" className="hover-child">
-                    <button data-type="folder" onClick={() => DownloadFolder(item.token)}
+                    <button data-type="folder" onClick={() => DownloadFolder(item.token, item.name)}
                     className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark p-0.5">
                       <IconDownload classes="w-5 h-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                     </button>
@@ -1136,7 +1183,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
                           )}
                         </button>
                         <button className="hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark py-1 px-1.5 h-8"
-                        onClick={() => DownloadFile(item.token)}>
+                        onClick={() => DownloadFile(item.token, item.name)}>
                           <IconDownload classes="h-5 w-5 stroke-textLight dark:stroke-textDark"></IconDownload>
                         </button>
                         {params.id === "main" && (
@@ -1160,6 +1207,11 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
           </div>
         </div>
       )}
+      
+      <Suspense fallback={<div></div>}>
+        <AlertButton open={isAlertOpen} text={alertText} title={alertTitle}
+        type={alertType} close={() => setIsAlertOpen(false)}></AlertButton>
+      </Suspense>
     </main>
   );
 })

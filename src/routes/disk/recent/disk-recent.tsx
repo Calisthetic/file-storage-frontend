@@ -4,6 +4,8 @@ import { AnimatePresence, motion } from "framer-motion"
 import "../../../styles/hover-elems.css"
 import { apiUrl } from "../../../data/data";
 import CellTypesDropdown from "../components/cell-types-dropdown";
+import { CheckForError } from "../../../lib/check-errors";
+import AlertButton from "../../../components/alert-button";
 
 const RenderRecentData = lazy(() => import("./render-recent-data"));
 
@@ -66,20 +68,28 @@ export default function DiskRecent() {
         },
       })
       .then((res) => {
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
-        if (res.status === 404) {
-          throw new Error('Not found');
-        }
+        CheckForError(res.status)
       })
       .then(() => setIsUpdate(!isUpdate))
       .catch(error => {
-        console.log(error)
-        //ShowError("User not found", "404")
+        ShowError("Failed to delete folder from history", error.message)
       })
     }
     clean()
+  }
+
+  const [alertText, setAlertText] = useState("Something went wrong")
+  const [alertTitle, setAlertTitle] = useState("Error!")
+  const [alertType, setAlertType] = useState("error")
+  const [isAlertOpen, setIsAlertOpen] = useState(false)
+  function ShowError(text:string, title:string, type:string = "error") {
+    setAlertType(type)
+    setIsAlertOpen(false)
+    setAlertText(text)
+    setAlertTitle(title)
+    setTimeout(() => {
+      setIsAlertOpen(true)
+    }, 250);
   }
 
 
@@ -122,12 +132,16 @@ export default function DiskRecent() {
                     <button className="transition-colors px-2 py-2 flex flex-row w-full
                     hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center
                     bg-backgroundSecondLight dark:bg-backgroundThirdDark" onClick={ClearHistory}>
-                      <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M11 12V9h2v3h3v2h-3v3h-2v-3H8v-2h3Zm10-7a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V5a2 
-                        2 0 0 1 2-2h6c1.12 0 1.833.475 2.549 1.379.048.06.261.337.313.402.158.195.19.219.14.219H21Zm0 
-                        14V7h-9.005c-.719-.004-1.186-.34-1.69-.963-.069-.086-.29-.373-.323-.416C9.607 5.15 9.384 5 9 5H3v14h18Z" 
-                        fillRule="evenodd" className="fill-iconLight dark:fill-iconDark"></path>
+                      <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mr-2">
+                        <path d="M504 255.531c.253 136.64-111.18 
+                        248.372-247.82 248.468-59.015.042-113.223-20.53-155.822-54.911-11.077-8.94-11.905-25.541-1.839-35.607l11.267-11.267c8.609-8.609 
+                        22.353-9.551 31.891-1.984C173.062 425.135 212.781 440 256 440c101.705 0 184-82.311 184-184 0-101.705-82.311-184-184-184-48.814 
+                        0-93.149 18.969-126.068 49.932l50.754 50.754c10.08 10.08 2.941 27.314-11.313 27.314H24c-8.837 0-16-7.163-16-16V38.627c0-14.254 
+                        17.234-21.393 27.314-11.314l49.372 49.372C129.209 34.136 189.552 8 256 8c136.81 0 247.747 110.78 248 247.531zm-180.912 78.784 
+                        9.823-12.63c8.138-10.463 6.253-25.542-4.21-33.679L288 256.349V152c0-13.255-10.745-24-24-24h-16c-13.255 0-24 10.745-24 24v135.651l65.409 
+                        50.874c10.463 8.137 25.541 6.253 33.679-4.21z" className="fill-iconLight dark:fill-iconDark"></path>
                       </svg>
+                      {/* <IconBin classes="w-6 h-6 mr-2" fillClasses="fill-iconLight dark:fill-iconDark"></IconBin> */}
                       <span>Clear history</span>
                     </button>
                   </div>
@@ -219,6 +233,11 @@ export default function DiskRecent() {
       <Suspense fallback={<div></div>}>
         <RenderRecentData currentSortBy={currentSortBy} updateTrigger={isUpdate}
         currentRenderType={currentRenderType}></RenderRecentData>
+      </Suspense>
+      
+      <Suspense fallback={<div></div>}>
+        <AlertButton open={isAlertOpen} text={alertText} title={alertTitle}
+        type={alertType} close={() => setIsAlertOpen(false)}></AlertButton>
       </Suspense>
     </div>
   )
