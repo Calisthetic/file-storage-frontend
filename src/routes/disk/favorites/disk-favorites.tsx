@@ -6,6 +6,7 @@ import { apiUrl } from "../../../data/data";
 import { useNavigate } from "react-router-dom";
 import SortDropdown from "../components/sort-dropdown";
 import CellTypesDropdown from "../components/cell-types-dropdown";
+import AlertButton from "../../../components/alert-button";
 
 const RenderFavoritesData = lazy(() => import("./render-favorites-data"));
 
@@ -57,9 +58,42 @@ export default function DiskFolder() {
     }
   }, [])
 
+  async function RemoveElected() {
+    let token = localStorage.getItem("token")
+    await fetch(apiUrl + "folders/elect/all", {
+      method: 'PATCH',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token === null ? "" : token,
+      },
+    })
+    .then((res) => {
+      console.log(res.status)
+      if (res.status === 400) {
+        throw new Error('Bad request');
+      }
+      if (res.status === 404) {
+        throw new Error('Not found');
+      }
+    })
+    .catch(error => {
+      ShowError("Failed remove selected files", error.message, "error")
+    })
+  }
 
-
-  
+  const [alertText, setAlertText] = useState("Something went wrong")
+  const [alertTitle, setAlertTitle] = useState("Error!")
+  const [alertType, setAlertType] = useState("error")
+  const [isAlertOpen, setIsAlertOpen] = useState(false)
+  function ShowError(text:string, title:string, type:string = "error") {
+    setIsAlertOpen(false)
+    setAlertType(type)
+    setAlertText(text)
+    setAlertTitle(title)
+    setTimeout(() => {
+      setIsAlertOpen(true)
+    }, 250);
+  }
 
 
 
@@ -96,7 +130,7 @@ export default function DiskFolder() {
                   <div className="py-2 text-sm font-medium text-textLight dark:text-textDark">
                     <button className="transition-colors px-2 py-2 flex flex-row w-full
                     hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark justify-start items-center
-                    bg-backgroundSecondLight dark:bg-backgroundThirdDark">
+                    bg-backgroundSecondLight dark:bg-backgroundThirdDark" onClick={RemoveElected}>
                       <svg viewBox="0 0 32 32" className="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg">
                         <path d="M31.881 12.557a2.303 2.303 0 0 0-1.844-1.511l-8.326-1.238-3.619-7.514A2.318 
                         2.318 0 0 0 16 1c-.896 0-1.711.505-2.092 1.294l-3.619 7.514-8.327 1.238A2.3 2.3 0 0 
@@ -131,6 +165,11 @@ export default function DiskFolder() {
       <Suspense fallback={<div></div>}>
         <RenderFavoritesData currentSortBy={currentSortBy} updateTrigger={isUpdate}
         currentSortType={currentSortType} currentRenderType={currentRenderType}></RenderFavoritesData>
+      </Suspense>
+      
+      <Suspense fallback={<div></div>}>
+        <AlertButton open={isAlertOpen} text={alertText} title={alertTitle}
+        type={alertType} close={() => setIsAlertOpen(false)}></AlertButton>
       </Suspense>
     </div>
   )
