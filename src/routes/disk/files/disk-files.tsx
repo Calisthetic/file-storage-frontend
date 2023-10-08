@@ -3,9 +3,8 @@ import { AnimatePresence, motion } from "framer-motion"
 
 import "../../../styles/hover-elems.css"
 import { apiUrl } from "../../../data/data";
-import { useNavigate } from "react-router-dom";
 import SortDropdown from "../components/sort-dropdown";
-import CellTypesDropdown from "../components/cell-types-dropdown";
+import AlertButton from "../../../components/alert-button";
 
 const RenderFilesData = lazy(() => import("./render-files-data"));
 
@@ -63,6 +62,19 @@ export default function DiskFolder() {
 
   function DeleteAllFiles() {}
 
+  const [alertText, setAlertText] = useState("Something went wrong")
+  const [alertTitle, setAlertTitle] = useState("Error!")
+  const [alertType, setAlertType] = useState("error")
+  const [isAlertOpen, setIsAlertOpen] = useState(false)
+  function ShowError(text:string, title:string, type:string = "error") {
+    setAlertType(type)
+    setIsAlertOpen(false)
+    setAlertText(text)
+    setAlertTitle(title)
+    setTimeout(() => {
+      setIsAlertOpen(true)
+    }, 250);
+  }
   
 
 
@@ -211,6 +223,11 @@ export default function DiskFolder() {
       <Suspense fallback={<div></div>}>
         <RenderFilesData currentSortBy={currentSortBy} updateTrigger={isUpdate}
         currentSortType={currentSortType} currentRenderType={currentRenderType}></RenderFilesData>
+      </Suspense>
+      
+      <Suspense fallback={<div></div>}>
+        <AlertButton open={isAlertOpen} text={alertText} title={alertTitle}
+        type={alertType} close={() => setIsAlertOpen(false)}></AlertButton>
       </Suspense>
     </div>
   )

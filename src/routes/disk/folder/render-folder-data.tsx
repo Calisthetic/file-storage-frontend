@@ -383,8 +383,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
       })
       .then(() => setIsUpdate(!isUpdate))
       .catch(error => {
-        console.log(error)
-        //ShowError("User not found", "404")
+        ShowError("Failed to delete folder", error.message)
       })
     }
     binFolder()
@@ -406,8 +405,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
       })
       .then(() => setIsUpdate(!isUpdate))
       .catch(error => {
-        console.log(error)
-        //ShowError("User not found", "404")
+        ShowError("Failed to delete file", error.message)
       })
     }
     binFile()

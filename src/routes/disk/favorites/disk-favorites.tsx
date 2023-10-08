@@ -3,10 +3,10 @@ import { AnimatePresence, motion } from "framer-motion"
 
 import "../../../styles/hover-elems.css"
 import { apiUrl } from "../../../data/data";
-import { useNavigate } from "react-router-dom";
 import SortDropdown from "../components/sort-dropdown";
 import CellTypesDropdown from "../components/cell-types-dropdown";
 import AlertButton from "../../../components/alert-button";
+import { CheckForError } from "../../../lib/check-errors";
 
 const RenderFavoritesData = lazy(() => import("./render-favorites-data"));
 
@@ -68,16 +68,11 @@ export default function DiskFolder() {
       },
     })
     .then((res) => {
-      console.log(res.status)
-      if (res.status === 400) {
-        throw new Error('Bad request');
-      }
-      if (res.status === 404) {
-        throw new Error('Not found');
-      }
+      CheckForError(res.status)
     })
+    .then(() => setIsUpdate(!isUpdate))
     .catch(error => {
-      ShowError("Failed remove selected files", error.message, "error")
+      ShowError("Failed remove selected files", error.message)
     })
   }
 

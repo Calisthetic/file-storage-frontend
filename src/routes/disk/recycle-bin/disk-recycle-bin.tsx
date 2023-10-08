@@ -6,6 +6,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { apiUrl } from "../../../data/data";
 import RenderBinData from "./render-bin-data";
 import { cn } from "../../../lib/color-utils";
+import AlertButton from "../../../components/alert-button";
+import { CheckForError } from "../../../lib/check-errors";
 
 interface DiskRecycleBinProps {
   
@@ -48,22 +50,12 @@ const DiskRecycleBin: FunctionComponent<DiskRecycleBinProps> = () => {
         },
       })
       .then((res) => {
-        if (res.status === 404) {
-          throw new Error('Folder not found');
-        }
-        if (res.status === 403) {
-          setCurrentFolder(null)
-          throw new Error("Bad request")
-        }
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
+        CheckForError(res.status)
         return res.json()
       })
       .then(data => setCurrentFolder(data.name))
       .catch(error => {
-        console.log(error)
-        //ShowError("User not found", "404")
+        ShowError("Failed to get folder name", error.message)
       })
     }
     if (params.id === "main") {
@@ -99,13 +91,36 @@ const DiskRecycleBin: FunctionComponent<DiskRecycleBinProps> = () => {
   }, [])
 
   async function DownloadBinFolder() {
-    let url = apiUrl + "folders/download/" + params.id
-    const a = document.createElement('a')
-    a.href = url
-    a.download = url.split('/').pop() ?? ""
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
+    let token = localStorage.getItem("token")
+    await fetch(apiUrl + "folders/download/" + params.id, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token === null ? "" : token,
+      },
+    })
+    .then(resp => {
+      CheckForError(resp.status)
+      if (resp.status === 200) {
+        return resp.blob()
+      } else {
+        throw new Error('something went wrong')
+      }
+    })
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = currentFolder === undefined ? "folder.zip" : currentFolder + ".zip"
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a)
+      window.URL.revokeObjectURL(url); 
+    })
+    .catch((error) => {
+      ShowError("Failed to download folder", error.message)
+    });
   }
 
   async function RestoreBin() {
@@ -119,17 +134,11 @@ const DiskRecycleBin: FunctionComponent<DiskRecycleBinProps> = () => {
         },
       })
       .then((res) => {
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
-        if (res.status === 404) {
-          throw new Error('Not found');
-        }
+        CheckForError(res.status)
       })
       .then(() => {setIsUpdate(!isUpdate); navigate("disk/bin/main")})
       .catch(error => {
-        console.log(error)
-        //ShowError("User not found", "404")
+        ShowError("Failed to restore bin", error.message)
       })
     }
     restoreBinOrFolder()
@@ -146,20 +155,28 @@ const DiskRecycleBin: FunctionComponent<DiskRecycleBinProps> = () => {
         },
       })
       .then((res) => {
-        if (res.status === 400) {
-          throw new Error('Bad request');
-        }
-        if (res.status === 404) {
-          throw new Error('Not found');
-        }
+        CheckForError(res.status)
       })
       .then(() => {setIsUpdate(!isUpdate); navigate("disk/bin/main")})
       .catch(error => {
-        console.log(error)
-        //ShowError("User not found", "404")
+        ShowError("Failed to clean bin", error.message)
       })
     }
     cleanBinOrFolder()
+  }
+
+  const [alertText, setAlertText] = useState("Something went wrong")
+  const [alertTitle, setAlertTitle] = useState("Error!")
+  const [alertType, setAlertType] = useState("error")
+  const [isAlertOpen, setIsAlertOpen] = useState(false)
+  function ShowError(text:string, title:string, type:string = "error") {
+    setAlertType(type)
+    setIsAlertOpen(false)
+    setAlertText(text)
+    setAlertTitle(title)
+    setTimeout(() => {
+      setIsAlertOpen(true)
+    }, 250);
   }
   
   return (
@@ -293,6 +310,11 @@ const DiskRecycleBin: FunctionComponent<DiskRecycleBinProps> = () => {
       <Suspense fallback={<div></div>}>
         <RenderBinData currentSortBy={currentSortBy} updateTrigger={isUpdate}
         currentSortType={currentSortType} currentRenderType={currentRenderType}></RenderBinData>
+      </Suspense>
+      
+      <Suspense fallback={<div></div>}>
+        <AlertButton open={isAlertOpen} text={alertText} title={alertTitle}
+        type={alertType} close={() => setIsAlertOpen(false)}></AlertButton>
       </Suspense>
     </div>
   );
