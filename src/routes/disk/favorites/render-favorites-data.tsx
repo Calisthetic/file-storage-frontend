@@ -65,7 +65,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
   function OpenCloseFiles() {
     setIsFilesVisible(!isFilesVisible)
     if (!isFilesVisible) {
-      visualizeFilesRef.current.style.display = currentRenderType === "list" ? "grid" : "flex"
+      visualizeFilesRef.current.style.display = currentRenderType === "table" ? "flex" : "grid"
       setTimeout(() => {
         visualizeFilesRef.current.style.height = "auto"
         visualizeFilesRef.current.style.transform = "translate(0px, 0px)"
@@ -1108,11 +1108,11 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
             ))}
           </div>
           
-          <div className="px-2 lg:col-span-2 xl:col-span-3 2xl:col-span-4 mb-2 pb-1 mt-4
+          <div className="px-2 mb-2 pb-1 mt-4
           font-semibold text-base border-b border-borderLight dark:border-borderDark
           flex flex-row justify-between items-center opacity-80"
           onClick={OpenCloseFiles}>
-            <p className=" text-textLight dark:text-textDark">Folders</p>
+            <p className=" text-textLight dark:text-textDark pointer-events-none">Files</p>
             <svg className={cn("w-2.5 h-2.5 ml-2.5 transition-transform", {
               "-rotate-180": isFilesVisible,
               "rotate-0": !isFilesVisible,
@@ -1122,7 +1122,8 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
               strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
             </svg>
           </div>
-          <div className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-4 transition-all h-auto">
+          <div ref={visualizeFilesRef}
+          className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all h-auto">
             {filesResponse.sort((a, b) => {
               if (currentSortType === "name" ? a.name < b.name
               : currentSortType === "type" 

@@ -52,6 +52,49 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
     fileType: string,
     isElected: boolean,
   }
+
+  function OpenCloseFolders() {
+    setIsFoldersVisible(!isFoldersVisible)
+    if (!isFoldersVisible) {
+      visualizeFoldersRef.current.style.display = currentRenderType === "list" ? "grid" : "flex"
+      setTimeout(() => {
+        visualizeFoldersRef.current.style.height = "auto"
+        visualizeFoldersRef.current.style.transform = "translate(0px, 0px)"
+        visualizeFoldersRef.current.style.opacity = "1"
+        setTimeout(() => {
+          visualizeFoldersRef.current.style.transform = "initial"
+        }, 250);
+      }, 10);
+    } else {
+      visualizeFoldersRef.current.style.transform = "translate(0px, -16px)"
+      visualizeFoldersRef.current.style.opacity = "0"
+      setTimeout(() => {
+        visualizeFoldersRef.current.style.height = "0px"
+        visualizeFoldersRef.current.style.display = "none"
+      }, 250);
+    }
+  }
+  function OpenCloseFiles() {
+    setIsFilesVisible(!isFilesVisible)
+    if (!isFilesVisible) {
+      visualizeFilesRef.current.style.display = currentRenderType === "table" ? "flex" : "grid"
+      setTimeout(() => {
+        visualizeFilesRef.current.style.height = "auto"
+        visualizeFilesRef.current.style.transform = "translate(0px, 0px)"
+        visualizeFilesRef.current.style.opacity = "1"
+        setTimeout(() => {
+          visualizeFilesRef.current.style.transform = "initial"
+        }, 250);
+      }, 10);
+    } else {
+      visualizeFilesRef.current.style.transform = "translate(0px, -16px)"
+      visualizeFilesRef.current.style.opacity = "0"
+      setTimeout(() => {
+        visualizeFilesRef.current.style.height = "0px"
+        visualizeFilesRef.current.style.display = "none"
+      }, 250);
+    }
+  }
   
   const [foldersResponse, setFoldersResponse] = useState<FoldersResponse[]|null>();
   const [filesResponse, setFilesResponse] = useState<FilesResponse[]|null>();
@@ -404,7 +447,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
           <div className="px-2 mb-2 pb-1
           font-semibold text-base border-b border-borderLight dark:border-borderDark
           flex flex-row justify-between items-center opacity-80"
-          onClick={() => setIsFoldersVisible(!isFilesVisible)}>
+          onClick={OpenCloseFolders}>
             <p className=" text-textLight dark:text-textDark pointer-events-none">Folders</p>
             <svg className={cn("w-2.5 h-2.5 ml-2.5 transition-transform", {
               "-rotate-180": isFoldersVisible,
@@ -537,7 +580,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
           <div className="px-2 mb-2 pb-1 mt-4
           font-semibold text-base border-b border-borderLight dark:border-borderDark
           flex flex-row justify-between items-center opacity-80"
-          onClick={() => setIsFilesVisible(!isFilesVisible)}>
+          onClick={OpenCloseFiles}>
             <p className=" text-textLight dark:text-textDark pointer-events-none">Files</p>
             <svg className={cn("w-2.5 h-2.5 ml-2.5 transition-transform", {
               "-rotate-180": isFilesVisible,
@@ -549,8 +592,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
             </svg>
           </div>
           <div ref={visualizeFilesRef}
-          className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all h-auto"
-          >
+          className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all h-auto">
             {filesResponse.sort((a, b) => {
               if (currentSortType === "name" ? a.name < b.name
               : currentSortType === "type" 
@@ -949,7 +991,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
           <div className="px-2 lg:col-span-2 xl:col-span-3 2xl:col-span-4 mb-2 pb-1
           font-semibold text-base border-b border-borderLight dark:border-borderDark
           flex flex-row justify-between items-center opacity-80"
-          onClick={() => setIsFoldersVisible(!isFoldersVisible)}>
+          onClick={OpenCloseFolders}>
             <p className=" text-textLight dark:text-textDark">Folders</p>
             <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none transition-transform", {
               "-rotate-180": isFoldersVisible,
@@ -1065,11 +1107,11 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
             ))}
           </div>
           
-          <div className="px-2 lg:col-span-2 xl:col-span-3 2xl:col-span-4 mb-2 pb-1 mt-4
+          <div className="px-2 mb-2 pb-1 mt-4
           font-semibold text-base border-b border-borderLight dark:border-borderDark
           flex flex-row justify-between items-center opacity-80"
-          onClick={() => setIsFilesVisible(!isFilesVisible)}>
-            <p className=" text-textLight dark:text-textDark">Folders</p>
+          onClick={OpenCloseFiles}>
+            <p className=" text-textLight dark:text-textDark pointer-events-none">Files</p>
             <svg className={cn("w-2.5 h-2.5 ml-2.5 transition-transform", {
               "-rotate-180": isFilesVisible,
               "rotate-0": !isFilesVisible,
@@ -1079,7 +1121,8 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
               strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
             </svg>
           </div>
-          <div className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-4 transition-all h-auto">
+          <div ref={visualizeFilesRef}
+          className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all h-auto">
             {filesResponse.sort((a, b) => {
               if (currentSortType === "name" ? a.name < b.name
               : currentSortType === "type" 

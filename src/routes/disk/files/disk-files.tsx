@@ -5,6 +5,7 @@ import "../../../styles/hover-elems.css"
 import { apiUrl } from "../../../data/data";
 import SortDropdown from "../components/sort-dropdown";
 import AlertButton from "../../../components/alert-button";
+import { CheckForError } from "../../../lib/check-errors";
 
 const RenderFilesData = lazy(() => import("./render-files-data"));
 
@@ -58,9 +59,57 @@ export default function DiskFolder() {
     }
   }, [])
 
-  function DownloadAllFiles() {}
+  async function DownloadAllFiles() {
+    let token = localStorage.getItem("token")
+    await fetch(apiUrl + "files/download/all", {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token === null ? "" : token,
+      },
+    })
+    .then(resp => {
+      CheckForError(resp.status)
+      if (resp.status === 200) {
+        resp.headers.get('Content-Disposition');
+        return resp.blob()
+      } else {
+        throw new Error('something went wrong')
+      }
+    })
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = "files.zip";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a)
+      window.URL.revokeObjectURL(url); 
+    })
+    .catch(error => {
+      ShowError("Failed to download files", error.message)
+    });
+  }
 
-  function DeleteAllFiles() {}
+  async function DeleteAllFiles() {
+    let token = localStorage.getItem("token")
+    await fetch(apiUrl + "files/bin/all", {
+      method: 'PATCH',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token === null ? "" : token,
+      },
+    })
+    .then((res) => {
+      CheckForError(res.status)
+    })
+    .then(() => setIsUpdate(!isUpdate))
+    .catch(error => {
+      ShowError("Failed to delete files", error.message)
+    })
+  }
 
   const [alertText, setAlertText] = useState("Something went wrong")
   const [alertTitle, setAlertTitle] = useState("Error!")
