@@ -1,8 +1,10 @@
 import { Routes, Route, } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import LoadingComponent from "./components/loading-component";
+import PageNotFound from "./page-not-found";
+import Welcome from "./routes/welcome/welcome";
+import Docs from "./routes/docs/docs";
 
-const Layout = lazy(() => import('./layout'));
 const Redirect = lazy(() => import("./components/redirect"));
 const DiskMain = lazy(() => import('./routes/disk/disk'));
 const AuthMain = lazy(() => import('./routes/auth/auth'));
@@ -44,11 +46,13 @@ function App() {
     <div id="custom-root" style={{fontFamily: localStorage.getItem("font")?.toString()}}>
       <Suspense fallback={<LoadingComponent></LoadingComponent>}>
         <Routes>
-          <Route path='/' element={<Layout></Layout>}></Route>
+          <Route path='/' element={<Redirect location="/welcome"></Redirect>}></Route>
           <Route path='auth/*' element={<AuthMain></AuthMain>}></Route>
-          <Route path='*' element={<Redirect location="/"></Redirect>}></Route>
           <Route path='disk/*' element={<DiskMain></DiskMain>}></Route>
           <Route path='user/*' element={<UserMain></UserMain>}></Route>
+          <Route path='welcome/*' element={<Welcome></Welcome>}></Route>
+          <Route path='docs/*' element={<Docs></Docs>}></Route>
+          <Route path='*' element={<PageNotFound></PageNotFound>}></Route>
         </Routes>
       </Suspense>
     </div>
