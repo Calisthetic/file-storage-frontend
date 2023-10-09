@@ -67,7 +67,7 @@ const CustomThemeAppearance: FunctionComponent<CustomThemeAppearanceProps> = mem
               id={"select-" + item + "-color"} aria-label="Select color"></button>
               <div className="bg-backgroundLight dark:bg-backgroundThirdDark
               focus-second-right rounded-lg text-base z-10 px-2 pb-2 pt-1 w-max">
-                <ColorPicker type="default" currentColor={GetCSSValue(item)} dataId={item.toString()} onSelect={SetColor}></ColorPicker>
+                <ColorPicker isExtended={false} currentColor={GetCSSValue(item)} dataId={item.toString()} onSelect={SetColor} header={item}></ColorPicker>
               </div>
             </div>
             <div className="flex flex-row">

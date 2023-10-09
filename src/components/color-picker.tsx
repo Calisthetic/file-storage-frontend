@@ -4,17 +4,18 @@ import { InvertColor } from "../lib/color-utils";
 
 interface ColorPickerProps {
   onSelect:(e:any) => void
-  type:string
+  isExtended:boolean
   dataId?:any
-  currentColor:string | null 
+  currentColor:string | null
+  header?:string
 }
  
-const ColorPicker: FunctionComponent<ColorPickerProps> = memo(({onSelect, currentColor, type, dataId}:ColorPickerProps) => {
+const ColorPicker: FunctionComponent<ColorPickerProps> = memo(({onSelect, currentColor, isExtended, dataId, header}:ColorPickerProps) => {
   const colorsInRow = 5
-  return type === "default" ? (
+  return isExtended ? (
     <>
       <div className="font-semibold mb-1">
-        <div>Folder's color</div>
+        <div className="first-letter:uppercase">{header ?? "Folder's color"}</div>
       </div>
       <div className="flex flex-row gap-1 md:gap-1.5">
         {defaultColors.slice(defaultColors.length - (Math.floor(defaultColors.length / colorsInRow)))
@@ -45,7 +46,7 @@ const ColorPicker: FunctionComponent<ColorPickerProps> = memo(({onSelect, curren
   ) : (
     <>
       <div className="font-semibold mb-1">
-        <div>Folder's color</div>
+        <div className="first-letter:uppercase">{header}</div>
       </div>
       <div className="flex flex-col flex-wrap max-h-[145px] min-h-[145px]">
         {extendedColors.map((extended_color, extended_color_index) => currentColor === extended_color ? (

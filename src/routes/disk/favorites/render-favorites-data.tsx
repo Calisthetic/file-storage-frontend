@@ -516,7 +516,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
                     {/* Color picker */}
                     <div className="bg-backgroundLight dark:bg-backgroundThirdDark w-max
                     focus-second-right rounded-lg text-base -mt-6 px-2 pb-2 pt-1 z-10">
-                      <ColorPicker type="defaultt" currentColor={item.color} dataId={item.token} onSelect={SetFolderColor}></ColorPicker>
+                      <ColorPicker isExtended={false} currentColor={item.color} dataId={item.token} onSelect={SetFolderColor}></ColorPicker>
                     </div>
                     <div className="truncate pointer-events-none">{item.name}</div>
                   </div>
@@ -797,7 +797,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
                     </button>
                     <div className="focus-second-right bg-backgroundLight dark:bg-backgroundThirdDark 
                     rounded-lg text-base px-2 pb-2 pt-1 z-10 w-max" data-intable="true">
-                      <ColorPicker type="default" currentColor={item.color} dataId={item.token} onSelect={SetFolderColor}></ColorPicker>
+                      <ColorPicker isExtended={false} currentColor={item.color} dataId={item.token} onSelect={SetFolderColor}></ColorPicker>
                     </div>
                   </td>
                   <td data-token={item.token}
@@ -1054,7 +1054,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
                   {/* Color picker */}
                   <div className="bg-backgroundLight dark:bg-backgroundThirdDark z-10 w-max
                   focus-second-bottom rounded-lg text-base px-2 pb-2 pt-1 mt-[112px] -ml-[20px]">
-                    <ColorPicker type="default" currentColor={item.color} dataId={item.token} onSelect={SetFolderColor}></ColorPicker>
+                    <ColorPicker isExtended={false} currentColor={item.color} dataId={item.token} onSelect={SetFolderColor}></ColorPicker>
                   </div>
                   {/* Folder info */}
                   <div className="absolute w-28 h-28 flex flex-col justify-between
