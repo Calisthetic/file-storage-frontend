@@ -100,10 +100,11 @@ export default function SignUp() {
       <div className='py-6 flex flex-col justify-center min-h-fulldvh sm:h-auto bg-backgroundLight dark:bg-backgroundDark 
       sm:rounded-xl w-[100cvw] sm:w-auto px-10'>
         <div className="w-full flex justify-center pb-2">
-          <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
-          transition={{damping: 24, stiffness: 300}} className="flex justify-center">
+          <motion.button initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
+          transition={{damping: 24, stiffness: 300}} className="flex justify-center"
+          onClick={() => navigate("/welcome")}>
             <IconLogo classes="h-12 w-12" fillClasses="fill-iconLight dark:fill-iconDark"></IconLogo>
-          </motion.div>
+          </motion.button>
         </div>
 
         <motion.p initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.02, damping: 24, stiffness: 300}} 

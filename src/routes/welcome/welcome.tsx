@@ -1,12 +1,11 @@
 import { motion } from "framer-motion";
 import { FunctionComponent } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import IconLogo from "../../components/icons/IconLogo";
-import UserProfileDropdown from "../../components/user-profile-dropdown";
+import { useNavigate } from "react-router-dom";
 import IconSuccessFactors from "../../components/icons/IconSuccessFactors";
 import IconSecure from "../../components/icons/IconSecure";
 import IconOpenSource from "../../components/icons/IconOpenSource";
 import IconDevices from "../../components/icons/IconDevices";
+import NavBar from "../../components/nav-bar";
 
 interface WelcomeProps {
   
@@ -18,26 +17,7 @@ const Welcome: FunctionComponent<WelcomeProps> = () => {
   
   return (
     <div className="min-h-fulldvh">
-      <nav className="fixed top-0 z-40 w-full bg-backgroundLight dark:bg-backgroundDark">
-        <div className="px-3 py-3 lg:px-5 lg:pl-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center justify-start">
-              <Link to="/welcome" className="flex ml-2 md:mr-24">
-                <motion.div initial={{opacity: 0}} animate={{opacity:1 }} transition={{delay: 0.1}}>
-                  <IconLogo classes="h-8 w-8 mr-3" fillClasses="fill-iconLight dark:fill-iconDark"></IconLogo>
-                </motion.div>
-                <motion.span 
-                initial={{opacity: 0, marginLeft: 20}} 
-                animate={{opacity:1, marginLeft: 0}} 
-                transition={{delay: 0.24}} 
-                className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-textDark text-textLight">Storage</motion.span>
-              </Link>
-            </div>
-            {/* User profile */}
-            <UserProfileDropdown></UserProfileDropdown>
-          </div>
-        </div>
-      </nav>
+      <NavBar></NavBar>
 
       <div className="pt-14 transition-transform text-textLight dark:text-textDark text-lg">
         <div className="bg-backgroundSecondLight overflow-x-hidden dark:bg-backgroundSecondDark min-h-fullWithHeader">
@@ -49,7 +29,7 @@ const Welcome: FunctionComponent<WelcomeProps> = () => {
             <button className="px-5 py-2 mt-4 text-sm tracking-wider uppercase transition-colors 
             transform rounded-lg lg:w-auto focus:outline-none font-semibold
             bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark"
-            onClick={() => navigate(token === undefined ? "/auth/signin" : "/disk/folder/main")}>Sign up for 10GB free storage</button>
+            onClick={() => navigate(token === undefined ? "/auth/signup" : "/disk/folder/main")}>Sign up for 10GB free storage</button>
           </div>
 
           <div className="container px-6 py-16 mx-auto">
