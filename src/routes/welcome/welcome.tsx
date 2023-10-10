@@ -115,7 +115,7 @@ const Welcome: FunctionComponent<WelcomeProps> = () => {
                   <button className="w-full px-5 py-2 mt-5 text-sm tracking-wider uppercase transition-colors 
                   transform rounded-lg lg:w-auto focus:outline-none font-semibold
                   bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark"
-                  onClick={() => navigate("/docs")}>See code</button>
+                  onClick={() => navigate("/docs/code")}>See code</button>
                 </div>
               </div>
 

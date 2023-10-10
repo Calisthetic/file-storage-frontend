@@ -1,6 +1,7 @@
 import { FunctionComponent } from "react";
 import { apiDocs } from "../../../data/data";
 import { useNavigate } from "react-router-dom";
+import ReadMore from "../../../components/read-more";
 
 interface TechStackInfo {
   badge?:any
@@ -120,14 +121,7 @@ const DocsCode: FunctionComponent = () => {
                 As a developer, you can bring your own features to the interface
               </p>
 
-              <a href="https://github.com/Calisthetic/file-storage-frontend" target="_blank" rel="noopener noreferrer" 
-              className="flex items-center -mx-1 text-sm capitalize transition-colors duration-300 transform hover:underline 
-              text-buttonLight dark:text-buttonDark hover:text-buttonHoverLight hover:dark:text-buttonHoverDark">
-                <span className="mx-1">read more</span>
-                <svg className="w-4 h-4 mx-1 rtl:-scale-x-100" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                  <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd"></path>
-                </svg>
-              </a>
+              <ReadMore href="https://github.com/Calisthetic/file-storage-frontend"></ReadMore>
             </div>
 
             {/* API */}
@@ -152,14 +146,7 @@ const DocsCode: FunctionComponent = () => {
                 As a developer you can use it for your tasks and personal solutions
               </p>
 
-              <a href={apiDocs} target="_blank" rel="noopener noreferrer" 
-              className="flex items-center -mx-1 text-sm capitalize transition-colors duration-300 transform hover:underline 
-              text-buttonLight dark:text-buttonDark hover:text-buttonHoverLight hover:dark:text-buttonHoverDark">
-                <span className="mx-1">read more</span>
-                <svg className="w-4 h-4 mx-1 rtl:-scale-x-100" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                  <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd"></path>
-                </svg>
-              </a>
+              <ReadMore href={apiDocs}></ReadMore>
             </div>
 
             {/* Backend */}
@@ -186,14 +173,7 @@ const DocsCode: FunctionComponent = () => {
                 As a developer, you can add new functionality or optimize some parts of the application
               </p>
 
-              <a href="https://github.com/Calisthetic/file-storage-backend" target="_blank" rel="noopener noreferrer" 
-              className="flex items-center -mx-1 text-sm capitalize transition-colors duration-300 transform hover:underline 
-              text-buttonLight dark:text-buttonDark hover:text-buttonHoverLight hover:dark:text-buttonHoverDark">
-                <span className="mx-1">read more</span>
-                <svg className="w-4 h-4 mx-1 rtl:-scale-x-100" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                  <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd"></path>
-                </svg>
-              </a>
+              <ReadMore href="https://github.com/Calisthetic/file-storage-backend"></ReadMore>
             </div>
           </div>
         </div>
@@ -210,6 +190,22 @@ const DocsCode: FunctionComponent = () => {
           </div>
         </div>
       </section>
+
+      <section>
+        <div className="container px-6 py-10 mx-auto">
+          <h1 className="text-2xl font-semibold text-center capitalize lg:text-3xl">developers</h1>
+
+          <div className="mt-8 gap-4 flex justify-center">
+            <a href="https://github.com/Calisthetic" target="_blank" rel="noopener noreferrer"
+            className="text-center hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark px-4 py-4 pb-2 rounded-xl transition-colors">
+              <img className="h-28 w-28 rounded-full" src="https://avatars.githubusercontent.com/u/72902666?v=4" alt="Calisthetic"></img>
+              <h3 className="mt-2 font-semibold text-lg">Vladimir</h3>
+              <p className="opacity-80 text-base">Full stack dev</p>
+            </a>
+          </div>
+        </div>
+      </section>
+
       <div className="flex justify-center pb-10">
         <button className=" bg-buttonLight dark:bg-buttonDark rounded-xl text-lg font-semibold px-4 py-2
         hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark transition-colors"
