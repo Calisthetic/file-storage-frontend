@@ -17,13 +17,10 @@ const NavBar: FunctionComponent<NavBarProps> = ({children, homeLocation}:NavBarP
           <div className="flex items-center justify-start">
             {children}
             <Link to={homeLocation ?? "/welcome"} className="flex ml-2 md:mr-24">
-              <motion.div initial={{opacity: 0}} animate={{opacity:1 }} transition={{delay: 0.1}}>
+              <motion.div initial={{opacity: 0}} animate={{opacity:1 }}>
                 <IconLogo classes="h-8 w-8 mr-3" fillClasses="fill-iconLight dark:fill-iconDark"></IconLogo>
               </motion.div>
-              <motion.span 
-              initial={{opacity: 0, marginLeft: 20}} 
-              animate={{opacity:1, marginLeft: 0}} 
-              transition={{delay: 0.24}} 
+              <motion.span initial={{opacity:0}} animate={{opacity:1}}
               className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-textDark text-textLight">Storage</motion.span>
             </Link>
           </div>

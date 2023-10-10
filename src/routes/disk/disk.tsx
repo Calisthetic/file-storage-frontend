@@ -5,8 +5,8 @@ import { AnimatePresence, motion } from "framer-motion"
 import Hammer from 'hammerjs';
 import { cn } from "../../lib/color-utils";
 import LoadingComponent from "../../components/loading-component";
-import NavBar from "../../components/nav-bar";
 
+const NavBar = lazy(() => import( "../../components/nav-bar"));
 const Redirect = lazy(() => import("../../components/redirect"));
 const DiskSideBar = lazy(() => import("./disk-sidebar"));
 const DiskRecent = lazy(() => import('./recent/disk-recent'));
@@ -61,7 +61,7 @@ export default function DiskMain() {
   
 
   return (
-    <div className="bg-backgroundLight h-full dark:bg-backgroundDark">
+    <div className="bg-backgroundLight h-full dark:bg-backgroundDark disk">
       <NavBar homeLocation="/disk/folder/main">
         <label className="min-h-8 h-8 w-8 m-0 p-0 border-none sm:hidden
         bg-backgroundLight dark:bg-backgroundDark hover:bg-backgroundLight hover:dark:bg-backgroundDark">

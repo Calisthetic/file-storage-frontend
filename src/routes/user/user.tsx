@@ -5,8 +5,8 @@ import Redirect from "../../components/redirect";
 import { cn } from "../../lib/color-utils";
 import UserSidebar from "./user-sidebar";
 import LoadingComponent from "../../components/loading-component";
-import NavBar from "../../components/nav-bar";
 
+const NavBar = lazy(() => import("../../components/nav-bar"));
 const DiskUpgrade = lazy(() => import("../disk/upgrade/disk-upgrade"));
 const UserAccount = lazy(() => import("./account/user-account"));
 const UserAppearance = lazy(() => import("./appearance/user-appearance"));
@@ -40,6 +40,7 @@ const UserMain: FunctionComponent<UserMainProps> = () => {
 
   return ( 
     <div className="bg-backgroundLight h-full dark:bg-backgroundDark">
+      <Suspense>
       <NavBar>
         <label className="min-h-8 h-8 w-8 m-0 p-0 border-none sm:hidden
         bg-backgroundLight dark:bg-backgroundDark hover:bg-backgroundLight hover:dark:bg-backgroundDark">
@@ -66,7 +67,7 @@ const UserMain: FunctionComponent<UserMainProps> = () => {
           </AnimatePresence>
         </label>
       </NavBar>
-
+      </Suspense>
       <aside id="main-sidebar" 
       className={cn("fixed top-0 left-0 z-30 w-56 sm:w-64 h-screen pt-16 transition-transform border-borderLight dark:border-borderDark bg-backgroundLight dark:bg-backgroundDark", {
         "-translate-x-64": !isSideBarOpen
