@@ -38,7 +38,8 @@ const UserProfileDropdown: FunctionComponent<UserProfileDropdownProps> = () => {
 
 
 
-  return (
+  let token = localStorage.getItem("token")
+  return token ? (
     <div className="flex items-center">
       <div className="flex items-center ml-3">
         <button onClick={() => {setIsUserDropMenuOpen(!isUserDropMenuOpen)}} 
@@ -64,6 +65,9 @@ const UserProfileDropdown: FunctionComponent<UserProfileDropdownProps> = () => {
                 </p>
               </div>
               <div className="py-1">
+                <Link to="/welcome" className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
+                  dark:hover:bg-backgroundHoverDark" role="menuitem">Home
+                </Link>
                 <Link to="/disk/folder/main" className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
                   dark:hover:bg-backgroundHoverDark" role="menuitem">Disk
                 </Link>
@@ -73,12 +77,9 @@ const UserProfileDropdown: FunctionComponent<UserProfileDropdownProps> = () => {
                 <Link to="/user/statistic" className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
                   dark:hover:bg-backgroundHoverDark" role="menuitem">Statistic
                 </Link>
-                <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
-                  dark:hover:bg-backgroundHoverDark" role="menuitem">Settings
-                </button>
-                <button className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
+                <Link to="/docs" className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
                   dark:hover:bg-backgroundHoverDark" role="menuitem">Documentation
-                </button>
+                </Link>
                 <Link to="/auth" className="block px-4 py-2 hover:bg-backgroundHoverLight w-full text-left
                   dark:hover:bg-backgroundHoverDark" role="menuitem">Sign out
                 </Link>
@@ -87,6 +88,14 @@ const UserProfileDropdown: FunctionComponent<UserProfileDropdownProps> = () => {
           ) : null}
         </AnimatePresence>
       </div>
+    </div>
+   ) : (
+    <div className="flex items-center gap-x-4 text-textLight dark:text-textDark">
+      <Link to="/auth/signin" className="py-1 px-2 rounded-lg capitalize bg-backgroundThirdLight dark:bg-backgroundThirdDark
+      border border-borderLight dark:border-borderDark
+      hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors">sign in</Link>
+      <Link to="/auth/signup" className="py-1 px-2 rounded-lg capitalize bg-buttonLight dark:bg-buttonDark
+      hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark transition-colors">sign up</Link>
     </div>
    );
 }
