@@ -38,6 +38,7 @@ module.exports = {
         alerts: "minmax(24px, 32px) minmax(0, 1fr)"
       },
       transitionProperty: {
+        dropAnswer: "max-height 0.3s ease-out",
         inputs: "border, outline, background-color",
         dropFiles: "opacity 1s ease-in-out !important",
       },

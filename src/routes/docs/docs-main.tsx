@@ -58,7 +58,7 @@ const DocsMain: FunctionComponent = () => {
                 <div className="w-8 h-8">
                   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                   className="h-8 w-8 fill-iconLight dark:fill-iconDark">
-                    <path clip-rule="evenodd" d="m18 5.415-6.5-2.294L5 5.415v5.403a8 8 0 0 0 3.387 6.536l3.113 2.198 3.114-2.198A8 8 0 0 0 18 
+                    <path clipRule="evenodd" d="m18 5.415-6.5-2.294L5 5.415v5.403a8 8 0 0 0 3.387 6.536l3.113 2.198 3.114-2.198A8 8 0 0 0 18 
                     10.818V5.415ZM11.5 22l4.267-3.012A10 10 0 0 0 20 10.818V4l-8.5-3L3 4v6.818a10 10 0 0 0 4.233 8.17L11.5 22Z" fillRule="evenodd"></path>
                   </svg>
                 </div>
