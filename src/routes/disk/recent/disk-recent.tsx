@@ -12,7 +12,6 @@ const RenderRecentData = lazy(() => import("./render-recent-data"));
 export default function DiskRecent() {
   // dropdowns
   const [isAddDrop, setIsAddDrop] = useState(false)
-  const [isSortDrop, setIsSortDrop] = useState(false)
   // local storage sort and render items
   interface RenderValues {
     render_type: string,
@@ -42,9 +41,6 @@ export default function DiskRecent() {
   function CloseAllDrops(e:any) {
     if (e.target.dataset.drop !== "add" && e.target.dataset.drop !== "child") {
       setIsAddDrop(false)
-    }
-    if (e.target.dataset.drop !== "sort" && e.target.dataset.drop !== "child") {
-      setIsSortDrop(false)
     }
   }
 

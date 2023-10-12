@@ -12,7 +12,6 @@ const RenderFilesData = lazy(() => import("./render-files-data"));
 export default function DiskFolder() {
   // dropdowns
   const [isAddDrop, setIsAddDrop] = useState(false)
-  const [isCellTypeDrop, setIsCellTypeDrop] = useState(false)
   // local storage sort and render items
   interface RenderValues {
     render_type: string,
@@ -45,9 +44,6 @@ export default function DiskFolder() {
   function CloseAllDrops(e:any) {
     if (e.target.dataset.drop !== "add" && e.target.dataset.drop !== "child") {
       setIsAddDrop(false)
-    }
-    if (e.target.dataset.drop !== "cellType" && e.target.dataset.drop !== "child") {
-      setIsCellTypeDrop(false)
     }
   }
 
