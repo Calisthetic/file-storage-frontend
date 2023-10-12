@@ -1,5 +1,5 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { FunctionComponent, useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { FunctionComponent } from "react";
 
 interface CellTypesDropdownProps {
   currentRenderType: string
@@ -9,29 +9,12 @@ interface CellTypesDropdownProps {
 const CellTypesDropdown: FunctionComponent<CellTypesDropdownProps> = (
   {currentRenderType, setCurrentRenderType}:CellTypesDropdownProps
 ) => {
-  const [isCellTypeDrop, setIsCellTypeDrop] = useState(false)
-  
-  function CloseAllDrops(e:any) {
-    if (e.target.dataset.drop !== "cellType" && e.target.dataset.drop !== "child") {
-      setIsCellTypeDrop(false)
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener('click', CloseAllDrops);
-
-    return () => {
-      document.removeEventListener("click", CloseAllDrops)
-    }
-  }, [])
-  
   return (
     <div>
-      <button data-drop="cellType" id="drop-cell-type" aria-label="Cell type"
-      onClick={() => {setIsCellTypeDrop(!isCellTypeDrop)}}
-      className="text-white hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark
+      <button id="drop-cell-type" aria-label="Cell type"
+      className="hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark
       font-medium rounded-full text-center h-10 w-10 inline-flex items-center first-letter:uppercase
-      focus:dark:bg-backgroundThirdDark">
+      focus:dark:bg-backgroundThirdDark peer transition-colors duration-300">
         {currentRenderType === "list" ? (
           <motion.p initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
           transition={{damping: 24, duration: 0.25, stiffness: 300}}
@@ -65,14 +48,11 @@ const CellTypesDropdown: FunctionComponent<CellTypesDropdownProps> = (
           </motion.div>
         ))}
       </button>
-      <AnimatePresence>
-        {isCellTypeDrop === true ? (
-          <motion.div initial={{opacity: 0, y: -70, scaleY: 0.2}} animate={{opacity: 1, y: 0, scaleY: 1}}
-          transition={{stiffness: 200, damping: 24, duration: 0.16}} exit={{opacity: 0, y: -70, scaleY: 0}}
-          className="divide-y divide-gray-100 rounded w-10 mt-0.5
+          <div className="grid grid-rows-[0fr] peer-focus:grid-rows-[1fr] focus-within:grid-rows-[1fr]
+          -translate-x-[calc(100%-40px)] duration-300 rounded w-10 mt-0.5
           absolute shadow-defaultLight dark:shadow-none z-10
-          bg-backgroundSecondLight dark:bg-backgroundThirdDark">
-            <ul className=" text-sm font-medium text-textLight dark:text-textDark">
+          peer-focus:bg-backgroundSecondLight peer-focus:dark:bg-backgroundThirdDark">
+            <ul className="text-sm font-medium text-textLight rounded dark:text-textDark overflow-hidden">
               {currentRenderType !== "list" ? (
                 <li>
                   <button className="transition-colors px-2 py-2 flex flex-row
@@ -114,9 +94,7 @@ const CellTypesDropdown: FunctionComponent<CellTypesDropdownProps> = (
                 </li>
               ) : null}
             </ul>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+          </div>
     </div>
   );
 }

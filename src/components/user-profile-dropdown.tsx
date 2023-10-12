@@ -17,7 +17,7 @@ const UserProfileDropdown: FunctionComponent = () => {
           src={userImage} />
         </button>
         <div className="grid absolute grid-rows-[0fr] peer-focus:grid-rows-[1fr] focus-within:grid-rows-[1fr]
-        -translate-x-[calc(100%-32px)] duration-300 w-max mt-10 transition-[grid-template-rows,margin]">
+        -translate-x-[calc(100%-32px)] duration-500 w-max mt-10 transition-[grid-template-rows,margin]">
           <div className="z-50 text-base list-none bg-backgroundThirdLight 
           dark:bg-backgroundThirdDark dark:divide-borderDark text-textLight dark:text-textDark
           shadow-lightLight dark:shadow-lightDark rounded overflow-hidden">
