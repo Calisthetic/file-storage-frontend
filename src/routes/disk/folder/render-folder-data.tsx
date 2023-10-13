@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import "../../../styles/focus-elems.css"
 import { CutNumber, CutSize, IsNumeric } from "../../../lib/utils";
-import { GetCSSValue, BlurColor, cn, isDarkMode} from "../../../lib/color-utils";
+import { GetCSSValue, BlurColor, isDarkMode} from "../../../lib/color-utils";
 // @ts-ignore
 import Hammer from 'hammerjs';
 import { modalWindowStyle } from "../../../data/style/modal-styles";
@@ -13,6 +13,7 @@ import { CheckForError } from "../../../lib/check-errors";
 import Loading from "../../../components/loading";
 import DiskErrorResponse from "../components/disk-error-response";
 import EmptyData from "../components/empty-data";
+import FilesDropdown from "../components/files-dropdown";
 
 const FileIcon = lazy(() => import("../file-icon"));
 const FolderAccessModal = lazy(() => import("./folder-access-modal"));
@@ -37,55 +38,6 @@ type Props = {
 const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, currentSortBy, currentRenderType, updateTrigger}:Props) => {
   const newNameInputRef:any = useRef();
   const [selectedItem, setSelectedItem] = useState<any>();
-
-  // Hide files and folders
-  const [isFoldersVisible, setIsFoldersVisible] = useState(true)
-  const [isFilesVisible, setIsFilesVisible] = useState(true)
-  const visualizeFoldersRef:any = useRef()
-  const visualizeFilesRef:any = useRef()
-
-  function OpenCloseFolders() {
-    setIsFoldersVisible(!isFoldersVisible)
-    if (!isFoldersVisible) {
-      visualizeFoldersRef.current.style.display = currentRenderType === "list" ? "grid" : "flex"
-      setTimeout(() => {
-        visualizeFoldersRef.current.style.height = "auto"
-        visualizeFoldersRef.current.style.transform = "translate(0px, 0px)"
-        visualizeFoldersRef.current.style.opacity = "1"
-        setTimeout(() => {
-          visualizeFoldersRef.current.style.transform = "initial"
-        }, 250);
-      }, 10);
-    } else {
-      visualizeFoldersRef.current.style.transform = "translate(0px, -16px)"
-      visualizeFoldersRef.current.style.opacity = "0"
-      setTimeout(() => {
-        visualizeFoldersRef.current.style.height = "0px"
-        visualizeFoldersRef.current.style.display = "none"
-      }, 250);
-    }
-  }
-  function OpenCloseFiles() {
-    setIsFilesVisible(!isFilesVisible)
-    if (!isFilesVisible) {
-      visualizeFilesRef.current.style.display = currentRenderType === "table" ? "flex" : "grid"
-      setTimeout(() => {
-        visualizeFilesRef.current.style.height = "auto"
-        visualizeFilesRef.current.style.transform = "translate(0px, 0px)"
-        visualizeFilesRef.current.style.opacity = "1"
-        setTimeout(() => {
-          visualizeFilesRef.current.style.transform = "initial"
-        }, 250);
-      }, 10);
-    } else {
-      visualizeFilesRef.current.style.transform = "translate(0px, -16px)"
-      visualizeFilesRef.current.style.opacity = "0"
-      setTimeout(() => {
-        visualizeFilesRef.current.style.height = "0px"
-        visualizeFilesRef.current.style.display = "none"
-      }, 250);
-    }
-  }
 
   // Modal windows
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
@@ -631,23 +583,8 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
     ) : (
     <main className="py-4">
       {currentRenderType === "list" ? (
-        <div>
-          <div className="px-2 mb-2 pb-1
-          font-semibold text-base border-b border-borderLight dark:border-borderDark
-          flex flex-row justify-between items-center opacity-80"
-          onClick={OpenCloseFolders}>
-            <p className=" text-textLight dark:text-textDark pointer-events-none">Folders</p>
-            <svg className={cn("w-2.5 h-2.5 ml-2.5 transition-transform", {
-              "-rotate-180": isFoldersVisible,
-              "rotate-0": !isFoldersVisible,
-            })} aria-hidden="true" 
-            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-              <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" 
-              strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
-            </svg>
-          </div>
-          <div ref={visualizeFoldersRef}
-          className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all h-auto">
+        <div className="space-y-2">
+          <FilesDropdown currentRenderType={currentRenderType} title={"Folders (" + foldersResponse.length + ")"}>
             {foldersResponse.sort((a, b) => {
               if (currentSortType === "size" ? a.size < b.size
                 : currentSortType === "date" ? a.createdAt < b.createdAt
@@ -774,24 +711,9 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                 </div>
               </div>
             ))}
-          </div>
-          
-          <div className="px-2 mb-2 pb-1 mt-4
-          font-semibold text-base border-b border-borderLight dark:border-borderDark
-          flex flex-row justify-between items-center opacity-80"
-          onClick={OpenCloseFiles}>
-            <p className=" text-textLight dark:text-textDark pointer-events-none">Files</p>
-            <svg className={cn("w-2.5 h-2.5 ml-2.5 transition-transform", {
-              "-rotate-180": isFilesVisible,
-              "rotate-0": !isFilesVisible,
-            })} aria-hidden="true" 
-            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-              <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" 
-              strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
-            </svg>
-          </div>
-          <div ref={visualizeFilesRef}
-          className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all h-auto">
+          </FilesDropdown>
+
+          <FilesDropdown currentRenderType={currentRenderType} title={"Files (" + filesResponse.length + ")"}>
             {filesResponse.sort((a, b) => {
               if (currentSortType === "name" ? a.name < b.name
               : currentSortType === "type" 
@@ -916,7 +838,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                 </div>
               </div>
             ))}
-          </div>
+          </FilesDropdown>
         </div>
       ) : currentRenderType === "table" ? (
         <div>
@@ -1191,23 +1113,8 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
           </table>
         </div>
       ) : ( // tile
-        <div className="flex flex-col">
-          <div className="px-2 lg:col-span-2 xl:col-span-3 2xl:col-span-4 mb-2 pb-1
-          font-semibold text-base border-b border-borderLight dark:border-borderDark
-          flex flex-row justify-between items-center opacity-80"
-          onClick={OpenCloseFolders}>
-            <p className=" text-textLight dark:text-textDark">Folders</p>
-            <svg className={cn("w-2.5 h-2.5 ml-2.5 pointer-events-none transition-transform", {
-              "-rotate-180": isFoldersVisible,
-              "rotate-0": !isFoldersVisible,
-            })} aria-hidden="true" 
-            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-              <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" 
-              strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
-            </svg>
-          </div>
-          <div ref={visualizeFoldersRef}
-          className="flex gap-x-1 md:gap-x-1.5 lg:gap-x-2 mt-2 flex-row flex-wrap transition-all h-auto">
+        <div className="flex flex-col space-y-2">
+          <FilesDropdown currentRenderType={currentRenderType} title={"Folders (" + foldersResponse.length + ")"}>
             {foldersResponse.sort((a, b) => {
               if (currentSortType === "size" ? a.size < b.size
                 : currentSortType === "date" ? a.createdAt < b.createdAt
@@ -1317,24 +1224,9 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                 </div>
               </div>
             ))}
-          </div>
+          </FilesDropdown>
           
-          <div className="px-2 mb-2 pb-1 mt-4
-          font-semibold text-base border-b border-borderLight dark:border-borderDark
-          flex flex-row justify-between items-center opacity-80"
-          onClick={OpenCloseFiles}>
-            <p className=" text-textLight dark:text-textDark pointer-events-none">Files</p>
-            <svg className={cn("w-2.5 h-2.5 ml-2.5 transition-transform", {
-              "-rotate-180": isFilesVisible,
-              "rotate-0": !isFilesVisible,
-            })} aria-hidden="true" 
-            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-              <path className="stroke-textLight dark:stroke-textDark" strokeLinecap="round" 
-              strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
-            </svg>
-          </div>
-          <div ref={visualizeFilesRef}
-          className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-2 gap-y-1 transition-all h-auto">
+          <FilesDropdown currentRenderType={currentRenderType} title={"Files (" + filesResponse.length + ")"}>
             {filesResponse.sort((a, b) => {
               if (currentSortType === "name" ? a.name < b.name
               : currentSortType === "type" 
@@ -1459,7 +1351,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                 </div>
               </div>
             ))}
-          </div>
+          </FilesDropdown>
         </div>
       )}
 
