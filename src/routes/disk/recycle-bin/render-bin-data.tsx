@@ -1,10 +1,10 @@
-import { FunctionComponent, Suspense, memo, useCallback, useEffect, useRef, useState } from "react";
+import { FunctionComponent, Suspense, memo, useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { apiUrl } from "../../../data/data";
 // @ts-ignore
 import Hammer from 'hammerjs';
 import "./../../../styles/hover-elems.css"
-import { BlurColor, GetCSSValue, cn } from "../../../lib/color-utils";
+import { BlurColor, GetCSSValue } from "../../../lib/color-utils";
 import { CutNumber, CutSize } from "../../../lib/utils";
 
 import IconInfo from "../../../components/icons/IconInfo";
@@ -53,49 +53,6 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
     fileType: string,
     isElected: boolean,
   }
-
-  function OpenCloseFolders() {
-    setIsFoldersVisible(!isFoldersVisible)
-    if (!isFoldersVisible) {
-      visualizeFoldersRef.current.style.display = currentRenderType === "list" ? "grid" : "flex"
-      setTimeout(() => {
-        visualizeFoldersRef.current.style.height = "auto"
-        visualizeFoldersRef.current.style.transform = "translate(0px, 0px)"
-        visualizeFoldersRef.current.style.opacity = "1"
-        setTimeout(() => {
-          visualizeFoldersRef.current.style.transform = "initial"
-        }, 250);
-      }, 10);
-    } else {
-      visualizeFoldersRef.current.style.transform = "translate(0px, -16px)"
-      visualizeFoldersRef.current.style.opacity = "0"
-      setTimeout(() => {
-        visualizeFoldersRef.current.style.height = "0px"
-        visualizeFoldersRef.current.style.display = "none"
-      }, 250);
-    }
-  }
-  function OpenCloseFiles() {
-    setIsFilesVisible(!isFilesVisible)
-    if (!isFilesVisible) {
-      visualizeFilesRef.current.style.display = currentRenderType === "table" ? "flex" : "grid"
-      setTimeout(() => {
-        visualizeFilesRef.current.style.height = "auto"
-        visualizeFilesRef.current.style.transform = "translate(0px, 0px)"
-        visualizeFilesRef.current.style.opacity = "1"
-        setTimeout(() => {
-          visualizeFilesRef.current.style.transform = "initial"
-        }, 250);
-      }, 10);
-    } else {
-      visualizeFilesRef.current.style.transform = "translate(0px, -16px)"
-      visualizeFilesRef.current.style.opacity = "0"
-      setTimeout(() => {
-        visualizeFilesRef.current.style.height = "0px"
-        visualizeFilesRef.current.style.display = "none"
-      }, 250);
-    }
-  }
   
   const [foldersResponse, setFoldersResponse] = useState<FoldersResponse[]|null>();
   const [filesResponse, setFilesResponse] = useState<FilesResponse[]|null>();
@@ -136,12 +93,6 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
   
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id, isUpdate, updateTrigger])
-
-  // Hide files and folders
-  const [isFoldersVisible, setIsFoldersVisible] = useState(true)
-  const [isFilesVisible, setIsFilesVisible] = useState(true)
-  const visualizeFoldersRef:any = useRef()
-  const visualizeFilesRef:any = useRef()
   
   // Folder event
   const navigate = useNavigate();

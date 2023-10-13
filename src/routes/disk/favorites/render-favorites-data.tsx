@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import "../../../styles/focus-elems.css"
 import { CutNumber, CutSize } from "../../../lib/utils";
-import { GetCSSValue, BlurColor, cn} from "../../../lib/color-utils";
+import { GetCSSValue, BlurColor} from "../../../lib/color-utils";
 // @ts-ignore
 import Hammer from 'hammerjs';
 import { modalWindowStyle } from "../../../data/style/modal-styles";
@@ -35,55 +35,6 @@ type Props = {
 const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, currentSortBy, currentRenderType, updateTrigger}:Props) => {
   const newNameInputRef:any = useRef();
   const [selectedItem, setSelectedItem] = useState<any>();
-
-  // Hide files and folders
-  const [isFoldersVisible, setIsFoldersVisible] = useState(true)
-  const [isFilesVisible, setIsFilesVisible] = useState(true)
-  const visualizeFoldersRef:any = useRef()
-  const visualizeFilesRef:any = useRef()
-
-  function OpenCloseFolders() {
-    setIsFoldersVisible(!isFoldersVisible)
-    if (!isFoldersVisible) {
-      visualizeFoldersRef.current.style.display = currentRenderType === "list" ? "grid" : "flex"
-      setTimeout(() => {
-        visualizeFoldersRef.current.style.height = "auto"
-        visualizeFoldersRef.current.style.transform = "translate(0px, 0px)"
-        visualizeFoldersRef.current.style.opacity = "1"
-        setTimeout(() => {
-          visualizeFoldersRef.current.style.transform = "initial"
-        }, 250);
-      }, 10);
-    } else {
-      visualizeFoldersRef.current.style.transform = "translate(0px, -16px)"
-      visualizeFoldersRef.current.style.opacity = "0"
-      setTimeout(() => {
-        visualizeFoldersRef.current.style.height = "0px"
-        visualizeFoldersRef.current.style.display = "none"
-      }, 250);
-    }
-  }
-  function OpenCloseFiles() {
-    setIsFilesVisible(!isFilesVisible)
-    if (!isFilesVisible) {
-      visualizeFilesRef.current.style.display = currentRenderType === "table" ? "flex" : "grid"
-      setTimeout(() => {
-        visualizeFilesRef.current.style.height = "auto"
-        visualizeFilesRef.current.style.transform = "translate(0px, 0px)"
-        visualizeFilesRef.current.style.opacity = "1"
-        setTimeout(() => {
-          visualizeFilesRef.current.style.transform = "initial"
-        }, 250);
-      }, 10);
-    } else {
-      visualizeFilesRef.current.style.transform = "translate(0px, -16px)"
-      visualizeFilesRef.current.style.opacity = "0"
-      setTimeout(() => {
-        visualizeFilesRef.current.style.height = "0px"
-        visualizeFilesRef.current.style.display = "none"
-      }, 250);
-    }
-  }
 
   // Modal windows
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
