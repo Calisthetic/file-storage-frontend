@@ -540,7 +540,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
           </FilesDropdown>
           
           
-          <FilesDropdown currentRenderType={currentRenderType} title={"Files (" + foldersResponse.length + ")"}>
+          <FilesDropdown currentRenderType={currentRenderType} title={"Files (" + filesResponse.length + ")"}>
             {filesResponse.sort((a, b) => {
               if (currentSortType === "name" ? a.name < b.name
               : currentSortType === "type" 
@@ -1015,7 +1015,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
             ))}
           </FilesDropdown>
           
-          <FilesDropdown currentRenderType={currentRenderType} title={"Files (" + foldersResponse.length + ")"}>
+          <FilesDropdown currentRenderType={currentRenderType} title={"Files (" + filesResponse.length + ")"}>
             {filesResponse.sort((a, b) => {
               if (currentSortType === "name" ? a.name < b.name
               : currentSortType === "type" 
