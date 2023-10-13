@@ -169,7 +169,7 @@ export default function DiskSideBar() {
         </motion.li>
         <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
         transition={{delay: 0.16, stiffness: 300, damping: 24}}>
-          <Link to="help" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
+          <Link to="/docs/help" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
             <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24"><g>
               <path d="M12 3c-5 0-9 4-9 9 0 1.8.6 3.6 1.6 5.1l-1.4 2.4c-.2.3-.2.7 0 1s.4.5.8.5h8c5 
