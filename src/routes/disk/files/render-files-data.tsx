@@ -12,6 +12,7 @@ import AlertButton from "../../../components/alert-button";
 import { CheckForError } from "../../../lib/check-errors";
 import EmptyData from "../components/empty-data";
 import DiskErrorResponse from "../components/disk-error-response";
+import { SortFiles } from "../../../lib/sort-data";
 
 const FileIcon = lazy(() => import("../file-icon"));
 const IconInfo = lazy(() => import("../../../components/icons/IconInfo"));
@@ -292,25 +293,7 @@ const RenderFilesData:FunctionComponent<Props> = memo(({currentSortType, current
         <div>
           <div className="grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 
           gap-x-2 gap-y-1 transition-all h-auto">
-            {filesResponse.sort((a, b) => {
-              if (currentSortType === "name" ? a.name < b.name
-              : currentSortType === "type" 
-                ? a.name.lastIndexOf('.') + 1 === a.name.length ? false
-                : b.name.lastIndexOf('.') + 1 === b.name.length ? true 
-                  : a.name.slice(a.name.lastIndexOf('.') + 1) < b.name.slice(b.name.lastIndexOf('.') + 1)
-                : currentSortType === "size" ? a.fileSize < b.fileSize
-                : a.createdAt < b.createdAt) 
-              { return currentSortBy === "descending" ? 1 : -1; }
-              if (currentSortType === "name" ? a.name > b.name
-              : currentSortType === "type" 
-                ? a.name.lastIndexOf('.') + 1 === a.name.length ? true
-                : b.name.lastIndexOf('.') + 1 === b.name.length ? false 
-                  : a.name.slice(a.name.lastIndexOf('.') + 1) > b.name.slice(b.name.lastIndexOf('.') + 1)
-              : currentSortType === "size" ? a.fileSize > b.fileSize
-              : a.createdAt > b.createdAt) 
-              { return currentSortBy === "descending" ? -1 : 1; }
-              return 0;
-            }).map((item, index) => (
+            {SortFiles(filesResponse, currentSortType, currentSortBy).map((item, index) => (
               <div key={index} data-token={item.folderToken}
               className="text-textLight dark:text-textDark
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
@@ -453,25 +436,7 @@ const RenderFilesData:FunctionComponent<Props> = memo(({currentSortType, current
               </tr>
             </thead>
             <tbody>
-              {filesResponse.sort((a, b) => {
-                if (currentSortType === "name" ? a.name < b.name
-                  : currentSortType === "type" 
-                    ? a.name.lastIndexOf('.') + 1 === a.name.length ? false
-                    : b.name.lastIndexOf('.') + 1 === b.name.length ? true 
-                      : a.name.slice(a.name.lastIndexOf('.') + 1) < b.name.slice(b.name.lastIndexOf('.') + 1)
-                  : currentSortType === "size" ? a.fileSize < b.fileSize
-                  : a.createdAt < b.createdAt) 
-                { return currentSortBy === "descending" ? 1 : -1; }
-                if (currentSortType === "name" ? a.name > b.name
-                : currentSortType === "type" 
-                  ? a.name.lastIndexOf('.') + 1 === a.name.length ? true
-                  : b.name.lastIndexOf('.') + 1 === b.name.length ? false 
-                    : a.name.slice(a.name.lastIndexOf('.') + 1) > b.name.slice(b.name.lastIndexOf('.') + 1)
-                : currentSortType === "size" ? a.fileSize > b.fileSize
-                : a.createdAt > b.createdAt) 
-                { return currentSortBy === "descending" ? -1 : 1; }
-                return 0;
-              }).map((item, index) => (
+              {SortFiles(filesResponse, currentSortType, currentSortBy).map((item, index) => (
                 <tr key={index} data-token={item.folderToken}
                 className="border-b border-borderLight dark:border-borderDark 
                 transition-colors h-8 relative hover-parent rendered-files

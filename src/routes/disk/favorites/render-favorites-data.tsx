@@ -14,6 +14,7 @@ import Loading from "../../../components/loading";
 import DiskErrorResponse from "../components/disk-error-response";
 import EmptyData from "../components/empty-data";
 import FilesDropdown from "../components/files-dropdown";
+import { SortFiles, SortFolders } from "../../../lib/sort-data";
 
 const FileIcon = lazy(() => import("../file-icon"));
 const IconInfo = lazy(() => import("../../../components/icons/IconInfo"));
@@ -424,17 +425,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
       {currentRenderType === "list" ? (
         <div>
           <FilesDropdown currentRenderType={currentRenderType} title={"Folders (" + foldersResponse.length + ")"}>
-            {foldersResponse.sort((a, b) => {
-              if (currentSortType === "size" ? a.size < b.size
-                : currentSortType === "date" ? a.createdAt < b.createdAt
-                : a.name < b.name) 
-              { return currentSortBy === "descending" ? 1 : -1; }
-              if (currentSortType === "size" ? a.size > b.size
-                : currentSortType === "date" ? a.createdAt > b.createdAt
-                : a.name > b.name) 
-              { return currentSortBy === "descending" ? -1 : 1; }
-              return 0;
-            }).map((item, index) => (
+            {SortFolders(foldersResponse, currentSortType, currentSortBy).map((item, index) => (
               <div key={index} data-type="folder" data-token={item.token}
               className="h-full w-full text-textLight dark:text-textDark
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
@@ -541,25 +532,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
           
           
           <FilesDropdown currentRenderType={currentRenderType} title={"Files (" + filesResponse.length + ")"}>
-            {filesResponse.sort((a, b) => {
-              if (currentSortType === "name" ? a.name < b.name
-              : currentSortType === "type" 
-                ? a.name.lastIndexOf('.') + 1 === a.name.length ? false
-                : b.name.lastIndexOf('.') + 1 === b.name.length ? true 
-                  : a.name.slice(a.name.lastIndexOf('.') + 1) < b.name.slice(b.name.lastIndexOf('.') + 1)
-                : currentSortType === "size" ? a.fileSize < b.fileSize
-                : a.createdAt < b.createdAt) 
-              { return currentSortBy === "descending" ? 1 : -1; }
-              if (currentSortType === "name" ? a.name > b.name
-              : currentSortType === "type" 
-                ? a.name.lastIndexOf('.') + 1 === a.name.length ? true
-                : b.name.lastIndexOf('.') + 1 === b.name.length ? false 
-                  : a.name.slice(a.name.lastIndexOf('.') + 1) > b.name.slice(b.name.lastIndexOf('.') + 1)
-              : currentSortType === "size" ? a.fileSize > b.fileSize
-              : a.createdAt > b.createdAt) 
-              { return currentSortBy === "descending" ? -1 : 1; }
-              return 0;
-            }).map((item, index) => (
+            {SortFiles(filesResponse, currentSortType, currentSortBy).map((item, index) => (
               <div key={index} data-type="file" data-token={item.folderToken}
               className="text-textLight dark:text-textDark
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
@@ -694,17 +667,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
               </tr>
             </thead>
             <tbody>
-              {foldersResponse.sort((a, b) => {
-                if (currentSortType === "size" ? a.size < b.size
-                  : currentSortType === "date" ? a.createdAt < b.createdAt
-                  : a.name < b.name) 
-                { return currentSortBy === "descending" ? 1 : -1; }
-                if (currentSortType === "size" ? a.size > b.size
-                : currentSortType === "date" ? a.createdAt > b.createdAt
-                : a.name > b.name) 
-                { return currentSortBy === "descending" ? -1 : 1; }
-                return 0;
-              }).map((item, index) => (
+              {SortFolders(foldersResponse, currentSortType, currentSortBy).map((item, index) => (
                 <tr key={index} data-type="folder" data-token={item.token}
                 className="border-b border-borderLight transition-colors h-8 -outline-offset-2
                 dark:border-borderDark hover-parent rendered-folder relative
@@ -804,25 +767,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
                   </td>
                 </tr>
               ))}
-              {filesResponse.sort((a, b) => {
-                if (currentSortType === "name" ? a.name < b.name
-                  : currentSortType === "type" 
-                    ? a.name.lastIndexOf('.') + 1 === a.name.length ? false
-                    : b.name.lastIndexOf('.') + 1 === b.name.length ? true 
-                      : a.name.slice(a.name.lastIndexOf('.') + 1) < b.name.slice(b.name.lastIndexOf('.') + 1)
-                  : currentSortType === "size" ? a.fileSize < b.fileSize
-                  : a.createdAt < b.createdAt) 
-                { return currentSortBy === "descending" ? 1 : -1; }
-                if (currentSortType === "name" ? a.name > b.name
-                : currentSortType === "type" 
-                  ? a.name.lastIndexOf('.') + 1 === a.name.length ? true
-                  : b.name.lastIndexOf('.') + 1 === b.name.length ? false 
-                    : a.name.slice(a.name.lastIndexOf('.') + 1) > b.name.slice(b.name.lastIndexOf('.') + 1)
-                : currentSortType === "size" ? a.fileSize > b.fileSize
-                : a.createdAt > b.createdAt) 
-                { return currentSortBy === "descending" ? -1 : 1; }
-                return 0;
-              }).map((item, index) => (
+              {SortFiles(filesResponse, currentSortType, currentSortBy).map((item, index) => (
                 <tr key={index} data-type="file" data-token={item.folderToken}
                 className="border-b border-borderLight dark:border-borderDark 
                 transition-colors h-8 relative hover-parent rendered-files
@@ -917,17 +862,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
       ) : ( // tile
         <div className="flex flex-col">
           <FilesDropdown currentRenderType={currentRenderType} title={"Folders (" + foldersResponse.length + ")"}>
-            {foldersResponse.sort((a, b) => {
-              if (currentSortType === "size" ? a.size < b.size
-                : currentSortType === "date" ? a.createdAt < b.createdAt
-                : a.name < b.name) 
-              { return currentSortBy === "descending" ? 1 : -1; }
-              if (currentSortType === "size" ? a.size > b.size
-                : currentSortType === "date" ? a.createdAt > b.createdAt
-                : a.name > b.name) 
-              { return currentSortBy === "descending" ? -1 : 1; }
-              return 0;
-            }).map((item, index) => (
+            {SortFolders(foldersResponse, currentSortType, currentSortBy).map((item, index) => (
               <div key={index} data-type="folder" data-token={item.token}
               className=" hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark
               px-2 w-36 rounded-md flex flex-col py-1 hover-parent rendered-folder
@@ -1016,25 +951,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
           </FilesDropdown>
           
           <FilesDropdown currentRenderType={currentRenderType} title={"Files (" + filesResponse.length + ")"}>
-            {filesResponse.sort((a, b) => {
-              if (currentSortType === "name" ? a.name < b.name
-              : currentSortType === "type" 
-                ? a.name.lastIndexOf('.') + 1 === a.name.length ? false
-                : b.name.lastIndexOf('.') + 1 === b.name.length ? true 
-                  : a.name.slice(a.name.lastIndexOf('.') + 1) < b.name.slice(b.name.lastIndexOf('.') + 1)
-                : currentSortType === "size" ? a.fileSize < b.fileSize
-                : a.createdAt < b.createdAt) 
-              { return currentSortBy === "descending" ? 1 : -1; }
-              if (currentSortType === "name" ? a.name > b.name
-              : currentSortType === "type" 
-                ? a.name.lastIndexOf('.') + 1 === a.name.length ? true
-                : b.name.lastIndexOf('.') + 1 === b.name.length ? false 
-                  : a.name.slice(a.name.lastIndexOf('.') + 1) > b.name.slice(b.name.lastIndexOf('.') + 1)
-              : currentSortType === "size" ? a.fileSize > b.fileSize
-              : a.createdAt > b.createdAt) 
-              { return currentSortBy === "descending" ? -1 : 1; }
-              return 0;
-            }).map((item, index) => (
+            {SortFiles(filesResponse, currentSortType, currentSortBy).map((item, index) => (
               <div key={index} data-type="file" data-token={item.folderToken} 
               className="text-textLight dark:text-textDark
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
