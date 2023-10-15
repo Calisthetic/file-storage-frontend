@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback, FunctionComponent, memo, lazy
 import { useNavigate, useParams } from 'react-router-dom';
 
 import "../../../styles/focus-elems.css"
-import { CutNumber, CutSize, IsNumeric } from "../../../lib/utils";
+import { CutNumber, CutSize } from "../../../lib/utils";
 import { GetCSSValue, BlurColor, isDarkMode} from "../../../lib/color-utils";
 // @ts-ignore
 import Hammer from 'hammerjs';
@@ -138,14 +138,14 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
 
   // Last moved item/folder data
   type MoveItemsProps = {
-    dragged_id:string | undefined,
-    target_id:string | undefined,
+    dragged_token:string | undefined,
+    target_token:string | undefined,
     dragged_type:string | undefined,
     target_type:string | undefined,
   }
   let lastMovedData = useRef({
-    dragged_id:"",
-    target_id:"",
+    dragged_token:"",
+    target_token:"",
     dragged_type:"",
     target_type:"",
   })
@@ -156,37 +156,55 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
   const navigate = useNavigate();
 
   // Move files/folders to folders
-  const MoveItems = useCallback(({
-    dragged_id, target_id,
+  const MoveItems = useCallback(async ({
+    dragged_token, target_token,
     dragged_type, target_type,
   }:MoveItemsProps) => {
-    if (!IsNumeric(target_id) || !IsNumeric(dragged_id)) {
-      return false
-    }
+    //console.log(draggingElem)
+    console.log(target_type + " || " + dragged_type)
+    console.log(target_token + " || " + dragged_token)
     if (target_type !== "folder" || dragged_type === undefined
-    || target_id === undefined || dragged_id === undefined) {
+    || target_token === undefined || dragged_token === undefined) {
       return false
     }
-    if (target_id === dragged_id && target_type === dragged_type) {
+    if (target_token === dragged_token && target_type === dragged_type) {
       return false
     }
-    if (lastMovedData.current.dragged_id === dragged_id
-    && lastMovedData.current.target_id === target_id
+    if (lastMovedData.current.dragged_token === dragged_token
+    && lastMovedData.current.target_token === target_token
     && lastMovedData.current.dragged_type === dragged_type
     && lastMovedData.current.target_type === target_type) {
       return false
     }
+
+    let token = localStorage.getItem("token")
+    await fetch(apiUrl + dragged_type + "s/path/" + dragged_token, {
+      method: 'PATCH',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token === null ? "" : token,
+      },
+      body: JSON.stringify({
+        toFolderToken: target_token,
+      })
+    })
+    .then((res) => {
+      CheckForError(res.status)
+    })
+    .catch(error => {
+      ShowError("Failed to move folder", error.message)
+    })
     setIsUpdate(!isUpdate)
-    console.log("Target: " + target_type + ", id: " + target_id)
-    console.log("Dragged: " + dragged_type + ", id: " + dragged_id)
+    //console.log("Target: " + target_type + ", token: " + target_token)
+    //console.log("Dragged: " + dragged_type + ", token: " + dragged_token)
 
     lastMovedData.current = {
-      dragged_id: dragged_id,
-      target_id: target_id,
+      dragged_token: dragged_token,
+      target_token: target_token,
       dragged_type: dragged_type,
       target_type: target_type,
     }
-  }, [isUpdate])
+  }, [isUpdate, lastMovedData])
   
   const DoubleTapEvent = useCallback((event:any) => {
     if (event.target.dataset.token !== undefined) {
@@ -230,11 +248,11 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
       setTimeout(() => {
         elem.style.zIndex = "initial"
         // Main moving action ! only PC works
-        if (event.target.dataset.id && event.srcEvent.target.dataset.id && 
+        if (event.target.dataset.token && event.srcEvent.target.dataset.token && 
           event.srcEvent.target.dataset.type && event.target.dataset.type) {
           MoveItems({
-            target_id: event.srcEvent.target.dataset.id,
-            dragged_id: event.target.dataset.id,
+            target_token: event.srcEvent.target.dataset.token,
+            dragged_token: event.target.dataset.token,
             target_type: event.srcEvent.target.dataset.type,
             dragged_type: event.target.dataset.type,
           })
@@ -244,8 +262,8 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
       let targetElem = document.elementFromPoint(event.center.x, event.center.y) as HTMLElement
       if (targetElem) {
         MoveItems({
-          target_id: targetElem.dataset.id,
-          dragged_id: elem.dataset.id,
+          target_token: targetElem.dataset.token,
+          dragged_token: elem.dataset.token,
           target_type: targetElem.dataset.type,
           dragged_type: elem.dataset.type,
         })
@@ -609,7 +627,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
               bg-backgroundSecondLight dark:bg-backgroundSecondDark relative">
                 {isMaskActive ? (
                   <div data-token={item.token} data-type="folder" 
-                  className="absolute h-full w-full z-20"></div>
+                  className="absolute h-full w-full z-20 bg-white"></div>
                 ) : null}
                 <div className="flex px-2 py-1 flex-row justify-between">
                   <div className="flex flex-row items-center space-x-2 max-w-[calc(100dvw-88px)] 
@@ -721,7 +739,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
 
           <FilesDropdown currentRenderType={currentRenderType} title={"Files (" + filesResponse.length + ")"}>
             {SortFiles(filesResponse, currentSortType, currentSortBy).map((item, index) => (
-              <div key={index} data-type="file" 
+              <div key={index} data-type="file" data-token={item.token}
               className="text-textLight dark:text-textDark
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
               text-lg rounded-lg rendered-file h-full w-full relative
@@ -973,7 +991,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
                 </tr>
               ))}
               {SortFiles(filesResponse, currentSortType, currentSortBy).map((item, index) => (
-                <tr key={index} data-type="file"
+                <tr key={index} data-type="file" data-token={item.token}
                 className="border-b border-borderLight dark:border-borderDark 
                 transition-colors h-8 relative hover-parent rendered-files
                 hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark 
@@ -1178,7 +1196,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
           
           <FilesDropdown currentRenderType={currentRenderType} title={"Files (" + filesResponse.length + ")"}>
             {SortFiles(filesResponse, currentSortType, currentSortBy).map((item, index) => (
-              <div key={index} data-type="file" 
+              <div key={index} data-type="file" data-token={item.token}
               className="text-textLight dark:text-textDark
               hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark 
               text-lg rounded-lg rendered-file h-full w-full relative
