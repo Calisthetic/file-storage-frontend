@@ -44,6 +44,21 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
     setSelectedItem(e.target.dataset)
   };
   const modalRenameClose = () => setIsRenameModalOpen(false);
+  
+  // Enter pressed
+  const EnterHandle = useCallback((e:any) => {
+    if (isRenameModalOpen && e.key === 'Enter') {
+      handleRename()
+    }
+    // eslint-disable-next-line
+  }, [isRenameModalOpen])
+  useEffect(() => {
+    document.addEventListener("keydown", EnterHandle)
+
+    return () => {
+      document.removeEventListener("keydown", EnterHandle)
+    }
+  }, [EnterHandle])
 
   // Data
   interface FoldersResponse {

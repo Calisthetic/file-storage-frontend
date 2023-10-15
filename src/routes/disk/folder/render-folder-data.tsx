@@ -54,6 +54,21 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
     setSelectedItem(e.target.dataset)
   };
   const modalAccessClose = () => setIsAccessModalOpen(false);
+  
+  // Enter pressed
+  const EnterHandle = useCallback((e:any) => {
+    if (isRenameModalOpen && e.key === 'Enter') {
+      handleRename()
+    }
+    // eslint-disable-next-line
+  }, [isRenameModalOpen])
+  useEffect(() => {
+    document.addEventListener("keydown", EnterHandle)
+
+    return () => {
+      document.removeEventListener("keydown", EnterHandle)
+    }
+  }, [EnterHandle])
 
   // Data
   interface FoldersResponse {
