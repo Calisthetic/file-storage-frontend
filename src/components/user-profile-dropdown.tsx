@@ -1,15 +1,66 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import IconLight from "./icons/IconLight";
+import IconDark from "./icons/IconDark";
+import { AnimatePresence, motion } from "framer-motion";
  
 const UserProfileDropdown: FunctionComponent = () => {
   // User image url
   let temp:string | null = localStorage.getItem("userImage")
   const userImage:string | undefined = temp === null ? undefined : temp
 
+  const [currentTheme, setCurrentTheme] = useState(!('theme' in localStorage) ? "system" : localStorage.getItem('theme'))
+
+  const ChangeTheme = useCallback((theme:string) => {
+    if (theme === currentTheme) return
+    setCurrentTheme(theme)
+
+    if (theme === "system") {
+      localStorage.removeItem("theme")
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+    } else if (theme === "light") {
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem("theme", "light")
+    } else {
+      document.documentElement.classList.add('dark')
+      localStorage.setItem("theme", "dark")
+    }
+  }, [currentTheme])
+
+  useEffect(() => {
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", PrefersThemeChangedHandler)
+
+    function PrefersThemeChangedHandler() {
+      if (!('theme' in localStorage)) {
+        ChangeTheme("system")
+      }
+    }
+
+    return () => window.matchMedia("(prefers-color-scheme: dark)").removeEventListener("change", PrefersThemeChangedHandler)
+  }, [ChangeTheme])
 
   let token = localStorage.getItem("token")
   return token ? (
     <div className="flex items-center">
+      <button onClick={() => ChangeTheme(currentTheme === "dark" ? "light" : "dark")}>
+        <AnimatePresence>
+          {currentTheme === "dark" ? (
+            <motion.div initial={{y:-10, opacity:0}} animate={{y:0, opacity:1}} 
+            transition={{damping:24, stiffness:300}}>
+              <IconDark classes="h-6 w-6" fillClasses="fill-white"></IconDark>
+            </motion.div>
+          ) : (
+            <motion.section initial={{y:-10, opacity:0}} animate={{y:0, opacity:1}} 
+            transition={{damping:24, stiffness:300}}>
+              <IconLight classes="h-6 w-6" fillClasses="fill-black"></IconLight>
+            </motion.section>
+          )}
+        </AnimatePresence>
+      </button>
       <div className="flex ml-3">
         <button className="flex text-sm bg-backgroundThirdLight dark:bg-backgroundThirdDark 
         rounded-full peer focus:pointer-events-none">

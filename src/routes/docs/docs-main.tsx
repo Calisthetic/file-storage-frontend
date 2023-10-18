@@ -13,7 +13,8 @@ const DocsMain: FunctionComponent = () => {
           <div className="grid grid-cols-1 gap-y-4 gap-x-4 mt-8 xl:mt-12 lg:gap-x-8 xl:gap-x-16 md:grid-cols-2 max-w-7xl">
 
             {/* User account */}
-            <div className="flex flex-col items-center px-2 py-4 sm:p-6 space-y-3 text-center rounded-xl bg-backgroundLight dark:bg-backgroundDark">
+            <div className="flex flex-col items-center px-2 py-4 sm:p-6 space-y-3 text-center rounded-xl 
+            bg-backgroundSecondLight dark:bg-backgroundDark shadow-tileLight dark:shadow-none">
               <div className="flex gap-2">
                 <div className="w-8 h-8">
                   <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 48 48"
@@ -31,7 +32,8 @@ const DocsMain: FunctionComponent = () => {
             </div>
 
             {/* Statistic */}
-            <div className="flex flex-col items-center px-2 py-4 sm:p-6 space-y-3 text-center rounded-xl bg-backgroundLight dark:bg-backgroundDark">
+            <div className="flex flex-col items-center px-2 py-4 sm:p-6 space-y-3 text-center rounded-xl 
+            bg-backgroundSecondLight dark:bg-backgroundDark shadow-tileLight dark:shadow-none">
               <div className="flex gap-2">
                 <div className="w-8 h-8">
                   <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +55,8 @@ const DocsMain: FunctionComponent = () => {
             </div>
 
             {/* Security */}
-            <div className="flex flex-col items-center px-2 py-4 sm:p-6 space-y-3 text-center rounded-xl bg-backgroundLight dark:bg-backgroundDark">
+            <div className="flex flex-col items-center px-2 py-4 sm:p-6 space-y-3 text-center rounded-xl 
+            bg-backgroundSecondLight dark:bg-backgroundDark shadow-tileLight dark:shadow-none">
               <div className="flex gap-2">
                 <div className="w-8 h-8">
                   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
@@ -71,7 +74,8 @@ const DocsMain: FunctionComponent = () => {
             </div>
 
             {/* Customize */}
-            <div className="flex flex-col items-center px-2 py-4 sm:p-6 space-y-3 text-center rounded-xl bg-backgroundLight dark:bg-backgroundDark">
+            <div className="flex flex-col items-center px-2 py-4 sm:p-6 space-y-3 text-center rounded-xl 
+            bg-backgroundSecondLight dark:bg-backgroundDark shadow-tileLight dark:shadow-none">
               <div className="flex gap-2">
                 <div className="w-8 h-8">
                   <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +100,8 @@ const DocsMain: FunctionComponent = () => {
             </div>
 
             {/* Downloads */}
-            <div className="flex flex-col items-center px-2 py-4 sm:p-6 space-y-3 text-center rounded-xl bg-backgroundLight dark:bg-backgroundDark">
+            <div className="flex flex-col items-center px-2 py-4 sm:p-6 space-y-3 text-center rounded-xl 
+            bg-backgroundSecondLight dark:bg-backgroundDark shadow-tileLight dark:shadow-none">
               <div className="flex gap-2">
                 <div className="w-8 h-8">
                   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +118,8 @@ const DocsMain: FunctionComponent = () => {
             </div>
 
             {/* Privacy */}
-            <div className="flex flex-col items-center px-2 py-4 sm:p-6 space-y-3 text-center rounded-xl bg-backgroundLight dark:bg-backgroundDark">
+            <div className="flex flex-col items-center px-2 py-4 sm:p-6 space-y-3 text-center rounded-xl 
+            bg-backgroundSecondLight dark:bg-backgroundDark shadow-tileLight dark:shadow-none">
               <div className="flex gap-2">
                 <div className="w-8 h-8">
                   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
@@ -130,7 +136,8 @@ const DocsMain: FunctionComponent = () => {
             </div>
 
             {/* Code */}
-            <div className="flex flex-col items-center px-2 py-4 sm:p-6 space-y-3 text-center rounded-xl bg-backgroundLight dark:bg-backgroundDark">
+            <div className="flex flex-col items-center px-2 py-4 sm:p-6 space-y-3 text-center rounded-xl 
+            bg-backgroundSecondLight dark:bg-backgroundDark shadow-tileLight dark:shadow-none">
               <div className="flex gap-2">
                 <div className="w-8 h-8">
                   <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"
@@ -154,7 +161,8 @@ const DocsMain: FunctionComponent = () => {
             </div>
 
             {/* Didn't find the answer? */}
-            <div className="flex flex-col items-center px-2 py-4 sm:p-6 space-y-3 text-center rounded-xl bg-backgroundLight dark:bg-backgroundDark">
+            <div className="flex flex-col items-center px-2 py-4 sm:p-6 space-y-3 text-center rounded-xl 
+            bg-backgroundSecondLight dark:bg-backgroundDark shadow-tileLight dark:shadow-none">
               <div className="flex gap-2">
                 <div className="w-8 h-8">
                   <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"

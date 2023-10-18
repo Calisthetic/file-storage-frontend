@@ -11,7 +11,8 @@ interface NavBarProps {
  
 const NavBar: FunctionComponent<NavBarProps> = ({children, homeLocation}:NavBarProps) => {
   return (
-    <nav className="fixed top-0 z-40 h-14 px-2 w-full bg-backgroundLight dark:bg-backgroundDark">
+    <nav className="fixed top-0 z-40 h-14 px-2 w-full bg-backgroundLight dark:bg-backgroundDark
+    shadow-lightLight dark:shadow-none">
       <div className="flex items-center justify-between h-full">
         <div className="flex items-center justify-start">
           {children}

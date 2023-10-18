@@ -95,7 +95,8 @@ const DocsCode: FunctionComponent = () => {
 
           <div className="grid grid-cols-1 gap-4 mt-8 xl:mt-12 lg:gap-8 md:grid-cols-3">
             {/* Frontend */}
-            <div className="flex flex-col items-center p-6 space-y-3 text-center rounded-xl bg-backgroundLight dark:bg-backgroundDark">
+            <div className="flex flex-col items-center p-6 space-y-3 text-center rounded-xl bg-backgroundSecondLight dark:bg-backgroundDark
+            shadow-tileLight dark:shadow-none">
               <div className="flex flex-row sm:flex-col items-center">
                 <span className="inline-block p-3 rounded-full bg-backgroundThirdLight dark:bg-backgroundThirdDark">
                   <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"
@@ -123,7 +124,8 @@ const DocsCode: FunctionComponent = () => {
             </div>
 
             {/* API */}
-            <div className="flex flex-col items-center p-6 space-y-3 text-center rounded-xl bg-backgroundLight dark:bg-backgroundDark">
+            <div className="flex flex-col items-center p-6 space-y-3 text-center rounded-xl bg-backgroundSecondLight dark:bg-backgroundDark
+            shadow-tileLight dark:shadow-none">
               <div className="flex flex-row sm:flex-col items-center">
                 <span className="inline-block p-3 rounded-full bg-backgroundThirdLight dark:bg-backgroundThirdDark">
                   <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
@@ -150,7 +152,8 @@ const DocsCode: FunctionComponent = () => {
             </div>
 
             {/* Backend */}
-            <div className="flex flex-col items-center p-6 space-y-3 text-center rounded-xl bg-backgroundLight dark:bg-backgroundDark">
+            <div className="flex flex-col items-center p-6 space-y-3 text-center rounded-xl bg-backgroundSecondLight dark:bg-backgroundDark
+            shadow-tileLight dark:shadow-none">
               <div className="flex flex-row sm:flex-col items-center">
                 <span className="inline-block p-3 rounded-full bg-backgroundThirdLight dark:bg-backgroundThirdDark">
                   <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 32 32"
@@ -199,8 +202,10 @@ const DocsCode: FunctionComponent = () => {
 
           <div className="mt-4 gap-4 flex justify-center">
             <a href="https://github.com/Calisthetic" target="_blank" rel="noopener noreferrer"
-            className="text-center hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark px-4 py-4 pb-2 rounded-xl transition-colors">
-              <img className="h-28 w-28 rounded-full" src="https://avatars.githubusercontent.com/u/72902666?v=4" alt="Calisthetic"></img>
+            className="text-center px-4 py-4 pb-2 rounded-xl transition-all
+            hover:shadow-tileLight hover:dark:shadow-none hover:dark:bg-backgroundHoverDark ">
+              <img className="h-28 w-28 rounded-full" 
+              src="https://avatars.githubusercontent.com/u/72902666?v=4" alt="Calisthetic"></img>
               <h3 className="mt-2 font-semibold text-lg">Vladimir</h3>
               <p className="opacity-80 text-base">Full stack dev</p>
             </a>
@@ -219,7 +224,8 @@ const DocsCode: FunctionComponent = () => {
 
 const TechStackBadge:FunctionComponent<TechStackInfo> = (props:TechStackInfo) => {
   return (
-    <div className="flex flex-col items-center text-center p-6 space-y-3 rounded-xl bg-backgroundLight dark:bg-backgroundDark">
+    <div className="flex flex-col items-center text-center p-6 space-y-3 rounded-xl bg-backgroundSecondLight dark:bg-backgroundDark
+    shadow-tileLight dark:shadow-none">
       <a href={props.srcUrl} target="_blank" rel="noopener noreferrer">
         {props.badge ?? (<img className="h-8" src={props.badgeUrl} alt={props.badgeAlt ?? props.title}></img>)}
       </a>
