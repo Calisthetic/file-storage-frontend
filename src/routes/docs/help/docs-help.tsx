@@ -1,7 +1,7 @@
-import { FunctionComponent, Suspense, lazy, useEffect, useRef, useState } from "react";
+import { FunctionComponent, Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CheckForError } from "../../../lib/check-errors";
-import { apiUrl } from "../../../data/data";
+import { apiFeedbackUrl } from "../../../data/data";
 import AlertButton from "../../../components/alert-button";
 import { modalWindowStyle } from "../../../data/style/modal-styles";
 
@@ -18,6 +18,21 @@ const DocsHelp: FunctionComponent = () => {
   const modalQuestionOpen = () => setIsQuestionModalOpen(true);
   const modalQuestionClose = () => setIsQuestionModalOpen(false);
   const newQuestionInputRef:any = useRef()
+
+  // Enter pressed
+  const EnterHandle = useCallback((e:any) => {
+    if (isQuestionModalOpen && e.key === 'Enter') {
+      AddNewQuestion()
+    }
+    // eslint-disable-next-line
+  }, [isQuestionModalOpen])
+  useEffect(() => {
+    document.addEventListener("keydown", EnterHandle)
+
+    return () => {
+      document.removeEventListener("keydown", EnterHandle)
+    }
+  }, [EnterHandle])
 
   const navigate = useNavigate()
   let token = localStorage.getItem("token")
@@ -77,7 +92,7 @@ const DocsHelp: FunctionComponent = () => {
   useEffect(() => {
     let token = localStorage.getItem("token")
     if (token) {
-      fetch(apiUrl + "questions", {
+      fetch(apiFeedbackUrl + "questions", {
         method: 'GET',
         headers: {
           "Content-Type": "application/json",
@@ -92,14 +107,17 @@ const DocsHelp: FunctionComponent = () => {
         setQuestionsResponse(data)
       })
       .catch((error) => {
-        ShowError("Failed to download file", error.message)
+        ShowError("Failed to get your questions", error.message)
       });
     }
   }, [isUpdate])
 
   async function AddNewQuestion() {
+    if (newQuestionInputRef.current.value < 10) {
+      ShowError("Too short", "Your question/idea is to short")
+    }
     let token = localStorage.getItem("token")
-    fetch(apiUrl + "questions", {
+    fetch(apiFeedbackUrl + "questions", {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -176,7 +194,7 @@ const DocsHelp: FunctionComponent = () => {
       {token ? (
         <section className="mb-10">
           <h1 className="text-2xl font-semibold text-center lg:text-3xl mt-0">Share any your question or idea</h1>
-          {questionsResponse ? (
+          {questionsResponse ? questionsResponse.length > 0 ? (
             <div className="container max-w-5xl px-2 sm:px-6 py-4 mx-auto items-center flex flex-col gap-y-2">
               {questionsResponse.map((item, index) => item.answer ? (
                 <div key={index} className="bg-backgroundThirdLight dark:bg-backgroundThirdDark 
@@ -220,8 +238,8 @@ const DocsHelp: FunctionComponent = () => {
                 </div>
               ))}
             </div>
-          ) : null}
-          <div className="flex justify-center">
+          ) : null : null}
+          <div className="flex justify-center mt-4">
             <button className="p-1 rounded-full bg-buttonLight dark:bg-buttonDark
             hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark transition-colors"
             onClick={modalQuestionOpen}>
