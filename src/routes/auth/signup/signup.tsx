@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { z } from "zod";
 import IconLogo from "../../../components/icons/IconLogo";
 import { apiUrl } from "../../../data/data";
+import { CheckForError } from "../../../lib/check-errors";
 
 const AlertButton = React.lazy(() => import("../../../components/alert-button"));
 
@@ -20,6 +21,7 @@ export default function SignUp() {
 
   const [alertText, setAlertText] = useState("Something went wrong")
   const [alertTitle, setAlertTitle] = useState("Error!")
+  const [alertType, setAlertType] = useState("error")
   const [isAlertOpen, setIsAlertOpen] = useState(false)
 
   async function SendRequest() {
@@ -43,16 +45,12 @@ export default function SignUp() {
       },
     })
     .then((res) => {
-      if (res.status === 404) {
-        throw new Error('User not found');
-      }
+      CheckForError(res.status)
       return res.json();
     })
-    // !!! change later
-    .then(data => {localStorage.setItem("token", data.token); navigate("/disk/folder/main")})
+    .then(() => {ShowError("A letter with a verification code has been sent to your email", "Сheck your email", "success")})
     .catch(error => {
-      console.log(error)
-      ShowError("User not found", "404")
+      ShowError("Failed to sign up", error.message)
     })
   }
 
@@ -86,7 +84,8 @@ export default function SignUp() {
     return true
   }
 
-  function ShowError(text:string, title:string) {
+  function ShowError(text:string, title:string, type:string = "error") {
+    setAlertType(type)
     setIsAlertOpen(false)
     setAlertText(text)
     setAlertTitle(title)
@@ -218,7 +217,7 @@ export default function SignUp() {
 
       <Suspense fallback={<div></div>}>
         <AlertButton open={isAlertOpen} text={alertText} title={alertTitle}
-        type="error" close={() => setIsAlertOpen(false)}></AlertButton>
+        type={alertType} close={() => setIsAlertOpen(false)}></AlertButton>
       </Suspense>
     </div>
   )

@@ -5,6 +5,7 @@ import { z } from "zod";
 import AlertButton from "../../../components/alert-button";
 import IconLogo from "../../../components/icons/IconLogo";
 import { apiUrl } from "../../../data/data";
+import { CheckForError } from "../../../lib/check-errors";
 
 export default function SignIn() {
   const navigate = useNavigate()
@@ -39,15 +40,12 @@ export default function SignIn() {
       },
     })
     .then((res) => {
-      if (res.status === 404) {
-        throw new Error('User not found');
-      }
+      CheckForError(res.status)
       return res.json();
     })
     .then(data => {localStorage.setItem("token", data.token); navigate("/disk/folder/main")})
     .catch(error => {
-      console.log(error)
-      ShowError("User not found", "404")
+      ShowError("Failed to sign in", error.message)
     })
   }
   

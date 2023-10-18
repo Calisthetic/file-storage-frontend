@@ -2,13 +2,14 @@ import { Routes, Route, } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import LoadingComponent from "./components/loading-component";
 import PageNotFound from "./page-not-found";
-import Welcome from "./routes/welcome/welcome";
-import Docs from "./routes/docs/docs";
 
 const Redirect = lazy(() => import("./components/redirect"));
 const DiskMain = lazy(() => import('./routes/disk/disk'));
 const AuthMain = lazy(() => import('./routes/auth/auth'));
 const UserMain = lazy(() => import("./routes/user/user"));
+const Welcome = lazy(() => import("./routes/welcome/welcome"));
+const Docs = lazy(() => import("./routes/docs/docs"));
+const Verify = lazy(() => import("./routes/verify/verify"));
 
 function App() {
   interface StyleObject {
@@ -52,6 +53,7 @@ function App() {
           <Route path='user/*' element={<UserMain></UserMain>}></Route>
           <Route path='welcome/*' element={<Welcome></Welcome>}></Route>
           <Route path='docs/*' element={<Docs></Docs>}></Route>
+          <Route path='verify/*' element={<Verify></Verify>}></Route>
           <Route path='*' element={<PageNotFound></PageNotFound>}></Route>
         </Routes>
       </Suspense>
