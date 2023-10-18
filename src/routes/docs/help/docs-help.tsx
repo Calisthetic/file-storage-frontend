@@ -133,11 +133,11 @@ const DocsHelp: FunctionComponent = () => {
     })
     .then(() => {
       setIsUpdate(!isUpdate)
-      modalQuestionClose()
     })
     .catch((error) => {
-      ShowError("Failed to add question/suggestion", error.message)
+      ShowError("Failed to add your question/suggestion", error.message)
     });
+    modalQuestionClose()
   }
 
   const [alertText, setAlertText] = useState("Something went wrong")
@@ -153,6 +153,7 @@ const DocsHelp: FunctionComponent = () => {
       setIsAlertOpen(true)
     }, 250);
   }
+  
 
 
   return (
@@ -164,7 +165,7 @@ const DocsHelp: FunctionComponent = () => {
         <div className="container max-w-5xl px-2 sm:px-6 py-10 mx-auto items-center flex flex-col gap-y-2">
           {questions.map((item, index) => (
             <div key={index} className="bg-backgroundThirdLight dark:bg-backgroundThirdDark 
-            w-full rounded-md transition-all flex overflow-hidden">
+            w-full rounded-md flex overflow-hidden">
               <div className="w-[4px] bg-iconLight dark:bg-iconDark"></div>
               <div className="w-[calc(100%-4px)]">
                 <button className="peer group w-full flex justify-between items-center px-2 sm:px-4 py-2">
@@ -244,7 +245,7 @@ const DocsHelp: FunctionComponent = () => {
             hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark transition-colors"
             onClick={modalQuestionOpen}>
               <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
-              className="stroke-textLight dark:stroke-textDark h-8 w-8">
+              className="stroke-textDark h-8 w-8">
                 <path d="M16 7v18M7 16h18" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2px"></path>
               </svg>
             </button>
@@ -267,7 +268,7 @@ const DocsHelp: FunctionComponent = () => {
           </button>
 
           <button className="w-1/2 px-5 py-2 text-sm tracking-wide transition-colors rounded-lg shrink-0 sm:w-auto
-          bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark font-medium"
+          bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark font-medium text-textDark"
           onClick={() => navigate(token === undefined ? "/welcome" : "/disk/folder/main")}>
             Take me home
           </button>
@@ -295,7 +296,7 @@ const DocsHelp: FunctionComponent = () => {
                 Calcel
               </button>
               <button className=" bg-buttonLight dark:bg-buttonDark rounded-full px-5 py-1
-              hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark transition-colors"
+              hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark transition-colors text-textDark"
               onClick={AddNewQuestion}>
                 OK
               </button>

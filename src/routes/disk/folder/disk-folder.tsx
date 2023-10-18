@@ -522,11 +522,11 @@ export default function DiskFolder() {
       {/* Drag and drop files */}
       {isDragVisible === true ? (
         <motion.div initial={{opacity: 0}} animate={{opacity: 1}} ref={fileUploaderRef}
-        onMouseMove={VisualizeUploader} className="absolute transition-dropFiles top-0 left-0 z-50 h-fulldvh w-fulldvw bg-black/70">
+        onMouseMove={VisualizeUploader} className="absolute transition-dropFiles top-0 left-0 z-50 !h-[100dvh] !w-[100dvw] bg-black/70">
           <FileUploader onDragEnter={VisualizeUploader} multiple={true} onTypeError={(err:any) => console.log(err)} 
-          classes=" max-h-fulldvh h-full100 max-w-fulldvw w-full100 justify-center text-center fill-white
+          classes=" !max-h-[100dvh] !h-full !max-w-[100dvw] !w-full justify-center text-center fill-white
           p-dfUploadFiles sm:p-smUploadFiles md:p-mdUploadFiles lg:p-lgUploadFiles xl:p-xlUploadFiles 2xl:p-xl2UploadFiles
-          outline-3 -outline-offset-8 outline-blue-700 outline-dashed border-imp0 hover:bg-red"
+          outline-3 -outline-offset-8 outline-blue-700 outline-dashed !border-none hover:bg-red"
           handleChange={UploaderChange} name="file" />
         </motion.div>
       ) : null}

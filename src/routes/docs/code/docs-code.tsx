@@ -17,14 +17,6 @@ const DocsCode: FunctionComponent = () => {
 
   const techStack:TechStackInfo[] = [
     {
-      // badge: (<svg viewBox="-10.5 -9.45 21 18.9" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-8 h-8">
-      //   <circle cx="0" cy="0" r="2" fill="#149eca"></circle>
-      //   <g stroke="#149eca" strokeWidth="1" fill="none">
-      //     <ellipse rx="10" ry="4.5"></ellipse>
-      //     <ellipse rx="10" ry="4.5" transform="rotate(60)"></ellipse>
-      //     <ellipse rx="10" ry="4.5" transform="rotate(120)"></ellipse>
-      //   </g>
-      // </svg>),
       badgeUrl: "https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB",
       srcUrl: "https://react.dev/",
       text: "The library for web and native user interfaces"
@@ -215,7 +207,7 @@ const DocsCode: FunctionComponent = () => {
 
       <div className="flex justify-center pb-10">
         <button className=" bg-buttonLight dark:bg-buttonDark rounded-xl text-lg font-semibold px-4 py-2
-        hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark transition-colors"
+        hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark transition-colors text-textDark"
         onClick={() => navigate("/docs")}>Back to Documentation</button>
       </div>
     </>

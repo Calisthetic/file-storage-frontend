@@ -6,7 +6,7 @@ const PageNotFound: FunctionComponent = () => {
   let token = localStorage.getItem("token")
   
   return (
-    <section className="bg-backgroundLight min-h-fulldvh dark:bg-backgroundDark text-textLight dark:text-textDark">
+    <section className="bg-backgroundLight !min-h-[100dvh] dark:bg-backgroundDark text-textLight dark:text-textDark">
       <div className="container flex items-center min-h-screen px-6 py-12 mx-auto">
         <div className="flex flex-col items-center max-w-sm mx-auto text-center">
           <p className="p-3 text-sm rounded-full bg-backgroundSecondLight dark:bg-backgroundSecondDark">

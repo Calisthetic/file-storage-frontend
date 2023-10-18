@@ -191,13 +191,13 @@ export default function DiskSideBar() {
         {isAdOpen === true && (
           <motion.div initial={{x: -300, opacity: 0}} animate={{x: 0, opacity: 1}} 
           transition={{delay: 0.12, stiffness: 300, damping: 24}} exit={{x: -1000, opacity: 0}}
-          className="p-2 sm:p-4 mt-4 sm:mt-6 transition rounded-lg bg-backgroundThirdLight dark:bg-backgroundThirdDark 
-          text-textLight dark:text-textDark text-sm">
+          className="p-2 sm:p-4 mt-4 sm:mt-6 transition rounded-lg bg-backgroundSecondLight dark:bg-backgroundThirdDark 
+          text-textLight dark:text-textDark text-sm shadow-lightLight">
             <div className="flex items-center mb-3 justify-between">
-              <span className=" bg-backgroundAccentLight text-textLight font-semibold mr-2 px-2.5 py-0.5 rounded 
-              dark:bg-backgroundAccentDark dark:text-textDark">Beta</span>
+              <span className=" bg-backgroundAccentLight text-textDark font-semibold mr-2 px-2.5 py-0.5 rounded 
+              dark:bg-backgroundAccentDark">Beta</span>
               <button onClick={() => {setIsAdOpen(false)}} type="button" id="cloase-ad" aria-label="Close ad"
-              className="ml-auto sm:-mx-1.5 -my-1.5 bg-backgroundThirdLight 
+              className="ml-auto sm:-mx-1.5 -my-1.5
               justify-center items-center w-6 h-6 text-textLight rounded-lg transition-all p-1 inline-flex
               hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark dark:bg-backgroundThirdDark dark:text-textDark">
                 <IconClose classes="w-2.5 h-2.5" strokeClasses="stroke-textLight dark:stroke-textDark"></IconClose>

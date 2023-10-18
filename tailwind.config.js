@@ -44,37 +44,24 @@ module.exports = {
       },
       spacing: {
         withHeader: "72px 16px 16px 16px",
-        alertTop: "calc(100dvh)",
         alertLeft: "calc(100vw - 320px)",
       },
       minHeight: {
         fullWithHeader: "calc(100dvh - 56px)",
-        fulldvh: "100dvh",
         xs: "320px",
       },
       minWidth: {
         xs: "320px",
-        fulldvw: "100dvw !important",
       },
       maxHeight: {
         xs: "320px",
-        fulldvh: "100dvh !important",
-      },
-      maxWidth: {
-        fulldvw: "100dvw !important"
       },
       height: {
-        fulldvh: "100dvh !important",
-        full100: "100% !important",
         fullWithHeader: "calc(100dvh - 56px) !important",
       },
-      width: {
-        fulldvw: "100dvw !important",
-        full100: "100% !important",
-      },
       boxShadow: {
-        defaultDark: "0px 0px 4px 0px var(--shadowDark)",
-        defaultLight: "0px 0px 4px 0px var(--shadowLight)",
+        defaultDark: "0px 0px 4px -1px var(--shadowDark)",
+        defaultLight: "0px 0px 4px -1px var(--shadowLight)",
         lightDark: "0px 0px 3px -1px var(--shadowDark)",
         lightLight: "0px 0px 3px -1px var(--shadowLight)",
         tileLight: "0px 2px 10px -4px var(--shadowLight)",
@@ -86,12 +73,6 @@ module.exports = {
         lgUploadFiles: "0% 39% !important",
         xlUploadFiles: "0% 41% !important",
         xl2UploadFiles: "0% 43% !important"
-      },
-      borderWidth: {
-        imp0: "0px !important",
-      },
-      top: {
-        help: "10px"
       },
 
       screens: {

@@ -85,7 +85,7 @@ export default function NoPassword() {
   }
 
   return (
-    <div className=" min-h-fulldvh flex justify-center items-center relative overflow-y-hidden">
+    <div className="!min-h-[100dvh] flex justify-center items-center relative overflow-y-hidden">
       <div className="flex min-h-full w-80 sm:w-auto flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm flex flex-col items-center">
           <motion.button initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 

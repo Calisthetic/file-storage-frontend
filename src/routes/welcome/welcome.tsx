@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 import IconSuccessFactors from "../../components/icons/IconSuccessFactors";
@@ -16,7 +15,7 @@ const Welcome: FunctionComponent<WelcomeProps> = () => {
   let token = localStorage.getItem("token")
   
   return (
-    <div className="min-h-fulldvh">
+    <div className="!min-h-[100dvh]">
       <NavBar></NavBar>
 
       <div className="pt-14 transition-transform text-textLight dark:text-textDark text-lg">
@@ -27,7 +26,7 @@ const Welcome: FunctionComponent<WelcomeProps> = () => {
             <h1 className="text-5xl font-semibold mb-4 mt-2">Securely store, manage and share your data online</h1>
             <p>We use the latest technologies, constantly improving user experience and services security</p>
             <button className="px-5 py-2 mt-4 text-sm tracking-wider uppercase transition-colors 
-            transform rounded-lg lg:w-auto focus:outline-none font-semibold
+            transform rounded-lg lg:w-auto focus:outline-none font-semibold text-textDark
             bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark"
             onClick={() => navigate(token === undefined ? "/auth/signup" : "/disk/folder/main")}>Sign up for 10GB free storage</button>
           </div>
@@ -43,7 +42,7 @@ const Welcome: FunctionComponent<WelcomeProps> = () => {
                   <p className="mt-3 mr-1">Disk usage statistics, file analysis and folder trees will help you visualize and conveniently interact with your data</p>
                     
                   <button className="w-full px-5 py-2 mt-6 text-sm tracking-wider uppercase transition-colors 
-                  transform rounded-lg lg:w-auto focus:outline-none font-semibold
+                  transform rounded-lg lg:w-auto focus:outline-none font-semibold text-textDark
                   bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark"
                   onClick={() => navigate(token === undefined ? "/auth/signin" : "/disk/folder/main")}>Start Now</button>
                 </div>
@@ -72,7 +71,7 @@ const Welcome: FunctionComponent<WelcomeProps> = () => {
                   </p>
                     
                   <button className="w-full px-5 py-2 mt-6 text-sm tracking-wider uppercase transition-colors 
-                  transform rounded-lg lg:w-auto focus:outline-none font-semibold
+                  transform rounded-lg lg:w-auto focus:outline-none font-semibold text-textDark
                   bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark"
                   onClick={() => navigate("/docs")}>Read docs</button>
                 </div>
@@ -113,7 +112,7 @@ const Welcome: FunctionComponent<WelcomeProps> = () => {
                   </div>
                     
                   <button className="w-full px-5 py-2 mt-5 text-sm tracking-wider uppercase transition-colors 
-                  transform rounded-lg lg:w-auto focus:outline-none font-semibold
+                  transform rounded-lg lg:w-auto focus:outline-none font-semibold text-textDark
                   bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark"
                   onClick={() => navigate("/docs/code")}>See code</button>
                 </div>
@@ -141,7 +140,7 @@ const Welcome: FunctionComponent<WelcomeProps> = () => {
                   </p>
                     
                   <button className="w-full px-5 py-2 mt-6 text-sm tracking-wider uppercase transition-colors 
-                  transform rounded-lg lg:w-auto focus:outline-none font-semibold
+                  transform rounded-lg lg:w-auto focus:outline-none font-semibold text-textDark
                   bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark"
                   onClick={() => navigate(token === undefined ? "/auth/signin" : "/disk/folder/main")}>Log in</button>
                 </div>
@@ -153,9 +152,9 @@ const Welcome: FunctionComponent<WelcomeProps> = () => {
           <div className=" border-b bg-borderLight dark:border-borderDark mt-20"></div>
           
           <footer className="max-w-lg mx-auto px-6 py-16 flex flex-col items-center">
-            <h1 className="text-2xl font-semibold text-gray-800 dark:text-white lg:text-3xl">Ready to start?</h1>
+            <h1 className="text-2xl font-semibold lg:text-3xl">Ready to start?</h1>
             <button className="px-5 py-2 mt-4 text-sm tracking-wider uppercase transition-colors 
-            transform rounded-lg lg:w-auto focus:outline-none font-semibold
+            transform rounded-lg lg:w-auto focus:outline-none font-semibold text-textDark
             bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark"
             onClick={() => navigate(token === undefined ? "/auth/signin" : "/disk/folder/main")}>Open disk</button>
           </footer>

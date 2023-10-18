@@ -34,7 +34,8 @@ const AlertButton: FunctionComponent<AlertButtonProps> = (props:AlertButtonProps
         transition={{stiffness: 200, damping: 24, duration: 0.1}} 
         className={cn("fixed min-w-[300px] max-w-[300px] sm:max-w-lg"
         + " grid grid-cols-alerts items-center gap-x-1 sm:gap-x-3 text-left"
-        + " rounded-md bg-backgroundThirdLight dark:bg-backgroundThirdDark", {
+        + " rounded-md bg-backgroundThirdLight dark:bg-backgroundThirdDark"
+        + " shadow-lg dark:shadow-none", {
           // Corners from top left
           "top-0 left-0": props.position === 0,
           "top-0 left-[calc(100%)]": props.position === 1,
