@@ -35,7 +35,7 @@ export default function SignUp() {
       method: 'POST', 
       body: JSON.stringify({
         firstName: firstNameRef.current.value,
-        lastName: lastNameRef.current.value,
+        secondName: lastNameRef.current.value,
         email: emailRef.current.value,
         password: passwordRef.current.value,
         about: aboutRef.current.value.length === 0 ? null : aboutRef.current.value,
@@ -179,7 +179,7 @@ export default function SignUp() {
               className="pt-1 text-sm leading-6 text-textLight dark:text-textDark">Repeat password</motion.p>
               <motion.div initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.24, damping: 24, stiffness: 300}} 
               className="pt-2">
-                <input id="password2" name="password2" type="password2" aria-label="password2" autoComplete="password" required ref={repeatPasswordRef}
+                <input id="password2" name="password2" type="password" aria-label="password2" autoComplete="password" required ref={repeatPasswordRef}
                 className="block w-full pl-2 py-1.5 border-1 border-borderLight dark:border-borderDark
                 ring-1 ring-inset ring-borderLight dark:ring-borderDark 
                 focus:outline-offset-1 focus:ring-2 text-sm sm:text-base sm:leading-6 bg-white
