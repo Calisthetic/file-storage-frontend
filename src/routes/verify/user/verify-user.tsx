@@ -16,7 +16,6 @@ const VerifyUser: FunctionComponent = memo(() => {
     },
   })
   .then((res) => {
-    setStatusCode(res.status)
     CheckForError(res.status)
     return res.json();
   })
@@ -32,12 +31,12 @@ const VerifyUser: FunctionComponent = memo(() => {
     </div>
   ) : (
     <div className="flex flex-col items-center justify-center h-[100dvh] w-[100dvw]">
-      <img className="max-w-xs max-h-xs min-w-xs min-h-xs rounded-lg"
+      <img className="min-w-xs rounded-lg"
       src={"https://http.cat/" + statusCode} alt="meme"></img>
       <div className="flex mt-4 gap-x-2">
-        <button className="flex items-center justify-center w-1/2 px-5 py-2 text-sm 
+        <button className="flex items-center justify-center px-5 py-2 text-sm 
         transition-colors border border-borderLight dark:border-borderDark rounded-lg 
-        gap-x-2 sm:w-auto bg-backgroundThirdLight dark:bg-backgroundThirdDark
+        gap-x-2 w-auto bg-backgroundThirdLight dark:bg-backgroundThirdDark
         hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark font-medium"
         onClick={() => navigate("/auth/signup")}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 rtl:rotate-180">
@@ -45,7 +44,7 @@ const VerifyUser: FunctionComponent = memo(() => {
           </svg>
           <span>Back to sign up</span>
         </button>
-        <button className="w-1/2 px-5 py-2 text-sm tracking-wide transition-colors rounded-lg shrink-0 sm:w-auto
+        <button className="px-5 py-2 text-sm tracking-wide transition-colors rounded-lg shrink-0 w-auto
         bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark font-medium text-textDark"
         onClick={() => navigate("/welcome")}>
           Take me home

@@ -101,7 +101,7 @@ export default function SignUp() {
         <div className="w-full flex justify-center pb-2">
           <motion.button initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
           transition={{damping: 24, stiffness: 300}} className="flex justify-center"
-          onClick={() => navigate("/welcome")}>
+          id="logoButton" onClick={() => navigate("/welcome")}>
             <IconLogo classes="h-12 w-12" fillClasses="fill-iconLight dark:fill-iconDark"></IconLogo>
           </motion.button>
         </div>
@@ -210,7 +210,7 @@ export default function SignUp() {
         className="pt-4 flex items-center text-base justify-between gap-x-6">
           <Link to="../signin" className="text-sm font-semibold leading-6 text-textLight dark:text-textDark
           hover:text-buttonHoverLight dark:hover:text-buttonHoverDark transition-colors">Already have an account?</Link>
-          <button onClick={SendRequest} className="rounded-md dark:bg-buttonDark bg-buttonLight px-3 py-2 text-sm font-semibold 
+          <button id="signUpButton" onClick={SendRequest} className="rounded-md dark:bg-buttonDark bg-buttonLight px-3 py-2 text-sm font-semibold 
           text-textLight dark:text-textDark shadow-sm hover:bg-buttonHoverLight dark:hover:to-buttonHoverDark transition-colors">Send</button>
         </motion.div>
       </div>
