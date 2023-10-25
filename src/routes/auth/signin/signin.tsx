@@ -77,7 +77,7 @@ export default function SignIn() {
         <div className="sm:mx-auto sm:w-full sm:max-w-sm flex flex-col items-center">
           <motion.button initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 
           transition={{damping: 24, stiffness: 300}} className="flex justify-center items-center"
-          id="logoButton" onClick={() => navigate("/welcome")}>
+          id="logoButton" aria-label="Logo" onClick={() => navigate("/welcome")}>
             <IconLogo classes="h-12 w-12" fillClasses="fill-iconLight dark:fill-iconDark"></IconLogo>
           </motion.button>
           <motion.h2 initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.02, damping: 24, stiffness: 300}}
@@ -122,8 +122,9 @@ export default function SignIn() {
             </div>
 
             <div>
-              <motion.button id="signInButton" initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.14, damping: 24, stiffness: 300}}
-              onClick={SendData} className="flex w-full justify-center rounded-md bg-buttonLight dark:bg-buttonDark 
+              <motion.button initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.14, damping: 24, stiffness: 300}}
+              id="signInButton" aria-label="Sign In" onClick={SendData} 
+              className="flex w-full justify-center rounded-md bg-buttonLight dark:bg-buttonDark 
               hover:bg-buttonHoverLight dark:hover:bg-buttonHoverDark px-3 py-1.5 text-sm font-semibold leading-6 
               text-textLight shadow-sm dark:text-textDark">Sign in</motion.button>
             </div>
