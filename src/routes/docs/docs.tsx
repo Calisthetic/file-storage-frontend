@@ -10,7 +10,7 @@ const DocsHelp = lazy(() =>  import("./help/docs-help"));
 
 const Docs: FunctionComponent = () => {
   return (
-    <div className="!min-h-[100dvh]">
+    <div className="!min-h-[100vh]">
       <Suspense fallback={<LoadingComponent></LoadingComponent>}>
         <NavBar></NavBar>
       </Suspense>

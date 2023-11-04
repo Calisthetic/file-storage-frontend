@@ -95,8 +95,8 @@ export default function SignUp() {
   }
   
   return (
-    <div className="!min-h-[100dvh] sm:flex justify-center items-center relative overflow-y-hidden">
-      <div className='py-6 flex flex-col justify-center !min-h-[100dvh] sm:h-auto bg-backgroundLight dark:bg-backgroundDark 
+    <div className="!min-h-[100vh] sm:flex justify-center items-center relative overflow-y-hidden">
+      <div className='py-6 flex flex-col justify-center !min-h-[100vh] sm:h-auto bg-backgroundLight dark:bg-backgroundDark 
       sm:rounded-xl w-[100cvw] sm:w-auto px-10'>
         <div className="w-full flex justify-center pb-2">
           <motion.button initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} 

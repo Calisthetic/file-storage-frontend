@@ -15,7 +15,7 @@ const Welcome: FunctionComponent<WelcomeProps> = () => {
   let token = localStorage.getItem("token")
   
   return (
-    <div className="!min-h-[100dvh]">
+    <div className="!min-h-[100vh]">
       <NavBar></NavBar>
 
       <div className="pt-14 transition-transform text-textLight dark:text-textDark text-lg">

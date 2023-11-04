@@ -370,7 +370,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
 
   
   return lastResponseStatus === 403 ? (
-    <main className="flex justify-center items-center text-textLight dark:text-textDark h-[calc(100dvh-100px)] sm:h-[calc(100dvh-104px)]">
+    <main className="flex justify-center items-center text-textLight dark:text-textDark h-[calc(100vh-100px)] sm:h-[calc(100vh-104px)]">
       <div className="flex flex-col items-center py-4 px-4 max-w-xs text-center">
         <IconFolderError classes="md:h-60 md:w-60 sm:h-[34dvw] sm:w-[34dvw] h-[50dvw] w-[50dvw]"
         fillClasses="fill-iconLight dark:fill-iconDark"

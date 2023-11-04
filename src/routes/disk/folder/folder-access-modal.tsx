@@ -149,7 +149,7 @@ export default function FolderAccessModal({children, folderId, folderName, folde
   }
 
   return (
-    <div className="text-textLight dark:text-textDark rounded-2xl !max-h-[100dvh] overflow-x-hidden
+    <div className="text-textLight dark:text-textDark rounded-2xl !max-h-[100vh] overflow-x-hidden
     bg-backgroundLight dark:bg-backgroundDark p-4 min-w-xs max-w-3xl xl:w-[728px] overflow-y-auto"
     onClick={(e:any) => {if (e.target.dataset.name === undefined) {setIsRolesMenuOpen(false)}}}>
       <div className="font-medium text-center text-xl md:col-span-2">{"Share - " + folderName}</div>

@@ -26,11 +26,11 @@ const VerifyUser: FunctionComponent = memo(() => {
   })
 
   return statusCode === undefined ? (
-    <div className="flex items-center justify-center h-[100dvh] w-[100dvw]">
+    <div className="flex items-center justify-center h-[100vh] w-[100dvw]">
       <Loading></Loading>
     </div>
   ) : (
-    <div className="flex flex-col items-center justify-center h-[100dvh] w-[100dvw]">
+    <div className="flex flex-col items-center justify-center h-[100vh] w-[100dvw]">
       <img className="min-w-xs rounded-lg"
       src={"https://http.cat/" + statusCode} alt="meme"></img>
       <div className="flex mt-4 gap-x-2">

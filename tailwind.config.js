@@ -47,7 +47,7 @@ module.exports = {
         alertLeft: "calc(100vw - 320px)",
       },
       minHeight: {
-        fullWithHeader: "calc(100dvh - 56px)",
+        fullWithHeader: "calc(100vh - 56px)",
         xs: "320px",
       },
       minWidth: {

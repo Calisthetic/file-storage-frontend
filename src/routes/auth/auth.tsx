@@ -10,7 +10,7 @@ const NoPassword = lazy(() => import("./nopassword/nopassword"));
 export default function AuthMain() {
 
   return (
-    <div className="bg-backgroundLight !min-h-[100dvh] dark:bg-backgroundDark">
+    <div className="bg-backgroundLight !min-h-[100vh] dark:bg-backgroundDark">
       <Suspense fallback={<LoadingComponent></LoadingComponent>}>
         <Routes>
           <Route path="*" element={<Redirect location="/auth/signin"></Redirect>}></Route>
