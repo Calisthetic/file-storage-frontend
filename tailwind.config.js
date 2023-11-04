@@ -57,7 +57,7 @@ module.exports = {
         xs: "320px",
       },
       height: {
-        fullWithHeader: "calc(100dvh - 56px) !important",
+        fullWithHeader: "calc(100vh - 56px) !important",
       },
       boxShadow: {
         defaultDark: "0px 0px 4px -1px var(--shadowDark)",
