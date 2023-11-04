@@ -11,14 +11,14 @@ interface NavBarProps {
  
 const NavBar: FunctionComponent<NavBarProps> = ({children, homeLocation}:NavBarProps) => {
   return (
-    <nav className="fixed top-0 z-40 h-14 px-2 w-full bg-backgroundLight dark:bg-backgroundDark
+    <nav className="fixed top-0 z-40 h-14 px-1 sm:px-2 w-full bg-backgroundLight dark:bg-backgroundDark
     shadow-lightLight dark:shadow-none">
       <div className="flex items-center justify-between h-full">
         <div className="flex items-center justify-start">
           {children}
-          <Link to={homeLocation ?? "/welcome"} className="flex ml-2 md:mr-24">
+          <Link to={homeLocation ?? "/welcome"} className="flex ml-1 sm:ml-2 md:mr-24">
             <motion.div initial={{opacity: 0}} animate={{opacity:1 }}>
-              <IconLogo classes="h-8 w-8 mr-3" fillClasses="fill-iconLight dark:fill-iconDark"></IconLogo>
+              <IconLogo classes="h-8 w-8 mr-1 sm:mr-3" fillClasses="fill-iconLight dark:fill-iconDark"></IconLogo>
             </motion.div>
             <motion.span initial={{opacity:0}} animate={{opacity:1}}
             className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-textDark text-textLight">Storage</motion.span>
