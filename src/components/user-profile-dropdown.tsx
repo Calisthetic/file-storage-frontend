@@ -51,12 +51,12 @@ const UserProfileDropdown: FunctionComponent = () => {
           {currentTheme === "dark" ? (
             <motion.div initial={{y:-10, opacity:0}} animate={{y:0, opacity:1}} 
             transition={{damping:24, stiffness:300}}>
-              <IconDark classes="h-6 w-6" fillClasses="fill-white"></IconDark>
+              <IconDark classes="h-6 w-6 fill-white dark:fill-white fill-black"></IconDark>
             </motion.div>
           ) : (
             <motion.section initial={{y:-10, opacity:0}} animate={{y:0, opacity:1}} 
             transition={{damping:24, stiffness:300}}>
-              <IconLight classes="h-6 w-6" fillClasses="fill-black"></IconLight>
+              <IconLight classes="h-6 w-6 fill-black dark:fill-white fill-black"></IconLight>
             </motion.section>
           )}
         </AnimatePresence>
@@ -106,6 +106,21 @@ const UserProfileDropdown: FunctionComponent = () => {
     </div>
    ) : (
     <div className="flex items-center gap-x-4 text-textLight dark:text-textDark">
+    <button onClick={() => ChangeTheme(currentTheme === "dark" ? "light" : "dark")}>
+      <AnimatePresence>
+        {currentTheme === "dark" ? (
+          <motion.div initial={{y:-10, opacity:0}} animate={{y:0, opacity:1}} 
+          transition={{damping:24, stiffness:300}}>
+            <IconDark classes="h-6 w-6 dark:fill-white fill-black"></IconDark>
+          </motion.div>
+        ) : (
+          <motion.section initial={{y:-10, opacity:0}} animate={{y:0, opacity:1}} 
+          transition={{damping:24, stiffness:300}}>
+            <IconLight classes="h-6 w-6 dark:fill-white fill-black"></IconLight>
+          </motion.section>
+        )}
+      </AnimatePresence>
+    </button>
       <Link to="/auth/signin" className="py-1 px-2 rounded-lg capitalize bg-backgroundThirdLight dark:bg-backgroundThirdDark
       border border-borderLight dark:border-borderDark
       hover:bg-backgroundHoverLight hover:dark:bg-backgroundHoverDark transition-colors">sign in</Link>

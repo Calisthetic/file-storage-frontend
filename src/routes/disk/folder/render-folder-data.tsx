@@ -627,7 +627,7 @@ const RenderFolderData:FunctionComponent<Props> = memo(({currentSortType, curren
               bg-backgroundSecondLight dark:bg-backgroundSecondDark relative">
                 {isMaskActive ? (
                   <div data-token={item.token} data-type="folder" 
-                  className="absolute h-full w-full z-20 bg-white"></div>
+                  className="absolute h-full w-full z-20"></div>
                 ) : null}
                 <div className="flex px-2 py-1 flex-row justify-between">
                   <div className="flex flex-row items-center space-x-2 max-w-[calc(100dvw-88px)] 

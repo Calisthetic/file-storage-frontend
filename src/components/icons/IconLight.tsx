@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
-import { ClassesProps, FillProps } from "./IconProps";
+import { ClassesProps } from "./IconProps";
 
-const IconLight: FunctionComponent<ClassesProps&FillProps> = ({classes, fillClasses}:ClassesProps&FillProps) => {
+const IconLight: FunctionComponent<ClassesProps> = ({classes}:ClassesProps) => {
   return (
     <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" 
     className={classes}>
@@ -19,7 +19,7 @@ const IconLight: FunctionComponent<ClassesProps&FillProps> = ({classes, fillClas
       12.608 12.8033 12.8033C12.608 12.9986 12.2915 12.9986 12.0962 12.8033L10.682 11.3891C10.4867 11.1938 10.4867 10.8772 10.682 
       10.682ZM5.5 7.5C5.5 6.39543 6.39543 5.5 7.5 5.5C8.60457 5.5 9.5 6.39543 9.5 7.5C9.5 8.60457 8.60457 9.5 7.5 9.5C6.39543 9.5 
       5.5 8.60457 5.5 7.5ZM7.5 4.5C5.84315 4.5 4.5 5.84315 4.5 7.5C4.5 9.15685 5.84315 10.5 7.5 10.5C9.15685 10.5 10.5 9.15685 10.5 
-      7.5C10.5 5.84315 9.15685 4.5 7.5 4.5Z" fillRule="evenodd" clipRule="evenodd" className={fillClasses}></path></svg>
+      7.5C10.5 5.84315 9.15685 4.5 7.5 4.5Z" fillRule="evenodd" clipRule="evenodd"></path></svg>
   );
 }
  
