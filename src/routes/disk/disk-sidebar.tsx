@@ -1,12 +1,37 @@
 import { AnimatePresence, motion } from "framer-motion"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {Link,} from "react-router-dom";
 import IconClose from "../../components/icons/IconClose";
 import IconBin from "../../components/icons/IconBin";
+import { apiUrl } from "../../data/data";
+import { CheckForError } from "../../lib/check-errors";
+import { CutSize } from "../../lib/utils";
 
 export default function DiskSideBar() {
   const [isAdOpen, setIsAdOpen] = useState(true)
 
+  const [currentUsage, setCurrentUsage] = useState<any>()
+  // Download file
+  useEffect(() => {
+    let token = localStorage.getItem("token")
+    fetch(apiUrl + "users/usage", {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token === null ? "" : token,
+      },
+    })
+    .then(resp => {
+      CheckForError(resp.status)
+      return resp.json()
+    })
+    .then(data => {
+      setCurrentUsage(data)
+    })
+    .catch((error) => {
+      console.log(error.message)
+    });
+  }, [])
   return (
     <div className="h-full px-3 pb-4 bg-backgroundLight dark:bg-backgroundDark
     dark:text-textDark text-textLight font-medium text-sm sm:text-base
@@ -129,10 +154,10 @@ export default function DiskSideBar() {
           initial={{y: 20, opacity: 0}} 
           animate={{y: 0, opacity: 1}} 
           transition={{delay: 0.2, stiffness: 300, damping: 24}}>
-          Used {4}Gb of {7}Gb
+          Used {currentUsage ? CutSize(currentUsage.size * 10) : 0} of {10}GB
         </motion.span>
-        <div className="w-full bg-backgroundThirdLight mt-1 rounded-full h-2.5 dark:bg-backgroundThirdDark">
-          <motion.div initial={{width: 0}} animate={{width: "53%"}} transition={{delay: 0.24}}
+        <div className="w-full bg-backgroundThirdLight mt-1 rounded-full h-2.5 dark:bg-backgroundThirdDark overflow-hidden">
+          <motion.div initial={{width: 0}} animate={{width: currentUsage ? Math.round((currentUsage.size / (10*Math.pow(1024, 3))) * 10000) / 100 + "%" : "0%"}} transition={{delay: 0.24}}
           className=" bg-iconLight dark:bg-iconDark h-2.5 rounded-full"></motion.div>
         </div>
       </div>
