@@ -15,6 +15,7 @@ import DiskErrorResponse from "../components/disk-error-response";
 import EmptyData from "../components/empty-data";
 import FilesDropdown from "../components/files-dropdown";
 import { SortFiles, SortFolders } from "../../../lib/sort-data";
+import IconBin from "../../../components/icons/IconBin";
 
 const FileIcon = lazy(() => import("../file-icon"));
 const IconInfo = lazy(() => import("../../../components/icons/IconInfo"));
@@ -89,6 +90,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
   const [foldersResponse, setFoldersResponse] = useState<FoldersResponse[] | null>();
   const [filesResponse, setFilesResponse] = useState<FilesResponse[] | null>();
   const [isUpdated, setIsUpdated] = useState(true)
+  const [isUpdate, setIsUpdate] = useState(true)
   const [currentError, setCurrentError] = useState("Error")
   const [lastResponseStatus, setLastResponseStatus] = useState<number>(404)
 
@@ -117,7 +119,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
     getData()
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updateTrigger])
+  }, [updateTrigger, isUpdate])
 
   const navigate = useNavigate();
 
@@ -222,7 +224,7 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
   // Rename file/folder
   function handleRename() {
     let newName = selectedItem.type === "file" ? newNameInputRef.current.value + selectedItem.name.slice(selectedItem.name.lastIndexOf('.')) : newNameInputRef.current.value
-    if (newName.length === 0 || newName.length > 20) {
+    if (newName.length === 0 || newName.length > 64) {
       // Show error
       return
     }
@@ -409,6 +411,50 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
     .catch(error => {
       ShowError("Failed to download folder", error.message)
     });
+  }
+
+  // Bin folder
+  function BinFolder(folderToken:string) {
+    const binFolder = async () => {
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "folders/bin/" + folderToken, {
+        method: 'PATCH',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        CheckForError(res.status)
+      })
+      .then(() => setIsUpdate(!isUpdate))
+      .catch(error => {
+        ShowError("Failed to delete folder", error.message)
+      })
+    }
+    binFolder()
+  }
+
+  // Bin file
+  function BinFile(fileToken:string) {
+    const binFile = async () => {
+      let token = localStorage.getItem("token")
+      await fetch(apiUrl + "files/bin/" + fileToken, {
+        method: 'PATCH',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then((res) => {
+        CheckForError(res.status)
+      })
+      .then(() => setIsUpdate(!isUpdate))
+      .catch(error => {
+        ShowError("Failed to delete file", error.message)
+      })
+    }
+    binFile()
   }
   
   const [alertText, setAlertText] = useState("Something went wrong")
@@ -719,11 +765,13 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
                       </button>
                     </div>
                   </td>
+                  
                   {/* Delete */}
-                  <td 
-                  className="text-center">
-                    <div data-type="folder" 
-                    className="flex hover-child justify-center items-center h-full">
+                  <td data-type="file" className="text-center">
+                    <div className="flex hover-child justify-center items-center h-full">
+                      <button data-type="file" onClick={() => BinFolder(item.token)}>
+                        <IconBin classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconBin>
+                      </button>
                     </div>
                   </td>
                   {/* Info watches and downloads */}
@@ -815,6 +863,9 @@ const RenderFavoritesData:FunctionComponent<Props> = memo(({currentSortType, cur
                   {/* Delete */}
                   <td data-type="file" className="text-center">
                     <div className="flex hover-child justify-center items-center h-full">
+                      <button data-type="file" onClick={() => BinFile(item.token)}>
+                        <IconBin classes="h-5 w-5" fillClasses="fill-textLight dark:fill-textDark"></IconBin>
+                      </button>
                     </div>
                   </td>
                   {/* Info watches and downloads */}

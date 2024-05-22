@@ -22,13 +22,13 @@ const UserStatistic: FunctionComponent = () => {
         className="w-[calc(100%-24px)] ml-3 xl:w-[1024px] mt-3">
           <StatisticPie></StatisticPie>
         </motion.div>
-        <motion.div initial={{y: 50, opacity: 0}}
+        {/* <motion.div initial={{y: 50, opacity: 0}}
         transition={{delay: 0.1, damping: 24, stiffness: 300}} 
         whileInView={{y: 0, opacity: 1}}
         viewport={{ once: true }}
          className="w-[calc(100%-24px)] ml-3 xl:w-[1024px] mt-3">
           <StatisticCalendar availableYears={availableYears}></StatisticCalendar>
-        </motion.div>
+        </motion.div> */}
         <motion.div initial={{y: 50, opacity: 0}}
         transition={{damping: 24, stiffness: 300}} 
         whileInView={{y: 0, opacity: 1}}
@@ -36,13 +36,13 @@ const UserStatistic: FunctionComponent = () => {
          className="w-[calc(100%-24px)] ml-3 xl:w-[1024px] mt-3">
           <StatisticTree></StatisticTree>
         </motion.div>
-        <motion.div initial={{y: 50, opacity: 0}}
+        {/* <motion.div initial={{y: 50, opacity: 0}}
         transition={{damping: 24, stiffness: 300}}
         whileInView={{y: 0, opacity: 1}}
         viewport={{ once: true }}
          className="w-[calc(100%-24px)] ml-3 xl:w-[1024px] mt-3">
           <StatisticGraph availableYears={availableYears}></StatisticGraph>
-        </motion.div>
+        </motion.div> */}
       </div>
     </div>
   );

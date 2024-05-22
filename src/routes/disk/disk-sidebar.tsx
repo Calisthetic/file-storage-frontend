@@ -96,7 +96,7 @@ export default function DiskSideBar() {
             <span className="ml-3">Recycle bin</span>
           </Link>
         </motion.li>
-        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
+        {/* <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
         transition={{delay: 0.08, stiffness: 300, damping: 24}}>
           <Link to="shared" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark group">
@@ -129,7 +129,7 @@ export default function DiskSideBar() {
               14.47 7.59 25.68 18.18 31.56 29.81 5.83 11.51 7.51 25.57 5.31 44.27z" className="fill-iconLight dark:fill-iconDark"></path></svg>
             <span className="ml-3">Shared with me</span>
           </Link>
-        </motion.li>
+        </motion.li> */}
         <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
         transition={{delay: 0.1, stiffness: 300, damping: 24}}>
           <Link to="files" draggable="false" className="flex items-center p-1.5 sm:p-2 transition-all

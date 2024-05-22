@@ -64,15 +64,10 @@ const UserSidebar: FunctionComponent<UserSidebarProps> = () => {
             <span className="flex-1 ml-3 whitespace-nowrap">Appearance</span>
           </Link>
         </motion.li>
-        <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
+        {/* <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
         transition={{delay: 0.06, stiffness: 300, damping: 24}}>
           <Link to="tariff" draggable="false" className="flex items-center p-1.5 sm:p-2.5
           rounded-lg hover:bg-backgroundHoverLight dark:hover:bg-backgroundHoverDark transition-all">
-            {/* <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" 
-            enableBackground="new 0 0 512 512" className="w-5 h-5 sm:w-6 sm:h-6">
-              <path d="M302.7 64 143 288h95.8l-29.5 160L369 224h-95.8l29.5-160z"
-              className="fill-iconLight dark:fill-iconDark"></path>
-            </svg> */}
             <svg viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
               <path d="M373.1 280.1 118 503.2c-6.9 6.1-14.5 8.8-22 8.8a31.873 31.873 
               0 0 1-18.81-6.109c-12.09-8.781-16.5-24.76-10.59-38.5L143.5 288H32.01a32.01 
@@ -82,7 +77,7 @@ const UserSidebar: FunctionComponent<UserSidebarProps> = () => {
               257.2 383.1 271.3 373.1 280.1z" className="fill-iconLight dark:fill-iconDark"></path></svg>
             <span className="flex-1 ml-3 whitespace-nowrap">Tariff</span>
           </Link>
-        </motion.li>
+        </motion.li> */}
         <motion.li initial={{y: 20, opacity: 0}} animate={{y: 0, opacity: 1}}
         transition={{delay: 0.08, stiffness: 300, damping: 24}}>
           <Link to="account" draggable="false" className="flex items-center p-1.5 sm:p-2

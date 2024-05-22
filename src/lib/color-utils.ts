@@ -12,7 +12,7 @@ export const isDarkMode = ():boolean => ('theme' in localStorage)
 
 // Css variables
 export function GetCSSValue(name: string, useTheme:boolean = true) {
-  return getComputedStyle(document.body).getPropertyValue(useTheme ? '--' + name + (isDarkMode() ? "Dark" : "Light") : '--' + name)
+  return getComputedStyle(document.documentElement).getPropertyValue(useTheme ? ('--' + name + (isDarkMode() ? "Dark" : "Light")) : ('--' + name))
 }
 
 // white to black

@@ -41,9 +41,10 @@ const CustomThemeAppearance: FunctionComponent<CustomThemeAppearanceProps> = mem
     CSSVariablesExtended.forEach(x => {
       colors.push({
         name: x,
-        value: GetCSSValue(x),
+        value: GetCSSValue(x, false),
       })
     });
+    console.log(colors)
     localStorage.setItem("colors", JSON.stringify(colors))
   }
   

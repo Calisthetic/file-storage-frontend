@@ -76,7 +76,8 @@ module.exports = {
       },
 
       screens: {
-        'px1050': '1050px'
+        'px1050': '1050px',
+        xs: "320px",
       },
     },
   },

@@ -13,6 +13,7 @@ interface WelcomeProps {
 const Welcome: FunctionComponent<WelcomeProps> = () => {
   const navigate = useNavigate()
   let token = localStorage.getItem("token")
+  console.log(token)
   
   return (
     <div className="!min-h-[100vh]">
@@ -28,7 +29,7 @@ const Welcome: FunctionComponent<WelcomeProps> = () => {
             <button className="px-5 py-2 mt-4 text-sm tracking-wider uppercase transition-colors 
             transform rounded-lg lg:w-auto focus:outline-none font-semibold text-textDark
             bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark"
-            onClick={() => navigate(token === undefined ? "/auth/signup" : "/disk/folder/main")}>Sign up for 10GB free storage</button>
+            onClick={() => navigate(token === null ? "/auth/signup" : "/disk/folder/main")}>Sign up for 10GB free storage</button>
           </div>
 
           <div className="container px-6 py-16 mx-auto">
@@ -44,7 +45,7 @@ const Welcome: FunctionComponent<WelcomeProps> = () => {
                   <button className="w-full px-5 py-2 mt-6 text-sm tracking-wider uppercase transition-colors 
                   transform rounded-lg lg:w-auto focus:outline-none font-semibold text-textDark
                   bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark"
-                  onClick={() => navigate(token === undefined ? "/auth/signin" : "/disk/folder/main")}>Start Now</button>
+                  onClick={() => navigate(token === null ? "/auth/signin" : "/disk/folder/main")}>Start Now</button>
                 </div>
               </div>
 
@@ -142,7 +143,7 @@ const Welcome: FunctionComponent<WelcomeProps> = () => {
                   <button className="w-full px-5 py-2 mt-6 text-sm tracking-wider uppercase transition-colors 
                   transform rounded-lg lg:w-auto focus:outline-none font-semibold text-textDark
                   bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark"
-                  onClick={() => navigate(token === undefined ? "/auth/signin" : "/disk/folder/main")}>Log in</button>
+                  onClick={() => navigate(token === null ? "/auth/signin" : "/disk/folder/main")}>Log in</button>
                 </div>
               </div>
 
@@ -156,7 +157,7 @@ const Welcome: FunctionComponent<WelcomeProps> = () => {
             <button className="px-5 py-2 mt-4 text-sm tracking-wider uppercase transition-colors 
             transform rounded-lg lg:w-auto focus:outline-none font-semibold text-textDark
             bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark"
-            onClick={() => navigate(token === undefined ? "/auth/signin" : "/disk/folder/main")}>Open disk</button>
+            onClick={() => navigate(token === null ? "/auth/signin" : "/disk/folder/main")}>Open disk</button>
           </footer>
         </div>
       </div>
