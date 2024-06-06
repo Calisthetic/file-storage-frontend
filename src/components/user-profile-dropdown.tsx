@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import IconLight from "./icons/IconLight";
 import IconDark from "./icons/IconDark";
 import { AnimatePresence, motion } from "framer-motion";
+import { apiUrl } from "../data/data";
+import { CheckForError } from "../lib/check-errors";
  
 const UserProfileDropdown: FunctionComponent = () => {
   // User image url
   let temp:string | null = localStorage.getItem("userImage")
-  const userImage:string | undefined = temp === null ? undefined : temp
+  const userImage:string | undefined = temp === null ? "https://static-00.iconduck.com/assets.00/profile-user-icon-2048x2048-m41rxkoe.png" : temp
 
   const [currentTheme, setCurrentTheme] = useState(!('theme' in localStorage) ? "system" : localStorage.getItem('theme'))
 
@@ -43,6 +45,43 @@ const UserProfileDropdown: FunctionComponent = () => {
     return () => window.matchMedia("(prefers-color-scheme: dark)").removeEventListener("change", PrefersThemeChangedHandler)
   }, [ChangeTheme])
 
+  interface IUserInfo {
+    username:string
+    firstName:string
+    secondName:string
+    about:string
+    primaryEmail:string
+  }
+  const [userInfo, setUserInfo] = useState<IUserInfo>({
+    username: 'none',
+    firstName: 'User',
+    secondName: '',
+    about: 'Nothing',
+    primaryEmail: 'gmail@gmail.com'
+  });
+  useEffect(() => {
+    let token = localStorage.getItem("token")
+    if (token) {
+      fetch(apiUrl + "users/info", {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token === null ? "" : token,
+        },
+      })
+      .then(resp => {
+        CheckForError(resp.status)
+        return resp.json()
+      })
+      .then(data => {
+        setUserInfo(data)
+      })
+      .catch((error) => {
+        
+      });
+    }
+  }, [])
+
   let token = localStorage.getItem("token")
   return token ? (
     <div className="flex items-center">
@@ -74,10 +113,10 @@ const UserProfileDropdown: FunctionComponent = () => {
           shadow-lightLight dark:shadow-lightDark rounded overflow-hidden">
             <div className="px-4 py-3">
               <p className="">
-                Neil Sims
+                {userInfo.firstName + " " + userInfo.secondName}
               </p>
               <p className="font-medium">
-                neil.sims@flowbite.com
+                {userInfo.primaryEmail}
               </p>
             </div>
             <div className="py-1">

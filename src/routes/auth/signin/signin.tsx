@@ -99,7 +99,6 @@ export default function SignIn() {
                 focus:dark:outline-white focus:outline-0 focus:dark:outline-1 rounded-md transition-inputs" />
               </div>
             </div>
-
             <div>
               <div className="flex items-center justify-between">
                 <motion.label initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.08, damping: 24, stiffness: 300}} 
@@ -120,7 +119,6 @@ export default function SignIn() {
                 focus:dark:outline-white focus:outline-0 focus:dark:outline-1 rounded-md transition-inputs" />
               </div>
             </div>
-
             <div>
               <motion.button initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}} transition={{delay: 0.14, damping: 24, stiffness: 300}}
               id="signInButton" aria-label="Sign In" onClick={SendData} 
