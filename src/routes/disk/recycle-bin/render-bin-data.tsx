@@ -426,7 +426,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded text-gray-700 dark:text-gray-400">
                         <div className="space-x-1">
                           <span className="text-sm">Size:</span>
-                          <span className="text-base text-textLight dark:text-textDark">{item.size === null ? null : CutSize(item.size * 10)}</span>
+                          <span className="text-base text-textLight dark:text-textDark">{item.size === 0 ? null : CutSize(item.size * 10)}</span>
                         </div>
                         <div className="space-x-1">
                           <span className="text-sm">Created:</span>
@@ -664,9 +664,9 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
                   <td data-token={item.token}
                   className="font-medium text truncate max-w-[1px]">{item.name}</td>
                   <td
-                  data-token={item.token}>{item.size === null ? null : CutSize(item.size * 10)}</td>
+                  data-token={item.token}>{item.size === 0 ? null : CutSize(item.size * 10)}</td>
                   <td
-                  data-token={item.token} className="hidden lg:table-cell">{item.createdAt}</td>
+                  data-token={item.token} className="hidden lg:table-cell">{item.createdAt.split('.')[0]}</td>
                   {/* Links */}
                   <td>
                     <div className="flex hover-child justify-center items-center h-full">
@@ -771,7 +771,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
                   className="font-medium text truncate max-w-[1px]">{item.name}</td>
                   <td data-type="file">{CutSize(item.fileSize * 10)}</td>
                   <td data-type="file"
-                  className="hidden lg:table-cell">{item.createdAt}</td>
+                  className="hidden lg:table-cell">{item.createdAt.split('.')[0]}</td>
                   {/* Links */}
                   <td data-type="file"></td>
                   {/* Restore */}
@@ -936,7 +936,7 @@ const RenderBinData: FunctionComponent<RenderBinDataProps> = memo(({currentSortT
                         </button>
                       </div>
                       <div data-type="folder" 
-                      className="font-medium">{item.size === null ? null : CutSize(item.size * 10)}</div>
+                      className="font-medium">{item.size === 0 ? null : CutSize(item.size * 10)}</div>
                     </div>
                   </div>
                 </div>

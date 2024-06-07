@@ -204,7 +204,7 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded text-gray-700 dark:text-gray-400">
                         <div className="space-x-1">
                           <span className="text-sm">Size:</span>
-                          <span className="text-base text-textLight dark:text-textDark">{item.size === null ? null : CutSize(item.size * 10)}</span>
+                          <span className="text-base text-textLight dark:text-textDark">{item.size === 0 ? null : CutSize(item.size * 10)}</span>
                         </div>
                         <div className="space-x-1">
                           <span className="text-sm">Created:</span>
@@ -269,8 +269,8 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
                   </svg>
                 </th>
                 <th scope="col" className="py-3 min-w-[40px]">name</th>
-                <th scope="col" className="py-3 w-20">file size</th>
-                <th scope="col" className="py-3 w-36 hidden lg:table-cell">created at</th>
+                <th scope="col" className="py-3 w-0"></th>
+                <th scope="col" className="py-3 w-36 hidden md:table-cell">created at</th>
                 {/* For actions */}
                 <th scope="col" className="py-3 w-6 sm:w-7 mg:w-8"></th>
                 <th scope="col" className="py-3 w-6 sm:w-7 mg:w-8"></th>
@@ -295,9 +295,9 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
                   <td data-token={item.token}
                   className="font-medium text truncate max-w-[1px]">{item.name}</td>
                   <td
-                  data-token={item.token}>{item.size === null ? null : CutSize(item.size * 10)}</td>
+                  data-token={item.token}></td>
                   <td
-                  data-token={item.token} className="hidden lg:table-cell">{item.createdAt}</td>
+                  data-token={item.token} className="hidden md:table-cell">{item.createdAt.split('.')[0]}</td>
                   <td></td>
                   {/* Info watches and downloads */}
                   <td>
@@ -389,7 +389,7 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
                         </button>
                       </div>
                       <div data-type="folder" 
-                      className="font-medium">{item.size === null ? null : CutSize(item.size * 10)}</div>
+                      className="font-medium">{item.size === 0 ? null : CutSize(item.size * 10)}</div>
                     </div>
                   </div>
                 </div>
