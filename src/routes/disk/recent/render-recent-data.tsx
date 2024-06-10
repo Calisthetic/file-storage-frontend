@@ -203,12 +203,8 @@ const RenderRecentData:FunctionComponent<Props> = memo(({currentSortBy, currentR
                       <div className="hover-second-info px-1 overflow-hidden text-base whitespace-pre z-10
                       bg-backgroundThirdLight dark:bg-backgroundThirdDark rounded text-gray-700 dark:text-gray-400">
                         <div className="space-x-1">
-                          <span className="text-sm">Size:</span>
-                          <span className="text-base text-textLight dark:text-textDark">{item.size === 0 ? null : CutSize(item.size * 10)}</span>
-                        </div>
-                        <div className="space-x-1">
                           <span className="text-sm">Created:</span>
-                          <span className="text-base text-textLight dark:text-textDark">{item.createdAt}</span>
+                          <span className="text-base text-textLight dark:text-textDark">{item.createdAt.split('.')[0]}</span>
                         </div>
                         <div className="space-x-1">
                           <span className="text-sm">Watches:</span>

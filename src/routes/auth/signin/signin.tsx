@@ -16,6 +16,7 @@ export default function SignIn() {
   const [alertText, setAlertText] = useState("Something went wrong")
   const [alertTitle, setAlertTitle] = useState("Error!")
   const [isAlertOpen, setIsAlertOpen] = useState(false)
+  const [isSentRequest, setIsSentRequest] = useState(false)
   const SignInSchema = z.object({
     // change later
     Email: z.string().max(32),//email(),
@@ -27,6 +28,7 @@ export default function SignIn() {
     if (CheckData() === false) {
       return
     }
+    setIsSentRequest(true)
     
     // Api request
     await fetch(apiUrl + "auth/signin", {
@@ -47,6 +49,7 @@ export default function SignIn() {
     .catch(error => {
       ShowError("Failed to sign in", error.message)
     })
+    setIsSentRequest(false)
   }
   
   function CheckData():boolean {
@@ -124,7 +127,7 @@ export default function SignIn() {
               id="signInButton" aria-label="Sign In" onClick={SendData} 
               className="flex w-full justify-center rounded-md bg-buttonLight dark:bg-buttonDark 
               hover:bg-buttonHoverLight dark:hover:bg-buttonHoverDark px-3 py-1.5 text-sm font-semibold leading-6 
-              text-textLight shadow-sm dark:text-textDark">Sign in</motion.button>
+              text-textLight shadow-sm dark:text-textDark">{isSentRequest ? "Wait..." : "Sign in"}</motion.button>
             </div>
           </div>
 

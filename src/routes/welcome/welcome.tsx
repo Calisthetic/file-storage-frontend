@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import IconSuccessFactors from "../../components/icons/IconSuccessFactors";
 import IconSecure from "../../components/icons/IconSecure";
 import IconOpenSource from "../../components/icons/IconOpenSource";
@@ -65,16 +65,16 @@ const Welcome: FunctionComponent<WelcomeProps> = () => {
                 <div className="lg:max-w-lg">
                   <h1 className="text-3xl font-semibold lg:text-4xl">Safety and secure</h1>
                     
-                  <p className="mt-3 mr-1">
+                  <p className="mt-3 mr-1 mb-6">
                     No one will be able to view your data without your consent.
                     Using the latest authentication technologies allows us to keep your files secure from outside interference.
                     If you lose one of your devices, use the quick space cleaning function or track your file browsing history
                   </p>
                     
-                  <button className="w-full px-5 py-2 mt-6 text-sm tracking-wider uppercase transition-colors 
+                  <Link className="w-full px-5 py-2 text-sm tracking-wider uppercase transition-colors 
                   transform rounded-lg lg:w-auto focus:outline-none font-semibold text-textDark
                   bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark"
-                  onClick={() => navigate("/docs")}>Read docs</button>
+                  to={"/docs"}>Read docs</Link>
                 </div>
               </div>
 
@@ -87,7 +87,7 @@ const Welcome: FunctionComponent<WelcomeProps> = () => {
                 <div className="lg:max-w-lg">
                   <h1 className="text-3xl font-semibold lg:text-4xl">Open source</h1>
                     
-                  <div className="mt-5 mr-1 space-y-4">
+                  <div className="mt-5 mr-1 space-y-4 mb-5">
                     <p className="flex items-center -mx-2">
                       <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-2 stroke-iconLight dark:stroke-iconDark" fill="none" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -112,10 +112,10 @@ const Welcome: FunctionComponent<WelcomeProps> = () => {
                     </p>
                   </div>
                     
-                  <button className="w-full px-5 py-2 mt-5 text-sm tracking-wider uppercase transition-colors 
+                  <Link className="w-full px-5 py-2 text-sm tracking-wider uppercase transition-colors 
                   transform rounded-lg lg:w-auto focus:outline-none font-semibold text-textDark
                   bg-buttonLight dark:bg-buttonDark hover:bg-buttonHoverLight hover:dark:bg-buttonHoverDark"
-                  onClick={() => navigate("/docs/code")}>See code</button>
+                  to={"/docs/code"}>See code</Link>
                 </div>
               </div>
 
